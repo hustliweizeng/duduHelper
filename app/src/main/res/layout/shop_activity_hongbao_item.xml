@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="51dp"
+    android:background="#fff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#fff"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="15"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="10dp"
+                android:text="满"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/totalMoneyEdit"
+                android:layout_width="60dp"
+                android:layout_height="26dp"
+                android:background="@drawable/btn_white_bg"
+                android:inputType="numberDecimal"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="可使用"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/discountMoneyEdit"
+                android:layout_width="60dp"
+                android:layout_height="26dp"
+                android:inputType="numberDecimal"
+                android:background="@drawable/btn_white_bg"
+                android:textColor="@color/text_color_yellow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="以下红包"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bg_color" />
+
+        <ImageView
+            android:id="@+id/delectButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:background="@drawable/view_selector"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_delecthongbao" />
+    </LinearLayout>
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color_gray"
+        android:layout_marginLeft="16dp"/>
+
+</LinearLayout>

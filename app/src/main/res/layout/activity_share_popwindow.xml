@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:background="#fff" >
+
+        <RelativeLayout
+            android:id="@+id/rel1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/cancelBtn" >
+
+            <LinearLayout
+                android:id="@+id/lin1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/sendWeixinBtn"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:padding="4dp"
+                    android:background="@drawable/view_selector"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_share_weixin" />
+
+                <ImageButton
+                    android:id="@+id/sendWeixinFriendsBtn"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:padding="4dp"
+                    android:layout_marginLeft="56dp"
+                    android:background="@drawable/view_selector"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_weixin_friends" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/cancelBtn"
+            android:background="@color/line_color_gray" />
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/view_selector"
+            android:text="取消分享"
+            android:textColor="@color/text_color_dark"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

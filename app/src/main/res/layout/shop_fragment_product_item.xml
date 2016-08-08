@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="106dp"
+        android:background="@drawable/view_selector" >
+
+        <ImageButton 
+	        android:id="@+id/productCheckImg"
+	        android:layout_width="20dp"
+	        android:layout_height="20dp"
+	        android:visibility="gone"
+	        android:focusable="false"
+	        android:src="@drawable/icon_dingdan"
+	        android:scaleType="centerInside"
+	        android:background="@null"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="10dp"/>
+
+
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="92dp"
+            android:layout_height="72dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="17dp"
+            android:layout_toRightOf="@+id/productCheckImg"
+            android:src="@drawable/friends_sends_pictures_no" />
+
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@+id/productImage"
+            android:text="开口松子218gx2袋原味坚"
+            android:textColor="@color/text_color_gray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/producthaveNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/productName"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/productImage"
+            android:text="库存：300"
+            android:textColor="@color/text_color_light"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/productSellNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/productName"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/producthaveNum"
+            android:text="已售：300"
+            android:textColor="@color/text_color_light"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/productPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="14dp"
+            android:layout_toRightOf="@+id/productImage"
+            android:text="￥42.9"
+            android:textColor="@color/text_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/productGetNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="14dp"
+            android:layout_toRightOf="@+id/productImage"
+            android:text=""
+            android:textColor="@color/text_color_light"
+            android:textSize="14dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/productRelPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/productPrice"
+            android:text=""
+            android:textColor="@color/text_color_dark"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/productAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginRight="14dp"
+            android:text="已上架"
+            android:textColor="@color/text_color_yellow"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/viewlin"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_toLeftOf="@+id/downButton"
+            android:background="@color/divider_line_color" />
+
+        <ImageView
+            android:id="@+id/downButton"
+            android:layout_width="56dp"
+            android:padding="14dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/view_selector"
+            android:focusable="false"
+            android:src="@drawable/icon_shangjia"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:background="@drawable/view_selector"
+        android:descendantFocusability="blocksDescendants"
+        android:gravity="right|center_vertical"
+        android:visibility="gone" >
+
+        <Button
+            android:id="@+id/delectButton"
+            android:layout_width="78dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_white_bg"
+            android:focusable="false"
+            android:text="删除"
+            android:textColor="@color/text_color" />
+        <!--
+             <Button 
+            android:id="@+id/downButton"
+            android:layout_width="78dp"
+            android:layout_height="40dp"
+            android:text="下架"
+            android:textColor="#fff"
+            android:layout_marginRight="14dp"
+            android:focusable="false" 
+            android:background="@drawable/btn_bg"/>
+        -->
+    </LinearLayout>
+
+</LinearLayout>

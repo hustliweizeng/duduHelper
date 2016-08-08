@@ -1,0 +1,134 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.dudu.duduhelper.GetInComeCashCodeImageActivity" >
+
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+
+    <LinearLayout
+        android:id="@+id/getQueryCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="14dp"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:background="@drawable/shop_banyuanjiao_whiteshangbg" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/icon_weixinshoukuan" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:text="微信支付"
+                    android:textColor="@color/text_dark_color"
+                    android:textSize="32dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="326dp"
+            android:background="@drawable/shop_banyuanjiao_greenxiabg"
+            android:paddingLeft="58dp"
+            android:paddingRight="58dp"
+            android:paddingTop="34dp" >
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="66dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/icon_maotou" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_white_color"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="58dp"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/ImageCode"
+                    android:layout_width="184dp"
+                    android:layout_height="184dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/icon_head" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="技术支持 · 嘟嘟科技"
+                    android:textColor="@color/text_gray_color"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/codeImagedesprition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:text="客户端使用微信扫描该二维码即可支付成功"
+        android:textColor="@color/text_color_light"
+        android:textSize="14dp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/printbutton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/btn_larg_bg"
+        android:text="打印凭据"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <Button
+            android:id="@+id/saveImageButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/view_selector"
+            android:text="保存到手机"
+            android:textColor="#279439"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+</LinearLayout>

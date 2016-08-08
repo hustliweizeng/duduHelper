@@ -1,0 +1,404 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.dudu.duduhelper.ShopProductAddActivity" >
+
+    <include
+        android:id="@id/head"
+        layout="@layout/activity_head" />
+
+    <com.dudu.duduhelper.widget.OverScrollView
+        android:id="@+id/mineScrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/saveProductbutton"
+        android:layout_below="@id/head"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="#fff"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/title_color"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_weight="3"
+                        android:text="商品名称"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/productNameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:hint="请输入您的商品名称"
+                        android:textColorHint="@color/text_color_light"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/line_color_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/title_color"
+                    android:gravity="center_vertical"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_weight="3"
+                        android:text="所属分类"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/productTypeTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:text="请选择商品分类"
+                        android:textColor="@color/text_color_light"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color_gray"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/title_color"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_weight="3"
+                        android:text="商品原价"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/productYuanPriceEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:hint="请输入您的商品原价如9.99"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="@color/text_color_light"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/line_color_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/title_color"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_weight="3"
+                        android:text="商品现价"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/productNowPriceEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:hint="请输入您的商品现价"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="@color/text_color_light"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/line_color_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/title_color"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_weight="3"
+                        android:text="商品库存"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/productKuCunNumEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:hint="请输入您的商品库存"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="@color/text_color_light"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/line_color_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/title_color"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_weight="3"
+                        android:text="限购数量"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/productSoldTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:text="0"
+                        android:textColor="@color/text_color_yellow"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/line_color_gray" />
+
+                <LinearLayout
+                    android:id="@+id/productDownTimeLin"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/view_selector"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_weight="3"
+                        android:text="开始时间"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/productDownTimeTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:text="请选择商品下架时间"
+                        android:textColor="@color/text_color_light"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/line_color_gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/title_color"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_weight="3"
+                        android:text="商品状态"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+
+                    <com.dudu.duduhelper.widget.SwitchView
+                        android:id="@+id/productStatusSwitch"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/productDetailLine"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/view_selector"
+                android:gravity="center_vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="3"
+                    android:text="商品描述"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/productDetaliTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:text="请描述您的商品详情"
+                    android:textColor="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="17dp"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="86dp"
+                android:background="@color/bg_white_color"
+                android:enabled="true"
+                android:gravity="top"
+                android:hint="请输入商品描述..."
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:minLines="8"
+                android:padding="14dp"
+                android:scrollbars="vertical"
+                android:textColorHint="@color/text_hint_color"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:id="@+id/productImageView"
+                android:layout_width="96dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/shop_image_whitelin"
+                android:padding="4dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_head" />
+        </LinearLayout>
+    </com.dudu.duduhelper.widget.OverScrollView>
+
+    <TextView
+        android:id="@+id/textToumingView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/head"
+        android:background="#79000000"
+        android:gravity="center_vertical"
+        android:paddingLeft="17dp"
+        android:text="更多商品详情请到web端口后台进行设置~"
+        android:textColor="@color/text_white_color"
+        android:textSize="14dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/saveProductbutton"
+        android:background="@color/divider_line_color" />
+
+    <Button
+        android:id="@+id/saveProductbutton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/view_selector"
+        android:text="提交"
+        android:textColor="@color/text_green_color"
+        android:textSize="16sp" />
+
+</RelativeLayout>

@@ -1,0 +1,103 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context="com.dudu.duduhelper.ShopSearchBlueToothActivity" >
+
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:background="@color/head_color" >
+        <LinearLayout 
+            android:layout_width="222dp"
+            android:layout_height="222dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shop_bluetooth_whitelin"/>
+        <LinearLayout 
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shop_bluetooth_whitelin"/>
+
+        <Button
+            android:id="@+id/scanbutton"
+            android:layout_width="88dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shop_bluetooth_search_bg"
+            android:text="立即扫描"
+            android:textColor="@color/text_green_color" />
+        <!-- 外层圆环扩散 -->
+        <ImageView
+            android:id="@+id/radar_img"
+            android:layout_width="222dp"
+            android:layout_height="222dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/main_bottom_selecl_item"
+            android:visibility="gone" />
+
+        <!-- 中心层第一波圆形弥撒 -->
+        <ImageView
+            android:id="@+id/radar_bttom_img"
+            android:layout_width="222dp"
+            android:layout_height="222dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:src="@drawable/amain_setting_bg" />
+        <!-- 中心层第二波圆形弥散 -->
+        <ImageView
+            android:id="@+id/radar_top_img"
+            android:layout_width="222dp"
+            android:layout_height="222dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/main_setting_bg"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/radar_imageing"
+            android:layout_width="222dp"
+            android:layout_height="222dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:src="@drawable/icon_saomiaozhen" />
+        
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/bindDevicesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/head"
+        android:background="@drawable/view_selector"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/text_color_dark"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/lineView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/bindDevicesTextView"
+        android:background="@color/line_color_gray"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/devicesList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/line_color_gray"
+        android:dividerHeight="1dp"
+        android:layoutAnimation="@anim/list_controller"
+        android:scrollbars="none" >
+    </ListView>
+
+</LinearLayout>

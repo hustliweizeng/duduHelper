@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">商家助手</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_cash_sell">CashSellActivity</string>
+    <string name="scan_text">请扫描消费者的付款码完成收款</string>
+    <string name="title_activity_cash_sell_scan_sucess">CashSellScanSucessActivity</string>
+    <string name="title_activity_cash_sell_scan_fail">CashSellScanFailActivity</string>
+    <string name="title_activity_member_sell">MemberSellActivity</string>
+    <string name="title_activity_order_detail">OrderDetailActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_bind_phone">BindPhoneActivity</string>
+    <string name="title_activity_rebind_phone_stepone">RebindPhoneSteponeActivity</string>
+    <string name="title_activity_rebind_phone_steptwo">RebindPhoneSteptwoActivity</string>
+    <string name="title_activity_get_cash">GetCashActivity</string>
+    <string name="title_activity_get_cash_history_list">GetCashHistoryListActivity</string>
+    <string name="title_activity_product_add">ProductAddActivity</string>
+    <string name="title_activity_account_data">AccountDataActivity</string>
+    <string name="title_activity_gift_sell">GiftSellActivity</string>
+    <string name="title_activity_user_bank_info">UserBankInfoActivity</string>
+    <string name="title_activity_user_bank_select">UserBankSelectActivity</string>
+    <string name="title_activity_product_list">ProductListActivity</string>
+    <string name="title_activity_product_info_edit">ProductInfoEditActivity</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_loading">LoadingActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_web_page">WebPageActivity</string>
+    <string name="title_activity_get_in_come_cash">GetInComeCashActivity</string>
+    <string name="title_activity_get_in_come_cash_code_image">GetInComeCashCodeImageActivity</string>
+    <string name="title_activity_get_in_come">GetInComeActivity</string>
+    <string name="title_activity_get_shope_code_image">GetShopeCodeImageActivity</string>
+    <string name="title_activity_search_blue_tooth">SearchBlueToothActivity</string>
+    <string name="title_activity_coupon_detail">CouponDetailActivity</string>
+    <string name="title_activity_coupon_sell_history">CouponSellHistoryActivity</string>
+    <string name="title_activity_coupon_sell_detail">CouponSellDetailActivity</string>
+    <string name="title_activity_member_list">MemberListActivity</string>
+    <string name="title_activity_member_add">MemberAddActivity</string>
+    <string name="title_activity_discount_sell">DiscountSellActivity</string>
+    <string name="title_activity_discount_sell_result">DiscountSellResultActivity</string>
+    <string name="title_activity_discount_scan_sucess">DiscountScanSucessActivity</string>
+    <string name="title_activity_hong_bao_detail">HongBaoDetailActivity</string>
+    <string name="title_activity_hongbao_history_list">HongbaoHistoryListActivity</string>
+    <string name="title_activity_hongbao_history_detail">HongbaoHistoryDetailActivity</string>
+    <string name="title_activity_shop_order">ShopOrderActivity</string>
+    <string name="title_activity_shop_get_cash_code">ShopGetCashCodeActivity</string>
+    <string name="title_activity_shop_scan_sell">ShopScanSellActivity</string>
+    <string name="title_activity_shop_account_watch">ShopAccountWatchActivity</string>
+    <string name="title_activity_shop_search_blue_tooth">ShopSearchBlueToothActivity</string>
+    <string name="title_activity_shop_setting">ShopSettingActivity</string>
+    <string name="title_activity_shop_info_edit">ShopInfoEditActivity</string>
+    <string name="title_activity_shop_get_cash">ShopGetCashActivity</string>
+    <string name="title_activity_shop_bank_list">ShopBankListActivity</string>
+    <string name="title_activity_shop_manager">ShopManagerActivity</string>
+    <string name="title_activity_shop_add">ShopAddActivity</string>
+    <string name="title_activity_message_center_list">MessageCenterListActivity</string>
+    <string name="title_activity_shop_image_view_brower">ShopImageViewBrower</string>
+    <string name="title_activity_password_edit">PasswordEditActivity</string>
+    <string name="title_activity_shop_money_record_list">ShopMoneyRecordListActivity</string>
+
+</resources>

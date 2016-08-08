@@ -1,0 +1,160 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.dudu.duduhelper.ShopMemberAddActivity" >
+
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:background="#fff"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:text="姓名"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/membername"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:gravity="right"
+                android:hint="请输入店员姓名"
+                android:textColorHint="@color/text_hint_color"
+                android:textSize="14dp" >
+            </EditText>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="14dp"
+            android:background="@color/line_color_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:text="账号"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/membercount"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:gravity="right"
+                android:textColorHint="@color/text_hint_color"
+                android:hint="请输入店员账号"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="14dp"
+            android:background="@color/line_color_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:text="密码"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/memberpassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:gravity="right"
+                android:textColorHint="@color/text_hint_color"
+                android:hint="请输入店员账号密码"
+                android:textSize="14dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/bg_white_color">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text="所属店铺"
+            android:textColor="@color/text_color_dark"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/memberShopTextView"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_toLeftOf="@+id/arrorimg"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:gravity="right|center_vertical"
+            android:hint="请选择店铺"
+            android:textSize="14dp" />
+        <ImageView 
+            android:id="@+id/arrorimg"
+            android:layout_alignParentRight="true"
+            android:layout_width="14dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_arrow"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/editMemberbutton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/btn_larg_bg"
+        android:text="保存"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
+</LinearLayout>

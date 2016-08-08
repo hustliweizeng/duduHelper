@@ -1,0 +1,105 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context="com.dudu.duduhelper.ShopRebindPhoneSteponeActivity" >
+
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#fff"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/icon_phone"
+            android:layout_width="50dp"
+            android:layout_height="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_phone" />
+
+        <EditText
+            android:id="@+id/userPhoneEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/icon_phone"
+            android:background="@null"
+            android:hint="请输入您的手机号"
+            android:inputType="phone"
+            android:textColorHint="@color/text_color_light"
+            android:textSize="16dp" />
+
+        
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color_gray"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#fff"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/icon_messcode"
+            android:layout_width="50dp"
+            android:layout_height="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_erweima" />
+
+        <EditText
+            android:id="@+id/messageCodeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/btnGetmess"
+            android:layout_toRightOf="@+id/icon_messcode"
+            android:background="@null"
+            android:hint="请输入验证码"
+            android:textColorHint="@color/text_color_light"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/btnGetmess"
+            android:layout_width="82dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/shop_btn_mess_bg"
+            android:padding="6dp"
+            android:text="获取验证码"
+            android:textColor="#ed6a58"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/SubmitPhonebutton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/btn_larg_bg"
+        android:text="确认提交"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="10dp"
+        android:text="绑定的手机号关系到您的账户金额，请您务必慎重填写。"
+        android:textColor="@color/text_color_gray"
+        android:textSize="14sp" />
+
+</LinearLayout>

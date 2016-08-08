@@ -1,0 +1,436 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context="com.dudu.duduhelper.ShopProductAddActivity" >
+
+    <include
+        android:id="@id/head"
+        layout="@layout/activity_head" />
+
+    <com.dudu.duduhelper.widget.OverScrollView
+        android:id="@+id/mineScrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="17dp"
+                android:text="更多商品详情请到web端口后台进行设置"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2"
+                    android:text="优惠券名称"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/couponNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入您的优惠券名称"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2"
+                    android:text="优惠券副标题"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/couponTagNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入您的优惠券副标题"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="3"
+                    android:text="原价"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/couponYuanPriceEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入您的商品原价如9.99"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2"
+                    android:text="在线支付价格"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/couponPriceEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入在线支付价格"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="3"
+                    android:text="优惠价"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/couponNowPriceEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入您的商品现价"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="3"
+                    android:text="发放数量"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/couponKuCunNumEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入您的商品库存"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2"
+                    android:text="单人限领数量"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/couponSoldTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入您的商品库存"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:id="@+id/couponUpTimeLin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/view_selector"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="3"
+                    android:text="上架时间"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/couponUpTimeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="10dp"
+                    android:text="请选择商品上架时间"
+                    android:textColor="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:id="@+id/couponDownTimeLin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/view_selector"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="3"
+                    android:text="下架时间"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/couponDownTimeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="10dp"
+                    android:text="请选择商品下架时间"
+                    android:textColor="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="3"
+                    android:text="商品状态"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <com.dudu.duduhelper.widget.SwitchView
+                    android:id="@+id/couponStatusSwitch"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:id="@+id/productDetailLine"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/view_selector"
+                android:gravity="center_vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="3"
+                    android:text="商品描述"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/productDetaliTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:text="请描述您的商品详情"
+                    android:textColor="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="17dp"
+                android:text="商品实拍"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff" >
+
+                <ImageView
+                    android:id="@+id/productImageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp"
+                    android:background="@drawable/view_selector"
+                    android:src="@drawable/icon_head" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/saveProductbutton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="34dp"
+                android:background="@drawable/btn_larg_bg"
+                android:text="提交"
+                android:textColor="#fff"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </com.dudu.duduhelper.widget.OverScrollView>
+
+</LinearLayout>

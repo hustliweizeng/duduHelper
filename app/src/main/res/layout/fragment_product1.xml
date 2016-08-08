@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color">
+    <LinearLayout
+        android:id="@+id/selectLine"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+        <RelativeLayout
+            android:id="@+id/allTypeRel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:orientation="horizontal" >
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+                <TextView
+                android:id="@+id/allType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全部分类"
+                android:textColor="@color/text_color_gray"
+                android:textSize="16dp" />
+            <ImageView 
+                android:layout_marginLeft="6dp"
+                android:id="@+id/allTypeArror"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_jiantou_xia"/>
+            </LinearLayout>
+            <View 
+                android:layout_height="28dp"
+                android:layout_width="1dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@color/line_color_gray"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/orderTypeRel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:orientation="horizontal" >
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+                <TextView
+                android:id="@+id/orderType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="默认排序"
+                android:textColor="@color/text_color_gray"
+                android:textSize="16dp" />
+            <ImageView 
+                android:layout_marginLeft="6dp"
+                android:id="@+id/orderTypeArror"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_jiantou_xia"/>
+            </LinearLayout>
+            <View 
+                android:layout_height="28dp"
+                android:layout_width="1dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@color/line_color_gray"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/productRel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:orientation="horizontal" >
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+                <TextView
+                android:id="@+id/productAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商品状态"
+                android:textColor="@color/text_color_gray"
+                android:textSize="16dp" />
+            <ImageView 
+                android:layout_marginLeft="6dp"
+                android:id="@+id/productTypeArror"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_jiantou_xia"/>
+            </LinearLayout>
+            <View 
+                android:layout_height="28dp"
+                android:layout_width="1dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@color/line_color_gray"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/productSwipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/selectLine"
+        android:orientation="vertical" >
+        <ListView
+            android:id="@+id/productListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarThumbVertical="@color/text_color"
+            android:scrollbarTrackVertical="@color/text_color_yellow"
+            android:scrollbarSize="4dp"
+            android:layoutAnimation="@anim/list_controller"
+            android:divider="@null"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/editProductLine"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:background="#fff"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:gravity="right|center_vertical" >
+        <ImageButton 
+	        android:id="@+id/productAllCheckImg"
+	        android:layout_width="20dp"
+	        android:layout_height="20dp"
+	        android:focusable="false"
+	        android:layout_marginRight="6dp"
+	        android:src="@drawable/icon_xuanze"
+	        android:scaleType="centerInside"
+	        android:background="@null"/>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全选"
+            android:layout_marginRight="14dp"
+            android:textSize="16dp"
+            android:textColor="@color/text_color_dark"/>
+        <Button
+            android:layout_width="78dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_white_bg"
+            android:text="删除"
+            android:textColor="@color/text_color" />
+
+        <Button
+            android:layout_width="78dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/btn_bg"
+            android:text="下架"
+            android:textColor="#fff" />
+
+        <Button
+            android:layout_width="78dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/btn_bg"
+            android:text="上架"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.dudu.duduhelper.GetCashHistoryListActivity" >
+
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cashHistoryswipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/cashHistoryListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/line_color_gray"
+            android:dividerHeight="1dp"
+            android:layoutAnimation="@anim/list_controller"
+            android:scrollbarSize="4dp"
+            android:scrollbarThumbVertical="@color/text_color"
+            android:scrollbarTrackVertical="@color/text_color_yellow" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

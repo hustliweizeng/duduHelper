@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shop_bank_select_greenbg"
+        android:padding="16dp" >
+
+        <com.dudu.duduhelper.widget.CircleImageView
+            android:id="@+id/banklogoImg"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/icon_head" />
+
+        <TextView
+            android:id="@+id/bankNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_toRightOf="@+id/banklogoImg"
+            android:text="徐大孬儿"
+            android:textColor="@color/text_white_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/bankCardNumhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/bankNameText"
+            android:layout_below="@+id/bankNameText"
+            android:layout_marginTop="20dp"
+            android:text="**** **** ****"
+            android:textColor="@color/bg_color"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/bankCardNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bankCardNumhead"
+            android:layout_toRightOf="@+id/bankCardNumhead"
+            android:text="5568"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/text_white_color"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/bankCardNumhead"
+            android:layout_below="@+id/bankCardNumhead"
+            android:layout_marginTop="20dp"
+            android:text="NAME/"
+            android:textColor="@color/bg_color"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/bankCardUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView1"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_toRightOf="@+id/textView1"
+            android:layout_marginLeft="10dp"
+            android:text="徐大孬儿"
+            android:textColor="@color/text_white_color"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

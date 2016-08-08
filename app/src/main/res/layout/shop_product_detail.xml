@@ -1,0 +1,260 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.dudu.duduhelper.ShopCouponDetailActivity" >
+
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+
+    <com.dudu.duduhelper.widget.OverScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/foot"
+        android:layout_below="@+id/head"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/couponImage"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/view_selector"
+                    android:src="@drawable/icon_head" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/couponName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text=""
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/couponTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text=""
+                        android:textSize="14dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="336dp"
+                android:layout_marginTop="10dp"
+                android:background="#fff" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="236dp"
+                    android:orientation="vertical" >
+
+                    <com.dudu.duduhelper.widget.WheelIndicatorTongjiNoXuxianView
+                        android:id="@+id/wheel_indicator_view"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_centerInParent="true"
+                        app:backgroundColor="@color/text_color" />
+
+                    <LinearLayout
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="总库存"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="14sp" />
+
+                        <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
+                            android:id="@+id/totalNumText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text=""
+                            android:textColor="@color/text_green_color"
+                            android:textSize="20sp" />
+                        <!--
+                             <TextView
+                            android:id="@+id/totalNumText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text=""
+                            android:textColor="@color/text_green_color"
+                            android:textSize="20sp" />
+                        -->
+
+                        <View
+                            android:layout_width="58dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@color/divider_line_color" />
+
+                        <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
+                            android:id="@+id/sellNumText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text=""
+                            android:textColor="@color/text_yellow_color"
+                            android:textSize="20sp" />
+
+                        <!--
+                             <TextView
+                            android:id="@+id/sellNumText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text=""
+                            android:textColor="@color/text_yellow_color"
+                            android:textSize="20sp" />
+                        -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="已售出"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="36dp"
+                    android:background="@drawable/shop_bigyuanjiao_bg"
+                    android:gravity="center"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="剩余数量"
+                        android:textColor="@color/text_gray_color"
+                        android:textSize="14sp" />
+
+                    <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
+                        android:id="@+id/leftNumText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/text_dark_color"
+                        android:textSize="18sp" />
+
+                    <!--
+                         <TextView
+                        android:id="@+id/leftNumText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/text_dark_color"
+                        android:textSize="18sp" />
+                    -->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <RelativeLayout
+                        android:layout_width="174dp"
+                        android:layout_height="174dp"
+                        android:background="#fff" >
+
+                        <LinearLayout
+                            android:id="@+id/canvasLayout"
+                            android:layout_width="168dp"
+                            android:layout_height="168dp"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical" >
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/canvasLayout1"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical" >
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/canvasLayout2"
+                            android:layout_width="174dp"
+                            android:layout_height="174dp"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical" >
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:orientation="horizontal" >
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </com.dudu.duduhelper.widget.OverScrollView>
+
+    <LinearLayout
+        android:id="@+id/foot"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/editCouponButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shop_keyboard_hexiao_text_select"
+            android:text="修改编辑"
+            android:textColor="@color/text_white_color"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+</RelativeLayout>

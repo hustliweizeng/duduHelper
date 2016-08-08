@@ -1,0 +1,119 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    tools:context="com.dudu.duduhelper.SearchActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/head_color"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_select"
+            android:paddingBottom="14dp"
+            android:paddingRight="10dp"
+            android:paddingTop="14dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/nav_btn_fanhui" />
+
+        <Button
+            android:id="@+id/selectClickButton"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_select"
+            android:paddingBottom="14dp"
+            android:paddingTop="14dp"
+            android:text="搜索"
+            android:textColor="#fff" />
+
+        <Button
+            android:id="@+id/selectTextClickButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:paddingBottom="14dp"
+            android:paddingTop="14dp"
+            android:scaleType="centerInside"
+            android:text="批量"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/backButton"
+            android:layout_toLeftOf="@+id/selectClickButton"
+            android:background="@drawable/shop_bluetooth_search_bg"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/sousuo" />
+
+            <EditText
+                android:id="@+id/searchBarEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:background="@null"
+                android:hint="请输入您的订单号"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:singleLine="true"
+                android:imeActionLabel="Search"
+                android:textColorHint="@color/text_color_light"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </RelativeLayout>
+   <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/orderallswipeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@+id/allOrderListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:layoutAnimation="@anim/list_controller"
+                android:scrollbarSize="4dp"
+                android:scrollbarThumbVertical="@color/text_color"
+                android:scrollbarTrackVertical="@color/text_color_yellow" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <Button
+            android:id="@+id/reloadButton"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="200dp"
+            android:background="@drawable/btn_white_bg"
+            android:text="点击重试"
+            android:textColor="@color/text_color_gray"
+            android:textSize="16dp"
+            android:visibility="gone" />
+    </RelativeLayout> 
+
+</LinearLayout>

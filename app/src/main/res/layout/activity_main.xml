@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    tools:context="com.dudu.duduhelper.MainActivity" >
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+
+    <FrameLayout
+        android:id="@+id/FrameLayoutPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/head"
+        android:layout_above="@+id/foot"/>
+
+    <View
+        android:id="@+id/footline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/foot"
+        android:layout_alignParentLeft="true"
+        android:background="#e6e6e6" />
+
+    <include
+        android:id="@+id/foot"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        layout="@layout/activity_foot" />
+
+</RelativeLayout>

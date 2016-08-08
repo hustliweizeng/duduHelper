@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 未选中状态 -->
+    <item android:state_pressed="false">
+        <shape>
+            <!-- 填充渐变 -->
+		     <!-- 描边   --> 
+		     <stroke  
+		        android:width="0.5dp"         
+		        android:color="@color/text_green_color" />  
+		       <!-- 圆角 -->
+		      <corners android:topLeftRadius="22dp"     
+		             android:topRightRadius="22dp"      
+		             android:bottomRightRadius="22dp"     
+		             android:bottomLeftRadius="22dp"/>     
+		</shape>
+    </item>
+    <item android:state_pressed="true">
+	   <shape>
+		    <solid android:color="#603dd6bc" />      
+		     <stroke  
+		        android:width="0.5dp"         
+		        android:color="@color/text_green_color" />  
+		        <corners android:topLeftRadius="22dp"     
+		             android:topRightRadius="22dp"      
+		             android:bottomRightRadius="22dp"     
+		             android:bottomLeftRadius="22dp"/>     
+		</shape>
+    </item>
+</selector>

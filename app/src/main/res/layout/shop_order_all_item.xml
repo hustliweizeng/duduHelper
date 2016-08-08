@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/view_selector"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/orderNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:text="订单号:"
+            android:textColor="@color/text_dark_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/orderNumTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/orderNum"
+            android:gravity="center_vertical"
+            android:text="20152626364443"
+            android:textColor="@color/text_dark_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/orderActionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:text="已完成"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/view_selector" >
+
+        <TextView
+            android:id="@+id/orderTypeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="14dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="豪华景观双人床"
+            android:textColor="@color/text_dark_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/orderPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/orderTypeTextView"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:text="¥ 0"
+            android:textColor="@color/text_green_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/orderTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/orderTypeTextView"
+            android:layout_marginLeft="14dp"
+            android:text="2015.08.24 14:30"
+            android:textColor="@color/text_dark_color"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/ordersoure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/orderTimeTextView"
+            android:layout_toLeftOf="@+id/orderSourceText"
+            android:gravity="center_vertical"
+            android:text="来源："
+            android:textColor="@color/text_gray_color"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/orderSourceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/orderTimeTextView"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:text="优惠券"
+            android:textColor="@color/text_gray_color"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+</LinearLayout>

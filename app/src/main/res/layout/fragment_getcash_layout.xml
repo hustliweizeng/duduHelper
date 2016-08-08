@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.dudu.duduhelper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/orderhead"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="#fff"
+        android:orientation="horizontal" >
+
+        <com.dudu.duduhelper.widget.PagerSlidingTabStrip
+            android:id="@+id/orderSeliderTabs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            app:pstsDividerColor="#fff"
+            app:pstsIndicatorColor="@color/text_color"
+            app:pstsIndicatorHeight="2dp"
+            app:pstsShouldExpand="true"
+            app:pstsTabBackground="@drawable/background_tab"
+            app:pstsTabPaddingLeftRight="0dp"
+            app:pstsUnderlineHeight="0dp"
+            app:selectedTabTextColor="@color/text_color" />
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/OrderViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

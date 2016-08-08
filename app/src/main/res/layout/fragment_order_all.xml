@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/orderallswipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/allOrderListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarThumbVertical="@color/text_color"
+            android:scrollbarTrackVertical="@color/text_color_yellow"
+            android:scrollbarSize="4dp"
+            android:layoutAnimation="@anim/list_controller"
+            android:divider="@null"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <Button
+        android:id="@+id/reloadButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="200dp"
+        android:textSize="16dp"
+        android:visibility="gone"
+        android:background="@drawable/btn_white_bg"
+        android:textColor="@color/text_color_gray"
+        android:text="点击重试" />
+
+</RelativeLayout>

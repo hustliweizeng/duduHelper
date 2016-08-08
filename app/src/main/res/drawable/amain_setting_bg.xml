@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item><shape android:shape="oval">
+            <!-- 第一波填充 -->
+            <solid android:color="#55E0E0E0" />
+        </shape></item>
+
+</selector>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false">
+        <shape>
+		    <solid android:color="#00ffffff" />      
+		     <!-- 描边颜色 -->
+		     <stroke  
+		        android:width="4dp"         
+		        android:color="@color/bg_white_color" />  
+		</shape>
+    </item>
+    <item android:state_pressed="true">
+	   <shape>
+		    <solid android:color="#66ffffff" />  
+		     <!-- 描边颜色 -->    
+		     <stroke  
+		        android:width="4dp"         
+		        android:color="@color/divider_line_color" />  
+		</shape>
+    </item>
+</selector>

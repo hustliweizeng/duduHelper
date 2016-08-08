@@ -1,0 +1,437 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.dudu.duduhelper.ShopProductAddActivity" >
+
+    <include
+        android:id="@id/head"
+        layout="@layout/activity_head" />
+
+    <com.dudu.duduhelper.widget.OverScrollView
+        android:id="@+id/mineScrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/saveProductbutton"
+        android:layout_below="@id/head"
+        android:fillViewport="true"
+        android:focusable="false" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2.4"
+                    android:text="红包名称"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/hongbaoNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入红包名称"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2.4"
+                    android:text="发放总金额"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/hongbaoPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入红包总金额"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2.4"
+                    android:text="发放总数量"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/hongbaonum"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入红包总数量"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical"
+                android:inputType="numberDecimal" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2"
+                    android:text="红包金额下限"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/hongbaoDownPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入红包金额下限"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/title_color"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2"
+                    android:text="红包金额上限"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/hongbaoUpPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入红包金额上限"
+                    android:inputType="numberDecimal"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:id="@+id/hongbaostarTimeLin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/view_selector"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2.4"
+                    android:text="开始时间"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/hongbaoStartTimeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请选择红包开始时间"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/text_color_dark"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:id="@+id/hongbaoendTimeLin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/view_selector"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2.4"
+                    android:text="截止时间"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/hongbaoEndTimeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请选择红包截止时间"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/text_color_dark"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/view_selector"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="2.4"
+                    android:text="有效天数"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/hongbaodaynumEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="请输入红包有效天数"
+                    android:paddingRight="10dp"
+                    android:textColorHint="@color/text_color_light"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_weight="1"
+                    android:text="使用条件"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:id="@+id/addListLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:clickable="true"
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingRight="10dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:text="+"
+                        android:textColor="@color/text_color"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="添加"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!--
+                     <TextView
+                    android:id="@+id/productDownTimeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="10dp"
+                    android:text="请选择商品下架时间"
+                    android:textColor="@color/text_color_light"
+                    android:textSize="14sp" />
+                -->
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/hongbaoAddList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:layoutAnimation="@anim/list_controller"
+                android:scrollbars="none" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="86dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/bg_white_color"
+                android:enabled="true"
+                android:gravity="top"
+                android:hint="请输入商品描述..."
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:minLines="8"
+                android:padding="14dp"
+                android:scrollbars="vertical"
+                android:textColorHint="@color/text_hint_color"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:id="@+id/productImageView"
+                android:layout_width="96dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/shop_image_whitelin"
+                android:padding="4dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_head" />
+
+            <!--
+                 <Button
+                android:id="@+id/saveProductbutton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="34dp"
+                android:background="@drawable/btn_larg_bg"
+                android:text="提交"
+                android:textColor="#fff"
+                android:textSize="16sp" />
+            -->
+        </LinearLayout>
+    </com.dudu.duduhelper.widget.OverScrollView>
+
+    <TextView
+        android:id="@+id/textToumingView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/head"
+        android:background="#79000000"
+        android:gravity="center_vertical"
+        android:paddingLeft="17dp"
+        android:text="更多商品详情请到web端口后台进行设置~"
+        android:textColor="@color/text_white_color"
+        android:textSize="14dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/saveProductbutton"
+        android:background="@color/divider_line_color" />
+
+    <Button
+        android:id="@+id/saveProductbutton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/view_selector"
+        android:text="提交"
+        android:textColor="@color/text_green_color"
+        android:textSize="16sp" />
+
+</RelativeLayout>

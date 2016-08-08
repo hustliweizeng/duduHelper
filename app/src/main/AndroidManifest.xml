@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dudu.duduhelper"
+    android:versionCode="14"
+    android:versionName="2.3.6" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="22" />
+    <!-- 访问手机文件权限 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 相机访问权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <!-- 蓝牙权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 可选 -->
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_ADDED" />
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL" />
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
+    <application
+        android:name=".application.DuduHelperApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@android:style/Theme.NoTitleBar" >
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="55f2b077e0f55ab5360013ec" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="532600bc68a08ac17bd738c8ec0a2eba" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Umeng" >
+        </meta-data>
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan|stateHidden" >
+        </activity>
+        <activity
+            android:name=".CashSellActivity"
+            android:label="@string/title_activity_cash_sell" >
+        </activity>
+        <activity
+            android:name="com.example.qr_codescan.MipcaActivityCapture"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name=".CashSellScanSucessActivity"
+            android:label="@string/title_activity_cash_sell_scan_sucess" >
+        </activity>
+        <activity
+            android:name=".CashSellScanFailActivity"
+            android:label="@string/title_activity_cash_sell_scan_fail" >
+        </activity>
+        <activity
+            android:name=".MemberSellActivity"
+            android:label="@string/title_activity_member_sell" >
+        </activity>
+        <activity
+            android:name=".ShopOrderDetailActivity"
+            android:label="@string/title_activity_order_detail" >
+        </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/title_activity_setting" >
+        </activity>
+        <activity
+            android:name=".BindPhoneActivity"
+            android:label="@string/title_activity_bind_phone" >
+        </activity>
+        <activity
+            android:name=".ShopRebindPhoneSteponeActivity"
+            android:label="@string/title_activity_rebind_phone_stepone" >
+        </activity>
+        <activity
+            android:name=".ShopRebindPhoneSteptwoActivity"
+            android:label="@string/title_activity_rebind_phone_steptwo" >
+        </activity>
+        <activity
+            android:name=".GetCashActivity"
+            android:label="@string/title_activity_get_cash" >
+        </activity>
+        <activity
+            android:name=".GetCashHistoryListActivity"
+            android:label="@string/title_activity_get_cash_history_list" >
+        </activity>
+        <activity
+            android:name=".ShopProductAddActivity"
+            android:label="@string/title_activity_product_add" >
+        </activity>
+        <activity
+            android:name=".CouponAddActivity"
+            android:label="@string/title_activity_product_add" >
+        </activity>
+        <activity
+            android:name="org.fireking.app.imagelib.widget.PicSelectActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ShopAccountDataActivity"
+            android:label="@string/title_activity_account_data" >
+        </activity>
+        <activity
+            android:name=".MemberSellStepTwoActivity"
+            android:label="@string/title_activity_get_cash_history_list" >
+        </activity>
+        <activity
+            android:name=".MemberSellScanSucessActivity"
+            android:label="@string/title_activity_product_add" >
+        </activity>
+        <activity
+            android:name=".GiftSellActivity"
+            android:label="@string/title_activity_gift_sell" >
+        </activity>
+        <activity
+            android:name=".GiftSellScanSucessActivity"
+            android:label="@string/title_activity_gift_sell" >
+        </activity>
+        <activity
+            android:name=".ShopUserBankInfoEditActivity"
+            android:label="@string/title_activity_user_bank_info" >
+        </activity>
+        <activity android:name=".UserBankInfoConfirmActivity" >
+        </activity>
+        <activity
+            android:name=".UserBankSelectActivity"
+            android:label="@string/title_activity_user_bank_select" >
+        </activity>
+        <activity
+            android:name=".LoginBindPhoneActivity"
+            android:label="@string/title_activity_user_bank_select" >
+        </activity>
+        <activity
+            android:name=".shopProductListActivity"
+            android:label="@string/title_activity_product_list" >
+        </activity>
+        <activity
+            android:name=".ProductInfoEditActivity"
+            android:label="@string/title_activity_product_info_edit" >
+        </activity>
+
+        <service android:name=".service.UpdateService" />
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".WelcomeActivity"
+            android:theme="@style/AppTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoadingActivity"
+            android:label="@string/title_activity_loading" >
+        </activity>
+        <activity
+            android:name=".SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
+        <activity
+            android:name=".WebPageActivity"
+            android:label="@string/title_activity_web_page" >
+        </activity>
+        <activity
+            android:name=".ShopGetInComeCashActivity"
+            android:label="@string/title_activity_get_in_come_cash" >
+        </activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/title_activity_get_in_come_cash_code_image" >
+        </activity>
+        <activity
+            android:name=".GetInComeActivity"
+            android:label="@string/title_activity_get_in_come" >
+        </activity>
+        <activity
+            android:name=".GetShopeCodeImageActivity"
+            android:label="@string/title_activity_get_shope_code_image" >
+        </activity>
+        <activity
+            android:name=".ShopSearchBlueToothActivity"
+            android:label="@string/title_activity_search_blue_tooth" >
+        </activity>
+        <activity
+            android:name=".ShopCouponDetailActivity"
+            android:label="@string/title_activity_coupon_detail" >
+        </activity>
+        <activity
+            android:name=".CouponSellHistoryActivity"
+            android:label="@string/title_activity_coupon_sell_history" >
+        </activity>
+        <!-- 友盟推送 -->
+        <receiver
+            android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
+            android:exported="false" >
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.SystemReceiver"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.MessageReceiver"
+            android:exported="false"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.RECEIVE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.ElectionReceiver"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.ELECTION_RESULT_V4" />
+
+                <category android:name="umeng" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.umeng.message.RegistrationReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.dudu.duduhelper.intent.action.COMMAND" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.umeng.message.UmengMessageBootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.umeng.message.UmengService"
+            android:exported="true"
+            android:label="PushService"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="com.dudu.duduhelper.intent.action.START" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.dudu.duduhelper.intent.action.COCKROACH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.PING_V4" />
+
+                <category android:name="umeng" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.umeng.message.UmengIntentService"
+            android:process=":push" />
+        <service
+            android:name="com.umeng.message.UmengMessageIntentReceiverService"
+            android:exported="true"
+            android:process=":push" >
+            <intent-filter>
+                <action android:name="org.android.agoo.client.MessageReceiverService" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.android.agoo.client.ElectionReceiverService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.umeng.message.UmengMessageCallbackHandlerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.umeng.messge.registercallback.action" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.umeng.message.unregistercallback.action" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.umeng.message.message.handler.action" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.umeng.message.autoupdate.handler.action" />
+            </intent-filter>
+        </service>
+        <!-- If you donot want to use the standard notification bar in SDK, you can define IntentService instead to handle message. -->
+
+
+        <!--
+        <service
+            android:name="com.umeng.message.UmengDownloadResourceService"
+            android:exported="false" />
+        <service
+            android:name="com.umeng.message.local.UmengLocalNotificationService"
+            android:exported="false" />
+        -->
+        <activity
+            android:name=".CouponSellDetailActivity"
+            android:label="@string/title_activity_coupon_sell_detail" >
+        </activity>
+        <activity
+            android:name=".ShopMemberListActivity"
+            android:label="@string/title_activity_member_list" >
+        </activity>
+        <activity
+            android:name=".ShopMemberAddActivity"
+            android:label="@string/title_activity_member_add" >
+        </activity>
+        <activity
+            android:name=".DiscountSellActivity"
+            android:label="@string/title_activity_discount_sell" >
+        </activity>
+        <activity
+            android:name=".DiscountSellResultActivity"
+            android:label="@string/title_activity_discount_sell_result" >
+        </activity>
+        <activity
+            android:name=".ShopDiscountScanSucessActivity"
+            android:label="@string/title_activity_discount_scan_sucess" >
+        </activity>
+        <activity
+            android:name=".ShopHongBaoDetailActivity"
+            android:hardwareAccelerated="false"
+            android:label="@string/title_activity_hong_bao_detail" >
+        </activity>
+        <activity android:name=".ShopHongBaoAddActivity" >
+        </activity>
+        <activity
+            android:name="org.fireking.app.imagelib.widget.ImageBrowserActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ShopHongbaoHistoryListActivity"
+            android:label="@string/title_activity_hongbao_history_list" >
+        </activity>
+        <activity
+            android:name=".ShopHongbaoHistoryDetailActivity"
+            android:label="@string/title_activity_hongbao_history_detail" >
+        </activity>
+        <activity
+            android:name=".ShopOrderActivity"
+            android:label="@string/title_activity_shop_order" >
+        </activity>
+        <activity
+            android:name=".ShopGetCashCodeActivity"
+            android:label="@string/title_activity_shop_get_cash_code" >
+        </activity>
+        <activity
+            android:name=".ShopScanSellActivity"
+            android:label="@string/title_activity_shop_scan_sell" >
+        </activity>
+        <activity
+            android:name=".ShopAccountWatchActivity"
+            android:label="@string/title_activity_shop_account_watch" >
+        </activity>
+        <!--<activity-->
+            <!--android:name=".ShopSearchBlueToothActivity"-->
+            <!--android:label="@string/title_activity_shop_search_blue_tooth" >-->
+        <!--</activity>-->
+        <activity
+            android:name=".ShopProductDetailActivity"
+            android:label="" >
+        </activity>
+        <activity
+            android:name=".ShopSettingActivity"
+            android:label="@string/title_activity_shop_setting" >
+        </activity>
+        <activity
+            android:name=".ShopInfoEditActivity"
+            android:label="@string/title_activity_shop_info_edit" >
+        </activity>
+        <activity
+            android:name=".ShopGetCashhistoryListActivity"
+            android:label="@string/title_activity_shop_get_cash" >
+        </activity>
+        <activity
+            android:name=".ShopBankListActivity"
+            android:label="@string/title_activity_shop_bank_list" >
+        </activity>
+        <activity
+            android:name=".ShopListManagerActivity"
+            android:label="@string/title_activity_shop_manager" >
+        </activity>
+        <activity
+            android:name=".ShopAddActivity"
+            android:label="@string/title_activity_shop_add" >
+        </activity>
+        <activity
+            android:name=".MessageCenterListActivity"
+            android:label="@string/title_activity_message_center_list" >
+        </activity>
+        <activity
+            android:name=".ShopImageViewBrower"
+            android:label="@string/title_activity_shop_image_view_brower" >
+        </activity>
+        <activity
+            android:name=".ShopPasswordEditActivity"
+            android:label="@string/title_activity_password_edit" >
+        </activity>
+        <activity android:name=".ShopUserBankInfoActivity" >
+        </activity>
+        <activity
+            android:name=".ShopMoneyRecordListActivity"
+            android:label="@string/title_activity_shop_money_record_list" >
+        </activity>
+    </application>
+
+</manifest>

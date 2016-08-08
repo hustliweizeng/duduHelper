@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/bg_color"
+    tools:context="com.dudu.duduhelper.ProductInfoEditActivity" >
+
+    <include
+        android:id="@id/head"
+        layout="@layout/activity_head" />
+
+    <EditText 
+        android:id="@+id/editContentEditTextView" 
+        android:layout_width="match_parent"
+        android:background="#fff"
+        android:padding="16dp"
+        android:hint="请输入商品描述，最多输入200字。"
+        android:layout_height="300dp"/>
+
+    <Button
+        android:id="@+id/saveProductbutton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/btn_larg_bg"
+        android:text="完成"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
+</LinearLayout>
