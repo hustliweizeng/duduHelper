@@ -380,7 +380,7 @@ public class CalendarView extends View implements View.OnTouchListener
     {
         this.isSelectMore = isSelectMore;
     }
-
+    //设置点下的日期颜色和当前日期
     private void setSelectedDateByCoor(float x, float y)
     {
         // change month
@@ -415,17 +415,23 @@ public class CalendarView extends View implements View.OnTouchListener
                 calendar.add(Calendar.MONTH, 1);
             }
             calendar.set(Calendar.DAY_OF_MONTH, date[downIndex]);
+            //给临时日期赋值
             downDate = calendar.getTime();
         }
+        //刷新页面
         invalidate();
     }
 
     @Override
+    /**
+     * 重写事件监听
+     */
     public boolean onTouch(View v, MotionEvent event)
     {
         switch (event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
+                //设置点下的日期颜色
                 setSelectedDateByCoor(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_UP:
@@ -455,10 +461,14 @@ public class CalendarView extends View implements View.OnTouchListener
                         }
                     }
                     else
+                    //单选模式下
                     {
                         selectedStartDate = selectedEndDate = downDate;
-                        //响应监听事件
-                        onItemClickListener.OnItemClick(selectedStartDate,selectedEndDate,downDate);
+                        //响应监听事件，进行非空判断
+                        if (onItemClickListener != null){
+                            onItemClickListener.OnItemClick(selectedStartDate,selectedEndDate,downDate);
+
+                        }
                     }
                     invalidate();
                 }

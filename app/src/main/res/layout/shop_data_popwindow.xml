@@ -96,7 +96,7 @@
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:text="124"
+                android:text="2016年8月17日"
                 android:textColor="@color/text_white_color"/>
 
 
