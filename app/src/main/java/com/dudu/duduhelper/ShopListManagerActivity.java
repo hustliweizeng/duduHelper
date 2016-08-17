@@ -1,6 +1,22 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.adapter.ShopAdapterAdapter;
 import com.dudu.duduhelper.bean.GetHongBaoHistBean;
@@ -12,23 +28,7 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
+import org.apache.http.Header;
 
 public class ShopListManagerActivity extends BaseActivity 
 {
@@ -99,7 +99,7 @@ public class ShopListManagerActivity extends BaseActivity
 			@Override
 			public void onRefresh() 
 			{
-				// TODO Auto-generated method stub
+				//下拉刷新的时候更新数据
 				page=1;
 				hongbaoHistoryAdapter.clear();
 				initData();

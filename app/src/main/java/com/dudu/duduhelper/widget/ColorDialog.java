@@ -10,8 +10,15 @@ import android.view.KeyEvent;
 public class ColorDialog 
 {
 	 private static Dialog mDialog;
+
+	/**
+	 * 在联网时，弹出对话框
+	 * @param mContext 上下文
+	 * @param layout 对话框的布局
+	 */
 	 public static void showRoundProcessDialog(Context mContext, int layout)
 	    {
+			//设置键盘监听事件
 	        OnKeyListener keyListener = new OnKeyListener()
 	        {
 	            @Override

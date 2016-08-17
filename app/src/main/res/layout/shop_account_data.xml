@@ -164,7 +164,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
-        android:paddingLeft="17dp"
+        android:paddingLeft="16dp"
         android:text="自定义统计"
         android:textColor="@color/text_bg_color"
         android:textSize="16sp" />

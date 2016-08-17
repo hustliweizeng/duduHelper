@@ -1,8 +1,5 @@
 package com.dudu.duduhelper.widget;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,6 +9,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by xuboyang on 16/8/5.
@@ -34,7 +35,11 @@ public class CalendarView extends View implements View.OnTouchListener
     private boolean isSelectMore = false;
     //给控件设置监听事件
     private OnItemClickListener onItemClickListener;
-
+    private String formateDownDate;
+    //返回按下的日期
+    public String getFormateDownDate(){
+    return formateDownDate;
+    }
     public CalendarView(Context context) {
         super(context);
         init();
@@ -415,8 +420,17 @@ public class CalendarView extends View implements View.OnTouchListener
                 calendar.add(Calendar.MONTH, 1);
             }
             calendar.set(Calendar.DAY_OF_MONTH, date[downIndex]);
-            //给临时日期赋值
+            //当按下时的日期
             downDate = calendar.getTime();
+            //给主线程发消息改变日期
+            SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年M月dd日");
+            formateDownDate = formatter.format(downDate);
+            Log.d("downdate",formateDownDate);
+            /*Handler handler = new Handler();
+            Message msg = Message.obtain();
+            msg.obj = date;
+            handler.sendMessage(msg);
+*/
         }
         //刷新页面
         invalidate();
@@ -424,7 +438,7 @@ public class CalendarView extends View implements View.OnTouchListener
 
     @Override
     /**
-     * 重写事件监听
+     * 当日历被点击时做出响应
      */
     public boolean onTouch(View v, MotionEvent event)
     {
@@ -433,6 +447,9 @@ public class CalendarView extends View implements View.OnTouchListener
             case MotionEvent.ACTION_DOWN:
                 //设置点下的日期颜色
                 setSelectedDateByCoor(event.getX(), event.getY());
+                //发消息给主线程改变当前显示的日期
+
+
                 break;
             case MotionEvent.ACTION_UP:
                 if (downDate != null)
@@ -464,7 +481,7 @@ public class CalendarView extends View implements View.OnTouchListener
                     //单选模式下
                     {
                         selectedStartDate = selectedEndDate = downDate;
-                        //响应监听事件，进行非空判断
+                        //响应监听事件，进行非空判断，在使用时需要重写setOnItemClickListener,
                         if (onItemClickListener != null){
                             onItemClickListener.OnItemClick(selectedStartDate,selectedEndDate,downDate);
 

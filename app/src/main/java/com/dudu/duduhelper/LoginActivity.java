@@ -1,26 +1,5 @@
 package com.dudu.duduhelper;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.bean.SalerBean;
-import com.dudu.duduhelper.bean.ShopUserLoginBean;
-import com.dudu.duduhelper.bean.UserBean;
-import com.dudu.duduhelper.common.Util;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-import com.umeng.analytics.MobclickAgent;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +15,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.bean.SalerBean;
+import com.dudu.duduhelper.bean.UserBean;
+import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+import com.umeng.analytics.MobclickAgent;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
 
 public class LoginActivity extends BaseActivity 
 {
@@ -215,7 +211,11 @@ public class LoginActivity extends BaseActivity
 					Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_LONG).show();
 					return;
 				}
+				/**
+				 * 登陆请求，1.参数封装，2.cookie保存，3.成功和失败的回调
+				 */
 				// TODO Auto-generated method stub
+				//请求联网时，主线程显示进度条
 				ColorDialog.showRoundProcessDialog(LoginActivity.this,R.layout.loading_process_dialog_color);
 				RequestParams params = new RequestParams();
 				params.add("username", username.getText().toString().trim());

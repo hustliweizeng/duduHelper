@@ -34,8 +34,11 @@ import android.widget.Toast;
 public class MainActivity extends BaseActivity 
 {
 	private FrameLayout FrameLayoutPager;
+	//首页fragment
 	private LinearLayout orderlin;
+	//消息页面
 	private LinearLayout selllin;
+	//个人中心页面
 	private LinearLayout minelin;
 	private TextView title;
 	private ImageButton selectClickButton;
@@ -84,7 +87,6 @@ public class MainActivity extends BaseActivity
 	//Activity被回收导致fragment的getActivity为null的解决办法
 	// 加载视图
 	private void initView() {
-		// TODO Auto-generated method stub
 		editButton=(Button) this.findViewById(R.id.selectTextClickButton);
 		selectClickButton = (ImageButton) this.findViewById(R.id.selectClickButton);
 		order_icon = (ImageView) this.findViewById(R.id.order_icon);
@@ -98,15 +100,19 @@ public class MainActivity extends BaseActivity
 		orderlin = (LinearLayout) this.findViewById(R.id.mainlin);
 		selllin = (LinearLayout) this.findViewById(R.id.messagelin);
 		minelin = (LinearLayout) this.findViewById(R.id.shopelin);
-		
+
+		//初始化fragment，只创建一次
+		//主页
 		shopeMainFragment = new ShopeMainFragment();
-		
+		//
 		orderFragment = new CopyOfOrderFragment();
 		sellFragment = new MessageCenterFragment();
 		mineFragment = new ShopMineFragment();
+		//设置底部导航的监听
 		orderlin.setOnClickListener(new tabBtnClick());
 		selllin.setOnClickListener(new tabBtnClick());
 		minelin.setOnClickListener(new tabBtnClick());
+		//进入首页默认显示第一个fragement
 		fm = getSupportFragmentManager();
 		ft = fm.beginTransaction();
 		ft.add(R.id.FrameLayoutPager, shopeMainFragment).commit();
@@ -114,11 +120,10 @@ public class MainActivity extends BaseActivity
 		//当有新订单推送时获取回调函数，跳转到当前orderFragment
         DuduHelperApplication.getInstance().setPushNot(new GetPushNot() 
         {
-			
+
 			@Override
 			public void getPushCallback() 
 			{
-				// TODO Auto-generated method stub
 				initHeadView("我的订单", false,true, R.drawable.icon_mysearch);
 				editButton.setVisibility(View.GONE);
 				// MainActivity.this.findViewById(R.id.head).setVisibility(View.VISIBLE);
@@ -187,7 +192,6 @@ public class MainActivity extends BaseActivity
 	@Override
 	public void RightButtonClick() 
 	{
-		// TODO Auto-generated method stub
 		super.RightButtonClick();
 		Intent intent=new Intent(this,ShopSettingActivity.class);
 		startActivity(intent);

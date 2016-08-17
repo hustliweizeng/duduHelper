@@ -1,9 +1,17 @@
 package com.dudu.duduhelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.Header;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.adapter.FragmentAdapter;
 import com.dudu.duduhelper.adapter.ViewPagerAdapter;
@@ -20,29 +28,13 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import org.apache.http.Header;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WelcomeActivity extends BaseActivity implements OnClickListener,OnPageChangeListener
 {
@@ -80,6 +72,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			//sdk开启通知声音
 			mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
 			mPushAgent.enable();
+			//获取设备id
 			device_token = mPushAgent.getRegistrationId();
 			
 		}
@@ -88,6 +81,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		mPushAgent.onAppStart();
 		if(getSharedPreferences("runtime", MODE_PRIVATE).getString("first", "").equals("1"))
 		{
+			//如果是第一次启动，
 //			loadImage=(ImageView) this.findViewById(R.id.loadImage);
 //			loadImage.setVisibility(View.VISIBLE);
 			if(!TextUtils.isEmpty(share.getString("username", ""))&&!TextUtils.isEmpty(share.getString("password", "")))
@@ -100,11 +94,13 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 				{
 					methord=ConstantParamPhone.GET_SALER_INFO;
 				}
+				//请求网络数据，并保存到本地
 				initTokenData();
 //				
 			}
 			else
 			{
+				//如果不是第一次启动，跳转到注册有页面
 				Intent intent=new Intent(this,LoginActivity.class);
 				startActivity(intent);
 				finish();
@@ -263,9 +259,12 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
         points[currentIndex].setEnabled(true);  
   
         currentIndex = positon;  
-    }  
-    
-    private void initTokenData() 
+    }
+
+	/**
+	 * 初始化token数据
+	 */
+	private void initTokenData()
 	{
 		// TODO Auto-generated method stub
 		SharedPreferences sharePrint= WelcomeActivity.this.getSharedPreferences("printinfo", WelcomeActivity.this.MODE_PRIVATE);

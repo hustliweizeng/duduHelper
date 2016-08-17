@@ -1,8 +1,23 @@
 package com.dudu.duduhelper;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.Header;
-import org.json.JSONObject;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.UpdateBean;
@@ -18,31 +33,13 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.analytics.onlineconfig.UmengOnlineConfigureListener;
-import com.umeng.message.PushAgent;
-import com.umeng.message.UmengRegistrar;
 import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 public class BaseActivity extends FragmentActivity 
 {
@@ -50,6 +47,7 @@ public class BaseActivity extends FragmentActivity
 	public ImageButton selectClickButton;
 	public TextView headtitle;
 	public SharedPreferences share;
+
 	public String FORCE_UPDATE=""; 
 	public RelativeLayout relayout_mytitle;
 
@@ -131,6 +129,15 @@ public class BaseActivity extends FragmentActivity
 	}
 
 	// true就是可见的
+
+	/**
+	 * 初始化每个activity的头布局
+	 * @param title 当前activity的名字
+	 * @param LeftButtonVisable 左边button是否可见
+	 * @param RightButtonVisable	右边button是否可见
+     * @param Imageid 右侧要替换的图片id
+	 *
+     */
 	@SuppressLint("ResourceAsColor") 
 	public void initHeadView(String title, boolean LeftButtonVisable,boolean RightButtonVisable, int Imageid) 
 	{
@@ -175,12 +182,10 @@ public class BaseActivity extends FragmentActivity
 	}
 
 	public void LeftButtonClick() {
-		// TODO Auto-generated method stub
 		finish();
 	}
-
+	//当右边按钮更改时，重写该监听方法
 	public void RightButtonClick() {
-		// TODO Auto-generated method stub
 
 	}
 	@Override
