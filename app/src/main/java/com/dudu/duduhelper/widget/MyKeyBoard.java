@@ -1,14 +1,13 @@
 package com.dudu.duduhelper.widget;
 
-import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
-
-import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.dudu.duduhelper.BaseActivity;
+import com.dudu.duduhelper.R;
 
 
 
@@ -67,8 +66,10 @@ public class MyKeyBoard implements OnClickListener
 	
 	public interface OnKeyBoardClickListener
 	{
+		//键盘三种点击方式
 		void onClick(String content);
 		void onDelect();
+		//提交按钮
 		void onSubmit();
 	}
 	

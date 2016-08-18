@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +34,7 @@ import com.umeng.analytics.MobclickAgent;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 
-public class LoginActivity extends BaseActivity 
+public class LoginActivity extends BaseActivity
 {
 	private Button loginbutton;
 	private EditText username;
@@ -46,13 +47,14 @@ public class LoginActivity extends BaseActivity
 	private ImageView mimaDelectIconBtn;
 	private String methord=ConstantParamPhone.USER_LOGIN;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate(Bundle savedInstanceState)
 	{
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
-		mContext = this;	
+		mContext = this;
 		//MobclickAgent.setDebugMode(true);
 //      SDK在统计Fragment时，需要关闭Activity自带的页面统计，
 //		然后在每个页面中重新集成页面统计的代码(包括调用了 onResume 和 onPause 的Activity)。
@@ -67,7 +69,7 @@ public class LoginActivity extends BaseActivity
 		MobclickAgent.onPageStart( mPageName );
 		MobclickAgent.onResume(this);
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -75,29 +77,30 @@ public class LoginActivity extends BaseActivity
 		MobclickAgent.onPause(this);
 	}
 
-	private void initView() 
+	private void initView()
 	{
 		// TODO Auto-generated method stub
 		userDelectIconBtn=(ImageView) this.findViewById(R.id.userDelectIconBtn);
 		mimaDelectIconBtn=(ImageView) this.findViewById(R.id.mimaDelectIconBtn);
-		userDelectIconBtn.setOnClickListener(new OnClickListener() 
-		{	
-			@Override
-			public void onClick(View v) 
-			{
-				// TODO Auto-generated method stub
-			    username.setText("");	
-			}
-		});
-		mimaDelectIconBtn.setOnClickListener(new OnClickListener() 
+		userDelectIconBtn.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
+			{
+				// TODO Auto-generated method stub
+			    username.setText("");
+			}
+		});
+		mimaDelectIconBtn.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
 				password.setText("");
 			}
 		});
+		//通过意图对象传递数据过来
 		if(!StringUtils.isEmpty(getIntent().getStringExtra("userType")))
 		{
 			userType=getIntent().getStringExtra("userType");
@@ -116,10 +119,11 @@ public class LoginActivity extends BaseActivity
 		username=(EditText) this.findViewById(R.id.username);
 		password=(EditText) this.findViewById(R.id.password);
 		loginbutton=(Button) this.findViewById(R.id.loginbutton);
-		password.addTextChangedListener(new TextWatcher() 
-		{	
+		//密码输入监听
+		password.addTextChangedListener(new TextWatcher()
+		{
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) 
+			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
 				// TODO Auto-generated method stub
 				if(s.length()>0)
@@ -131,25 +135,26 @@ public class LoginActivity extends BaseActivity
 					mimaDelectIconBtn.setVisibility(View.INVISIBLE);
 				}
 			}
-			
+
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,int after) 
+			public void beforeTextChanged(CharSequence s, int start, int count,int after)
 			{
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
-			public void afterTextChanged(Editable s) 
+			public void afterTextChanged(Editable s)
 			{
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		username.addTextChangedListener(new TextWatcher() 
+		//姓名输入监听
+		username.addTextChangedListener(new TextWatcher()
 		{
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) 
+			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
 				// TODO Auto-generated method stub
 				if(s.length()>0)
@@ -161,26 +166,27 @@ public class LoginActivity extends BaseActivity
 					userDelectIconBtn.setVisibility(View.INVISIBLE);
 				}
 			}
-			
+
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,int after)
 			{
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
-			public void afterTextChanged(Editable s) 
+			public void afterTextChanged(Editable s)
 			{
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		judgeUserTextView.setOnClickListener(new OnClickListener() 
+
+		judgeUserTextView.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
 				Intent intent=new Intent(LoginActivity.this,LoginActivity.class);
@@ -196,10 +202,11 @@ public class LoginActivity extends BaseActivity
 				finish();
 			}
 		});
-		loginbutton.setOnClickListener(new OnClickListener() 
+		//登陆按钮监听
+		loginbutton.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				if(username.getText().toString().trim().equals(""))
 				{
@@ -220,29 +227,36 @@ public class LoginActivity extends BaseActivity
 				RequestParams params = new RequestParams();
 				params.add("username", username.getText().toString().trim());
 				params.add("password", Util.md5(password.getText().toString().trim()));
-				params.add("version", ConstantParamPhone.VERSION);
+				//获取本地token参数
+				String umeng_token = getSharedPreferences("umeng_token",MODE_PRIVATE).getString("token","");
+				//params.add("version", ConstantParamPhone.VERSION);//老接口的参数
+				params.add("umeng_token",umeng_token);
+				//设置编码方式
 				params.setContentEncoding("UTF-8");
 				AsyncHttpClient client = new AsyncHttpClient();
-				//保存cookie，自动保存到了shareprefercece  
-		        PersistentCookieStore myCookieStore = new PersistentCookieStore(LoginActivity.this);    
-		        client.setCookieStore(myCookieStore); 
+				//保存cookie，自动保存到了shareprefercece
+		        PersistentCookieStore myCookieStore = new PersistentCookieStore(LoginActivity.this);
+		        client.setCookieStore(myCookieStore);
 		        client.get(ConstantParamPhone.IP+methord, params,new TextHttpResponseHandler()
 				{
 					@Override
-					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
+					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 					{
 						Toast.makeText(LoginActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
 					}
 					@Override
-					public void onSuccess(int arg0, Header[] arg1, String arg2) 
+					public void onSuccess(int arg0, Header[] arg1, String arg2)
 					{
+						//输出返回数据
+						Log.d("gsons",arg2);
+						System.out.print(arg2);
 						if(userType.equals("dianzhang"))
 						{
 							UserBean userBean =new Gson().fromJson(arg2,UserBean.class);
 							if(userBean.getStatus().equals("1"))
 							{
 								//保存用户信息
-								SharedPreferences.Editor edit = share.edit(); //编辑文件 
+								SharedPreferences.Editor edit = share.edit(); //编辑文件
 								edit.putString("usertype","dianzhang");
 								if(!TextUtils.isEmpty(userBean.getData().getId()))
 								{
@@ -324,12 +338,12 @@ public class LoginActivity extends BaseActivity
 								}
 							    if(TextUtils.isEmpty(userBean.getData().getMobile()))
 							    {
-							    	edit.commit();//保存数据信息 
-							    	MyDialog.showDialog(LoginActivity.this, "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener() 
+							    	edit.commit();//保存数据信息
+							    	MyDialog.showDialog(LoginActivity.this, "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener()
 							    	{
-										
+
 										@Override
-										public void onClick(View arg0) 
+										public void onClick(View arg0)
 										{
 											// TODO Auto-generated method stub
 											Intent intent=new Intent(LoginActivity.this,LoginBindPhoneActivity.class);
@@ -337,7 +351,7 @@ public class LoginActivity extends BaseActivity
 											finish();
 										}
 									}, new OnClickListener() {
-										
+
 										@Override
 										public void onClick(View arg0) {
 											// TODO Auto-generated method stub
@@ -346,18 +360,18 @@ public class LoginActivity extends BaseActivity
 											finish();
 										}
 									});
-							    	
+
 							    }
 							    else
 							    {
 							    	edit.putString("mobile", userBean.getData().getMobile());
-							    	edit.commit();//保存数据信息 
+							    	edit.commit();//保存数据信息
 									Intent intent=new Intent(LoginActivity.this,MainActivity.class);
 									startActivity(intent);
 									finish();
 							    }
-							    edit.commit();//保存数据信息 
-							    
+							    edit.commit();//保存数据信息
+
 							}
 							else
 							{
@@ -372,7 +386,7 @@ public class LoginActivity extends BaseActivity
 							if(salerBean.getStatus().equals("1"))
 							{
 								//保存用户信息
-								SharedPreferences.Editor edit = share.edit(); //编辑文件 
+								SharedPreferences.Editor edit = share.edit(); //编辑文件
 								if(!TextUtils.isEmpty(salerBean.getData().getId()))
 								{
 									edit.putString("userid",salerBean.getData().getId());
@@ -385,7 +399,7 @@ public class LoginActivity extends BaseActivity
 								{
 									edit.putString("token", salerBean.getData().getToken());
 								}
-								edit.commit();//保存数据信息 
+								edit.commit();//保存数据信息
 								Intent intent=new Intent(LoginActivity.this,MainActivity.class);
 								startActivity(intent);
 								finish();
@@ -398,9 +412,9 @@ public class LoginActivity extends BaseActivity
 							}
 						}
 
-						
-						
-						
+
+
+
 						/**
 						 * 新版本的方法
 						 */
@@ -408,7 +422,7 @@ public class LoginActivity extends BaseActivity
 //							if(shopUserLoginBean.getCode().equals(ConstantParamPhone.SUCCESS))
 //							{
 //								//保存用户信息
-//								SharedPreferences.Editor edit = share.edit(); //编辑文件 
+//								SharedPreferences.Editor edit = share.edit(); //编辑文件
 //								edit.putString("usertype","dianzhang");
 //								if(!TextUtils.isEmpty(userBean.getData().getId()))
 //								{
@@ -490,12 +504,12 @@ public class LoginActivity extends BaseActivity
 //								}
 //							    if(TextUtils.isEmpty(shopUserLoginBean.getUser().getMobile()))
 //							    {
-//							    	edit.commit();//保存数据信息 
-//							    	MyDialog.showDialog(LoginActivity.this, "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener() 
+//							    	edit.commit();//保存数据信息
+//							    	MyDialog.showDialog(LoginActivity.this, "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener()
 //							    	{
-//										
+//
 //										@Override
-//										public void onClick(View arg0) 
+//										public void onClick(View arg0)
 //										{
 //											// TODO Auto-generated method stub
 //											Intent intent=new Intent(LoginActivity.this,LoginBindPhoneActivity.class);
@@ -503,7 +517,7 @@ public class LoginActivity extends BaseActivity
 //											finish();
 //										}
 //									}, new OnClickListener() {
-//										
+//
 //										@Override
 //										public void onClick(View arg0) {
 //											// TODO Auto-generated method stub
@@ -512,18 +526,18 @@ public class LoginActivity extends BaseActivity
 //											finish();
 //										}
 //									});
-//							    	
+//
 //							    }
 //							    else
 //							    {
 //							    	edit.putString("mobile",shopUserLoginBean.getUser().getMobile());
-//							    	edit.commit();//保存数据信息 
+//							    	edit.commit();//保存数据信息
 //									Intent intent=new Intent(LoginActivity.this,MainActivity.class);
 //									startActivity(intent);
 //									finish();
 //							    }
-//							    edit.commit();//保存数据信息 
-//							    
+//							    edit.commit();//保存数据信息
+//
 //							}
 //							else
 //							{
@@ -533,7 +547,7 @@ public class LoginActivity extends BaseActivity
 //							}
 					}
 					@Override
-					public void onFinish() 
+					public void onFinish()
 					{
 						// TODO Auto-generated method stub
 						ColorDialog.dissmissProcessDialog();
@@ -543,7 +557,7 @@ public class LoginActivity extends BaseActivity
 		});
 	}
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) 
+	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
 		// TODO Auto-generated method stub
 		if(keyCode == KeyEvent.KEYCODE_BACK)

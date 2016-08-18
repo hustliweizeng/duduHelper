@@ -22,9 +22,9 @@ import android.widget.FrameLayout.LayoutParams;
 import java.lang.reflect.Method;
 
 /**
- * Class to manage status and navigation bar tint effects when using KitKat 
+ * Class to manage status and navigation bar tint effects when using KitKat (android4.4)
  * translucent system UI modes.
- *
+ *  实现沉浸式透明状态栏
  */
 public class SystemBarTintManager {
 

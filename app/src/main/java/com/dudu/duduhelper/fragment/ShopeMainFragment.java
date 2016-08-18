@@ -1,16 +1,5 @@
 package com.dudu.duduhelper.fragment;
 
-import com.dudu.duduhelper.ShopListManagerActivity;
-import com.dudu.duduhelper.ShopMemberListActivity;
-import com.dudu.duduhelper.ShopMoneyRecordListActivity;
-import com.dudu.duduhelper.shopProductListActivity;
-import com.dudu.duduhelper.ShopAccountDataActivity;
-import com.dudu.duduhelper.ShopGetInComeCashActivity;
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.ShopOrderActivity;
-import com.dudu.duduhelper.ShopSearchBlueToothActivity;
-import com.example.qr_codescan.MipcaActivityCapture;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,9 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.ShopAccountDataActivity;
+import com.dudu.duduhelper.ShopGetInComeCashActivity;
+import com.dudu.duduhelper.ShopListManagerActivity;
+import com.dudu.duduhelper.ShopMemberListActivity;
+import com.dudu.duduhelper.ShopMoneyRecordListActivity;
+import com.dudu.duduhelper.ShopOrderActivity;
+import com.dudu.duduhelper.ShopSearchBlueToothActivity;
+import com.dudu.duduhelper.shopProductListActivity;
+import com.example.qr_codescan.MipcaActivityCapture;
 
 public class ShopeMainFragment extends Fragment implements OnClickListener
 {
@@ -92,10 +91,12 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 				intent.setClass(getActivity(), ShopOrderActivity.class);
 				break;
 			case R.id.getCashRelBtn:
+				//进入收款页面
 				intent=new Intent(getActivity(),ShopGetInComeCashActivity.class);
 				break;
 			case R.id.getHexiaoRelBtn:
 				intent=new Intent(getActivity(),MipcaActivityCapture.class);
+
 				intent.putExtra("action", "hexiao");
 				break;
 			case R.id.getCountBtn:

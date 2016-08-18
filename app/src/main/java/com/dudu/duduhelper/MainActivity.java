@@ -1,38 +1,29 @@
 package com.dudu.duduhelper;
 
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.application.DuduHelperApplication.GetPushNot;
-import com.dudu.duduhelper.fragment.CopyOfOrderFragment;
-import com.dudu.duduhelper.fragment.GetCashFragment;
-import com.dudu.duduhelper.fragment.ShopMineFragment;
-import com.dudu.duduhelper.fragment.OrderFragment;
-import com.dudu.duduhelper.fragment.ProductFragment;
-import com.dudu.duduhelper.fragment.ProductFragment1;
-import com.dudu.duduhelper.fragment.MessageCenterFragment;
-import com.dudu.duduhelper.fragment.ShopeMainFragment;
-import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.MsgConstant;
-import com.umeng.message.PushAgent;
-import com.umeng.update.UmengUpdateAgent;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.application.DuduHelperApplication.GetPushNot;
+import com.dudu.duduhelper.fragment.CopyOfOrderFragment;
+import com.dudu.duduhelper.fragment.MessageCenterFragment;
+import com.dudu.duduhelper.fragment.ShopMineFragment;
+import com.dudu.duduhelper.fragment.ShopeMainFragment;
 
 public class MainActivity extends BaseActivity 
 {
+
 	private FrameLayout FrameLayoutPager;
 	//首页fragment
 	private LinearLayout orderlin;
@@ -60,6 +51,8 @@ public class MainActivity extends BaseActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d("hello","hello");
+
 		setContentView(R.layout.activity_main);
 		initHeadView("", false,false, 0);
 		DuduHelperApplication.getInstance().addActivity(this);

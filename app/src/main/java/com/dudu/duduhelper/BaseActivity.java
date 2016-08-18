@@ -33,6 +33,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.analytics.onlineconfig.UmengOnlineConfigureListener;
+import com.umeng.message.PushAgent;
 import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
@@ -54,9 +55,11 @@ public class BaseActivity extends FragmentActivity
 	@Override
 	protected void onCreate(Bundle arg0) 
 	{
+		//在所有界面统计app启动次数
+		PushAgent.getInstance(this).onAppStart();
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
-		
+		//每个activity界面设置为沉浸式状态栏，android 4.4以上才支持
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) 
 		{
 			setTranslucentStatus(true);
@@ -76,6 +79,9 @@ public class BaseActivity extends FragmentActivity
 			  System.out.println(haha);
 		  }
 		});
+		/**
+		 * 设置友盟更新
+		 */
 		UmengUpdateAgent.setUpdateOnlyWifi(false);
 		UmengUpdateAgent.update(this);
 		
@@ -105,7 +111,7 @@ public class BaseActivity extends FragmentActivity
 		    }
 		});
 	}
-	//做版本兼容
+	//做版本兼容，
 	@TargetApi(19) 
 	private void setTranslucentStatus(boolean on) {
 		Window win = getWindow();

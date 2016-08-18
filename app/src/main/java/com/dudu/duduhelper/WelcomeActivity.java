@@ -61,9 +61,16 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
     private String methord="";
 
 	@Override
+	/**
+	 * 开启友盟推送
+	 * 判断是否第一次启动
+	 *
+	 */
 	protected void onCreate(Bundle savedInstanceState) 
 	{
+
 		super.onCreate(savedInstanceState);
+		//Log.d("device_token",device_token);
 		setContentView(R.layout.activity_welcome);
 		//开启友盟推送
 		if(mPushAgent==null)
@@ -74,9 +81,11 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			mPushAgent.enable();
 			//获取设备id
 			device_token = mPushAgent.getRegistrationId();
+			//device_token = UmengRegistrar.getRegistrationId(this);
 			
 		}
-		
+		//保存友盟的token信息
+		getSharedPreferences("umeng_token",MODE_PRIVATE).edit().putString("token",device_token).commit();
 		//统计app启动次数
 		mPushAgent.onAppStart();
 		if(getSharedPreferences("runtime", MODE_PRIVATE).getString("first", "").equals("1"))
@@ -109,7 +118,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		}
 		else
 		{
-			// 初始化组件  
+			// 不是i
 	        initView();  
 	        // 初始化数据  
 	        initData();  
@@ -262,7 +271,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
     }
 
 	/**
-	 * 初始化token数据
+	 * 初始化token数据,保存dao本地sp
 	 */
 	private void initTokenData()
 	{

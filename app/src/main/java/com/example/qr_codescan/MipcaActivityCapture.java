@@ -1,8 +1,5 @@
 package com.example.qr_codescan;
 
-import java.io.IOException;
-import java.util.Vector;
-
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
@@ -14,27 +11,20 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.util.TypedValue;
 import android.view.SurfaceHolder;
-import android.view.View;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.CashSellActivity;
-import com.dudu.duduhelper.CashSellScanSucessActivity;
-import com.dudu.duduhelper.ShopDiscountScanSucessActivity;
-import com.dudu.duduhelper.GiftSellScanSucessActivity;
-import com.dudu.duduhelper.MemberSellScanSucessActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.ShopGetCashCodeActivity;
+import com.dudu.duduhelper.ShopDiscountScanSucessActivity;
 import com.dudu.duduhelper.ShopGetInComeCashActivity;
 import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.widget.MyKeyBoard;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.mining.app.zxing.camera.CameraManager;
@@ -42,9 +32,12 @@ import com.mining.app.zxing.decoding.CaptureActivityHandler;
 import com.mining.app.zxing.decoding.InactivityTimer;
 import com.mining.app.zxing.view.ViewfinderView;
 
+import java.io.IOException;
+import java.util.Vector;
+
 /**
  * Initial the camera
- * 
+ * 扫二维码收款页面
  * @author Ryan.Tang
  */
 public class MipcaActivityCapture extends BaseActivity implements Callback {
@@ -80,6 +73,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		setContentView(R.layout.activity_capture);
 		
 		DuduHelperApplication.getInstance().addActivity(this);
+		//通过其他界面跳转过来携带的参数
 		action = getIntent().getStringExtra("action");
 		orderName = getIntent().getStringExtra("orderName");
 		orderCash = getIntent().getStringExtra("orderCash");

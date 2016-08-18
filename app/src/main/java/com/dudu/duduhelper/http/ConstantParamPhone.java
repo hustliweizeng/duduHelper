@@ -83,8 +83,12 @@ public class ConstantParamPhone
     
     public static final String SCAN_CASH_ORDER="/order";//POST /order 创建刷卡支付订单
     public static final String GET_SCAN_ORDER="/getOrder";//POST /getOrder 查询刷卡支付订单
-    
-    //新版接口地址
+
+	/**
+	 * 新接口地址
+     */
     //public static final String USER_LOGIN = "/user/login";
-      public static final String USER_LOGIN = "/user/info";
+    public static final String USER_LOGIN = "/user/info";//用户登录接口
+    public static final String CREATE_PAYMENT = "/cashier";//收款列表和创建收款
+
 }
