@@ -205,7 +205,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
 				GetInComeCashBean getCashBean=new Gson().fromJson(arg2,GetInComeCashBean.class);
-				if(getCashBean.getStatus().equals("-1006"))
+				if(getCashBean.getStatus()== -1006)
 				{
 					MyDialog.showDialog(WXEntryActivity.this, "该账号已在其他手机登录，是否重新登录", false, true, "取消", "确定",new OnClickListener() 
 					{
@@ -227,7 +227,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
 				}
 				else
 				{
-					if(getCashBean.getStatus().equals("1"))
+					if(getCashBean.getStatus()==1)
 					{
 						if(!TextUtils.isEmpty(getCashBean.getData().getQrcode()))
 						{

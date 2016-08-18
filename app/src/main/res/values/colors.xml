@@ -46,4 +46,6 @@
     <color name="text_touming_color">#80ffffff</color>
     <color name="text_black_color">#000000</color>
     <color name="head_Light_color">#324e6a</color>
+    <color name="text_create_redbag">#EBB143</color>
+    <color name="text_create_redbag_click">#FF6600</color>
 </resources>
