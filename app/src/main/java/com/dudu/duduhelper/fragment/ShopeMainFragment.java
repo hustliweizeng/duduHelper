@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.dudu.duduhelper.CreateRedBagActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.ShopAccountDataActivity;
 import com.dudu.duduhelper.ShopGetInComeCashActivity;
@@ -114,7 +115,8 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 				intent.putExtra("category", "coupon");
 			    break;
 			case R.id.hongbaoBtn:
-				intent=new Intent(getActivity(),shopProductListActivity.class);
+				//intent=new Intent(getActivity(),shopProductListActivity.class);
+				intent = new Intent(getActivity(), CreateRedBagActivity.class);
 				intent.putExtra("category", "hongbao");
 			    break;
 			case R.id.wuzheBtn:

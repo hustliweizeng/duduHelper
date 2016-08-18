@@ -458,6 +458,8 @@
             android:name=".ShopMoneyRecordListActivity"
             android:label="@string/title_activity_shop_money_record_list" >
         </activity>
+        <activity android:name=".CreateRedBagActivity"
+            android:label=".CreateRedBagActivity"/>
     </application>
 
 </manifest>
