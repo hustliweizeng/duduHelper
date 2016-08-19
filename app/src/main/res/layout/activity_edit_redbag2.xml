@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/head_color_red"
+              android:clipToPadding="true"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relayout_mytitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@color/head_color_red"
+            android:paddingBottom="14dp"
+            android:paddingRight="20dp"
+            android:paddingTop="14dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/nav_btn_fanhui"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="活动红包"
+            android:textColor="@color/bg_white_color"
+            android:textSize="19sp"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/bg_white_yelllo"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16sp"
+                android:text="发放金额"
+                android:textColor="@color/text_color_gray"
+                android:textSize="16sp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/bg_white_color"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16sp"
+                android:text="总预算"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp"
+                />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:hint="请输入红包金额"
+                android:textColor="@color/text_dark_color"
+                android:textColorHint="@color/text_hint_color"
+                android:textSize="14sp"
+                />
+
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="16dp"
+            android:background="@color/text_hint_color"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/bg_white_color"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16sp"
+                android:gravity="center_vertical"
+                android:text="随机金额数量"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal"
+                >
+
+                <EditText
+                    android:layout_width="60dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/edit_bg_white"
+                    android:gravity="center"
+                    android:hint="最低"
+                    android:textColor="@color/text_dark_color"
+                    android:textColorHint="@color/text_hint_color"
+                    android:textSize="14sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="元 —"
+                    android:textColor="@color/text_black_color"
+                    android:textSize="14sp"
+                    />
+
+                <EditText
+                    android:layout_width="60dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/edit_bg_white"
+                    android:gravity="center"
+                    android:hint="最高"
+                    android:textColor="@color/text_dark_color"
+                    android:textColorHint="@color/text_hint_color"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="元"
+                    android:textColor="@color/text_black_color"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="16dp"
+            android:background="@color/text_hint_color"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/bg_white_color"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16sp"
+                android:text="发送数量"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp"
+                />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:hint="请输入红包数量"
+                android:textColor="@color/text_dark_color"
+                android:textColorHint="@color/text_hint_color"
+                android:textSize="14sp"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16sp"
+                android:text="使用条件"
+                android:textColor="@color/text_color_gray"
+                android:textSize="16sp"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:clickable="true"
+                android:src="@drawable/icon_add_red"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_edit_redbag_req"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:text="满"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp"
+                />
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/edit_bg_white"
+                android:gravity="center"
+                android:hint=""
+                android:textColor="@color/text_dark_color"
+                android:textColorHint="@color/text_hint_color"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:text="可使用"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp"
+                />
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/edit_bg_white"
+                android:gravity="center"
+                android:hint=""
+                android:textColor="@color/text_dark_color"
+                android:textColorHint="@color/text_hint_color"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:text="以下红包"
+                android:textColor="@color/text_black_color"
+                android:textSize="16sp"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"
+                    android:text="|"
+                    android:textSize="16sp"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:src="@drawable/icon_del"
+
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_add_photo"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:clickable="true"
+
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_photo"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="添加图片"
+                android:textSize="16sp"
+                />
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_create_redbag2_submit"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_create_redbag"
+            android:text="提交"
+            android:textColor="@color/text_color_grey1"
+            android:textSize="16sp"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

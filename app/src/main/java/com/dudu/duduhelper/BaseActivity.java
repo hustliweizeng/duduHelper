@@ -65,15 +65,20 @@ public class BaseActivity extends FragmentActivity
 			setTranslucentStatus(true);
 		}
 		SystemBarTintManager tintManager = new SystemBarTintManager(this);
+
+		//设置通知栏（状态栏）的颜色
+
 		tintManager.setStatusBarTintEnabled(true);
 		tintManager.setStatusBarTintResource(R.color.status_Bar_color);//通知栏所需颜色
+
+		//每个activity都可以获取到sp中保存的用户信息
 		share = getSharedPreferences("userinfo", MODE_PRIVATE);
 		DuduHelperApplication.getInstance().addActivity(this);
 		MobclickAgent.updateOnlineConfig(this);//获取强制更新在线参数
 		FORCE_UPDATE=MobclickAgent.getConfigParams(this, "force_update" );
 		MobclickAgent.setOnlineConfigureListener(new UmengOnlineConfigureListener(){
 		  @Override
-		  public void onDataReceived(JSONObject data) 
+		  public void onDataReceived(JSONObject data)
 		  {
 			  JSONObject haha=data;
 			  System.out.println(haha);
@@ -111,6 +116,8 @@ public class BaseActivity extends FragmentActivity
 		    }
 		});
 	}
+
+
 	//做版本兼容，
 	@TargetApi(19) 
 	private void setTranslucentStatus(boolean on) {

@@ -30,9 +30,10 @@
     <color name="text_bg_color">#858585</color>
     <color name="divider_line_color">#e6e6e6</color>
     <color name="text_green_color">#3dd6bc</color>
-    <color name="text_red_color">#ff5400</color>
+    <color name="text_red_color">#DE511E</color>
     <color name="text_gray_color">#999999</color>
     <color name="status_Bar_color">#2c4660</color>
+    <color name="status_Bar_color_red">#de511e</color>
     <color name="head_color">#2c4660</color>
     <color name="btn_head_color">#2c4660</color>
     <color name="btn_head_select_color">#1e3750</color>
@@ -48,4 +49,9 @@
     <color name="head_Light_color">#324e6a</color>
     <color name="text_create_redbag">#EBB143</color>
     <color name="text_create_redbag_click">#FF6600</color>
+    <color name="head_color_red">#DE511E</color>
+    <color name="bg_white_yelllo">#FBF4EA</color>
+    <color name="bg_redbag_yello">#fbf7eb</color>
+    <color name="btn_yellow">#ebb242</color>
+    <color name="text_color_grey1">#775306</color>
 </resources>

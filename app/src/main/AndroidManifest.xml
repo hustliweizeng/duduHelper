@@ -76,10 +76,12 @@
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan|stateHidden" >
         </activity>
+        <activity android:name=".EditRedbag2Activity"/>
         <activity
             android:name=".CashSellActivity"
             android:label="@string/title_activity_cash_sell" >
         </activity>
+        <activity android:name=".EditRedbag1Activity"/>
         <activity
             android:name="com.example.qr_codescan.MipcaActivityCapture"
             android:configChanges="orientation|keyboardHidden"

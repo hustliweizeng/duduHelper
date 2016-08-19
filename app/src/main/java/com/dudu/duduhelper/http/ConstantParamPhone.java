@@ -88,7 +88,13 @@ public class ConstantParamPhone
 	 * 新接口地址
      */
     //public static final String USER_LOGIN = "/user/login";
+    public static final String BASE_URL = "http://business.dev.duduapp.net/api";
     public static final String USER_LOGIN = "/user/info";//用户登录接口
     public static final String CREATE_PAYMENT = "/cashier";//收款列表和创建收款
+    public static final String GET_REDBAG_LIST = "/rpList";//获取红包列表
+    public static final String ADD_REDBAG = "/addRp";//添加红包
+
+
+
 
 }
