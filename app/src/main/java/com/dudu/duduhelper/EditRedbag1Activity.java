@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.widget.SystemBarTintManager;
 import com.umeng.message.PushAgent;
@@ -113,13 +114,17 @@ public class EditRedbag1Activity extends Activity implements View.OnClickListene
 	public void onClick(View view) {
 		switch (view.getId()){
 			case R.id.btn_create_redbag1:
+				//传递参数到下一页
 				String title = ed_edit_redbag_title.getText().toString().trim();
+
 				if (!TextUtils.isEmpty(title)){
 					Intent intent = new Intent(this,EditRedbag2Activity.class);
 					intent.putExtra("title",title);
-
 					startActivity(intent);
+				}else{
+					Toast.makeText(this,"请输入红包名称",Toast.LENGTH_SHORT).show();
 				}
+
 				break;
 			case R.id.backButton:
 				finish();

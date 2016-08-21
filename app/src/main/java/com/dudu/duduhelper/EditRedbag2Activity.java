@@ -4,19 +4,29 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.SystemBarTintManager;
 import com.umeng.message.PushAgent;
 
+import java.util.LinkedList;
+
 /**
  * Created by lwz on 2016/8/19.
  */
 public class EditRedbag2Activity extends Activity implements View.OnClickListener {
+
+	private LinearLayout ll_content_edit_redab2;
+	private LinearLayout ll_condition_edit_redbag2;
+	//红包使用条件的默认加入位置
+	private  int position = 8;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +39,14 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 
 	private void initview() {
 		ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
+		//红包内容的总布局
+		ll_content_edit_redab2 = (LinearLayout) findViewById(R.id.ll_content_edit_redab2);
+		//红包使用限制的布局view
+		ll_condition_edit_redbag2 = (LinearLayout) findViewById(R.id.ll_condition_edit_redbag2);
+		ImageView iv_add_edit_redbag2= (ImageView) findViewById(R.id.iv_add_edit_redbag2);
+		//添加条目设置点击事件
+		iv_add_edit_redbag2.setOnClickListener(this);
+
 		backButton.setOnClickListener(this);
 
 
@@ -72,6 +90,25 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 				//请求网络
 				String url = ConstantParamPhone.BASE_URL+ConstantParamPhone.ADD_REDBAG;
 				break;
+			//添加红包使用条件
+			case R.id.iv_add_edit_redbag2:
+				createConditon();
+
+				break;
 		}
+	}
+
+	private void createConditon() {
+		//载入红包条件的布局
+		//1创建集合管理红包条件
+		LinkedList<LinearLayout> conditions = new LinkedList<>();
+
+		LinearLayout item_condition_edit_redbag = (LinearLayout) View.inflate(this,R.layout.item_condition_edit_redbag,null);
+		ll_content_edit_redab2.addView(item_condition_edit_redbag,position);
+		//再添加的话，位置会变动
+		position++;
+		Log.d("condition","创建了条件"+position);
+
+
 	}
 }

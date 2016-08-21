@@ -26,6 +26,7 @@ import com.dudu.duduhelper.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.shopProductListActivity;
+import com.dudu.duduhelper.widget.ColorDialog;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -189,7 +190,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			public void onSuccess(int i, Header[] headers, String s) {
 				//设置有无红包的状态,解析处理json数据
 				Log.d("redbag",s);
-				//ColorDialog.dissmissProcessDialog();
+				ColorDialog.dissmissProcessDialog();
 				//默认设置没有红包
 
 				IsRedbagEmpty =  true;

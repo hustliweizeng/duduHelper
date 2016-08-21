@@ -14,7 +14,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
  */
 public class HttpUtils {
 	/**
-	 * 联网工具类
+	 * 联网工具类,在请求成功的方法中把弹窗给关闭
 	 * @param mContext 上下文
 	 * @param params    请求的参数
 	 * @param url   请求的地址
