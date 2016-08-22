@@ -133,7 +133,7 @@ public class MainActivity extends BaseActivity
 		});
 	}
 
-	// 设置点击切换事件
+	// 设置点击切换事件,切换不同的fragment，一共有三个
 	@SuppressLint("ResourceAsColor")
 	class tabBtnClick implements View.OnClickListener 
 	{
@@ -141,6 +141,7 @@ public class MainActivity extends BaseActivity
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			switch (v.getId()) {
+			//进入首页
 			case R.id.mainlin:
 				initHeadView("", false,false,0);
 				editButton.setVisibility(View.GONE);
@@ -153,6 +154,7 @@ public class MainActivity extends BaseActivity
 				ft = fm.beginTransaction();
 				ft.replace(R.id.FrameLayoutPager, shopeMainFragment).commit();
 				break;
+			//进入消息列表
 			case R.id.messagelin:
 				initHeadView("消息", false, false, 0);
 				editButton.setVisibility(View.GONE);
@@ -165,6 +167,7 @@ public class MainActivity extends BaseActivity
 				ft = fm.beginTransaction();
 				ft.replace(R.id.FrameLayoutPager, sellFragment).commit();
 				break;
+			//进入个人中心
 			case R.id.shopelin:
 				editButton.setVisibility(View.GONE);
 				initHeadView("个人中心", false, true, R.drawable.icon_settings);

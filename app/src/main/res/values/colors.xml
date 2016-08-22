@@ -54,4 +54,5 @@
     <color name="bg_redbag_yello">#fbf7eb</color>
     <color name="btn_yellow">#ebb242</color>
     <color name="text_color_grey1">#775306</color>
+    <color name="bg_msg">#FF5103</color>
 </resources>

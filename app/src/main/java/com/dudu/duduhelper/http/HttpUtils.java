@@ -2,8 +2,6 @@ package com.dudu.duduhelper.http;
 
 import android.content.Context;
 
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.widget.ColorDialog;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
@@ -23,7 +21,7 @@ public class HttpUtils {
 	 */
 	public static  void getConnection(final Context mContext, RequestParams params, String url,String method, TextHttpResponseHandler mTextHttpResponseHandler) {
 		//请求联网时，主线程显示进度条
-		ColorDialog.showRoundProcessDialog(mContext, R.layout.loading_process_dialog_color);
+		//ColorDialog.showRoundProcessDialog(mContext, R.layout.loading_process_dialog_color);
 		AsyncHttpClient client = new AsyncHttpClient();
 		//保存cookie，自动保存到了shareprefercece
 		PersistentCookieStore myCookieStore = new PersistentCookieStore(mContext);

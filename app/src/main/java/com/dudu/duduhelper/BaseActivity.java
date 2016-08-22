@@ -148,7 +148,7 @@ public class BaseActivity extends FragmentActivity
 	 * @param title 当前activity的名字
 	 * @param LeftButtonVisable 左边button是否可见
 	 * @param RightButtonVisable	右边button是否可见
-     * @param Imageid 右侧要替换的图片id
+     * @param Imageid 右侧要替换的图片id,当没有时，填0
 	 *
      */
 	@SuppressLint("ResourceAsColor") 
