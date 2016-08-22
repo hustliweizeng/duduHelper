@@ -224,7 +224,7 @@
                         android:textColor="@color/text_color_dark"
                         android:textSize="16sp" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/productSoldTextView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -232,8 +232,8 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:text="0"
-                        android:textColor="@color/text_color_yellow"
+                        android:text="请输入限制购买的数量"
+                        android:textColor="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -245,7 +245,7 @@
                     android:background="@color/line_color_gray" />
 
                 <LinearLayout
-                    android:id="@+id/productDownTimeLin"
+                    android:id="@+id/ll_startTime_shop_product"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/view_selector"
@@ -261,7 +261,41 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/productDownTimeTextView"
+                        android:id="@+id/tv_startTime_shop_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:text="请选择商品下架时间"
+                        android:textColor="@color/text_color_light"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/line_color_gray" />
+                <LinearLayout
+                    android:id="@+id/ll_endTime_shop_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/view_selector"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:layout_weight="3"
+                        android:text="结束时间"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_endTime_shop_product"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginRight="16dp"
@@ -287,19 +321,54 @@
                     android:gravity="center_vertical" >
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
-                        android:layout_weight="3"
-                        android:text="商品状态"
+                        android:text="配送方式"
                         android:textColor="@color/text_color_dark"
                         android:textSize="16sp" />
 
-                    <com.dudu.duduhelper.widget.SwitchView
-                        android:id="@+id/productStatusSwitch"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="16dp" />
+                    <RadioGroup
+                        android:id="@+id/rg_shop_product_add"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="right|center_vertical"
+                        android:paddingRight="16dp"
+                        >
+                        <RadioButton
+                            android:id="@+id/rb1_shop_product_add"
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:layout_height="25dp"
+                            android:button="@null"
+                            android:background="@drawable/btn_rg_selector"
+                            android:text="自取"
+                            android:textSize="16sp"
+                            android:textColor="@color/text_color_light"
+                            android:gravity="center"
+
+                            />
+                        <RadioButton
+                            android:id="@+id/rb2_shop_product_add"
+                            android:layout_marginLeft="16dp"
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:layout_height="25dp"
+                            android:button="@null"
+                            android:checked="false"
+                            android:background="@drawable/btn_rg_selector"
+                            android:text="配送"
+                            android:textColor="@color/text_color_light"
+
+                            />
+
+
+
+                    </RadioGroup>
                 </LinearLayout>
             </LinearLayout>
 
@@ -357,19 +426,32 @@
                 android:scrollbars="vertical"
                 android:textColorHint="@color/text_hint_color"
                 android:textSize="14dp" />
-
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
             <ImageView
                 android:id="@+id/productImageView"
                 android:layout_width="96dp"
                 android:layout_height="56dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="14dp"
                 android:background="@drawable/shop_image_whitelin"
                 android:padding="4dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_head" />
+                <TextView
+                    android:id="@+id/tv_photo_des_shop_product"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="相册共10张照片"
+                    android:layout_marginLeft="22dp"
+                    android:textColor="@color/text_color_light"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/productImageView"/>
+            </RelativeLayout>
+
         </LinearLayout>
     </com.dudu.duduhelper.widget.OverScrollView>
 
@@ -397,7 +479,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/view_selector"
-        android:text="提交"
+        android:text="确认提交"
         android:textColor="@color/text_green_color"
         android:textSize="16sp" />
 

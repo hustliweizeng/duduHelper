@@ -1,38 +1,32 @@
 package com.dudu.duduhelper;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import com.dudu.duduhelper.adapter.ShopImageAdapter;
-import com.dudu.duduhelper.adapter.ShopImageAdapter.OnSelectImageClickListener;
-import com.dudu.duduhelper.bean.ImageBean;
-import com.dudu.duduhelper.common.Util;
-import com.dudu.duduhelper.widget.MyKeyBoard;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.adapter.ShopImageAdapter;
+import com.dudu.duduhelper.adapter.ShopImageAdapter.OnSelectImageClickListener;
+import com.dudu.duduhelper.bean.ImageBean;
+import com.dudu.duduhelper.common.Util;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 选取图片的工具
+ */
 public class ShopImageViewBrower extends BaseActivity 
 {
 	private List<ImageBean> imageList = new ArrayList<ImageBean>();

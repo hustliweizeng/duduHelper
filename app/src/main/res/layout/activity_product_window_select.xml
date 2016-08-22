@@ -38,7 +38,7 @@
             android:layout_height="26dp"
             android:background="@drawable/view_selector"
             android:padding="6dp"
-            android:src="@drawable/icon_jiantou_xia" />
+            android:src="@drawable/icon_jiantou_shang" />
     </LinearLayout>
 
 </LinearLayout>
