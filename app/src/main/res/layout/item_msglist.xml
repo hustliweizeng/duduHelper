@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+    android:background="@color/bg_white_color">
+    <TextView
+        android:layout_marginTop="6dp"
+        android:id="@+id/tv_title_item_msglist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="店员王小儿"
+        android:textSize="16sp"
+        android:textColor="@color/text_msg_title"
+        android:layout_marginLeft="16dp"
+        />
+    <TextView
+        android:layout_below="@id/tv_title_item_msglist"
+        android:id="@+id/tv_content_item_msglist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="对商品进行了操作"
+        android:textSize="14sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/text_msg_content"
+        />
+    <TextView
+        android:id="@+id/tv_time_item_msglist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="2016-08-22 16:40:22"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:textSize="14sp"
+        android:textColor="@color/text_msg_content"
+        android:layout_marginLeft="16dp"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_line_color"
+        android:layout_below="@id/tv_content_item_msglist"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="7dp"
+        />
+
+
+
+
+</RelativeLayout>

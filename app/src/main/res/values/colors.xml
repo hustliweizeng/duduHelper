@@ -55,4 +55,7 @@
     <color name="btn_yellow">#ebb242</color>
     <color name="text_color_grey1">#775306</color>
     <color name="bg_msg">#FF5103</color>
+    <color name="bg_grey">#F5F5F5</color>
+    <color name="text_msg_content">#999999</color>
+    <color name="text_msg_title">#333333</color>
 </resources>
