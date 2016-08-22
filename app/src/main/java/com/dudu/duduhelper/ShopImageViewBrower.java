@@ -50,7 +50,8 @@ public class ShopImageViewBrower extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_image_view_brower);
-		initHeadView("商品相册", true, false, 0);
+		init();
+
 		//imageView = (ImageView) this.findViewById(R.id.imageView);
 		editButton=(Button) this.findViewById(R.id.selectTextClickButton);
 		editButton.setText("编辑");
@@ -135,7 +136,19 @@ public class ShopImageViewBrower extends BaseActivity
 		shopImageAdapter.addAll(imageList);
 		ImageGridViewBrower.setAdapter(shopImageAdapter);
 	}
-	
+
+	private void init() {
+		//根据不同情况设置不同的页面标题
+		int type = getIntent().getIntExtra("type",-1);
+		if (type == 1){
+			initHeadView("商品相册", true, false, 0);
+		}else if(type == 2){
+			initHeadView("店铺相册", true, false, 0);
+		}else if(type == 3){
+			initHeadView("红包相册", true, false, 0);
+		}
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{

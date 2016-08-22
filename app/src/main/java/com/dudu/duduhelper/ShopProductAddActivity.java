@@ -395,6 +395,7 @@ public class ShopProductAddActivity extends BaseActivity
 				list.add(imageBean4);
 				//传递集合过去
 				intent.putExtra("imageList", (Serializable)list);
+				intent.putExtra("type",1);
 				//获取选中的图片
 				startActivityForResult(intent, 1);
 			}
