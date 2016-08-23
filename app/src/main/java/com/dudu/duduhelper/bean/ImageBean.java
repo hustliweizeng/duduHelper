@@ -1,12 +1,14 @@
 package com.dudu.duduhelper.bean;
 
-import java.io.Serializable;
-
 import android.net.Uri;
+
+import java.io.Serializable;
 
 public class ImageBean implements Serializable
 {
+	//本地路径
 	private String path;
+	//网络路径
 	private Uri imageUri;
 	public String getPath() {
 		return path;

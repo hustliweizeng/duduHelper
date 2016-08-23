@@ -51,6 +51,7 @@ public class BaseActivity extends FragmentActivity
 
 	public String FORCE_UPDATE=""; 
 	public RelativeLayout relayout_mytitle;
+	public String umeng_token;
 
 	@Override
 	protected void onCreate(Bundle arg0) 
@@ -73,6 +74,7 @@ public class BaseActivity extends FragmentActivity
 
 		//每个activity都可以获取到sp中保存的用户信息
 		share = getSharedPreferences("userinfo", MODE_PRIVATE);
+		umeng_token = getSharedPreferences("umengtoken",MODE_PRIVATE).getString("token","");
 		DuduHelperApplication.getInstance().addActivity(this);
 		MobclickAgent.updateOnlineConfig(this);//获取强制更新在线参数
 		FORCE_UPDATE=MobclickAgent.getConfigParams(this, "force_update" );

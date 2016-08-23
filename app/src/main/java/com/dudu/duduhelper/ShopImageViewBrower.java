@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,12 +16,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.ViewUtils;
 import com.dudu.duduhelper.adapter.ShopImageAdapter;
 import com.dudu.duduhelper.adapter.ShopImageAdapter.OnSelectImageClickListener;
 import com.dudu.duduhelper.bean.ImageBean;
 import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +56,12 @@ public class ShopImageViewBrower extends BaseActivity
 	//生成文件
 	private File tempFile = new File(Environment.getExternalStorageDirectory(),getPhotoFileName());
 	private ImageView delectButton;
+	public final int VERION_UP = 1;
+	public final int VERION_DOWN = 2;
+	public final int AFTER_CUT = 4;
+	public final int AFTER_CAMERA = 3;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -88,31 +105,38 @@ public class ShopImageViewBrower extends BaseActivity
 				
 			}
 		});
+		//获取传递过来的图片集合
 		imageList = (List<ImageBean>) getIntent().getSerializableExtra("imageList");
+		//从相册选取
 		selectFromImage = (Button) this.findViewById(R.id.selectFromImage);
+		//从相机选择
 		selectFromCamare = (Button) this.findViewById(R.id.selectFromCamare);
+		//多选图
 		ImageGridViewBrower = (GridView) this.findViewById(R.id.ImageGridViewBrower);
+		//选择框
 		selectLinearView = (LinearLayout) this.findViewById(R.id.selectLinearView);
-		//从图库选择
+		//从相册选择按钮监听
 		selectFromImage.setOnClickListener(new OnClickListener() 
 		{
 			@Override
 			public void onClick(View v) 
 			{
+				//打开相册
 				Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT  
 				intent.addCategory(Intent.CATEGORY_OPENABLE);  
 				intent.setType("image/jpeg");  
 				if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT)
 				{        
-					    //4.4的版本
-				        startActivityForResult(intent, 1);    
+					    //4.4的版本，code=1
+				        startActivityForResult(intent,  VERION_UP);
 				}
 				else
 				{       //4.4一下的版本
-				        startActivityForResult(intent, 2);   
+				        startActivityForResult(intent, VERION_DOWN);
 				}   
 			}
 		});
+		//从相机选择监听
 		selectFromCamare.setOnClickListener(new OnClickListener() 
 		{
 			@Override
@@ -121,9 +145,10 @@ public class ShopImageViewBrower extends BaseActivity
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);  
 				//指定调用相机拍照后照片的储存路径
 				intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(tempFile));
-                startActivityForResult(intent, 3); 
+                startActivityForResult(intent, AFTER_CAMERA);
 			}
 		});
+		//点击照相机图片后，弹出从相册选择和拍照按钮
 		shopImageAdapter.setOnSelectImageClickListener(new OnSelectImageClickListener() 
 		{
 			@Override
@@ -131,9 +156,12 @@ public class ShopImageViewBrower extends BaseActivity
 			{
 				delectLinearView.setVisibility(View.GONE);
 				selectLinearView.setVisibility(View.VISIBLE);
+				Log.d("photeselect","从相册选择");
 			}
 		});
+		//适配器添加数据
 		shopImageAdapter.addAll(imageList);
+		//gridview设置适配器
 		ImageGridViewBrower.setAdapter(shopImageAdapter);
 	}
 
@@ -150,6 +178,7 @@ public class ShopImageViewBrower extends BaseActivity
 	}
 
 	@Override
+	//点击相册后返回数据的处理
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
 		// TODO Auto-generated method stub
@@ -164,7 +193,7 @@ public class ShopImageViewBrower extends BaseActivity
 			switch (requestCode) 
 			{
 			    //4.4以上的版本
-				case 1:
+				case VERION_UP:
 					
 					String path = Util.getPath(ShopImageViewBrower.this, data.getData());
 					uri = Uri.fromFile(new File(path));
@@ -172,28 +201,33 @@ public class ShopImageViewBrower extends BaseActivity
 					System.out.println("hahahahha------::"+data);
 					break;
 				//4.4以下的版本
-				case 2:
+				case VERION_DOWN:
 					String path1 = Util.getPath(ShopImageViewBrower.this, data.getData());
 					uri = Uri.fromFile(new File(path1));
 					startPhotoZoom(uri);
 					System.out.println("hahahahha------::"+data);
 					break;
 			    //拍照返回的结果
-				case 3:
+				case AFTER_CAMERA:
 					uri = Uri.fromFile(tempFile);
 					startPhotoZoom(uri);
 					System.out.println("hahahahha------::"+data);
 					break;
 			    //裁剪返回的结果
-				case 4:
+				case AFTER_CUT:
 					ImageBean imageBean = new ImageBean();
+					//本地图片用imageril存储
 					imageBean.setImageUri(urilocal);
+					//把裁剪后的bean插入到适配器的数据源
 					shopImageAdapter.add(imageBean);
 					//imageView.setImageURI(urilocal);
 					break;
 				default:
 					break;
 			}
+			//把弹窗隐藏
+			delectLinearView.setVisibility(View.GONE);
+			selectLinearView.setVisibility(View.GONE);
 		}
 		else
 		{
@@ -201,8 +235,13 @@ public class ShopImageViewBrower extends BaseActivity
 		}
 		
 	}
+
+	/**
+	 * 根据uri地址裁剪图片
+	 * @param uri
+	 */
 	private void startPhotoZoom(Uri uri) 
-	{
+	{   //系统自带的裁剪工具
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
         // crop为true是设置在开启的intent中设置显示的view可以剪裁
@@ -223,7 +262,7 @@ public class ShopImageViewBrower extends BaseActivity
         
         intent.putExtra("return-data", false);//设置返回data数据
         intent.putExtra("noFaceDetection", true); //关闭人脸检测
-        startActivityForResult(intent, 4);
+        startActivityForResult(intent, AFTER_CUT);
     }
 	// 使用系统当前日期加以调整作为照片的名称
     private String getPhotoFileName() 
@@ -239,5 +278,60 @@ public class ShopImageViewBrower extends BaseActivity
     	// TODO Auto-generated method stub
     	super.RightButtonClick();
     }
-	
+
+
+	@Override
+	/**
+	 * 当页面不可见时，通过子线程上传图片
+	 */
+	public void onPause() {
+		super.onPause();
+		List<ImageBean> uplodImgs = shopImageAdapter.getImageList();
+		//通过asynHttpclient上传
+		RequestParams params = new RequestParams();
+		//获取token
+		umeng_token = getSharedPreferences("umeng_token",MODE_PRIVATE).getString("token","");
+		//临时数据
+		params.add("token","dudu");
+		//Log.d("token",umeng_token);
+		//循环读取图片
+		String imageUri = null;
+		String picBase64 = null;
+		byte[] picByte = null;
+		//测试上传一张
+		//Log.d("list",uplodImgs.size()+"");
+		for(int i = 0;i<uplodImgs.size(); i++){
+			//判断数据来源，如果是网络来源(path)就不上传
+			imageUri = ViewUtils.getRealFilePath(this,uplodImgs.get(i).getImageUri());
+			if (!TextUtils.isEmpty(imageUri)){
+				try {
+					//图片根据path转换为字节流
+					picByte = ViewUtils.imageToBytes(imageUri);
+					//把字节流转换为BASE64编码
+					picBase64 = Base64.encodeToString(picByte,1);
+					Log.d("base64",picBase64);
+					params.add("content",picBase64);
+					String url = ConstantParamPhone.BASE_URL+ConstantParamPhone.UPLOAD_PIC;
+					//请求网络
+					HttpUtils.getConnection(this, params, url, "POST", new TextHttpResponseHandler() {
+						@Override
+						public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+							Toast.makeText(ShopImageViewBrower.this,"上传失败",Toast.LENGTH_LONG).show();
+						}
+
+						@Override
+						public void onSuccess(int i, Header[] headers, String s) {
+							Log.d("uplod",s);
+						}
+					});
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+
+	}
+
+
 }

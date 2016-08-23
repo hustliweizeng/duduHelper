@@ -244,8 +244,8 @@ public class LoginActivity extends BaseActivity
 					{
 						Toast.makeText(LoginActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
 						//临时跳转到主页，方便genymotion调试
-						Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-						startActivity(intent);
+//						Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+//						startActivity(intent);
 						finish();
 
 					}

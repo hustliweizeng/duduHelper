@@ -1,8 +1,5 @@
 package com.dudu.duduhelper.widget;
 
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.common.Util;
-
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -19,6 +16,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Checkable;
+
+import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.common.Util;
 
 /*
  * Copyright 2015, 2016 andy
@@ -49,7 +49,7 @@ public class SmoothCheckBox extends View implements Checkable {
     private static final int COLOR_CHECKED   = Color.parseColor("#FB4846");
     private static final int COLOR_FLOOR_UNCHECKED = Color.parseColor("#DFDFDF");
     private static final int DEF_DRAW_SIZE     = 25;
-    private static final int DEF_ANIM_DURATION = 300;
+    private static final int DEF_ANIM_DURATION = 200;
 
     private Paint mPaint, mTickPaint, mFloorPaint;
     private Point[] mTickPoints;

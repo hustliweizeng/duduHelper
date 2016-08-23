@@ -93,6 +93,9 @@ public class ConstantParamPhone
     public static final String CREATE_PAYMENT = "/cashier";//收款列表和创建收款
     public static final String GET_REDBAG_LIST = "/rpList";//获取红包列表
     public static final String ADD_REDBAG = "/addRp";//添加红包
+    public static final String UPLOAD_PIC = "/uploadpic";//添加红包
+
+
 
 
 

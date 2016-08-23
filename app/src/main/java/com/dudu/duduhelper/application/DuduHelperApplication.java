@@ -1,24 +1,20 @@
 package com.dudu.duduhelper.application;
 
-import java.util.LinkedList;
-import java.util.List;
+import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.MainActivity;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengNotificationClickHandler;
-import com.umeng.message.entity.UMessage;
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
-import android.widget.Toast;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DuduHelperApplication extends Application 
 {
@@ -69,14 +65,28 @@ public class DuduHelperApplication extends Application
 		}
 		return instance;
 	}
+
+	/**初始化UIL图片加载框架
+	 *
+	 * @param context
+	 */
 	public static void initImageLoader(Context context) 
 	{
+		//设置图片缓存
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.cacheInMemory(true)
+				.cacheOnDisc(true)
+				.build();
+		//默认配置
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				context).threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory()
 				.discCacheFileNameGenerator(new Md5FileNameGenerator())
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
-				.writeDebugLogs().build();
+				.writeDebugLogs()
+				.defaultDisplayImageOptions(options)
+				.build();
+
 		ImageLoader.getInstance().init(config);
 	}
 	// add Activity

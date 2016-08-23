@@ -379,12 +379,13 @@ public class ShopProductAddActivity extends BaseActivity
 			{
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ShopProductAddActivity.this,ShopImageViewBrower.class);
-				//添加本地图片
+				//伪造网络数据
 				List<ImageBean> list = new ArrayList<ImageBean>();
 				ImageBean imageBean1 = new ImageBean();
 				ImageBean imageBean2 = new ImageBean();
 				ImageBean imageBean3 = new ImageBean();
 				ImageBean imageBean4 = new ImageBean();
+				//网络图片地址
 				imageBean1.setPath("http://file.duduapp.net/uploads/default/42/d0/42d0019eb35f21976a5c463bdc1bb03d.jpg");
 				imageBean2.setPath("http://file.duduapp.net/98/6e/986e51a7ba15dc3ace6dde27dd1df98b.png");
 				imageBean3.setPath("http://file.duduapp.net/uploads/default/6a/81/6a814954b66a73ac70616aea91fc5bc1.jpg");
