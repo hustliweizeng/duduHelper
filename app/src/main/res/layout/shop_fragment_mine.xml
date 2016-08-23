@@ -190,7 +190,7 @@
                         android:background="@drawable/view_selector" >
 
                         <TextView
-                            android:id="@+id/buyerNumText"
+                            android:id="@+id/tv_frozen_num_mine"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"

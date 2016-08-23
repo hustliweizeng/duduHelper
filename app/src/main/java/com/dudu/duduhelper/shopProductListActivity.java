@@ -1,34 +1,6 @@
 package com.dudu.duduhelper;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.adapter.BankAreAdapter;
-import com.dudu.duduhelper.adapter.ProductAdapter;
-import com.dudu.duduhelper.adapter.ProductTypeAdapter;
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.HongBaoBean;
-import com.dudu.duduhelper.bean.HongbaoListBean;
-import com.dudu.duduhelper.bean.ProductBean;
-import com.dudu.duduhelper.bean.ProductListBean;
-import com.dudu.duduhelper.bean.ProvienceBean;
-import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.bean.UserBankProvienceBean;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
@@ -39,13 +11,12 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -53,13 +24,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView.ScaleType;
-import android.widget.PopupWindow.OnDismissListener;
+
+import com.dudu.duduhelper.adapter.BankAreAdapter;
+import com.dudu.duduhelper.adapter.ProductAdapter;
+import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.bean.HongBaoBean;
+import com.dudu.duduhelper.bean.HongbaoListBean;
+import com.dudu.duduhelper.bean.ProductBean;
+import com.dudu.duduhelper.bean.ProductListBean;
+import com.dudu.duduhelper.bean.ProvienceBean;
+import com.dudu.duduhelper.bean.ResponsBean;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class shopProductListActivity extends BaseActivity 
 {
@@ -844,6 +836,7 @@ public class shopProductListActivity extends BaseActivity
 	        {
 	        	bankAreAdapter=new BankAreAdapter(this);
 	        	if(category.equals("hongbao"))
+			        //红包列表
 	        	{
 	        		ProvienceBean provienceBean=new ProvienceBean();
 		        	provienceBean.setId("getmore");
@@ -868,6 +861,8 @@ public class shopProductListActivity extends BaseActivity
 	        	}
 	        	else
 	        	{
+			     //商品列表
+
 		        	ProvienceBean provienceBean=new ProvienceBean();
 		        	provienceBean.setId("default");
 		        	provienceBean.setName("默认排序");

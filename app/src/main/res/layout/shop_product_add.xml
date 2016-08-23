@@ -442,7 +442,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_head" />
                 <TextView
-                    android:id="@+id/tv_photo_des_shop_product"
+                    android:id="@+id/tv_photo_num_shop_product"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="相册共10张照片"

@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:background="@drawable/create_red_bag"
-                android:scaleType="centerInside"
+                android:scaleType="fitXY"
                 android:src="@drawable/redbag_bg"/>
 
             <RelativeLayout

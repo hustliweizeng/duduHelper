@@ -89,6 +89,7 @@ public class ShopListManagerActivity extends BaseActivity
 		hongbaoHistoryListView=(ListView) this.findViewById(R.id.hongbaoHistoryListView);
 		hongbaoHistoryListView.setAdapter(hongbaoHistoryAdapter);
 		hongbaoHistoryListView.addFooterView(footView,null,false);
+		//设置下拉更新，上啦加载
 		hongbaoHistoryswipeLayout = (SwipeRefreshLayout)this.findViewById(R.id.hongbaoHistoryswipeLayout);
 		hongbaoHistoryswipeLayout.setColorSchemeResources(R.color.text_color);
 		hongbaoHistoryswipeLayout.setSize(SwipeRefreshLayout.DEFAULT);
@@ -144,6 +145,7 @@ public class ShopListManagerActivity extends BaseActivity
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ShopListManagerActivity.this,ShopAddActivity.class);
 				intent.putExtra("hongbao", hongbaoHistoryAdapter.getItem(position));
+				intent.putExtra("source","mendian");
 				startActivity(intent);
 			}
 		});

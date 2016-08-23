@@ -1,30 +1,33 @@
 package com.dudu.duduhelper.fragment;
 
-import org.apache.http.Header;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.dudu.duduhelper.SettingActivity;
-import com.dudu.duduhelper.ShopAccountDataActivity;
-import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.CashSellActivity;
-import com.dudu.duduhelper.GetCashActivity;
 import com.dudu.duduhelper.LoginActivity;
 import com.dudu.duduhelper.LoginBindPhoneActivity;
 import com.dudu.duduhelper.MainActivity;
-import com.dudu.duduhelper.ShopBankListActivity;
-import com.dudu.duduhelper.ShopMemberListActivity;
-import com.dudu.duduhelper.ShopOrderDetailActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.ShopSearchBlueToothActivity;
+import com.dudu.duduhelper.ShopBankListActivity;
 import com.dudu.duduhelper.ShopSettingActivity;
-import com.dudu.duduhelper.R.id;
-import com.dudu.duduhelper.UserBankInfoConfirmActivity;
-import com.dudu.duduhelper.ShopUserBankInfoEditActivity;
-import com.dudu.duduhelper.UserBankSelectActivity;
 import com.dudu.duduhelper.WebPageActivity;
 import com.dudu.duduhelper.bean.UserBean;
-import com.dudu.duduhelper.common.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.CircleImageView;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.widget.OverScrollView;
@@ -35,11 +38,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.mining.app.zxing.decoding.Intents.Share;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.umeng.analytics.MobclickAgent;
@@ -48,30 +49,7 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import org.apache.http.Header;
 
 
 public class ShopMineFragment extends Fragment 
@@ -89,7 +67,7 @@ public class ShopMineFragment extends Fragment
 	//private TextView printTextView;
 	private View MineFragmentView;
 	//private TextView fangkeNumText;
-	private TextView buyerNumText;
+	private TextView tv_frozen_num_mine;
 	//private TextView orderNumText;
 	private TextView earnMoneyTextView;
 	private TextView getCashMoneyTextView;
@@ -115,10 +93,11 @@ public class ShopMineFragment extends Fragment
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) 
 	{
-		// TODO Auto-generated method stub
+
 		super.onActivityCreated(savedInstanceState);
 		if(getActivity()!=null)
 		{
+			//获取本地的个人信息
 			share=((MainActivity)getActivity()).share;
 		}
 		options = new DisplayImageOptions.Builder()
@@ -287,23 +266,12 @@ public class ShopMineFragment extends Fragment
 				    edit.commit();//保存数据信息 
 				}
 			}
+	        //请求网络成功后？如果
 			@Override
 			public void onFinish() 
 			{
 				// TODO Auto-generated method stub
-				if(getActivity()!=null)
-				{
-					shopeNameTextView.setText(((MainActivity)getActivity()).share.getString("shopname", ""));
-					//防止imageLoader闪动
-					ImageAware imageAware = new ImageViewAware(mineImageHead, false);
-					imageLoader.displayImage(((MainActivity)getActivity()).share.getString("shoplogo", ""), imageAware);
-					//imageLoader.displayImage(((MainActivity)getActivity()).share.getString("shoplogo", ""),mineImageHead, options);
-					//fangkeNumText.setText(((MainActivity)getActivity()).share.getString("todaystatvisitor", ""));
-					buyerNumText.setText(((MainActivity)getActivity()).share.getString("todaystatbuyer", ""));
-					//orderNumText.setText(((MainActivity)getActivity()).share.getString("todaystatorder", ""));
-					earnMoneyTextView.setText(((MainActivity)getActivity()).share.getString("todaystatincome", "")+"↑");
-					getCashMoneyTextView.setText(((MainActivity)getActivity()).share.getString("money", ""));
-				}
+
 			}
 		});
 	}
@@ -341,16 +309,7 @@ public class ShopMineFragment extends Fragment
 				startActivity(intent);
 			}
 		});
-//		printRel.setOnClickListener(new OnClickListener() 
-//		{
-//			
-//			@Override
-//			public void onClick(View v) 
-//			{
-//					Intent intent=new Intent(getActivity(),ShopSearchBlueToothActivity.class);
-//					startActivity(intent);
-//			}
-//		});
+
 		helpRel.setOnClickListener(new OnClickListener()
 		{
 			
@@ -384,13 +343,30 @@ public class ShopMineFragment extends Fragment
 		relupdate=(RelativeLayout) MineFragmentView.findViewById(R.id.relupdate);
 		shopeNameTextView=(TextView) MineFragmentView.findViewById(R.id.shopeNameTextView);
 		//fangkeNumText=(TextView) MineFragmentView.findViewById(R.id.fangkeNumText);
-		buyerNumText=(TextView) MineFragmentView.findViewById(R.id.buyerNumText);
+		tv_frozen_num_mine=(TextView) MineFragmentView.findViewById(R.id.tv_frozen_num_mine);
 		//orderNumText=(TextView) MineFragmentView.findViewById(R.id.orderNumText);
 		earnMoneyTextView=(TextView) MineFragmentView.findViewById(R.id.earnMoneyTextView);
 		getCashMoneyTextView=(TextView) MineFragmentView.findViewById(R.id.getCashMoneyTextView);
 		mineText=(TextView) MineFragmentView.findViewById(R.id.mineText);
 		mineImageHead=(ImageView) MineFragmentView.findViewById(R.id.mineImageHead);
 		mineScrollview=(OverScrollView) MineFragmentView.findViewById(R.id.mineScrollview);
+		//初始化个人信息，通过三级缓存？不需要，登陆以后自动保存信息，所以sp必然有数据
+		if(getActivity()!=null)
+		{
+			SharedPreferences sp = getActivity().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+			shopeNameTextView.setText(sp.getString("shopname", ""));
+			//防止imageLoader闪动
+			ImageAware imageAware = new ImageViewAware(mineImageHead, false);
+			//动态显示图片
+			imageLoader.displayImage(sp.getString("shoplogo", ""), imageAware);
+			//冻结金额
+			tv_frozen_num_mine.setText(sp.getString("todaystatbuyer", ""));
+			//显示今日收入
+			earnMoneyTextView.setText(sp.getString("todaystatincome", "")+"↑");
+			//可提现金额
+			getCashMoneyTextView.setText(sp.getString("money", ""));
+		}
+
 		qcodeImgRel.setOnClickListener(new OnClickListener() {
 			
 			@Override

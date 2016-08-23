@@ -88,6 +88,8 @@ public class ShopProductAddActivity extends BaseActivity
     private int flag=0;
     private int flag1=0;
     private ImageView shopImageView;
+	private TextView tv_photo_num_shop_product;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -165,13 +167,14 @@ public class ShopProductAddActivity extends BaseActivity
 						productKuCunNumEditText.setText(productDetailBean.getData().getStock());
 						tv_startTime_shop_product.setText(Util.DataConVertMint(productDetailBean.getData().getTime_end()));
 						productDetaliTextView.setText(productDetailBean.getData().getDescription());
+						//切换开关已经抛弃
 						if(productDetailBean.getData().getStatus().equals("1"))
 						{
-							productStatusSwitch.setState(false);
+							//productStatusSwitch.setState(false);
 						}
 						else
 						{
-							productStatusSwitch.setState(true);
+							//productStatusSwitch.setState(true);
 						}
 						//利用UIL加载数据
 						ImageAware imageAware = new ImageViewAware(productImageView, false);
@@ -296,6 +299,8 @@ public class ShopProductAddActivity extends BaseActivity
 		RadioGroup rg_shop_product_add = (RadioGroup) findViewById(R.id.rg_shop_product_add);
 		final RadioButton rb1_shop_product_add = (RadioButton) findViewById(R.id.rb1_shop_product_add);
 		final RadioButton rb2_shop_product_add = (RadioButton) findViewById(R.id.rb2_shop_product_add);
+		//动态显示图片的数量
+		tv_photo_num_shop_product = (TextView) findViewById(R.id.tv_photo_num_shop_product);
 		//初始化选中状态
 		rb1_shop_product_add.setChecked(true);
 		rb1_shop_product_add.setTextColor(getResources().getColor(R.color.text_red_color));
@@ -399,6 +404,7 @@ public class ShopProductAddActivity extends BaseActivity
 				intent.putExtra("type",1);
 				//获取选中的图片
 				startActivityForResult(intent, 1);
+
 			}
 		});
 		productDetailLine.setOnClickListener(new OnClickListener() 

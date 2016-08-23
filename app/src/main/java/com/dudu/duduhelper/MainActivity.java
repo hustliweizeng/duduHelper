@@ -3,6 +3,7 @@ package com.dudu.duduhelper;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -21,6 +22,8 @@ import com.dudu.duduhelper.fragment.MessageCenterFragment;
 import com.dudu.duduhelper.fragment.ShopMineFragment;
 import com.dudu.duduhelper.fragment.ShopeMainFragment;
 
+import java.util.LinkedList;
+
 public class MainActivity extends BaseActivity 
 {
 
@@ -36,8 +39,8 @@ public class MainActivity extends BaseActivity
 	private FragmentTransaction ft;
 	private FragmentManager fm;
 	private CopyOfOrderFragment orderFragment;
-	private ShopeMainFragment shopeMainFragment;
-	private MessageCenterFragment sellFragment;
+	private ShopeMainFragment MainFragment;
+	private MessageCenterFragment messageCenterFragment;
 	private ShopMineFragment mineFragment;
 	private ImageView order_icon;
 	private TextView order_text;
@@ -46,6 +49,7 @@ public class MainActivity extends BaseActivity
 	private ImageView mine_icon;
 	private TextView mine_text;
 	private Button editButton;
+	private LinkedList<Fragment> fragments =  new LinkedList<>();;
 	//private PushAgent mPushAgent;
 
 	@Override
@@ -95,12 +99,8 @@ public class MainActivity extends BaseActivity
 		minelin = (LinearLayout) this.findViewById(R.id.shopelin);
 
 		//初始化fragment，只创建一次
-		//主页
-		shopeMainFragment = new ShopeMainFragment();
-		//
-		orderFragment = new CopyOfOrderFragment();
-		sellFragment = new MessageCenterFragment();
-		mineFragment = new ShopMineFragment();
+
+
 		//设置底部导航的监听
 		orderlin.setOnClickListener(new tabBtnClick());
 		selllin.setOnClickListener(new tabBtnClick());
@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity
 		//进入首页默认显示第一个fragement
 		fm = getSupportFragmentManager();
 		ft = fm.beginTransaction();
-		ft.add(R.id.FrameLayoutPager, shopeMainFragment).commit();
+		ft.add(R.id.FrameLayoutPager, createFragment(1)).commit();
 		
 		//当有新订单推送时获取回调函数，跳转到当前orderFragment
         DuduHelperApplication.getInstance().setPushNot(new GetPushNot() 
@@ -127,10 +127,54 @@ public class MainActivity extends BaseActivity
 				mine_icon.setImageResource(R.drawable.icon_wode);
 				mine_text.setTextColor(mine_text.getResources().getColor(R.color.text_color_noselect));
 				ft = fm.beginTransaction();
-				ft.replace(R.id.FrameLayoutPager, orderFragment).commit();
+				ft.replace(R.id.FrameLayoutPager, createFragment(4)).commit();
 				orderFragment.setRefreshing();
 			}
 		});
+	}
+
+	/**
+	 * 创建fragment缓存
+	 * @param i
+	 * @return
+	 */
+	private Fragment createFragment(int i) {
+		switch (i){
+			case 1:
+				//主页
+				if (!fragments.contains(MainFragment)){
+
+					MainFragment = new ShopeMainFragment();
+					fragments.add(0,MainFragment);
+				}
+					return fragments.get(0);
+			case 2:
+				//消息中心
+				if (!fragments.contains(messageCenterFragment)){
+					messageCenterFragment = new MessageCenterFragment();
+					fragments.add(1,messageCenterFragment);
+
+				}
+					return fragments.get(1);
+			case 3:
+				//个人中心
+				if (!fragments.contains(mineFragment)){
+					mineFragment = new ShopMineFragment();
+					fragments.add(2,mineFragment);
+
+				}
+					return fragments.get(2);
+			case 4:
+				//订单中心
+				if (!fragments.contains(orderFragment)){
+
+					orderFragment = new CopyOfOrderFragment();
+					fragments.add(3,orderFragment);
+				}
+					return fragments.get(3);
+
+		}
+		return null;
 	}
 
 	// 设置点击切换事件,切换不同的fragment，一共有三个
@@ -152,7 +196,8 @@ public class MainActivity extends BaseActivity
 				mine_icon.setImageResource(R.drawable.icon_wode);
 				mine_text.setTextColor(mine_text.getResources().getColor(R.color.head_color));
 				ft = fm.beginTransaction();
-				ft.replace(R.id.FrameLayoutPager, shopeMainFragment).commit();
+				//主页
+				ft.replace(R.id.FrameLayoutPager, createFragment(1)).commit();
 				break;
 			//进入消息列表
 			case R.id.messagelin:
@@ -165,7 +210,7 @@ public class MainActivity extends BaseActivity
 				mine_icon.setImageResource(R.drawable.icon_wode);
 				mine_text.setTextColor(mine_text.getResources().getColor(R.color.head_color));
 				ft = fm.beginTransaction();
-				ft.replace(R.id.FrameLayoutPager, sellFragment).commit();
+				ft.replace(R.id.FrameLayoutPager, createFragment(2)).commit();
 				break;
 			//进入个人中心
 			case R.id.shopelin:
@@ -178,7 +223,7 @@ public class MainActivity extends BaseActivity
 				mine_icon.setImageResource(R.drawable.icon_wode_sel);
 				mine_text.setTextColor(mine_text.getResources().getColor(R.color.text_color));
 				ft = fm.beginTransaction();
-				ft.replace(R.id.FrameLayoutPager, mineFragment).commit();
+				ft.replace(R.id.FrameLayoutPager, createFragment(3)).commit();
 				break;
 			}
 		}
@@ -191,10 +236,8 @@ public class MainActivity extends BaseActivity
 		super.RightButtonClick();
 		Intent intent=new Intent(this,ShopSettingActivity.class);
 		startActivity(intent);
-		
 	}
 	
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{

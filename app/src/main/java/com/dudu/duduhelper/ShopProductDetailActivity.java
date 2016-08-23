@@ -1,16 +1,5 @@
 package com.dudu.duduhelper;
 
-import com.dudu.duduhelper.bean.ProductListBean;
-import com.dudu.duduhelper.common.Util;
-import com.dudu.duduhelper.widget.DrawcircleView;
-import com.dudu.duduhelper.widget.WheelIndicatorItem;
-import com.dudu.duduhelper.widget.WheelIndicatorTongjiNoXuxianView;
-import com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView;
-import com.nineoldandroids.util.IntProperty;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,8 +7,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.dudu.duduhelper.bean.ProductListBean;
+import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.widget.WheelIndicatorItem;
+import com.dudu.duduhelper.widget.WheelIndicatorTongjiNoXuxianView;
+import com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 public class ShopProductDetailActivity extends BaseActivity 
 {
@@ -96,6 +93,7 @@ public class ShopProductDetailActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				// TODO Auto-generated method stub
+				//进入商品编辑页面
 				Intent intent=new Intent(ShopProductDetailActivity.this,ShopProductAddActivity.class);
 				intent.putExtra("id", coupon.getId());
 				intent.putExtra("category", category);
