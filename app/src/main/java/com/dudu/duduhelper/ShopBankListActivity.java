@@ -1,6 +1,31 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
+import android.annotation.SuppressLint;
+import android.app.ActionBar.LayoutParams;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.dudu.duduhelper.adapter.BankListAdapter;
 import com.dudu.duduhelper.bean.MemberBean;
@@ -15,34 +40,7 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import android.annotation.SuppressLint;
-import android.app.ActionBar.LayoutParams;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.PopupWindow.OnDismissListener;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import org.apache.http.Header;
 
 public class ShopBankListActivity extends BaseActivity 
 {
@@ -70,6 +68,7 @@ public class ShopBankListActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_bank_list);
+		//判断页面来源
 		action = getIntent().getStringExtra("action");
 		if(!TextUtils.isEmpty(action))
 		{
@@ -238,7 +237,7 @@ public class ShopBankListActivity extends BaseActivity
 	{
 		
 		AlphaAnimation animation = new AlphaAnimation((float)0, (float)1.0);
-		animation.setDuration(1000); //设置持续时间5秒  
+		animation.setDuration(500); //设置持续时间5秒
 		backgroundLinearlayout.startAnimation(animation);
 		backgroundLinearlayout.setVisibility(View.VISIBLE);
 		
@@ -270,7 +269,7 @@ public class ShopBankListActivity extends BaseActivity
 				mWaveHelper.cancel();
 				popupWindow.dismiss();
 				AlphaAnimation animation = new AlphaAnimation((float)1, (float)0);
-				animation.setDuration(1000); //设置持续时间5秒  
+				animation.setDuration(500); //设置持续时间5秒
 				animation.setAnimationListener(new AnimationListener() 
 				{
 					
