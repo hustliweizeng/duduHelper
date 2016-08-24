@@ -121,8 +121,10 @@ public class ShopOrderActivity extends BaseActivity
 		AsyncHttpClient client = new AsyncHttpClient();
 		//保存cookie，自动保存到了shareprefercece  
         PersistentCookieStore myCookieStore = new PersistentCookieStore(this);    
-        client.setCookieStore(myCookieStore); 
-        client.get(ConstantParamPhone.IP+ConstantParamPhone.GET_FULL_LIST, params,new TextHttpResponseHandler()
+        client.setCookieStore(myCookieStore);
+		//使用新的接口
+		String url = ConstantParamPhone.BASE_URL+ConstantParamPhone.GET_ORDER_LIST;
+        client.get(url, params,new TextHttpResponseHandler()
 		{
 
 			@Override

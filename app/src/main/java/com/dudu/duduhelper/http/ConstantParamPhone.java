@@ -34,7 +34,7 @@ public class ConstantParamPhone
     public static final String UNBIND_PHONE="/user/unbindmobile";//POST /user/unbindmobile 手机解绑操作
     public static final String CHECK_OLD_PHONE="/user/checkoldmobile";//GET /user/checkoldmobile 验证老手机解绑验证码
     public static final String CHANGE_PHONE="/user/changemobile";//POST /user/changemobile 更改手机号
-    public static final String GET_USER_INFO="/user/token";//GET /user/token 根据token刷新用户信息
+   // public static final String GET_USER_INFO="/user/token";//GET /user/token 根据token刷新用户信息
     public static final String GET_SALER_INFO="/saler/token";//GET /user/token 根据token刷新用户信息
     public static final String OUT_USER_MONEY="/user/outmoney";//POST /user/outmoney 用户提现操作
     public static final String GET_PRODUCT_LIST="/goods/list";//GET /goods/list 获取商品列表
@@ -88,12 +88,22 @@ public class ConstantParamPhone
 	 * 新接口地址
      */
     //public static final String USER_LOGIN = "/user/login";
-    public static final String BASE_URL = "http://business.dev.duduapp.net/api";
-    public static final String USER_LOGIN = "/user/info";//用户登录接口
+    public static final String BASE_URL = "http://dev.dolife.me";
+    public static final String SUCCESS = "SUCCESS";
+    public static final String FAIL = "FAIL";
+
+
+
+
+
+    public static final String USER_LOGIN = "/api/app/user/login";//用户登录接口
     public static final String CREATE_PAYMENT = "/cashier";//收款列表和创建收款
     public static final String GET_REDBAG_LIST = "/rpList";//获取红包列表
     public static final String ADD_REDBAG = "/addRp";//添加红包
     public static final String UPLOAD_PIC = "/uploadpic";//添加红包
+    public static final String GET_ORDER_LIST = "/order/fulllist";//添加红包
+    public static final String GET_USER_INFO = "/api/app/user/info";//获取用户信息
+
 
 
 

@@ -145,33 +145,33 @@ public class MainActivity extends BaseActivity
 				if (!fragments.contains(MainFragment)){
 
 					MainFragment = new ShopeMainFragment();
-					fragments.add(0,MainFragment);
+					fragments.add(MainFragment);
 				}
-					return fragments.get(0);
+					return fragments.get(fragments.indexOf(MainFragment));
 			case 2:
 				//消息中心
 				if (!fragments.contains(messageCenterFragment)){
 					messageCenterFragment = new MessageCenterFragment();
-					fragments.add(1,messageCenterFragment);
+					fragments.add(messageCenterFragment);
 
 				}
-					return fragments.get(1);
+					return fragments.get(fragments.indexOf(messageCenterFragment));
 			case 3:
 				//个人中心
 				if (!fragments.contains(mineFragment)){
 					mineFragment = new ShopMineFragment();
-					fragments.add(2,mineFragment);
+					fragments.add(mineFragment);
 
 				}
-					return fragments.get(2);
+					return fragments.get(fragments.indexOf(mineFragment));
 			case 4:
 				//订单中心
 				if (!fragments.contains(orderFragment)){
 
 					orderFragment = new CopyOfOrderFragment();
-					fragments.add(3,orderFragment);
+					fragments.add(orderFragment);
 				}
-					return fragments.get(3);
+					return fragments.get(fragments.indexOf(orderFragment));
 
 		}
 		return null;

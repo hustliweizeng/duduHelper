@@ -2,6 +2,7 @@ package com.dudu.duduhelper;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -48,14 +49,18 @@ public class BaseActivity extends FragmentActivity
 	public ImageButton selectClickButton;
 	public TextView headtitle;
 	public SharedPreferences share;
+	public SharedPreferences sp;
+	public Context context;
 
-	public String FORCE_UPDATE=""; 
+	public String FORCE_UPDATE="";
+	public String url ="";
 	public RelativeLayout relayout_mytitle;
-	public String umeng_token;
+	public static String  umeng_token = "dudu";
 
 	@Override
 	protected void onCreate(Bundle arg0) 
 	{
+		context = this;
 		//在所有界面统计app启动次数
 		PushAgent.getInstance(this).onAppStart();
 		// TODO Auto-generated method stub
@@ -74,7 +79,9 @@ public class BaseActivity extends FragmentActivity
 
 		//每个activity都可以获取到sp中保存的用户信息
 		share = getSharedPreferences("userinfo", MODE_PRIVATE);
-		umeng_token = getSharedPreferences("umengtoken",MODE_PRIVATE).getString("token","");
+		sp = getSharedPreferences("userconig",MODE_PRIVATE);
+
+		//umeng_token = getSharedPreferences("umengtoken",MODE_PRIVATE).getString("token","");
 		DuduHelperApplication.getInstance().addActivity(this);
 		MobclickAgent.updateOnlineConfig(this);//获取强制更新在线参数
 		FORCE_UPDATE=MobclickAgent.getConfigParams(this, "force_update" );

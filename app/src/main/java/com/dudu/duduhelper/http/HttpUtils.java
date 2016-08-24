@@ -23,7 +23,7 @@ public class HttpUtils {
 		//请求联网时，主线程显示进度条
 		//ColorDialog.showRoundProcessDialog(mContext, R.layout.loading_process_dialog_color);
 		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece
+		//保存cookie，自动保存到了shareprefercece,自动保存，自动使用
 		PersistentCookieStore myCookieStore = new PersistentCookieStore(mContext);
 		client.setCookieStore(myCookieStore);
 		if ("get".equalsIgnoreCase(method)){

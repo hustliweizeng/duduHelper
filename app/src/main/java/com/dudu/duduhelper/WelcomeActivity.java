@@ -1,7 +1,6 @@
 package com.dudu.duduhelper;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,19 +12,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.FragmentAdapter;
 import com.dudu.duduhelper.adapter.ViewPagerAdapter;
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.UserBean;
 import com.dudu.duduhelper.fragment.GuideFragment1;
 import com.dudu.duduhelper.fragment.GuideFragment2;
 import com.dudu.duduhelper.fragment.GuideFragment3;
 import com.dudu.duduhelper.fragment.GuideFragment4;
 import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.umeng.message.MsgConstant;
@@ -81,35 +77,32 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			mPushAgent.enable();
 			//获取设备id
 			device_token = mPushAgent.getRegistrationId();
-			//device_token = UmengRegistrar.getRegistrationId(this);
-			
+
 		}
 		//保存友盟的token信息
 		getSharedPreferences("umeng_token",MODE_PRIVATE).edit().putString("token",device_token).commit();
 		//统计app启动次数
 		mPushAgent.onAppStart();
-		if(getSharedPreferences("runtime", MODE_PRIVATE).getString("first", "").equals("1"))
+		if(!getSharedPreferences("runtime", MODE_PRIVATE).getBoolean("first", true))
 		{
-			//如果是第一次启动，
-//			loadImage=(ImageView) this.findViewById(R.id.loadImage);
-//			loadImage.setVisibility(View.VISIBLE);
-			if(!TextUtils.isEmpty(share.getString("username", ""))&&!TextUtils.isEmpty(share.getString("password", "")))
+			//如果登陆保存过用户数据,直接请问网络
+			if(!TextUtils.isEmpty(sp.getString("username", "")))
 			{
-				if(share.getString("usertype", "").equals("dianzhang"))
-				{
-					methord=ConstantParamPhone.GET_USER_INFO;
-				}
-				else
-				{
-					methord=ConstantParamPhone.GET_SALER_INFO;
-				}
+//				if(sp.getString("usertype", "").equals("dianzhang"))
+//				{
+//					methord=ConstantParamPhone.GET_USER_INFO;
+//				}
+//				else
+//				{
+//					methord=ConstantParamPhone.GET_SALER_INFO;
+//				}
 				//请求网络数据，并保存到本地
-				initTokenData();
+				requetConnetion();
 //				
 			}
 			else
 			{
-				//如果不是第一次启动，跳转到注册有页面
+				//如果没有登陆信息，跳转到登陆页面
 				Intent intent=new Intent(this,LoginActivity.class);
 				startActivity(intent);
 				finish();
@@ -118,12 +111,12 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		}
 		else
 		{
-			// 不是i
+			// 是一次启动
 	        initView();  
 	        // 初始化数据  
 	        initData();  
 		}
-		getSharedPreferences("runtime", MODE_PRIVATE).edit().putString("first", "1").commit();		
+		getSharedPreferences("runtime", MODE_PRIVATE).edit().putBoolean("first", false).commit();
 	}
 	
 	/** 
@@ -142,41 +135,14 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
   		viewPager.setAdapter(fragmentAdapter);
   		viewPager.setOffscreenPageLimit(4);
     	
-    	
-    	// 实例化ArrayList对象
-//    			views = new ArrayList<View>();
-//
-//    			// 实例化ViewPager
-//    			viewPager = (ViewPager) findViewById(R.id.viewpager);
-//
-//    			// 实例化ViewPager适配器
-//    			vpAdapter = new ViewPagerAdapter(views);
-    }  
+    }
   
     /** 
      * 初始化数据 
      */  
     private void initData() 
     {
-    	// 定义一个布局并设置参数
-//    			LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
-//    					LinearLayout.LayoutParams.FILL_PARENT,
-//    					LinearLayout.LayoutParams.FILL_PARENT);
-//
-//    			// 初始化引导图片列表
-//    			for (int i = 0; i < pics.length; i++) {
-//    				ImageView iv = new ImageView(this);
-//    				iv.setLayoutParams(mParams);
-//    				iv.setImageResource(pics[i]);
-//    				views.add(iv);
-//    			}
-    	
-  
-        // 设置数据  
-	    //前面的views中没有数据 在前面的循环中才插入数据 而此时vpAdapter中已经有数据说明   
-	    //初始化adapter的时候 参数传递是传引用  
-        // 设置监听  
-        viewPager.setOnPageChangeListener(this);  
+        viewPager.setOnPageChangeListener(this);
   
         // 初始化底部小点  
         initPoint();  
@@ -271,166 +237,30 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
     }
 
 	/**
-	 * 初始化token数据,保存dao本地sp
+	 * 请问网络连接，通过cookie请求数据（cookie超时以后，需要重新登陆）
 	 */
-	private void initTokenData()
+	private void requetConnetion()
 	{
 		// TODO Auto-generated method stub
-		SharedPreferences sharePrint= WelcomeActivity.this.getSharedPreferences("printinfo", WelcomeActivity.this.MODE_PRIVATE);
 		RequestParams params = new RequestParams();
-		params.add("token",WelcomeActivity.this.share.getString("token", ""));
-		params.add("version", ConstantParamPhone.VERSION);
-		params.add("umeng_token", device_token);
-		params.setContentEncoding("UTF-8");
 		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(WelcomeActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.get(ConstantParamPhone.IP+methord, params,new TextHttpResponseHandler(){
-	
+		//请求网络连接之前，设置保存cookie，
+		url = ConstantParamPhone.BASE_URL+ConstantParamPhone.GET_USER_INFO;
+		HttpUtils.getConnection(context, params, url, "POST", new TextHttpResponseHandler() {
 			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-			{
-				//Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_LONG).show();
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"登陆超时，请重新登陆",Toast.LENGTH_LONG).show();
+
 			}
+
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-			{
-				UserBean userBean=new Gson().fromJson(arg2,UserBean.class);
-				if(!userBean.getStatus().equals("1"))
-				{
-					Toast.makeText(WelcomeActivity.this, userBean.getInfo(), Toast.LENGTH_LONG).show();
-					share.edit().clear().commit();
-					DuduHelperApplication.getInstance().exit();
-					//保存用户信息
-					
-				}
-				else
-				{
-					if(userBean.getStatus().equals("-1006"))
-					{
-						//Toast.makeText(getActivity(), "出错啦！", Toast.LENGTH_SHORT).show();
-						MyDialog.showDialog(WelcomeActivity.this, "该账号已在其他手机登录，请新登录", false, true, "取消", "确定",new OnClickListener() {
-							
-							@Override
-							public void onClick(View v) {
-								// TODO Auto-generated method stub
-								MyDialog.cancel();
-							}
-						}, new OnClickListener() {
-							
-							@Override
-							public void onClick(View v) {
-								// TODO Auto-generated method stub
-								Intent intent=new Intent(WelcomeActivity.this,LoginActivity.class);
-								startActivity(intent);
-							}
-						});
-						
-					}
-					
-					else
-					{
-						//Toast.makeText(getActivity(), userBean.getInfo(), Toast.LENGTH_LONG).show();
-						//保存用户信息
-						SharedPreferences.Editor edit = share.edit(); //编辑文件 
-						if(!TextUtils.isEmpty(userBean.getData().getId()))
-						{
-							edit.putString("userid",userBean.getData().getId());
-						}
-						if(!TextUtils.isEmpty(userBean.getData().getUsername()))
-						{
-							edit.putString("username",userBean.getData().getUsername());
-						}
-						if(!TextUtils.isEmpty(userBean.getData().getShopname()))
-						{
-							edit.putString("shopname",userBean.getData().getShopname());
-						}
-						if(!TextUtils.isEmpty(userBean.getData().getShoplogo()))
-						{
-							edit.putString("shoplogo",userBean.getData().getShoplogo());
-						}
-						if(!TextUtils.isEmpty(userBean.getData().getMoney()))
-						{
-							edit.putString("money", userBean.getData().getMoney());
-						}
-						if(!TextUtils.isEmpty(userBean.getData().getToken()))
-						{
-							edit.putString("token", userBean.getData().getToken());
-						}
-						if(!(userBean.getData().getTodaystat()==null))
-						{
-							edit.putString("todaystatvisitor", userBean.getData().getTodaystat().getVisiter());
-							edit.putString("todaystatbuyer", userBean.getData().getTodaystat().getBuyer());
-							edit.putString("todaystatorder", userBean.getData().getTodaystat().getOrder());
-							edit.putString("todaystatincome", userBean.getData().getTodaystat().getIncome());
-						}
-						else
-						{
-							edit.putString("todaystatvisitor", "0");
-							edit.putString("todaystatbuyer", "0");
-							edit.putString("todaystatorder", "0");
-							edit.putString("todaystatincome", "0");
-						}
-						if(!(userBean.getData().getTotalstat()==null))
-						{
-							edit.putString("totalstatvisitor", userBean.getData().getTotalstat().getVisiter());
-							edit.putString("totalstatbuyer", userBean.getData().getTotalstat().getBuyer());
-							edit.putString("totalstatorder", userBean.getData().getTotalstat().getOrder());
-							edit.putString("totalstatincome", userBean.getData().getTotalstat().getIncome());
-						}
-						else
-						{
-							edit.putString("totalstatvisitor", "0");
-							edit.putString("totalstatbuyer", "0");
-							edit.putString("totalstatorder", "0");
-							edit.putString("totalstatincome", "0");
-						}
-						if(!(userBean.getData().getBank()==null))
-						{
-							edit.putString("bankname", userBean.getData().getBank().getBankname());
-							edit.putString("bankno", userBean.getData().getBank().getBankno());
-							edit.putString("truename", userBean.getData().getBank().getTruename());
-							edit.putString("province", userBean.getData().getBank().getProvince());
-							edit.putString("city", userBean.getData().getBank().getCity());
-							edit.putString("moreinfo", userBean.getData().getBank().getMoreinfo());
-						}
-						else
-						{
-							edit.putString("bankname", "");
-							edit.putString("bankno", "");
-							edit.putString("truename", "");
-							edit.putString("province", "");
-							edit.putString("city", "");
-							edit.putString("moreinfo", "");
-						}
-					    edit.commit();//保存数据信息 
-					    
-					}
-				}
-			}
-			@Override
-			public void onFinish() 
-			{
-				Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
-				startActivity(intent);
-				finish();
-				// TODO Auto-generated method stub
-//				if(getActivity()!=null)
-//				{
-//					shopeNameTextView.setText(((MainActivity)getActivity()).share.getString("shopname", ""));
-//					//防止imageLoader闪动
-//					ImageAware imageAware = new ImageViewAware(mineImageHead, false);
-//					imageLoader.displayImage(((MainActivity)getActivity()).share.getString("shoplogo", ""), imageAware);
-//					//imageLoader.displayImage(((MainActivity)getActivity()).share.getString("shoplogo", ""),mineImageHead, options);
-//					fangkeNumText.setText(((MainActivity)getActivity()).share.getString("todaystatvisitor", ""));
-//					buyerNumText.setText(((MainActivity)getActivity()).share.getString("todaystatbuyer", ""));
-//					orderNumText.setText(((MainActivity)getActivity()).share.getString("todaystatorder", ""));
-//					earnMoneyTextView.setText("￥"+" "+((MainActivity)getActivity()).share.getString("todaystatincome", ""));
-//					getCashMoneyTextView.setText("￥"+" "+((MainActivity)getActivity()).share.getString("money", ""));
-//				}
+			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("welcome",s);
+                startActivity(new Intent(context,MainActivity.class));
+                finish();
 			}
 		});
+
 	}
 
 

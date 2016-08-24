@@ -1,7 +1,6 @@
 package com.dudu.duduhelper.fragment;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -52,23 +51,17 @@ import com.umeng.update.UpdateStatus;
 import org.apache.http.Header;
 
 
-public class ShopMineFragment extends Fragment 
+public class ShopMineFragment extends Fragment
 {
 	private OverScrollView mineScrollview;
 	private ImageView mineImageHead;
 	private RelativeLayout mineheadRelLine;
 	private RelativeLayout relupdate;
 	private RelativeLayout bankCardRel;
-	//private RelativeLayout CashRel;
-	//private RelativeLayout accountDataRel;
-	//private RelativeLayout printRel;
 	private RelativeLayout helpRel;
 	private RelativeLayout aboutRel;
-	//private TextView printTextView;
 	private View MineFragmentView;
-	//private TextView fangkeNumText;
 	private TextView tv_frozen_num_mine;
-	//private TextView orderNumText;
 	private TextView earnMoneyTextView;
 	private TextView getCashMoneyTextView;
 	private TextView mineText;
@@ -82,6 +75,7 @@ public class ShopMineFragment extends Fragment
 	private String methord;
 	private RelativeLayout qcodeImgRel;
 	private RelativeLayout getCashButtonRel;
+	private SharedPreferences sp;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) 
@@ -91,15 +85,16 @@ public class ShopMineFragment extends Fragment
 		return MineFragmentView;
 	}
 	@Override
+	//当绑定的activity创建的时候
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) 
 	{
-
 		super.onActivityCreated(savedInstanceState);
 		if(getActivity()!=null)
 		{
 			//获取本地的个人信息
-			share=((MainActivity)getActivity()).share;
+			sp = ((MainActivity) getActivity()).sp;
 		}
+		//UIL的设置
 		options = new DisplayImageOptions.Builder()
 		.showImageOnLoading(R.drawable.icon_head)
 		.showImageForEmptyUri(R.drawable.icon_head)
@@ -123,7 +118,7 @@ public class ShopMineFragment extends Fragment
 		// TODO Auto-generated method stub
 		super.onResume();
 		MobclickAgent.onPageStart("MineFragment");
-		if(share.getString("usertype", "").equals("dianzhang"))
+		if("dianzhang".equals(share.getString("usertype", "")))
 		{
 			methord = ConstantParamPhone.GET_USER_INFO;
 		}
@@ -270,53 +265,49 @@ public class ShopMineFragment extends Fragment
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 
 			}
 		});
 	}
+	//初始化页面显示
 	private void initFragemntView() 
 	{
-		// TODO Auto-generated method stub
 		getCashButtonRel=(RelativeLayout) MineFragmentView.findViewById(R.id.getCashButtonRel);
 		lin1=(LinearLayout) MineFragmentView.findViewById(R.id.lin1);
 		rel2=(RelativeLayout) MineFragmentView.findViewById(R.id.rel2);
 		mineheadRelLine=(RelativeLayout) MineFragmentView.findViewById(R.id.mineheadRelLine);
-		//printTextView=(TextView) MineFragmentView.findViewById(R.id.printTextView);
-		//printRel=(RelativeLayout) MineFragmentView.findViewById(R.id.printRel);
 		helpRel=(RelativeLayout) MineFragmentView.findViewById(R.id.helpRel);
 		aboutRel=(RelativeLayout) MineFragmentView.findViewById(R.id.aboutRel);
+		//提现按钮
 		getCashButtonRel.setOnClickListener(new OnClickListener() 
 		{
 			
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				Intent intent=new Intent(getActivity(),ShopBankListActivity.class);
 				intent.putExtra("action", "tixian");
 				startActivity(intent);
 			}
 		});
+		//个人中心按钮
 		mineheadRelLine.setOnClickListener(new OnClickListener() 
 		{
 			
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				Intent intent=new Intent(getActivity(),ShopSettingActivity.class);
 				startActivity(intent);
 			}
 		});
-
+		//帮助中心按钮
 		helpRel.setOnClickListener(new OnClickListener()
 		{
 			
 			@Override
 			public void onClick(View arg0) 
 			{
-				// TODO Auto-generated method stub
 				if(getActivity()!=null)
 				{
 				Intent intent=new Intent(getActivity(),WebPageActivity.class);
@@ -325,11 +316,11 @@ public class ShopMineFragment extends Fragment
 				}
 			}
 		});
+		//关于我们按钮
 		aboutRel.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				if(getActivity()!=null)
 				{
 				Intent intent=new Intent(getActivity(),WebPageActivity.class);
@@ -353,18 +344,17 @@ public class ShopMineFragment extends Fragment
 		//初始化个人信息，通过三级缓存？不需要，登陆以后自动保存信息，所以sp必然有数据
 		if(getActivity()!=null)
 		{
-			SharedPreferences sp = getActivity().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
-			shopeNameTextView.setText(sp.getString("shopname", ""));
+			shopeNameTextView.setText(sp.getString("shopName", ""));
 			//防止imageLoader闪动
 			ImageAware imageAware = new ImageViewAware(mineImageHead, false);
 			//动态显示图片
-			imageLoader.displayImage(sp.getString("shoplogo", ""), imageAware);
+			imageLoader.displayImage(sp.getString("shopLogo", ""), imageAware);
 			//冻结金额
-			tv_frozen_num_mine.setText(sp.getString("todaystatbuyer", ""));
+			tv_frozen_num_mine.setText(sp.getString("frozenMoney", ""));
 			//显示今日收入
-			earnMoneyTextView.setText(sp.getString("todaystatincome", "")+"↑");
+			earnMoneyTextView.setText(sp.getString("todayIncome", "")+"↑");
 			//可提现金额
-			getCashMoneyTextView.setText(sp.getString("money", ""));
+			getCashMoneyTextView.setText(sp.getString("useableMoney", ""));
 		}
 
 		qcodeImgRel.setOnClickListener(new OnClickListener() {
@@ -372,7 +362,6 @@ public class ShopMineFragment extends Fragment
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				Intent intent=new Intent(getActivity(),WXEntryActivity.class);
 				intent.putExtra("type", ConstantParamPhone.GET_CASHIER_CODE);
 				startActivity(intent);
@@ -384,7 +373,6 @@ public class ShopMineFragment extends Fragment
 			@Override
 			public void onClick(View arg0) 
 			{
-				// TODO Auto-generated method stub
 				if(getActivity()!=null)
 				{
 					UmengUpdateAgent.setUpdateAutoPopup(false);
@@ -415,26 +403,7 @@ public class ShopMineFragment extends Fragment
 				    }
 				}
 		    });
-//		mineScrollview.setOnTouchListener(new OnTouchListener() 
-//		{
-//			
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) 
-//			{
-//				// TODO Auto-generated method stub
-//				if (event.getAction() == MotionEvent.ACTION_MOVE) {
-//			        // 可以监听到ScrollView的滚动事件
-//			        //System.out.println(mineScrollview.getScrollY());
-//			        LayoutParams lp;        
-//					lp=mineImageHead.getLayoutParams();
-//					lp.height=Util.dip2px(getActivity(),100)-mineScrollview.getScrollY();          
-//					mineImageHead.setLayoutParams(lp);
-//					mineText.setAlpha((float) (mineScrollview.getScrollY()*0.008));
-//			    }
-//			    return false;
-//			}
-//		});
-		//滚动停止与滚动距离
+
 		mineScrollview.setOverScrollTinyListener(new OverScrollTinyListener() 
 		{
 			Boolean isDown=false;
@@ -442,59 +411,24 @@ public class ShopMineFragment extends Fragment
 			@Override
 			public void scrollLoosen() 
 			{
-				// TODO Auto-generated method stub
-//				if(isDown)
-//				{
-//					LayoutParams lp;        
-//			        lp=mineImageHead.getLayoutParams();
-//			        lp.height=Util.dip2px(getActivity(),100);    
-//			        mineImageHead.setLayoutParams(lp);
-//				}
-				//下拉加载数据
-				//if(share.getString("usertype", "").equals("dianzhang"))
-				//{
+
 					initData();
-				//}
 			}
 			
 			@Override
 			public void scrollDistance(int tinyDistance, int totalDistance) 
 			{
-				// TODO Auto-generated method stub
-				//Log.i("info",String.valueOf(tinyDistance));  //微量变化
-				//Log.i("info2",String.valueOf(totalDistance)); //上拉正数，递增下拉负数递增
-//				if(totalDistance<0)
-//				{
-//					isDown=true;
-//					LayoutParams lp1;        
-//					lp1=mineImageHead.getLayoutParams();
-//					lp1.height=Util.dip2px(getActivity(),100)-totalDistance;     
-//					mineImageHead.setLayoutParams(lp1);
-//				}
-//				else
-//				{
-//					isDown=false;
-//				}
+
 				
 			}
 		});
 		bankCardRel=(RelativeLayout) MineFragmentView.findViewById(R.id.bankCardRel);
-//		CashRel=(RelativeLayout) MineFragmentView.findViewById(R.id.CashRel);
-//		CashRel.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				Intent intent=new Intent(getActivity(),GetCashActivity.class);
-//				startActivity(intent);
-//			}
-//		});
+
 		bankCardRel.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				if(TextUtils.isEmpty(share.getString("mobile", "")))
 				{
 					MyDialog.showDialog(getActivity(), "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener() 
@@ -503,7 +437,6 @@ public class ShopMineFragment extends Fragment
 						@Override
 						public void onClick(View arg0) 
 						{
-							// TODO Auto-generated method stub
 							Intent intent=new Intent(getActivity(),LoginBindPhoneActivity.class);
 							startActivity(intent);
 						}
@@ -511,7 +444,6 @@ public class ShopMineFragment extends Fragment
 						
 						@Override
 						public void onClick(View arg0) {
-							// TODO Auto-generated method stub
 							MyDialog.cancel();
 						}
 					});
@@ -524,49 +456,16 @@ public class ShopMineFragment extends Fragment
 				}
 			}
 		});
-//		accountDataRel=(RelativeLayout) MineFragmentView.findViewById(R.id.accountDataRel);
-//		accountDataRel.setOnClickListener(new OnClickListener() 
-//		{
-//			
-//			@Override
-//			public void onClick(View v) 
-//			{
-//				// TODO Auto-generated method stub
-//				Intent intent=new Intent(getActivity(), ShopAccountDataActivity.class);
-//				startActivity(intent);
-//			}
-//		});
-		if(!share.getString("usertype", "").equals("dianzhang"))
+
+		if(!("dianzhang".equals(share.getString("usertype", ""))))
 		{
-			//lin1.setVisibility(View.INVISIBLE);
-			//rel2.setVisibility(View.GONE);
-			//CashRel.setVisibility(View.GONE);
 			bankCardRel.setVisibility(View.GONE);
-			//memberDataRel.setVisibility(View.GONE);
-		  
+
 		}
 		
 		
 	}
-//	private BroadcastReceiver receiver=new BroadcastReceiver() 
-//	{
-//		@Override
-//		public void onReceive(Context context, Intent intent) 
-//		{
-//			// TODO Auto-generated method stub
-//			String action = intent.getAction(); 
-//			if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action))
-//			{
-//				if (bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON)
-//				{
-//					//Toast.makeText(OrderDetailActivity.this,"打开成功", Toast.LENGTH_SHORT).show();
-//					ColorDialog.dissmissProcessDialog();
-//					Intent intent1=new Intent(getActivity(),SearchBlueToothActivity.class);
-//					startActivity(intent1);
-//				}
-//			}
-//		}
-//	};
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub

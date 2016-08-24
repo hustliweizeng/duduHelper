@@ -17,6 +17,7 @@
         android:orientation="vertical"
         android:layout_below="@+id/head"
         android:background="@color/head_color"
+        
         android:visibility="gone"/>
 
         <android.support.v4.widget.SwipeRefreshLayout
