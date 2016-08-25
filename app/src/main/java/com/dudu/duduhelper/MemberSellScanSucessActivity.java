@@ -4,10 +4,9 @@ package com.dudu.duduhelper;
 import org.apache.http.Header;
 
 import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.CashSellBean;
 import com.dudu.duduhelper.bean.MemberSellBean;
 import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;

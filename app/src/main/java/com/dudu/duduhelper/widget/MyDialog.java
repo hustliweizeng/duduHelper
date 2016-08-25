@@ -1,14 +1,14 @@
 package com.dudu.duduhelper.widget;
 
-import com.dudu.duduhelper.R;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.dudu.duduhelper.R;
 
 public class MyDialog 
 {

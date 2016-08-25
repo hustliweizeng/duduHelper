@@ -1,7 +1,7 @@
 package com.dudu.duduhelper;
 
 import com.dudu.duduhelper.bean.GetHongBaoHistDataBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 
 import android.os.Bundle;
 import android.widget.TextView;

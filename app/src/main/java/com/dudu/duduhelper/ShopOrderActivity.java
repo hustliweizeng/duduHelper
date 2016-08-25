@@ -32,7 +32,7 @@ import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.OrderBean;
 import com.dudu.duduhelper.bean.ProvienceBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;

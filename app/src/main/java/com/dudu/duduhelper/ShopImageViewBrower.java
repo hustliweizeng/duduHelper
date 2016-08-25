@@ -16,11 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.Utils.ViewUtils;
 import com.dudu.duduhelper.adapter.ShopImageAdapter;
 import com.dudu.duduhelper.adapter.ShopImageAdapter.OnSelectImageClickListener;
-import com.dudu.duduhelper.bean.ImageBean;
-import com.dudu.duduhelper.common.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.loopj.android.http.RequestParams;
@@ -30,17 +29,17 @@ import org.apache.http.Header;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 选取图片的工具
  */
-public class ShopImageViewBrower extends BaseActivity 
+public class ShopImageViewBrower extends BaseActivity
 {
-	private List<ImageBean> imageList = new ArrayList<ImageBean>();
+	private ArrayList<String> imageList = new ArrayList<String>();
 	private GridView ImageGridViewBrower;
 	private LinearLayout selectLinearView;
 	private ShopImageAdapter shopImageAdapter =new ShopImageAdapter(this);
@@ -49,8 +48,6 @@ public class ShopImageViewBrower extends BaseActivity
 	private LinearLayout delectLinearView;
 	//private ImageView imageView;
 	private Uri uri = null;
-	private Uri urilocal = null;
-	private String imagepath = null;
 	//编辑按钮
 	private Button editButton;
 	//生成文件
@@ -60,14 +57,16 @@ public class ShopImageViewBrower extends BaseActivity
 	public final int VERION_DOWN = 2;
 	public final int AFTER_CUT = 4;
 	public final int AFTER_CAMERA = 3;
+	private int sourceType;
+	private String picPath;
 
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_image_view_brower);
-		init();
+		initHead();
 
 		//imageView = (ImageView) this.findViewById(R.id.imageView);
 		editButton=(Button) this.findViewById(R.id.selectTextClickButton);
@@ -75,7 +74,7 @@ public class ShopImageViewBrower extends BaseActivity
 		editButton.setVisibility(View.VISIBLE);
 		delectButton = (ImageView) this.findViewById(R.id.delectButton);
 		delectButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -83,10 +82,10 @@ public class ShopImageViewBrower extends BaseActivity
 			}
 		});
 		delectLinearView = (LinearLayout) this.findViewById(R.id.delectLinearView);
-		editButton.setOnClickListener(new OnClickListener() 
+		editButton.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
 				shopImageAdapter.setCheckVisableOffOn();
@@ -102,11 +101,11 @@ public class ShopImageViewBrower extends BaseActivity
 					delectLinearView.setVisibility(View.GONE);
 					selectLinearView.setVisibility(View.GONE);
 				}
-				
+
 			}
 		});
 		//获取传递过来的图片集合
-		imageList = (List<ImageBean>) getIntent().getSerializableExtra("imageList");
+		imageList = getIntent().getStringArrayListExtra("imageList");
 		//从相册选取
 		selectFromImage = (Button) this.findViewById(R.id.selectFromImage);
 		//从相机选择
@@ -116,43 +115,43 @@ public class ShopImageViewBrower extends BaseActivity
 		//选择框
 		selectLinearView = (LinearLayout) this.findViewById(R.id.selectLinearView);
 		//从相册选择按钮监听
-		selectFromImage.setOnClickListener(new OnClickListener() 
+		selectFromImage.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				//打开相册
-				Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT  
-				intent.addCategory(Intent.CATEGORY_OPENABLE);  
-				intent.setType("image/jpeg");  
+				Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
+				intent.addCategory(Intent.CATEGORY_OPENABLE);
+				intent.setType("image/jpeg");
 				if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT)
-				{        
+				{
 					    //4.4的版本，code=1
 				        startActivityForResult(intent,  VERION_UP);
 				}
 				else
 				{       //4.4一下的版本
 				        startActivityForResult(intent, VERION_DOWN);
-				}   
+				}
 			}
 		});
 		//从相机选择监听
-		selectFromCamare.setOnClickListener(new OnClickListener() 
+		selectFromCamare.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);  
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				//指定调用相机拍照后照片的储存路径
 				intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(tempFile));
                 startActivityForResult(intent, AFTER_CAMERA);
 			}
 		});
 		//点击照相机图片后，弹出从相册选择和拍照按钮
-		shopImageAdapter.setOnSelectImageClickListener(new OnSelectImageClickListener() 
+		shopImageAdapter.setOnSelectImageClickListener(new OnSelectImageClickListener()
 		{
 			@Override
-			public void onSelectClick() 
+			public void onSelectClick()
 			{
 				delectLinearView.setVisibility(View.GONE);
 				selectLinearView.setVisibility(View.VISIBLE);
@@ -160,41 +159,46 @@ public class ShopImageViewBrower extends BaseActivity
 			}
 		});
 		//适配器添加数据
-		shopImageAdapter.addAll(imageList);
+		//非空判断
+		if (imageList!=null && imageList.size()!=0 ){
+			shopImageAdapter.addAll(imageList);
+		}
 		//gridview设置适配器
 		ImageGridViewBrower.setAdapter(shopImageAdapter);
 	}
 
-	private void init() {
+	private void initHead() {
 		//根据不同情况设置不同的页面标题
-		int type = getIntent().getIntExtra("type",-1);
-		if (type == 1){
+		sourceType = getIntent().getIntExtra("type",-1);
+		if (sourceType == 1){
 			initHeadView("商品相册", true, false, 0);
-		}else if(type == 2){
+		}else if(sourceType == 2){
 			initHeadView("店铺相册", true, false, 0);
-		}else if(type == 3){
+		}else if(sourceType == 3){
 			initHeadView("红包相册", true, false, 0);
+		}else if (sourceType == 5){
+			initHeadView("店铺相册",true,false,0);
 		}
 	}
 
 	@Override
 	//点击相册后返回数据的处理
-	public void onActivityResult(int requestCode, int resultCode, Intent data) 
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		 //4.4系统获取裁剪路径的方法，但是拍照是不适用的，因为只适合图库就是图片存在的前提下
-		 
+
         //System.out.println(path);
 		//针对4.4，可以把拍照后的图片保存在本地，通过文件名的方式寻找到uri，推荐做法
         //Uri.fromFile(tempFile);
 		if(resultCode == RESULT_OK)
 		{
-			switch (requestCode) 
+			switch (requestCode)
 			{
 			    //4.4以上的版本
 				case VERION_UP:
-					
+
 					String path = Util.getPath(ShopImageViewBrower.this, data.getData());
 					uri = Uri.fromFile(new File(path));
 					startPhotoZoom(uri);
@@ -215,11 +219,8 @@ public class ShopImageViewBrower extends BaseActivity
 					break;
 			    //裁剪返回的结果
 				case AFTER_CUT:
-					ImageBean imageBean = new ImageBean();
-					//本地图片用imageril存储
-					imageBean.setImageUri(urilocal);
-					//把裁剪后的bean插入到适配器的数据源
-					shopImageAdapter.add(imageBean);
+					//把裁剪后的地址插入到适配器的数据源
+					shopImageAdapter.add(picPath);
 					//imageView.setImageURI(urilocal);
 					break;
 				default:
@@ -233,14 +234,14 @@ public class ShopImageViewBrower extends BaseActivity
 		{
 			Toast.makeText(ShopImageViewBrower.this, "操作已取消", Toast.LENGTH_SHORT).show();
 		}
-		
+
 	}
 
 	/**
 	 * 根据uri地址裁剪图片
 	 * @param uri
 	 */
-	private void startPhotoZoom(Uri uri) 
+	private void startPhotoZoom(Uri uri)
 	{   //系统自带的裁剪工具
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
@@ -252,28 +253,29 @@ public class ShopImageViewBrower extends BaseActivity
         // outputX,outputY 是剪裁图片的宽高
         intent.putExtra("outputX", 300);
         intent.putExtra("outputY", 300);
-        
-        //裁剪后的名称
-        imagepath = Environment.getExternalStorageDirectory()+getPhotoFileName();
+
+        //裁剪后的名称放到集合中
+		//ImageBean bean = new ImageBean();
+		//bean.setPath( Environment.getExternalStorageDirectory()+getPhotoFileName());
+		//shopImageAdapter.getImageList().add(bean);
+		//裁剪后的文件
+		picPath = Environment.getExternalStorageDirectory()+File.separator+getPhotoFileName();
     	File cropFile = new File(Environment.getExternalStorageDirectory(),getPhotoFileName());
-        urilocal = Uri.fromFile(cropFile);
-        
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, urilocal);
-        
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cropFile));
         intent.putExtra("return-data", false);//设置返回data数据
         intent.putExtra("noFaceDetection", true); //关闭人脸检测
         startActivityForResult(intent, AFTER_CUT);
     }
 	// 使用系统当前日期加以调整作为照片的名称
-    private String getPhotoFileName() 
+    private String getPhotoFileName()
     {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("'IMG'_yyyyMMdd_HHmmss");
         return dateFormat.format(date) + ".jpg";
     }
-    
+
     @Override
-    public void RightButtonClick() 
+    public void RightButtonClick()
     {
     	// TODO Auto-generated method stub
     	super.RightButtonClick();
@@ -286,7 +288,18 @@ public class ShopImageViewBrower extends BaseActivity
 	 */
 	public void onPause() {
 		super.onPause();
-		List<ImageBean> uplodImgs = shopImageAdapter.getImageList();
+		ArrayList<String> uplodImgs = shopImageAdapter.getImageList();
+		//设置返回的数据
+		Intent intent =null;
+		if (sourceType == 5){
+			intent = new Intent(context,ShopInfoEditActivity.class);
+		}
+		//传递数据
+		intent.putExtra("pics", (Serializable) uplodImgs);
+		setResult(RESULT_OK,intent);
+
+
+
 		//通过asynHttpclient上传
 		RequestParams params = new RequestParams();
 		//获取token
@@ -300,23 +313,22 @@ public class ShopImageViewBrower extends BaseActivity
 		byte[] picByte = null;
 		//测试上传一张
 		//Log.d("list",uplodImgs.size()+"");
-		for(int i = 0;i<uplodImgs.size(); i++){
+		for(int i = 0; i< uplodImgs.size(); i++){
 			//判断数据来源，如果是网络来源(path)就不上传
-			imageUri = ViewUtils.getRealFilePath(this,uplodImgs.get(i).getImageUri());
 			if (!TextUtils.isEmpty(imageUri)){
 				try {
 					//图片根据path转换为字节流
 					picByte = ViewUtils.imageToBytes(imageUri);
 					//把字节流转换为BASE64编码
 					picBase64 = Base64.encodeToString(picByte,1);
-					Log.d("base64",picBase64);
+					//Log.d("base64",picBase64);
 					params.add("content",picBase64);
 					String url = ConstantParamPhone.BASE_URL+ConstantParamPhone.UPLOAD_PIC;
 					//请求网络
 					HttpUtils.getConnection(this, params, url, "POST", new TextHttpResponseHandler() {
 						@Override
 						public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-							Toast.makeText(ShopImageViewBrower.this,"上传失败",Toast.LENGTH_LONG).show();
+							Toast.makeText(ShopImageViewBrower.this,"上传失败，请稍后再试",Toast.LENGTH_LONG).show();
 						}
 
 						@Override

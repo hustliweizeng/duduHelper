@@ -3,28 +3,18 @@ package com.dudu.duduhelper.adapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.apache.http.Header;
 
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.MainActivity;
-import com.dudu.duduhelper.ShopMemberListActivity;
 import com.dudu.duduhelper.shopProductListActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.HongbaoListBean;
-import com.dudu.duduhelper.bean.ProductBean;
 import com.dudu.duduhelper.bean.ProductListBean;
 import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.common.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.SmoothCheckBox;
-import com.dudu.duduhelper.widget.SmoothCheckBox.OnCheckedChangeListener;
 import com.google.gson.Gson;
-import com.google.zxing.common.StringUtils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
@@ -34,7 +24,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.text.TextUtils;

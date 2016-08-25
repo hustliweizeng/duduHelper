@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.bean.ProductListBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.widget.WheelIndicatorItem;
 import com.dudu.duduhelper.widget.WheelIndicatorTongjiNoXuxianView;
 import com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView;

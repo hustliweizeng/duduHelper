@@ -4,13 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.bean.GetCashDataBean;
 import com.dudu.duduhelper.bean.GetHongBaoHistDataBean;
-import com.dudu.duduhelper.bean.OrderDataBean;
-import com.dudu.duduhelper.common.Util;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

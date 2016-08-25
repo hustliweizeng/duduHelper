@@ -7,9 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.PathEffect;
 import android.graphics.RectF;
 import android.support.v4.view.animation.PathInterpolatorCompat;
 import android.util.AttributeSet;
@@ -20,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 
 public class WheelIndicatorTongjiNoXuxianView extends View 
 {

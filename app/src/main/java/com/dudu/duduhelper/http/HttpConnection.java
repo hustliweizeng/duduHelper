@@ -26,7 +26,7 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import com.dudu.duduhelper.bean.MessageReqBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -19,8 +18,7 @@ import android.view.animation.LinearInterpolator;
 
 import java.util.ArrayList;
 
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 
 public class ConfirmView extends View
 {

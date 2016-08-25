@@ -1,6 +1,6 @@
 package com.dudu.duduhelper.widget;
 
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 
 public class WheelIndicatorTongjiView extends View 
 {

@@ -1,4 +1,4 @@
-package com.dudu.duduhelper.common;
+package com.dudu.duduhelper.Utils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import com.google.gson.Gson;
 

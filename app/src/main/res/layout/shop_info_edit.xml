@@ -12,6 +12,7 @@
         layout="@layout/activity_head" />
 
     <com.dudu.duduhelper.widget.OverScrollView
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -22,37 +23,35 @@
             android:orientation="vertical" >
 
             <RelativeLayout
-                android:id="@+id/mineheadRelLine"
+                android:id="@+id/rl_logo_shop_info"
                 android:layout_width="match_parent"
                 android:layout_height="86dp"
-                android:layout_marginTop="16dp"
                 android:background="@color/bg_white_color" >
 
                 <TextView
-                    android:id="@+id/shopeNameTextView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="16dp"
                     android:text="店铺缩略"
+                    android:gravity="center"
                     android:textColor="@color/text_dark_color"
                     android:textSize="16sp" />
 
                 <ImageView
-                    android:id="@+id/mineImageHead"
+                    android:id="@+id/iv_logo_shop_info"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@+id/imageView1"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/iv1"
                     android:src="@drawable/icon_head" />
 
                 <ImageView
-                    android:id="@+id/imageView1"
+                    android:id="@+id/iv1"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
                     android:src="@drawable/icon_arrow" />
             </RelativeLayout>
@@ -65,30 +64,33 @@
                 android:orientation="vertical" >
 
                 <RelativeLayout
-                    android:id="@+id/changeshopnamerel"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/view_selector"
-                    android:gravity="center_vertical" >
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
                         android:text="店铺名称"
+                        android:layout_centerVertical="true"
                         android:textColor="@color/text_dark_color"
                         android:textSize="16sp" />
 
                     <EditText
+                        android:id="@+id/ed_title_shop_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="14dp"
+                        android:layout_marginRight="48dp"
+                        android:layout_centerVertical="true"
                         android:background="@null"
                         android:hint="请输入店铺名称"
+                        android:layout_alignParentRight="true"
                         android:textColor="@color/text_middledark_color"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="16sp" />
+
                 </RelativeLayout>
 
                 <View
@@ -99,29 +101,41 @@
                     android:background="@color/divider_line_color" />
 
                 <RelativeLayout
-                    android:id="@+id/changefenleirel"
+                    android:id="@+id/rl_class_shop_info"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/view_selector"
-                    android:gravity="center_vertical" >
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
                         android:text="行业分类"
+                        android:layout_centerVertical="true"
                         android:textColor="@color/text_dark_color"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_class_shop_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_marginRight="14dp"
-                        android:layout_toLeftOf="@+id/icon_arr2"
-                        android:text="更换号码"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:hint="请选择行业分类"
+                        android:layout_toLeftOf="@+id/iv2"
                         android:textColor="@color/text_middledark_color"
+                        android:textColorHint="@color/text_hint_color"
                         android:textSize="16sp" />
+                    <ImageView
+                        android:id="@+id/iv2"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/icon_arrow" />
                 </RelativeLayout>
 
                 <View
@@ -132,30 +146,43 @@
                     android:background="@color/divider_line_color" />
 
                 <RelativeLayout
-                    android:id="@+id/changeshangquanrel"
+                    android:id="@+id/rl_shopcircle_shop_info"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/view_selector"
-                    android:gravity="center_vertical" >
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
                         android:text="选择商圈"
+                        android:layout_centerVertical="true"
                         android:textColor="@color/text_dark_color"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_shopcircle_shop_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_marginRight="14dp"
-                        android:layout_toLeftOf="@+id/icon_arr3"
-                        android:text="更换号码"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:hint="请选择商圈分类"
+                        android:layout_toLeftOf="@+id/iv3"
                         android:textColor="@color/text_middledark_color"
+                        android:textColorHint="@color/text_hint_color"
                         android:textSize="16sp" />
+                    <ImageView
+                        android:id="@+id/iv3"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/icon_arrow" />
                 </RelativeLayout>
+
 
                 <View
                     android:layout_width="match_parent"
@@ -165,29 +192,33 @@
                     android:background="@color/divider_line_color" />
 
                 <RelativeLayout
-                    android:id="@+id/changePhoneNumRel"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/view_selector"
-                    android:gravity="center_vertical" >
+                    >
 
                     <TextView
-                        android:id="@+id/phoneNumText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
                         android:text="联系电话"
+                        android:layout_centerVertical="true"
                         android:textColor="@color/text_dark_color"
                         android:textSize="16sp" />
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/ed_mobile_shop_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:hint="请输入联系方式"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="14dp"
-                        android:text="更换号码"
                         android:textColor="@color/text_middledark_color"
+                        android:textColorHint="@color/text_hint_color"
                         android:textSize="16sp" />
+
                 </RelativeLayout>
 
                 <View
@@ -198,29 +229,41 @@
                     android:background="@color/divider_line_color" />
 
                 <RelativeLayout
-                    android:id="@+id/changeshoptimerel"
+                    android:id="@+id/rl_opentime_shop_info"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/view_selector"
-                    android:gravity="center_vertical" >
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
                         android:text="营业时间"
+                        android:layout_centerVertical="true"
                         android:textColor="@color/text_dark_color"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_opentime_shop_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_marginRight="14dp"
-                        android:layout_toLeftOf="@+id/icon_arr5"
-                        android:text="更换号码"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:hint="请选择营业时间"
+                        android:layout_toLeftOf="@+id/iv4"
                         android:textColor="@color/text_middledark_color"
+                        android:textColorHint="@color/text_hint_color"
                         android:textSize="16sp" />
+                    <ImageView
+                        android:id="@+id/iv4"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/icon_arrow" />
                 </RelativeLayout>
 
                 <View
@@ -231,40 +274,45 @@
                     android:background="@color/divider_line_color" />
 
                 <RelativeLayout
-                    android:id="@+id/changeaddressrel"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/view_selector"
-                    android:gravity="center_vertical" >
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
                         android:text="店铺地址"
+                        android:layout_centerVertical="true"
                         android:textColor="@color/text_dark_color"
                         android:textSize="16sp" />
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/ed_address_shop_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:hint="请输入店铺地址"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="14dp"
-                        android:layout_toLeftOf="@+id/icon_arr6"
-                        android:text="更换号码"
                         android:textColor="@color/text_middledark_color"
+                        android:textColorHint="@color/text_hint_color"
                         android:textSize="16sp" />
+
                 </RelativeLayout>
             </LinearLayout>
 
             <EditText
+                android:id="@+id/ed_des_shop_info"
                 android:layout_width="match_parent"
-                android:layout_height="86dp"
+                android:layout_height="66dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/bg_white_color"
                 android:enabled="true"
                 android:gravity="top"
-                android:hint="请输入商品描述..."
+                android:hint="请输入店家描述..."
                 android:inputType="textMultiLine"
                 android:maxLines="10"
                 android:minLines="8"
@@ -280,7 +328,7 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:id="@+id/shopImageView"
+                    android:id="@+id/iv_img_shop_info"
                     android:layout_width="96dp"
                     android:layout_height="86dp"
                     android:layout_gravity="center_vertical"
@@ -291,6 +339,7 @@
                     android:src="@drawable/icon_head" />
 
                 <TextView
+                    android:id="@+id/tv_imgNum_shop_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -300,7 +349,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/loginbutton"
+                android:id="@+id/btn_subimt_shop_info"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="30dp"
@@ -308,7 +357,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/shop_normal_btn_bg"
-                android:text="登 录"
+                android:text="提  交"
                 android:textColor="#fff"
                 android:textSize="16sp" />
         </LinearLayout>

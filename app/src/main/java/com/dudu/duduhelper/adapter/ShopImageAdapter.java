@@ -1,6 +1,7 @@
 package com.dudu.duduhelper.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.bean.ImageBean;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.widget.SmoothCheckBox;
 import com.dudu.duduhelper.widget.SmoothCheckBox.OnCheckedChangeListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -26,7 +27,7 @@ public class ShopImageAdapter extends BaseAdapter
     private boolean isVisable=false;
     private OnSelectImageClickListener onSelectImageClickListener;
 	//数据源集合
-    private List<ImageBean> imageList = new ArrayList<ImageBean>();
+    private ArrayList<String> imageList = new ArrayList<String >();
 	//获取UIL实例
     protected ImageLoader imageLoader = ImageLoader.getInstance();
     public List<Integer> listDelect = new ArrayList<Integer>();//checkbox选中状态
@@ -36,13 +37,13 @@ public class ShopImageAdapter extends BaseAdapter
 		this.context = context;
 	}
 
-	public List<ImageBean> getImageList(){
+	public ArrayList<String> getImageList(){
 		return imageList;
 	}
 	@Override
 	public int getCount() 
 	{
-		// TODO Auto-generated method stub
+		// 多出来一张照片，最后一张是点击用的照片，不必上传
 		return imageList.size()+1;
 	}
 
@@ -61,12 +62,12 @@ public class ShopImageAdapter extends BaseAdapter
 	}
 	
 
-	public void addAll(List<ImageBean> imageList) 
+	public void addAll(List<String> imageList)
 	{
 		this.imageList.addAll(this.imageList.size(), imageList);
 	}
 	
-	public void add(ImageBean image) 
+	public void add(String image)
 	{
 		this.imageList.add(image);
 		notifyDataSetChanged();
@@ -138,7 +139,19 @@ public class ShopImageAdapter extends BaseAdapter
 		}
 		else
 		{
-			//设置编辑状态
+			String path = imageList.get(position);
+			if (TextUtils.isEmpty(path)){
+
+				if(path.startsWith("http")){
+					//如果是网络图片用imageloader加载
+					imageLoader.displayImage(path,imagephoto);
+				}
+				//如果是本地图片，直接加载
+				LogUtil.d("adapter",path);
+				imagephoto.setImageBitmap(BitmapFactory.decodeFile(path));
+			}
+
+			//判断复选框是否可见
 			if(isVisable)
 			{
 				photocheckbox.setVisibility(View.VISIBLE);
@@ -147,29 +160,8 @@ public class ShopImageAdapter extends BaseAdapter
 			{
 				photocheckbox.setVisibility(View.GONE);
 			}
-			//判断是本地图片还是网络图片
-			if(!TextUtils.isEmpty(imageList.get(position).getPath()))
-			{
-				//如果是本地图片，直接加载
-				imageLoader.displayImage(imageList.get(position).getPath(),imagephoto);
-			}
-			else
-			{
-				//如果是网络图片，
-
-				imagephoto.setImageURI(imageList.get(position).getImageUri());
-			}
-			//为图片设置点击事件
-			imagephoto.setOnClickListener(new OnClickListener() 
-			{
-				@Override
-				public void onClick(View v) 
-				{
-					// TODO Auto-generated method stub
-					
-				}
-			});
 		}
+
 		return convertView;
 	}
 	public void setOnSelectImageClickListener(OnSelectImageClickListener onSelectImageClickListener)

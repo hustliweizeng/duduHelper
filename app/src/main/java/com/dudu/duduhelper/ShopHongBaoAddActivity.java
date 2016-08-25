@@ -1,6 +1,5 @@
 package com.dudu.duduhelper;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,28 +10,19 @@ import java.util.Map;
 
 import org.apache.http.Header;
 import org.fireking.app.imagelib.entity.ImageBean;
-import org.fireking.app.imagelib.widget.ImageBrowserActivity;
-import org.fireking.app.imagelib.widget.PicSelectActivity;
-import org.json.JSONObject;
 
 import com.dudu.duduhelper.adapter.HongbaoAdapter;
 import com.dudu.duduhelper.adapter.HongbaoAdapter.OnDelectHongBaoItemListener;
-import com.dudu.duduhelper.adapter.OrderDetailAdapter;
 import com.dudu.duduhelper.adapter.SendShaiShaiAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.HongbaoAddBean;
 import com.dudu.duduhelper.bean.HongbaoListBean;
-import com.dudu.duduhelper.bean.ProductBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.bean.SubmitHongbaoBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.widget.OverScrollView;
-import com.dudu.duduhelper.widget.OverScrollView.OverScrollListener;
-import com.dudu.duduhelper.widget.OverScrollView.OverScrollTinyListener;
-import com.dudu.duduhelper.widget.SwitchView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
@@ -40,8 +30,6 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -50,10 +38,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.DropBoxManager.Entry;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,18 +46,15 @@ import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class ShopHongBaoAddActivity extends BaseActivity {
 	private SendShaiShaiAdapter sendShaiShaiAdapter;

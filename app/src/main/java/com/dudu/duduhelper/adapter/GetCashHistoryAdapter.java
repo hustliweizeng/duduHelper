@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.CashHistoryDataBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 
 import android.content.Context;
 import android.view.LayoutInflater;

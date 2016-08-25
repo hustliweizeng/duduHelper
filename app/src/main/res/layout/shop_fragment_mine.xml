@@ -187,27 +187,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:background="@drawable/view_selector" >
-
                         <TextView
                             android:id="@+id/tv_frozen_num_mine"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="18dp"
                             android:text="0"
                             android:textColor="@color/text_color_light"
                             android:textSize="20sp" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/buyerNumText"
+                            android:layout_below="@id/tv_frozen_num_mine"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="6dp"
                             android:text="冻结金额"
                             android:textColor="@color/text_color_light"
                             android:textSize="14dp" />
+
+
+
+
                     </RelativeLayout>
                 </LinearLayout>
 

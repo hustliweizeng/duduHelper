@@ -6,7 +6,6 @@ import java.util.List;
 import org.fireking.app.imagelib.entity.ImageBean;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.common.Util;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;

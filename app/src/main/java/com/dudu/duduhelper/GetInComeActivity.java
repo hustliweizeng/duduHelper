@@ -8,16 +8,12 @@ import java.util.Vector;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.http.Header;
 
-import com.dudu.duduhelper.bean.GetCashBean;
-import com.dudu.duduhelper.bean.GetCashDataBean;
 import com.dudu.duduhelper.bean.GetCashDetailBean;
-import com.dudu.duduhelper.bean.OrderDetailBean;
 import com.dudu.duduhelper.bean.SelectScanOrderBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
-import com.dudu.duduhelper.wxapi.WXEntryActivity;
 import com.google.gson.Gson;
 import com.gprinter.command.EscCommand;
 import com.gprinter.command.EscCommand.ENABLE;

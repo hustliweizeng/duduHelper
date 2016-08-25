@@ -5,10 +5,7 @@ import org.apache.http.Header;
 import com.dudu.duduhelper.adapter.GetCashHistoryAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.CashHistoryBean;
-import com.dudu.duduhelper.bean.UserBean;
-import com.dudu.duduhelper.common.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -18,7 +15,6 @@ import com.loopj.android.http.TextHttpResponseHandler;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;

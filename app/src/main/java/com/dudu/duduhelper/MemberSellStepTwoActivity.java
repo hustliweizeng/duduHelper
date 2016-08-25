@@ -3,11 +3,9 @@ package com.dudu.duduhelper;
 import org.apache.http.Header;
 
 import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.CashSellBean;
 import com.dudu.duduhelper.bean.MemberSellBean;
 import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.bean.UserBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
@@ -19,7 +17,6 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;

@@ -1,30 +1,6 @@
 package com.dudu.duduhelper;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.AccountBean;
-import com.dudu.duduhelper.bean.AccountDataResponBean;
-import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.common.Util;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.dudu.duduhelper.widget.WaveHelper;
-import com.dudu.duduhelper.widget.WaveView;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -37,9 +13,27 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.bean.AccountBean;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyDialog;
+import com.dudu.duduhelper.widget.WaveHelper;
+import com.dudu.duduhelper.widget.WaveView;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class ShopAccountDataActivity extends BaseActivity 
 {
@@ -229,6 +223,7 @@ public class ShopAccountDataActivity extends BaseActivity
     	 Calendar mycalendar=Calendar.getInstance(Locale.CHINA);
          Date mydate=new Date(); //获取当前日期Date对象
          mycalendar.setTime(mydate);////为Calendar对象设置时间为当前日期
+		//日期选择器，系统自带日期选择对话框
     	 DatePickerDialog datePicker=new DatePickerDialog(ShopAccountDataActivity.this,AlertDialog.THEME_HOLO_LIGHT, new OnDateSetListener() 
     	 {
              @Override

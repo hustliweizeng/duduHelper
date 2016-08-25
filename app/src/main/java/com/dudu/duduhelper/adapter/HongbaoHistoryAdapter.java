@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.bean.GetCashDataBean;
 import com.dudu.duduhelper.bean.GetHongBaoHistDataBean;
-import com.dudu.duduhelper.bean.OrderDataBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 
 import android.content.Context;
 import android.text.TextUtils;

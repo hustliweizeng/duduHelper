@@ -3,12 +3,15 @@ package com.dudu.duduhelper.application;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 
+import com.dudu.duduhelper.R;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengNotificationClickHandler;
@@ -76,6 +79,12 @@ public class DuduHelperApplication extends Application
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.cacheInMemory(true)
 				.cacheOnDisc(true)
+				.showImageOnLoading(R.drawable.icon_head)
+				.showImageForEmptyUri(R.drawable.icon_head)
+				.showImageOnFail(R.drawable.icon_head)
+				.cacheInMemory(true).considerExifParams(true)
+				.bitmapConfig(Bitmap.Config.RGB_565)
+				.displayer(new FadeInBitmapDisplayer(100))
 				.build();
 		//默认配置
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(

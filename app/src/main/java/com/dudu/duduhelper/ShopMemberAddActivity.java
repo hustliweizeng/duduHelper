@@ -2,39 +2,27 @@ package com.dudu.duduhelper;
 
 import org.apache.http.Header;
 
-import com.dudu.duduhelper.bean.CouponDetailBean;
 import com.dudu.duduhelper.bean.MemberDataBean;
 import com.dudu.duduhelper.bean.MemberDetailBean;
 import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.common.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.widget.PopWindowList;
 import com.dudu.duduhelper.widget.PopWindowList.OnItemClickLinster;
-import com.dudu.duduhelper.wxapi.WXEntryActivity;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 
-import android.app.ActionBar.LayoutParams;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 

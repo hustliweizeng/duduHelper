@@ -2,9 +2,8 @@ package com.dudu.duduhelper;
 
 import org.apache.http.Header;
 
-import com.dudu.duduhelper.bean.CouponDetailBean;
 import com.dudu.duduhelper.bean.CouponHistoryBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
@@ -13,10 +12,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
-import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;

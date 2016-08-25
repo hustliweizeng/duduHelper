@@ -2,7 +2,7 @@ package com.dudu.duduhelper;
 
 import com.dudu.duduhelper.bean.HongbaoListBean;
 import com.dudu.duduhelper.bean.SubmitHongbaoBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.widget.WheelIndicatorItem;
 import com.dudu.duduhelper.widget.WheelIndicatorView;
 import com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView;
@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;

@@ -1,17 +1,11 @@
 package com.dudu.duduhelper;
 
-import com.dudu.duduhelper.common.Util;
-import com.dudu.duduhelper.widget.WaveHelper;
-import com.dudu.duduhelper.widget.WaveView;
-import com.dudu.duduhelper.widget.WheelIndicatorItem;
-import com.dudu.duduhelper.widget.WheelIndicatorTongjiView;
-import com.dudu.duduhelper.widget.WheelIndicatorView;
-
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.widget.WheelIndicatorItem;
+import com.dudu.duduhelper.widget.WheelIndicatorTongjiView;
 
 public class ShopAccountWatchActivity extends BaseActivity 
 {

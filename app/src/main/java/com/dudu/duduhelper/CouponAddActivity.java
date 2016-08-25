@@ -9,14 +9,12 @@ import java.util.Locale;
 
 import org.apache.http.Header;
 import org.fireking.app.imagelib.entity.ImageBean;
-import org.fireking.app.imagelib.widget.PicSelectActivity;
 
 import com.dudu.duduhelper.adapter.SendShaiShaiAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.CouponDetailBean;
-import com.dudu.duduhelper.bean.ProductBean;
 import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
@@ -41,17 +39,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class CouponAddActivity extends BaseActivity 
 {

@@ -18,7 +18,7 @@ package com.mining.app.zxing.camera;
 
 import java.io.IOException;
 
-import com.dudu.duduhelper.common.Util;
+import com.dudu.duduhelper.Utils.Util;
 
 import android.content.Context;
 import android.graphics.PixelFormat;

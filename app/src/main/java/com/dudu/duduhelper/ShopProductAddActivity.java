@@ -1,7 +1,6 @@
 package com.dudu.duduhelper;
 
 
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -27,10 +26,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.ImageBean;
 import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.common.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
@@ -46,11 +44,9 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import org.apache.http.Header;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class ShopProductAddActivity extends BaseActivity 
@@ -385,22 +381,14 @@ public class ShopProductAddActivity extends BaseActivity
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ShopProductAddActivity.this,ShopImageViewBrower.class);
 				//伪造网络数据
-				List<ImageBean> list = new ArrayList<ImageBean>();
-				ImageBean imageBean1 = new ImageBean();
-				ImageBean imageBean2 = new ImageBean();
-				ImageBean imageBean3 = new ImageBean();
-				ImageBean imageBean4 = new ImageBean();
+				ArrayList<String> list = new ArrayList<String>();
 				//网络图片地址
-				imageBean1.setPath("http://file.duduapp.net/uploads/default/42/d0/42d0019eb35f21976a5c463bdc1bb03d.jpg");
-				imageBean2.setPath("http://file.duduapp.net/98/6e/986e51a7ba15dc3ace6dde27dd1df98b.png");
-				imageBean3.setPath("http://file.duduapp.net/uploads/default/6a/81/6a814954b66a73ac70616aea91fc5bc1.jpg");
-				imageBean4.setPath("http://file.duduapp.net/uploads/default/85/0d/850dccbe4e99b2a32a45c4b8c7b8d9bf.jpg");
-				list.add(imageBean1);
-				list.add(imageBean2);
-				list.add(imageBean3);
-				list.add(imageBean4);
+				list.add("http://file.duduapp.net/uploads/default/42/d0/42d0019eb35f21976a5c463bdc1bb03d.jpg");
+				list.add("http://file.duduapp.net/98/6e/986e51a7ba15dc3ace6dde27dd1df98b.png");
+				list.add("http://file.duduapp.net/uploads/default/6a/81/6a814954b66a73ac70616aea91fc5bc1.jpg");
+				list.add("http://file.duduapp.net/uploads/default/85/0d/850dccbe4e99b2a32a45c4b8c7b8d9bf.jpg");
 				//传递集合过去
-				intent.putExtra("imageList", (Serializable)list);
+				intent.putStringArrayListExtra("imageList", list);
 				intent.putExtra("type",1);
 				//获取选中的图片
 				startActivityForResult(intent, 1);
