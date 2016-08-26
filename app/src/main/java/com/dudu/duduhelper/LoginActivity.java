@@ -239,7 +239,8 @@ public class LoginActivity extends BaseActivity
 							SharedPreferences.Editor edit = sp.edit();
 							edit.putString("username",loginBean.getUser().getName())
 							.putString("nickename",loginBean.getUser().getNickname())
-							.putString("mobie",loginBean.getUser().getMobile())
+									//手动添加
+							.putString("mobile","188888888")//loginBean.getUser().getMobile())
 							//2.存储商店信息
 							.putString("id",loginBean.getShop().getId())
 							.putString("shopLogo",loginBean.getShop().getLogo())

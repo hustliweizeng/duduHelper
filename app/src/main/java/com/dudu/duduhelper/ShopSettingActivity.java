@@ -1,8 +1,5 @@
 package com.dudu.duduhelper;
 
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.widget.MyDialog;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +8,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.widget.MyDialog;
 
 public class ShopSettingActivity extends BaseActivity implements OnClickListener
 {
@@ -52,10 +52,10 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 	//设置数据
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
-		if(!TextUtils.isEmpty(share.getString("mobile", "")))
+		String mobile = sp.getString("mobile","");
+		if(!TextUtils.isEmpty(mobile))
 		{
-		   phoneNumText.setText(share.getString("mobile", ""));
+		   phoneNumText.setText(mobile);
 		}
 		else
 		{
@@ -70,6 +70,7 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 		switch (v.getId())
 		{
 			case R.id.changePhoneNumRel:
+				//绑定手机号页面
 				intent=new Intent(ShopSettingActivity.this,ShopRebindPhoneSteponeActivity.class);
 				break;
 			case R.id.shopEditRel:

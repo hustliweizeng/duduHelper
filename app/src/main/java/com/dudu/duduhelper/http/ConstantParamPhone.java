@@ -105,7 +105,7 @@ public class ConstantParamPhone
     public static final String GET_USER_INFO = "/api/app/user/info";//获取用户信息
     public static final String SAVE_SHOP_INFO = "/api/app/shop/info";//保存店铺信息
     public static final String CHANGE_PASSWORD = "/api/app/user/changepwdbypwd";//修改密码
-    public static final String  SMS_CONFIRM = "/api/app/user/changepwdbycode"; //短信验证
+    public static final String  GET_SMS_CONFIRM = "/api/app/tool/sms"; //短信验证
 
 
 

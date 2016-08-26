@@ -1,8 +1,16 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.dudu.duduhelper.LoginBindPhoneActivity.TimeCount;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -14,17 +22,7 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import org.apache.http.Header;
 
 public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 
@@ -48,9 +46,10 @@ public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 	{
 		// TODO Auto-generated method stub
 		phoneNumText = (TextView) this.findViewById(R.id.phoneNumText);
-		if(!TextUtils.isEmpty(share.getString("mobile", "")))
+		String mobile = sp.getString("mobile","");
+		if(!TextUtils.isEmpty(mobile))
 		{
-		   phoneNumText.setText(share.getString("mobile", ""));
+			phoneNumText.setText(mobile);
 		}
 		else
 		{
