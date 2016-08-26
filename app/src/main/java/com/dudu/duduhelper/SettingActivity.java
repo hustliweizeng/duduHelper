@@ -9,7 +9,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.Utils.CleanAppCache;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.wxapi.WXEntryActivity;
@@ -83,19 +84,23 @@ public class SettingActivity extends BaseActivity
 					@Override
 					public void onClick(View v) 
 					{
-						// TODO Auto-generated method stub
-						MyDialog.cancel();
+						//清除所有sp
+						sp.edit().clear().commit();
+						LogUtil.d("clear","清除sp");
+						CleanAppCache.cleanApplicationData(context);
+						//DuduHelperApplication.getInstance().exit();
+						startActivity(new Intent(context,LoginActivity.class));
+
 					}
 				}, 
 				new OnClickListener() 
 				{
-					
 					@Override
 					public void onClick(View v) 
 					{
-						// TODO Auto-generated method stub
-						share.edit().clear().commit();
-						DuduHelperApplication.getInstance().exit();
+						// 取消按钮
+						LogUtil.d("clear","取消清除sp");
+						MyDialog.cancel();
 					}
 				});
 				
