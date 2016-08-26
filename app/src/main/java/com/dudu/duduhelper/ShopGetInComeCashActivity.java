@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.GetInComeCashBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
@@ -49,7 +48,6 @@ public class ShopGetInComeCashActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_get_in_come_cash);
 		initHeadView("收款", true, true, R.drawable.icon_bangzhutouming);
-		DuduHelperApplication.getInstance().addActivity(this);
 		if(getIntent().getStringExtra("action")!=null)
 		{
 			action = getIntent().getStringExtra("action");

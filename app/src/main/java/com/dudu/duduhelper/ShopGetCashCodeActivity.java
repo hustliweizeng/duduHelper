@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
@@ -29,7 +28,6 @@ public class ShopGetCashCodeActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_get_cash_code);
 		initHeadView("收款", true,true, R.drawable.icon_bangzhutouming);
-		DuduHelperApplication.getInstance().addActivity(this);
 		//获取传递过来的二维码和价格
 		imageUrl=getIntent().getStringExtra("qrcode");
 		money=getIntent().getStringExtra("money");

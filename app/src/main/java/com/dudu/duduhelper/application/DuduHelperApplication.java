@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -102,6 +103,7 @@ public class DuduHelperApplication extends Application
 	public void addActivity(Activity activity)
 	{
 		mList.add(activity);
+		LogUtil.d("activityNum:",""+mList.size());
 	}
 
 	public void exit() 

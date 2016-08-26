@@ -1,18 +1,5 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,6 +10,18 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.dudu.duduhelper.bean.ResponsBean;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 public class LoginBindPhoneActivity extends BaseActivity 
 {
@@ -40,7 +39,6 @@ public class LoginBindPhoneActivity extends BaseActivity
 		setContentView(R.layout.activity_login_bind_phone);
 		time = new TimeCount(60000, 1000);//构造CountDownTimer对象
 		initHeadView("绑定手机号", true, false, 0);
-		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 	}
 

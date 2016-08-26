@@ -24,7 +24,6 @@ import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.ShopDiscountScanSucessActivity;
 import com.dudu.duduhelper.ShopGetInComeCashActivity;
-import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.mining.app.zxing.camera.CameraManager;
@@ -72,7 +71,6 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_capture);
 		
-		DuduHelperApplication.getInstance().addActivity(this);
 		//通过其他界面跳转过来携带的参数
 		action = getIntent().getStringExtra("action");
 		orderName = getIntent().getStringExtra("orderName");

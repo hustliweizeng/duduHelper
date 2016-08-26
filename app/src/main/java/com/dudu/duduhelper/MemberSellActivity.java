@@ -1,13 +1,8 @@
 package com.dudu.duduhelper;
 
-import com.dudu.duduhelper.application.DuduHelperApplication;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,7 +20,6 @@ public class MemberSellActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_member_sell);
 		initHeadView("会员卡核销", true, false,R.drawable.icon_historical);
-		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 	}
 

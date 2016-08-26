@@ -1,26 +1,18 @@
 package com.dudu.duduhelper;
 
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.wxapi.WXEntryActivity;
-
-import android.app.ActionBar.LayoutParams;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class SettingActivity extends BaseActivity 
 {
@@ -34,7 +26,6 @@ public class SettingActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
-		DuduHelperApplication.getInstance().addActivity(this);
 		initHeadView("设置", true, false, 0);
 		initView();
 	}

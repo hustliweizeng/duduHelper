@@ -1,9 +1,15 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.dudu.duduhelper.LoginBindPhoneActivity.TimeCount;
-import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
@@ -13,16 +19,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import org.apache.http.Header;
 
 public class UserBankInfoConfirmActivity extends BaseActivity {
 
@@ -34,7 +31,6 @@ public class UserBankInfoConfirmActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_userbank_info_confirm);
-		DuduHelperApplication.getInstance().addActivity(this);
 		initHeadView("信息验证", true, false, 0);
 		time = new TimeCount(60000, 1000);//构造CountDownTimer对象
 		initView();

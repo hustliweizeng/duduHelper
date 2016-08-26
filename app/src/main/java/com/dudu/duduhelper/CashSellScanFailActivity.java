@@ -1,13 +1,12 @@
 package com.dudu.duduhelper;
 
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.example.qr_codescan.MipcaActivityCapture;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.example.qr_codescan.MipcaActivityCapture;
 
 public class CashSellScanFailActivity extends BaseActivity 
 {
@@ -17,7 +16,6 @@ public class CashSellScanFailActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cash_sell_scan_fail);
 		initHeadView("优惠券核销", true, false,R.drawable.icon_historical);
-		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 	}
 

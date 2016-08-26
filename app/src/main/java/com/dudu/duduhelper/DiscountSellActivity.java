@@ -1,19 +1,5 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.DiscountBean;
-import com.dudu.duduhelper.bean.GetFirstCardBean;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,6 +9,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dudu.duduhelper.bean.DiscountBean;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 public class DiscountSellActivity extends BaseActivity 
 {
@@ -36,7 +34,6 @@ public class DiscountSellActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_discount_sell);
 		initHeadView("五折卡验证", true, false, 0);
-		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 		
 	}

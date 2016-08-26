@@ -61,6 +61,8 @@ public class BaseActivity extends FragmentActivity
 	protected void onCreate(Bundle arg0) 
 	{
 		context = this;
+		//把所有页面加到application
+		DuduHelperApplication.getInstance().addActivity(this);
 		//在所有界面统计app启动次数
 		PushAgent.getInstance(this).onAppStart();
 		// TODO Auto-generated method stub

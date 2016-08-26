@@ -1,19 +1,14 @@
 package com.dudu.duduhelper;
 
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.widget.MyDialog;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.dudu.duduhelper.widget.MyDialog;
 
 public class BindPhoneActivity extends BaseActivity {
 
@@ -24,7 +19,6 @@ public class BindPhoneActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bind_phone);
 		initHeadView("绑定手机号", true, false, 0);
-		DuduHelperApplication.getInstance().addActivity(this);
 		if(TextUtils.isEmpty(share.getString("mobile", "")))
 		{
 			MyDialog.showDialog(BindPhoneActivity.this, "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener() 

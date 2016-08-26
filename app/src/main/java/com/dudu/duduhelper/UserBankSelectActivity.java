@@ -1,10 +1,19 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.adapter.BankAreAdapter;
 import com.dudu.duduhelper.adapter.ProductTypeAdapter;
-import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.ProvienceBean;
 import com.dudu.duduhelper.bean.UserBankListBean;
 import com.dudu.duduhelper.bean.UserBankProvienceBean;
@@ -15,17 +24,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import org.apache.http.Header;
 
 public class UserBankSelectActivity extends BaseActivity 
 {
@@ -41,7 +40,6 @@ public class UserBankSelectActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_bank_select);
 		initHeadView("选择开户行", true, false, 0);
-		DuduHelperApplication.getInstance().addActivity(this);
 		productTypeAdapter=new ProductTypeAdapter(this);
 		bankAreAdapter=new BankAreAdapter(this);
 		if(getIntent().getStringExtra("action").equals("bank"));

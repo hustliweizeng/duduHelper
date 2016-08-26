@@ -1,35 +1,15 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.adapter.GetCashAdapter;
-import com.dudu.duduhelper.adapter.GetCashHistoryAdapter;
-import com.dudu.duduhelper.adapter.HongbaoHistoryAdapter;
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.CashHistoryBean;
-import com.dudu.duduhelper.bean.GetCashBean;
-import com.dudu.duduhelper.bean.GetHongBaoHistBean;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -37,7 +17,18 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
+
+import com.dudu.duduhelper.adapter.HongbaoHistoryAdapter;
+import com.dudu.duduhelper.bean.GetHongBaoHistBean;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 public class ShopHongbaoHistoryListActivity extends BaseActivity {
 	private ListView hongbaoHistoryListView;
@@ -58,8 +49,6 @@ public class ShopHongbaoHistoryListActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_activity_hongbao_history_list_layout);
 		initHeadView("领取记录", true, false, 0);
-		DuduHelperApplication.getInstance().addActivity(this);
-		initView();
 		initData();
 	}
 
