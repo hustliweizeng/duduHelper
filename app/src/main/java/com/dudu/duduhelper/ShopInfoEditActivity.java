@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,7 +20,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.ShopImageAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -59,6 +59,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     private String imagepath;
     private String startTime;
     private String endTime;
+    private ArrayList<String> picsPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +178,10 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 //进入选择相册页面
                 Intent picIntent = new Intent(context,ShopImageViewBrower.class);
                 picIntent.putExtra("type",5);
+                //进入相册之前判断之前有无选择过
+                if (picsPath!=null && picsPath.size()!=0){
+                    picIntent.putStringArrayListExtra("imageList",picsPath);
+                }
                 startActivityForResult(picIntent,5);
 
                 break;
@@ -209,14 +214,12 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                     break;
                 case 5:
                     //店家环境相册
-                    ArrayList<String> picsPath = data.getStringArrayListExtra("pics");
-                    LogUtil.d("pics",picsPath.size()-1+"");
+                    picsPath = data.getStringArrayListExtra("pics");
+                   // LogUtil.d("pics",picsPath.size()-1+"");
                     //设置封面照片
-                    File coverFile = new File(picsPath.get(0));
-                    Uri tempUri = Uri.fromFile(coverFile);
-                    iv_img_shop_info.setImageURI(tempUri);
+                    iv_img_shop_info.setImageBitmap(BitmapFactory.decodeFile(picsPath.get(0)));
                     //设置相册数量
-                    tv_imgNum_shop_info.setText("相册共"+picsPath.size()+"张");
+                    tv_imgNum_shop_info.setText("相册共"+ picsPath.size()+"张");
                 default:
                     break;
             }

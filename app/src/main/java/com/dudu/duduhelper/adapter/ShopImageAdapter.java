@@ -139,16 +139,23 @@ public class ShopImageAdapter extends BaseAdapter
 		}
 		else
 		{
-			String path = imageList.get(position);
-			if (TextUtils.isEmpty(path)){
+			String path = this.imageList.get(position);
+			//判断路径是否为空
+			if (!TextUtils.isEmpty(path)){
 
 				if(path.startsWith("http")){
 					//如果是网络图片用imageloader加载
 					imageLoader.displayImage(path,imagephoto);
+				}else {
+					//如果是本地图片，直接加载
+					LogUtil.d("adapter",path);
+//					File coverFile = new File(path);
+//					Uri tempUri = Uri.fromFile(coverFile);
+					//通过bitmap设置不了
+					imagephoto.setImageBitmap(BitmapFactory.decodeFile(path));
+					//通过uri设置图片
+					//imagephoto.setImageURI(tempUri);
 				}
-				//如果是本地图片，直接加载
-				LogUtil.d("adapter",path);
-				imagephoto.setImageBitmap(BitmapFactory.decodeFile(path));
 			}
 
 			//判断复选框是否可见
