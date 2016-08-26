@@ -1,8 +1,6 @@
 package com.dudu.duduhelper;
 
-import android.app.AlertDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,6 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,6 +22,7 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.ShopImageAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.MyAlertDailog;
 import com.loopj.android.http.RequestParams;
 
 import java.io.File;
@@ -127,29 +127,15 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 startActivityForResult(intent,  1);
                 break;
             case R.id.rl_class_shop_info:
-                //伪造数据,弹出对话选择框
-                final String[] cats = {"旅游","餐饮","休闲","酒店"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("选择行业")
-                .setItems(cats, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        tv_class_shop_info.setText(cats[i]);
-                    }
-                }).show();
 
+                final String[] cats = {"旅游","餐饮","休闲","酒店"};
+                showDailogSelctor(cats,"选择行业");
                 break;
             case R.id.rl_shopcircle_shop_info:
                 //伪造数据,弹出对话选择框
-                final String[] circls = {"旅游","餐饮","休闲","酒店"};
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-                builder1.setTitle("选择行业")
-                        .setItems(circls, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                tv_class_shop_info.setText(circls[i]);
-                            }
-                        }).show();
+                final String[] circls = {"二七广场","万达","火车站","酒店"};
+                showDailogSelctor(circls,"选择商圈");
+
                 break;
             case R.id.rl_opentime_shop_info:
                 final Calendar  calendar = Calendar.getInstance();
@@ -171,6 +157,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                     }
                 },calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),true);
                 dailog.setTitle("设置开始时间");
+
                 dailog.show();
 
                 break;
@@ -186,6 +173,24 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
 
                 break;
         }
+    }
+    //显示选择框
+    private void showDailogSelctor(final String[]  items, final String title) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,R.layout.item_circle_select);
+        adapter.addAll(items);
+        MyAlertDailog.show(context,title,adapter );
+        //通过接口回调，确认选择的条目，并展示出来
+        MyAlertDailog.setOnItemClickListentner(new MyAlertDailog.OnItemClickListentner() {
+            @Override
+            public void Onclick(int poistion) {
+                if ("选择行业".equals(title)){
+                    tv_class_shop_info.setText(items[poistion]);
+                }else if ("选择商圈".equals(title)){
+                    tv_shopcircle_shop_info.setText(items[poistion]);
+                }
+            }
+        });
+
     }
 
     private void requstHttpConnection() {

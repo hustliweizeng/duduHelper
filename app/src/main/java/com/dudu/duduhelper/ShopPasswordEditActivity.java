@@ -1,7 +1,6 @@
 package com.dudu.duduhelper;
 
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -50,6 +49,7 @@ public class ShopPasswordEditActivity extends BaseActivity
 		}
 		passWordEdit = (EditText) this.findViewById(R.id.passWordEdit);
 		showPasswordImageBtn = (ImageView) this.findViewById(R.id.showPasswordImageBtn);
+		//是否隐藏密码
 		showPasswordImageBtn.setOnClickListener(new OnClickListener() 
 		{
 			
@@ -87,12 +87,12 @@ public class ShopPasswordEditActivity extends BaseActivity
 		phoneLayout = (LinearLayout) this.findViewById(R.id.phoneLayout);
 		phoneBindButton = (Button) this.findViewById(R.id.phoneBindButton);
 		passwordBindButton = (Button) this.findViewById(R.id.passwordBindButton);
+		//手机绑定界面
 		phoneBindButton.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				phoneLayout.setVisibility(View.VISIBLE);
 				passwordLayout.setVisibility(View.GONE);
 				phoneBindButton.setBackgroundColor(phoneBindButton.getResources().getColor(R.color.bg_white_color));
@@ -101,12 +101,12 @@ public class ShopPasswordEditActivity extends BaseActivity
 				passwordBindButton.setTextColor(passwordBindButton.getResources().getColor(R.color.text_middledark_color));
 			}
 		});
+		//密码验证界面
 		passwordBindButton.setOnClickListener(new OnClickListener() 
 		{
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				passwordLayout.setVisibility(View.VISIBLE);
 				phoneLayout.setVisibility(View.GONE);
 				passwordBindButton.setBackgroundColor(phoneBindButton.getResources().getColor(R.color.bg_white_color));
