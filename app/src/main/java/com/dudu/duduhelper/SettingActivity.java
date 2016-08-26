@@ -8,12 +8,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.CleanAppCache;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.wxapi.WXEntryActivity;
+
+import java.io.File;
 
 public class SettingActivity extends BaseActivity 
 {
@@ -73,12 +76,18 @@ public class SettingActivity extends BaseActivity
 		});
 		logoutButton.setOnClickListener(new OnClickListener() 
 		{
-			
+
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
-				
+				File file= new File("/data/data/"+getPackageName().toString()+"/shared_prefs","Activity.xml");
+
+				if(file.exists()){
+
+					file.delete();
+
+					Toast.makeText(context, "删除成功", Toast.LENGTH_LONG).show(); }
+				LogUtil.d("clear","清除sp");
 				MyDialog.showDialog(SettingActivity.this, "  退出登录将清空用户信息，是否退出",true, true, "取消","确定", new OnClickListener() {
 					
 					@Override
@@ -106,11 +115,11 @@ public class SettingActivity extends BaseActivity
 				
 			}
 		});
-		if(!share.getString("usertype", "").equals("dianzhang"))
+		/*if(!share.getString("usertype", "").equals("dianzhang"))
 		{
-			bind_phone_line.setVisibility(View.GONE);
+			bind_phone_line.setVisibility(View.GONE);*/
 		  
-		}
+
 	}
 
 }
