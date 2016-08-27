@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -63,6 +65,10 @@ public class ShopBankListActivity extends BaseActivity
   	private WaveHelper mWaveHelper;
   	private WaveView waveView;
   	private int image;
+	private Button btnGetmess;
+	private String bankCardNo;
+	private EditText getCodeedit;
+	private EditText getcashmoneyedit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -153,6 +159,9 @@ public class ShopBankListActivity extends BaseActivity
 					
 					//弹出提现列表框
 					getCashWindow();
+					//获取当前条目的银行卡号
+					bankCardNo = memberAdapter.getCardNo(position);
+
 				}
 				else
 				{
@@ -211,17 +220,76 @@ public class ShopBankListActivity extends BaseActivity
 		list.add(bean3);
 		memberAdapter.addAll(list);
 	}
-
+	//显示下来提现窗口
 	private void getCashWindow()
 	{
-		
+		//设置动画效果
 		AlphaAnimation animation = new AlphaAnimation((float)0, (float)1.0);
-		animation.setDuration(500); //设置持续时间5秒
+		animation.setDuration(500); //设置持续时间0.5秒
 		backgroundLinearlayout.startAnimation(animation);
+		//背景颜色可见
 		backgroundLinearlayout.setVisibility(View.VISIBLE);
 		
-		LayoutInflater layoutInflater = (LayoutInflater)ShopBankListActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);  
-        View view = layoutInflater.inflate(R.layout.shop_getcash_popwindow, null);  
+		LayoutInflater layoutInflater = (LayoutInflater)ShopBankListActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		//载入poupowindow的页面
+        View view = layoutInflater.inflate(R.layout.shop_getcash_popwindow, null);
+		//验证码
+		getCodeedit = (EditText) view.findViewById(R.id.getCodeedit);
+		//提现的金额
+		getcashmoneyedit = (EditText) findViewById(R.id.getcashmoneyedit);
+		btnGetmess = (Button) view.findViewById(R.id.btnGetmess);
+		//设置获取验证码的监听
+		btnGetmess.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+
+				RequestParams params = new RequestParams();
+				params.add("mobile",sp.getString("mobile",""));
+				params.add("type","outmoney");
+				HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "GET", new TextHttpResponseHandler() {
+					@Override
+					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+						Toast.makeText(context,"发送失败",Toast.LENGTH_LONG).show();
+						//请求网络数据
+						showResidueSeconds();
+					}
+
+					@Override
+					public void onSuccess(int i, Header[] headers, String s) {
+						//请求网络数据
+						showResidueSeconds();
+					}
+				});
+			}
+		});
+		//确认提现按钮
+		Button loginbutton = (Button) view.findViewById(R.id.loginbutton);
+		loginbutton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				RequestParams params = new RequestParams();
+				params.add("bank_card_id",bankCardNo);
+				params.add("money", getcashmoneyedit.getText().toString().trim());
+				params.add("code",getCodeedit.getText().toString().trim());
+				HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "post", new TextHttpResponseHandler() {
+					@Override
+					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+						Toast.makeText(context,"发送失败",Toast.LENGTH_LONG).show();
+						//请求网络数据
+						showResidueSeconds();
+					}
+
+					@Override
+					public void onSuccess(int i, Header[] headers, String s) {
+						//请求网络数据
+						showResidueSeconds();
+						Toast.makeText(context,"提醒成功",Toast.LENGTH_LONG).show();
+						finish();
+					}
+				});
+			}
+		});
+
         popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.WRAP_CONTENT);  
         //设置popWindow弹出窗体可点击，这句话必须添加，并且是true
         popupWindow.setFocusable(true);  
@@ -229,8 +297,9 @@ public class ShopBankListActivity extends BaseActivity
         //这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景  
         //设置popWindow的显示和消失动画
         popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+		//显示的位置
         popupWindow.showAtLocation(ShopBankListActivity.this.findViewById(R.id.head),Gravity.BOTTOM, 0, 0);
-        
+        //波浪
         waveView = (WaveView)view.findViewById(R.id.wave);
 		//waveView.setBorder(10, Color.parseColor("#44FFFFFF"));
 		mWaveHelper = new WaveHelper(waveView,2500,0.6f);
@@ -291,6 +360,33 @@ public class ShopBankListActivity extends BaseActivity
 		//loadMoreView.setVisibility(View.GONE);
 		ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		initData();
+	}
+	/**
+	 * 显示剩余秒数
+	 */
+	private void showResidueSeconds() {
+		//显示倒计时按钮
+		new CountDownTimer(60*1000,1000){
+
+			@Override
+			public void onTick(long lastTime) {
+				//倒计时执行的方法
+				btnGetmess.setClickable(false);
+				btnGetmess.setFocusable(false);
+				btnGetmess.setText(lastTime/1000+"秒后重发");
+				btnGetmess.setTextColor(getResources().getColor(R.color.text_hint_color));
+				btnGetmess.setBackgroundResource(R.drawable.btn_bg_hint);
+				// LogUtil.d("lasttime","剩余时间:"+lastTime/1000);
+			}
+
+			@Override
+			public void onFinish() {
+				btnGetmess.setClickable(true);
+				btnGetmess.setFocusable(true);
+				btnGetmess.setText("重新获取");
+
+			}
+		}.start();
 	}
 
 }

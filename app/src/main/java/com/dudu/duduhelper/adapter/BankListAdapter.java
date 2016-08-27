@@ -55,7 +55,10 @@ public class BankListAdapter extends BaseAdapter
     	this.list.addAll(this.list.size(), list);
     	notifyDataSetChanged();
     }
-
+	//返回某个条目的银行卡号
+	public  String getCardNo(int position){
+		return  list.get(position).getId();
+	}
 	@Override
 	public MemberDataBean getItem(int arg0) 
 	{

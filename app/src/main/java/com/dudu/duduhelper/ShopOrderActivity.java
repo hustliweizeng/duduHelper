@@ -26,19 +26,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.BankAreAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.OrderBean;
 import com.dudu.duduhelper.bean.ProvienceBean;
-import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.umeng.analytics.MobclickAgent;
@@ -103,28 +102,24 @@ public class ShopOrderActivity extends BaseActivity
 
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
+
 		loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
 		allOrderListView.setAdapter(orderAdapter);
+		/*"moduleid" => "模块ID,多个模块用逗号分隔"
+		"status" => "订单状态"
+		"date" => "指定日期,用于新订单和收款列表"
+		"lastid" => "分页标识,上一页最后一个订单id"
+		"limit" => "每页多少条"
+		"ispay" => "是否支付"*/
 		RequestParams params = new RequestParams();
-		params.add("token",share.getString("token", ""));
 		params.add("page",String.valueOf(page));
 		params.add("pagesize","10");
-		params.add("version", ConstantParamPhone.VERSION);
-		
 		params.add("status",status);
 		params.add("from",from);
-		params.add("isnew", isnew);
+		params.add("ispay", isnew);
 		
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(this);    
-        client.setCookieStore(myCookieStore);
-		//使用新的接口
-		String url = ConstantParamPhone.BASE_URL+ConstantParamPhone.GET_ORDER_LIST;
-        client.get(url, params,new TextHttpResponseHandler()
+		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_ORDER_LIST, "GET",new TextHttpResponseHandler()
 		{
 
 			@Override
@@ -204,7 +199,6 @@ public class ShopOrderActivity extends BaseActivity
 
 	@Override
 	public void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 		MobclickAgent.onPageEnd("OrderFragment");
 	}

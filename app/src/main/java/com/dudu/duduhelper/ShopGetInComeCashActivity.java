@@ -181,7 +181,7 @@ public class ShopGetInComeCashActivity extends BaseActivity
 				}
 				else
 				{
-					//请求网络数据，
+					//请求网络数据，进入收款二维码页面
 					initData();
 				}
 			}
@@ -213,6 +213,7 @@ public class ShopGetInComeCashActivity extends BaseActivity
 			}
 		});
 	}
+	//
 	private void initData()
 	{
 		// TODO Auto-generated method stub
@@ -235,9 +236,9 @@ public class ShopGetInComeCashActivity extends BaseActivity
 		ColorDialog.showRoundProcessDialog(ShopGetInComeCashActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("fee",getcashmoneyedit.getText().toString());
-		params.add("body","暂无描述");
-		params.setContentEncoding("UTF-8");
-		HttpUtils.getConnection(context,params,ConstantParamPhone.CREATE_PAYMENT, "GET",new TextHttpResponseHandler()
+		params.add("body","");
+		//params.setContentEncoding("UTF-8");
+		HttpUtils.getConnection(context,params,ConstantParamPhone.CREATE_PAY_PIC, "post",new TextHttpResponseHandler()
 		{
 
 			@Override
@@ -251,6 +252,7 @@ public class ShopGetInComeCashActivity extends BaseActivity
 				Log.d("进入二维码页面",arg2);
 				//进入二维码收款页面
 				Intent intent=new Intent(context,ShopGetCashCodeActivity.class);
+				intent.putExtra("money","888");
 				startActivity(intent);
 
 			}

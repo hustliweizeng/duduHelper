@@ -1,7 +1,6 @@
 package com.dudu.duduhelper;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -13,10 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.ProvienceBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -51,11 +50,11 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 		setContentView(R.layout.shop_user_bank_info_edit);
 		initHeadView("我的银行卡", true, false, 0);
 		time = new TimeCount(60000, 1000);//构造CountDownTimer对象
-		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 		initData();
 		
 	}
+	//短信验证倒计时
 	class TimeCount extends CountDownTimer 
 	{
 		public TimeCount(long millisInFuture, long countDownInterval) 
@@ -67,7 +66,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 		{
 			//计时完毕时触发
 			btnGetmess.setTextColor(btnGetmess.getResources().getColor(R.color.text_color_red));
-			btnGetmess.setText("获取验证码");
+			btnGetmess.setText("重新获取");
 			btnGetmess.setClickable(true);
 			btnGetmess.setPressed(false);
 		}
@@ -80,7 +79,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			btnGetmess.setText(millisUntilFinished /1000+"秒");
 		}
 	}
-
+	//修改银行卡
 	private void SaveData() 
 	{
 		if(TextUtils.isEmpty(userBankNameEditText.getText().toString().trim()))
@@ -119,19 +118,26 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			Toast.makeText(ShopUserBankInfoEditActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		/*array:7 [▼
+		"bank_key" => "银行名称"
+		"bank_name" => "分行信息"
+		"card_number" => "银行卡号"
+		"province_id" => "省份ID"
+		"city_id" => "城市ID"
+		"name" => "持卡人姓名"
+		"code" => "验证码"
+		]*/
 		ColorDialog.showRoundProcessDialog(ShopUserBankInfoEditActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("truename",userBankNameEditText.getText().toString().trim());
-		params.add("bankname",userBankNameTextView.getText().toString().trim());
-		params.add("bankno",userBankNumEditText.getText().toString().trim());
-		params.add("province",provienceTextView.getText().toString().trim());
-		params.add("city",userBankCityTextView.getText().toString().trim());
-		params.add("moreinfo",userBankSonNameEditText.getText().toString().trim());
+		params.add("name",userBankNameEditText.getText().toString().trim());
+		params.add("bank_key",userBankNameTextView.getText().toString().trim());
+		params.add("card_number",userBankNumEditText.getText().toString().trim());
+		params.add("province_id",provienceTextView.getText().toString().trim());
+		params.add("city_id",userBankCityTextView.getText().toString().trim());
+		params.add("bank_name",userBankSonNameEditText.getText().toString().trim());
 		params.add("code",messageCodeEditText.getText().toString().trim());
-		params.add("version", ConstantParamPhone.VERSION);
 		params.setContentEncoding("UTF-8");
-		new AsyncHttpClient().post(ConstantParamPhone.IP+ConstantParamPhone.EDIT_USER_BANK, params,new TextHttpResponseHandler(){
+		HttpUtils.getConnection(context,params,ConstantParamPhone.CHANGE_BANKCARD_INFO, "POST",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -141,98 +147,11 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				ResponsBean responsBean=new Gson().fromJson(arg2,ResponsBean.class);
-				if(responsBean.getStatus().equals("-1006"))
-				{
-					//Toast.makeText(ProductListActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-					//Toast.makeText(getActivity(), "出错啦！", Toast.LENGTH_SHORT).show();
-					MyDialog.showDialog(ShopUserBankInfoEditActivity.this, "该账号已在其他手机登录，是否重新登录", true, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(ShopUserBankInfoEditActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				if(responsBean.getStatus().equals("-1010"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("-1011"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("-1012"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("-1013"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("-1014"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("-1015"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("-1016"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("-1020"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("-1021"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getInfo().equals("success"))
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, "修改成功啦", Toast.LENGTH_LONG).show();
-					SharedPreferences.Editor edit = share.edit(); 
-					edit.putString("bankname", userBankNameTextView.getText().toString().trim());
-					edit.putString("bankno", userBankNumEditText.getText().toString().trim());
-					edit.putString("truename", userBankNameEditText.getText().toString().trim());
-					edit.putString("province", provienceTextView.getText().toString().trim());
-					edit.putString("city", userBankCityTextView.getText().toString().trim());
-					edit.putString("moreinfo", userBankSonNameEditText.getText().toString().trim());						
-	                edit.commit();//保存数据信息 
-	                Intent intent=new Intent();  
-	                setResult(RESULT_OK, intent);  
-	                finish();
-				}
-				else
-				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
+				Toast.makeText(context,"修改银行卡成功",Toast.LENGTH_LONG).show();
 			}
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
@@ -271,14 +190,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	public void LeftButtonClick() 
 	{
 		// TODO Auto-generated method stub
-		
-//		if(!(userBankNameEditText.getText().toString().trim()).equals(share.getString("truename", ""))||
-//				!(userBankNumEditText.getText().toString().trim()).equals(share.getString("bankno", ""))||
-//				!(userBankNameTextView.getText().toString().trim()).equals(share.getString("bankname", ""))||
-//				!(provienceTextView.getText().toString().trim()).equals(share.getString("province", ""))||
-//				!(userBankCityTextView.getText().toString().trim()).equals(share.getString("city", ""))||
-//				!(userBankSonNameEditText.getText().toString().trim()).equals(share.getString("moreinfo", "")))
-			
+
 		if(!(TextUtils.isEmpty(userBankNameEditText.getText().toString().trim()))||
 				!(TextUtils.isEmpty(userBankNumEditText.getText().toString().trim()))||
 				!(userBankNameTextView.getText().toString().trim()).equals(share.getString("bankname", ""))||

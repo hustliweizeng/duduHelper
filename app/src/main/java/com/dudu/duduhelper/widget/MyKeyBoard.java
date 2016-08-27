@@ -64,16 +64,10 @@ public class MyKeyBoard implements OnClickListener
 		deletebtn.setOnClickListener(MyKeyBoard.this);
 	}
 	
-	public interface OnKeyBoardClickListener
-	{
-		//键盘三种点击方式
-		void onClick(String content);
-		void onDelect();
-		//提交按钮
-		void onSubmit();
-	}
+
 	
 	@Override
+	//接口回调
 	public void onClick(View v) 
 	{
 		// TODO Auto-generated method stub
@@ -96,47 +90,20 @@ public class MyKeyBoard implements OnClickListener
 		}
 		
 	}
+	public interface OnKeyBoardClickListener
+	{
+		//键盘三种点击方式
+		void onClick(String content);
+		void onDelect();
+		//提交按钮
+		void onSubmit();
+	}
 	
 	public void setOnKeyBoardClickListener(OnKeyBoardClickListener onKeyBoardClickListener)
 	{
 		onMyKeyBoardClickListener = onKeyBoardClickListener;
 	}
 
-//	public void initKeyBoard(BaseActivity con) 
-//	{
-//		// TODO Auto-generated method stub
-//		context=con;
-//		num1btn = (TextView) context.findViewById(R.id.num1btn);
-//		num2btn = (TextView) context.findViewById(R.id.num2btn);
-//		num3btn = (TextView) context.findViewById(R.id.num3btn);
-//		num4btn = (TextView) context.findViewById(R.id.num4btn);
-//		num5btn = (TextView) context.findViewById(R.id.num5btn);
-//		num6btn = (TextView) context.findViewById(R.id.num6btn);
-//		num7btn = (TextView) context.findViewById(R.id.num7btn);
-//		num8btn = (TextView) context.findViewById(R.id.num8btn);
-//		num9btn = (TextView) context.findViewById(R.id.num9btn);
-//		num0btn = (TextView) context.findViewById(R.id.num0btn);
-//		pointbtn = (TextView) context.findViewById(R.id.pointbtn);
-//		submitbtn = (Button) context.findViewById(R.id.submitbtn);
-//		closebtn = (ImageView) context.findViewById(R.id.closebtn);
-//		deletebtn = (ImageView) context.findViewById(R.id.delectButton);
-//		
-//		num1btn.setOnClickListener(MyKeyBoard.this);
-//		num2btn = (TextView) context.findViewById(R.id.num2btn);
-//		num3btn = (TextView) context.findViewById(R.id.num3btn);
-//		num4btn = (TextView) context.findViewById(R.id.num4btn);
-//		num5btn = (TextView) context.findViewById(R.id.num5btn);
-//		num6btn = (TextView) context.findViewById(R.id.num6btn);
-//		num7btn = (TextView) context.findViewById(R.id.num7btn);
-//		num8btn = (TextView) context.findViewById(R.id.num8btn);
-//		num9btn = (TextView) context.findViewById(R.id.num9btn);
-//		num0btn = (TextView) context.findViewById(R.id.num0btn);
-//		pointbtn = (TextView) context.findViewById(R.id.pointbtn);
-//		submitbtn = (Button) context.findViewById(R.id.submitbtn);
-//		closebtn = (ImageView) context.findViewById(R.id.closebtn);
-//		deletebtn = (ImageView) context.findViewById(R.id.delectButton);
-//	}
-	
 
 }
 

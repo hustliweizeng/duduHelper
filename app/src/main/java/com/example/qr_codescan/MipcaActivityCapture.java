@@ -89,6 +89,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		// ViewUtil.addTopView(getApplicationContext(), this,
 		// R.string.scan_card);
 		CameraManager.init(getApplication());
+		//扫码窗口谷歌zxing扫码工具
 		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);
@@ -187,7 +188,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 	}
 
 	/**
-	 * 
+	 * 处理二维码扫描结果，应该把识别出来的信息，请求网络服务器进行核对，
 	 * @param result
 	 * @param barcode
 	 */
@@ -201,20 +202,9 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 					Toast.LENGTH_SHORT).show();
 			finish();
 		} else {
+			//进入扫码成功页面
 			Intent intent = null;
-//			if (action.equals("member")) 
-//			{
-//				intent = new Intent(MipcaActivityCapture.this,
-//						MemberSellScanSucessActivity.class);
-//				intent.putExtra("orderName", orderName);
-//				intent.putExtra("orderCash", orderCash);
-//			}
-//			if (action.equals("gift")) {
-//				intent = new Intent(MipcaActivityCapture.this,GiftSellScanSucessActivity.class);
-//			}
-//			if (action.equals("cash")) {
-//				intent = new Intent(MipcaActivityCapture.this,CashSellScanSucessActivity.class);
-//			}
+
 			if (action.equals("income")) 
 			{
 				intent = new Intent(MipcaActivityCapture.this,ShopDiscountScanSucessActivity.class);
@@ -223,11 +213,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 			}
 			else
 			{
-				
-				//和消沉过if奶哥弄死坚果零食考几分的可能
-				
-				
-				
+
 			}
 			
 			String[] results = resultString.split("sn=");

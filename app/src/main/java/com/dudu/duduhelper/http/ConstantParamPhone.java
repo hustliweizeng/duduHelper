@@ -100,7 +100,6 @@ public class ConstantParamPhone
     public static final String GET_REDBAG_LIST = "/rpList";//获取红包列表
     public static final String ADD_REDBAG = "/addRp";//添加红包
     public static final String UPLOAD_PIC = "/api/app/tool/uploadpic";//上传图片
-    public static final String GET_ORDER_LIST = "/order/fulllist";//添加红包
     public static final String GET_USER_INFO = "/api/app/user/info";//获取用户信息
     public static final String SAVE_SHOP_INFO = "/api/app/shop/info";//保存店铺信息
     public static final String  GET_SMS_CONFIRM = "/api/app/tool/sms"; //短信验证
@@ -119,6 +118,12 @@ public class ConstantParamPhone
    //收银相关
    public static final String  CREATE_PAY_PIC = "/api/app/cashier";//创建收银二维码
    public static final String  CREATE_PAYMENT = "/api/app/cashier";//创建收银
+
+    //提现
+    public static final String  CREATE_GET_MONEY ="/api/app/outmoney";//创建提现
+
+   //订单列表
+   public static final String  GET_ORDER_LIST = "/api/app/order";//获取订单列表
 
 
 

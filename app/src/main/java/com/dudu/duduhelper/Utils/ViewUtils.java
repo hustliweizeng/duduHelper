@@ -4,7 +4,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
+
+import com.dudu.duduhelper.R;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -65,5 +68,6 @@ public class ViewUtils {
 		}
 		return data;
 	}
+
 
 }
