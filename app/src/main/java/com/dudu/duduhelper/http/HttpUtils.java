@@ -31,7 +31,7 @@ public class HttpUtils {
 			client.get(url, params,mTextHttpResponseHandler);
 
 		}else if ("post".equalsIgnoreCase(method)){
-			client.post(mContext,url,params,mTextHttpResponseHandler);
+			client.post(mContext,ConstantParamPhone.BASE_URL+url,params,mTextHttpResponseHandler);
 
 		}else{
 			return;

@@ -107,6 +107,16 @@ public class ConstantParamPhone
     public static final String  GET_SMS_CONFIRM = "/api/app/tool/sms"; //短信验证
     public static final String  CHANGE_PWD_BYSMS ="/api/app/user/changepwdbycode";//通过验证码修改密码
     public static final String  CHANGE_PWD_BYPWD = "/api/app/user/changepwdbypwd";//通过旧密码修改
+    public static final String  LOG_OUT = "/api/app/user/logout";//退出登录
+    public static final String  GET_CATEGPRY_INFO = "/api/app/shop/category";//获取行业分类信息
+    public static final String  GET_SHOPCIRCLE_INFO = "/api/app/shop/area";//获取商圈信息
+
+    //银行卡相关接口
+    public static final String  GET_BANKCARD_LIST = "/api/app/bank";//获取银行卡信息列表
+    public static final String  ADD_BANKCARD = "/api/app/bank";//添加银行卡信息
+    public static final String  CHANGE_BANKCARD_INFO = "/api/app/bank/1";//修改银行卡信息
+    public static final String  DEL_BANKCARD = "/api/app/bank/2";//删除银行卡信息
+
 
 
 

@@ -1,21 +1,12 @@
 package com.dudu.duduhelper;
 
-import java.lang.reflect.Method;
-import java.util.UUID;
-
-import com.dudu.duduhelper.ShopRebindPhoneSteponeActivity.TimeCount;
-import com.dudu.duduhelper.adapter.DeviceAdapter;
-import com.dudu.duduhelper.widget.ColorDialog;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.location.Address;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -24,11 +15,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -36,6 +27,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dudu.duduhelper.adapter.DeviceAdapter;
+import com.dudu.duduhelper.widget.ColorDialog;
+
+import java.lang.reflect.Method;
 
 public class ShopSearchBlueToothActivity extends BaseActivity 
 {
@@ -113,22 +109,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 		};
 		handler.postDelayed(runnable, 400);
 		handler.postDelayed(runnable2, 600);
-//		new Handler().postDelayed(new Runnable()
-//		{
-//			@Override
-//			public void run() 
-//			{
-//				startwhiteAnimal();
-//			}
-//		}, 400);
-//		new Handler().postDelayed(new Runnable() 
-//		{
-//			@Override
-//			public void run() 
-//			{
-//				startannularAnimat();
-//			}
-//		}, 600);
+
 	}
 	
 	private AnimationSet playHeartbeatAnimation() 

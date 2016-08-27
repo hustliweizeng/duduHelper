@@ -8,9 +8,17 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.CleanAppCache;
 import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.MyDialog;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 public class ShopSettingActivity extends BaseActivity implements OnClickListener
 {
@@ -89,20 +97,23 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
                 MyDialog.showDialog(ShopSettingActivity.this, "  退出登录将清空用户信息，是否退出",true, true, "取消","确定", new OnClickListener() 
                 {
 					@Override
+					//取消退出
 					public void onClick(View v) 
 					{
-						// TODO Auto-generated method stub
 						MyDialog.cancel();
 					}
 				}, 
 				new OnClickListener() 
 				{
 					@Override
+					//确认退出
 					public void onClick(View v) 
 					{
-						// TODO Auto-generated method stub
-						share.edit().clear().commit();
+						sp.edit().clear().commit();
+						CleanAppCache.cleanApplicationData(context);
 						DuduHelperApplication.getInstance().exit();
+						requestLogOut();
+
 					}
 				});
                 return;
@@ -110,5 +121,24 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 				break;
 		}
 		startActivity(intent);
+	}
+
+	/**
+	 * 联网请求退出
+	 */
+	private void requestLogOut() {
+		RequestParams params = new RequestParams();
+
+		HttpUtils.getConnection(context, params, ConstantParamPhone.LOG_OUT, "post", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				Toast.makeText(context,"已经退出当前账户，请重新登陆",Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 }

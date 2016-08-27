@@ -153,7 +153,7 @@ public class ShopPasswordEditActivity extends BaseActivity
 				params.put("mobile","18937228893");
 				params.put("type","password");
 				//params.setContentEncoding("UTF-8");
-				String url = ConstantParamPhone.BASE_URL+ConstantParamPhone.GET_SMS_CONFIRM;
+				String url = ConstantParamPhone.GET_SMS_CONFIRM;
 
 				HttpUtils.getConnection(context, params, url, "get", new TextHttpResponseHandler() {
 					@Override
@@ -247,14 +247,14 @@ public class ShopPasswordEditActivity extends BaseActivity
 		//判断是短信验证
 		if (isFromSms){
 			//通过验证码修改0
-			url = ConstantParamPhone.BASE_URL+ConstantParamPhone.CHANGE_PWD_BYSMS;
+			url = ConstantParamPhone.CHANGE_PWD_BYSMS;
 			params.put("code",confirmCode);
 			HttpUtils.getConnection(context, params, url, "POST", handler);
 
 		}else {
 
 			//通过老密码修改
-			url = ConstantParamPhone.BASE_URL+ConstantParamPhone.CHANGE_PWD_BYPWD;
+			url = ConstantParamPhone.CHANGE_PWD_BYPWD;
 			params.put("oldpassword",oldPwd);
 			HttpUtils.getConnection(context,params,url,"post",handler);
 		}

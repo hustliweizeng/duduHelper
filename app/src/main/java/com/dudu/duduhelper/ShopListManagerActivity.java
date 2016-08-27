@@ -66,25 +66,25 @@ public class ShopListManagerActivity extends BaseActivity
 	@SuppressLint("ResourceAsColor") 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
+		//listview添加脚布局
 		hongbaoId="90";
 		footView = LayoutInflater.from(this).inflate(R.layout.activity_listview_foot, null);
 		loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
 		loading_text=(TextView) footView.findViewById(R.id.loading_text);
-		// TODO Auto-generated method stub
+
+		//点击重试按钮
 		reloadButton=(Button) this.findViewById(R.id.reloadButton);
-		//数据重载按钮
-		reloadButton.setOnClickListener(new OnClickListener() 
+		reloadButton.setOnClickListener(new OnClickListener()
 		{
 			
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.showRoundProcessDialog(ShopListManagerActivity.this,R.layout.loading_process_dialog_color);
 				initData();
 			}
 		});
+		//listview设置
 		hongbaoHistoryAdapter=new ShopAdapterAdapter(this);
 		hongbaoHistoryListView=(ListView) this.findViewById(R.id.hongbaoHistoryListView);
 		hongbaoHistoryListView.setAdapter(hongbaoHistoryAdapter);
@@ -106,43 +106,41 @@ public class ShopListManagerActivity extends BaseActivity
 				initData();
 			}
 		});
+		//listview的滚动监听
 		hongbaoHistoryListView.setOnScrollListener(new OnScrollListener() 
 		{
-			
 			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) 
+			//如果滚动到最后一行，请求网络加载数据
+			public void onScrollStateChanged(AbsListView view, int scrollState)
 			{
-				// TODO Auto-generated method stub
-				//
 				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE&&lastItemIndex == hongbaoHistoryAdapter.getCount()) // productAdapter.getCount()记录的是数据的长度
 				{  
-                    //Log.i(TAG, "onScrollStateChanged");  
-                    //加载数据代码，此处省略了  
+					//请求第二页的数据
 					page++;
 					//设置刷新方式
 					if(!reffinish)
 					{
 						initData();
 					}
+					//把条目定位到最后一个
 					hongbaoHistoryListView.setSelection(lastItemIndex-1);
-					//Toast.makeText(ProductListActivity.this, "加载中",  Toast.LENGTH_SHORT).show();
-                }  
+                }
 			}
 			
 			@Override
+			//滚动中的监听，设置最后一个条目
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) //totalItemCount记录的是整个listView的长度
 			{
-				// TODO Auto-generated method stub
-				lastItemIndex = firstVisibleItem + visibleItemCount -1; 
+				lastItemIndex = firstVisibleItem + visibleItemCount -1;
 			}
 		});
+		//条目点击监听
 		hongbaoHistoryListView.setOnItemClickListener(new OnItemClickListener() 
 		{
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
 			{
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(ShopListManagerActivity.this,ShopAddActivity.class);
 				intent.putExtra("hongbao", hongbaoHistoryAdapter.getItem(position));
 				intent.putExtra("source","mendian");
@@ -150,11 +148,13 @@ public class ShopListManagerActivity extends BaseActivity
 			}
 		});
 	}
+	//获取数据
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
+		//显示view
 		loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
+
 		RequestParams params = new RequestParams();
 		params.add("token", ShopListManagerActivity.this.share.getString("token", ""));
 		params.add("page",String.valueOf(page));

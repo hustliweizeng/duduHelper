@@ -12,11 +12,15 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.CleanAppCache;
 import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.wxapi.WXEntryActivity;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
-import java.io.File;
+import org.apache.http.Header;
 
 public class SettingActivity extends BaseActivity 
 {
@@ -80,25 +84,14 @@ public class SettingActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				File file= new File("/data/data/"+getPackageName().toString()+"/shared_prefs","Activity.xml");
 
-				if(file.exists()){
-
-					file.delete();
-
-					Toast.makeText(context, "删除成功", Toast.LENGTH_LONG).show(); }
-				LogUtil.d("clear","清除sp");
 				MyDialog.showDialog(SettingActivity.this, "  退出登录将清空用户信息，是否退出",true, true, "取消","确定", new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) 
 					{
-						//清除所有sp
-						sp.edit().clear().commit();
-						LogUtil.d("clear","清除sp");
-						CleanAppCache.cleanApplicationData(context);
-						//DuduHelperApplication.getInstance().exit();
-						startActivity(new Intent(context,LoginActivity.class));
+						LogUtil.d("clear","取消清除sp");
+						MyDialog.cancel();
 
 					}
 				}, 
@@ -107,19 +100,37 @@ public class SettingActivity extends BaseActivity
 					@Override
 					public void onClick(View v) 
 					{
-						// 取消按钮
-						LogUtil.d("clear","取消清除sp");
-						MyDialog.cancel();
+
+						sp.edit().clear().commit();
+						LogUtil.d("clear","清除sp");
+						CleanAppCache.cleanApplicationData(context);
+						DuduHelperApplication.getInstance().exit();
+						//请求登出
+						requestLogOut();
 					}
 				});
 				
 			}
 		});
-		/*if(!share.getString("usertype", "").equals("dianzhang"))
-		{
-			bind_phone_line.setVisibility(View.GONE);*/
+
 		  
 
+	}
+
+	private void requestLogOut() {
+		RequestParams params = new RequestParams();
+
+		HttpUtils.getConnection(context, params, ConstantParamPhone.LOG_OUT, "post", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				Toast.makeText(context,"已经退出当前账户，请重新登陆",Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 }

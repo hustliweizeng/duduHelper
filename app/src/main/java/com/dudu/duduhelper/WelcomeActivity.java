@@ -80,10 +80,10 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 
 		}
 		//保存友盟的token信息
-		getSharedPreferences("umeng_token",MODE_PRIVATE).edit().putString("token",device_token).commit();
+		sp.edit().putString("umeng_token",device_token).commit();
 		//统计app启动次数
 		mPushAgent.onAppStart();
-		if(!getSharedPreferences("runtime", MODE_PRIVATE).getBoolean("first", true))
+		if(!sp.getBoolean("firstrun", true))
 		{
 			//如果登陆保存过用户数据,直接请问网络
 			if(!TextUtils.isEmpty(sp.getString("username", "")))
@@ -116,7 +116,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 	        // 初始化数据  
 	        initData();  
 		}
-		getSharedPreferences("runtime", MODE_PRIVATE).edit().putBoolean("first", false).commit();
+		sp.edit().putBoolean("firstrun", false).commit();
 	}
 	
 	/** 
@@ -245,7 +245,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		RequestParams params = new RequestParams();
 		AsyncHttpClient client = new AsyncHttpClient();
 		//请求网络连接之前，设置保存cookie，
-		url = ConstantParamPhone.BASE_URL+ConstantParamPhone.GET_USER_INFO;
+		url = ConstantParamPhone.GET_USER_INFO;
 		HttpUtils.getConnection(context, params, url, "POST", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {

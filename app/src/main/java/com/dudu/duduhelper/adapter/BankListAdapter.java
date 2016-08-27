@@ -1,18 +1,19 @@
 package com.dudu.duduhelper.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.ShopMemberListActivity;
-import com.dudu.duduhelper.shopProductListActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.bean.GetCouponSellDataBean;
+import com.dudu.duduhelper.ShopMemberListActivity;
 import com.dudu.duduhelper.bean.MemberBean;
 import com.dudu.duduhelper.bean.MemberDataBean;
-import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.CircleImageView;
 import com.dudu.duduhelper.widget.ColorDialog;
@@ -23,17 +24,10 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
+import org.apache.http.Header;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BankListAdapter extends BaseAdapter 
 {
@@ -44,13 +38,11 @@ public class BankListAdapter extends BaseAdapter
     
     public BankListAdapter(Context context)
 	{
-		// TODO Auto-generated constructor stub
 		this.context=context;
 	}
 	@Override
 	public int getCount() 
 	{
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 	public void clear()

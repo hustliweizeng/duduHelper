@@ -22,8 +22,12 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.ShopImageAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.MyAlertDailog;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -127,11 +131,35 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 startActivityForResult(intent,  1);
                 break;
             case R.id.rl_class_shop_info:
+                //请求网络数据获取行业分类信息
+                HttpUtils.getConnection(context, null, ConstantParamPhone.GET_CATEGPRY_INFO, "GET", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 
+                    }
+
+                    @Override
+                    public void onSuccess(int i, Header[] headers, String s) {
+
+                    }
+                });
                 final String[] cats = {"旅游","餐饮","休闲","酒店"};
                 showDailogSelctor(cats,"选择行业");
                 break;
             case R.id.rl_shopcircle_shop_info:
+                //请求网络数据获取行业分类信息
+                HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SHOPCIRCLE_INFO, "GET", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(int i, Header[] headers, String s) {
+
+                    }
+                });
+                //请求网络数据
                 //伪造数据,弹出对话选择框
                 final String[] circls = {"二七广场","万达","火车站","酒店"};
                 showDailogSelctor(circls,"选择商圈");
@@ -294,7 +322,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
             return;
         }
 
-       String url = ConstantParamPhone.BASE_URL+ConstantParamPhone.SAVE_SHOP_INFO;
+       String url = ConstantParamPhone.SAVE_SHOP_INFO;
         RequestParams params = new RequestParams();
 //        params.add("name",);
 //        params.add("contact",);

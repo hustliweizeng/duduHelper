@@ -217,7 +217,7 @@ public class LoginActivity extends BaseActivity
 				params.add("umeng_token",umeng_token);
 				params.setContentEncoding("UTF-8");
 				LogUtil.d("welcome","usernmae="+username.getText().toString().trim()+"paswword="+Util.md5(password.getText().toString().trim()));
-				String url =ConstantParamPhone.BASE_URL+ConstantParamPhone.USER_LOGIN;
+				String url = ConstantParamPhone.USER_LOGIN;
 		        HttpUtils.getConnection(context, params,url,"POST",new TextHttpResponseHandler()
 				{
 					@Override
@@ -240,7 +240,7 @@ public class LoginActivity extends BaseActivity
 							edit.putString("username",loginBean.getUser().getName())
 							.putString("nickename",loginBean.getUser().getNickname())
 									//手动添加
-							.putString("mobile","188888888")//loginBean.getUser().getMobile())
+							.putString("mobile","18937228893")//loginBean.getUser().getMobile())
 							//2.存储商店信息
 							.putString("id",loginBean.getShop().getId())
 							.putString("shopLogo",loginBean.getShop().getLogo())

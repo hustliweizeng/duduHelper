@@ -1,19 +1,5 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.adapter.MemberAdapter;
-import com.dudu.duduhelper.bean.GetCouponSellBean;
-import com.dudu.duduhelper.bean.MemberBean;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,13 +8,24 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.dudu.duduhelper.adapter.MemberAdapter;
+import com.dudu.duduhelper.bean.MemberBean;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 public class ShopMemberListActivity extends BaseActivity {
     private SwipeRefreshLayout memberListswipeLayout;
@@ -121,11 +118,7 @@ public class ShopMemberListActivity extends BaseActivity {
         /**
          * 每次请求创建网络连接，这样比较消耗内容，应该用线程池好点
          */
-        AsyncHttpClient client = new AsyncHttpClient();
-        //保存cookie，自动保存到了shareprefercece
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopMemberListActivity.this);
-        client.setCookieStore(myCookieStore);
-        client.get(ConstantParamPhone.IP + ConstantParamPhone.GET_MEMBER_LIST, params, new TextHttpResponseHandler() {
+      HttpUtils.getConnection(context,params, ConstantParamPhone.GET_MEMBER_LIST,"post" , new TextHttpResponseHandler() {
 
             @Override
             public void onFailure(int arg0, Header[] arg1, String arg2, Throwable arg3) {

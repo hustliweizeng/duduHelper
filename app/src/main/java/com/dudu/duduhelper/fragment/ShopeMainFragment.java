@@ -163,7 +163,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	private void requestRedbagStatus() {
 		//弹对话框
 		//ColorDialog.showRoundProcessDialog(getActivity(),R.layout.loading_process_dialog_color);
-		String url = ConstantParamPhone.BASE_URL+ConstantParamPhone.GET_REDBAG_LIST;
+		String url = ConstantParamPhone.GET_REDBAG_LIST;
 		RequestParams parmas = new RequestParams();
 		/**
 		 *
