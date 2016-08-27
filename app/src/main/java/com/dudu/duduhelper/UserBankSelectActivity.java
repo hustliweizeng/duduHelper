@@ -39,22 +39,27 @@ public class UserBankSelectActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_bank_select);
-		initHeadView("选择开户行", true, false, 0);
+
+		String title = null;
 		productTypeAdapter=new ProductTypeAdapter(this);
 		bankAreAdapter=new BankAreAdapter(this);
 		if(getIntent().getStringExtra("action").equals("bank"));
 		{
 			initBankData();
+			title = "我的银行卡";
 		}
 		if(getIntent().getStringExtra("action").equals("province"))
 		{
 			initProvince();
+			title ="选择省份";
 		}
 		if(getIntent().getStringExtra("action").equals("city"))
 		{
 			provienceCode=getIntent().getStringExtra("provienceCode");
+			title ="选择城市";
 			initCity();
 		}
+		initHeadView(title, true, false, 0);
 		initView();
 	}
 

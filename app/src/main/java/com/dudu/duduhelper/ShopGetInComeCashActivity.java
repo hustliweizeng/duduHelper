@@ -15,15 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.bean.GetInComeCashBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.widget.MyKeyBoard;
 import com.dudu.duduhelper.widget.MyKeyBoard.OnKeyBoardClickListener;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -238,15 +234,10 @@ public class ShopGetInComeCashActivity extends BaseActivity
 		//请求网络数据
 		ColorDialog.showRoundProcessDialog(ShopGetInComeCashActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.add("token", this.share.getString("token", ""));
 		params.add("fee",getcashmoneyedit.getText().toString());
 		params.add("body","暂无描述");
 		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece
-		PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopGetInComeCashActivity.this);
-		client.setCookieStore(myCookieStore);
-		client.post(ConstantParamPhone.IP+ConstantParamPhone.CREATE_PAYMENT, params,new TextHttpResponseHandler()
+		HttpUtils.getConnection(context,params,ConstantParamPhone.CREATE_PAYMENT, "GET",new TextHttpResponseHandler()
 		{
 
 			@Override
@@ -257,48 +248,11 @@ public class ShopGetInComeCashActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
-				Log.d("收款",arg2);
-				GetInComeCashBean getCashBean=new Gson().fromJson(arg2,GetInComeCashBean.class);
-				//判断数据的状态是否有误
-				if(getCashBean.getStatus() == 1006)
-				{
-					MyDialog.showDialog(ShopGetInComeCashActivity.this, "该账号已在其他手机登录，是否重新登录", false, true, "取消", "确定",new OnClickListener()
-					{
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					},new OnClickListener() {
+				Log.d("进入二维码页面",arg2);
+				//进入二维码收款页面
+				Intent intent=new Intent(context,ShopGetCashCodeActivity.class);
+				startActivity(intent);
 
-						@Override
-						public void onClick(View v)
-						{
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(ShopGetInComeCashActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				else
-				{
-					//传递信息正确状态
-					if(getCashBean.getStatus()==1)
-					{
-						Intent intent=new Intent(ShopGetInComeCashActivity.this,ShopGetCashCodeActivity.class);
-						intent.putExtra("qrcode", getCashBean.getData().getQrcode());
-						intent.putExtra("qrcodeContent", getCashBean.getData().getUrl());
-						intent.putExtra("money", getcashmoneyedit.getText().toString());
-						intent.putExtra("no", getCashBean.getData().getId());
-						intent.putExtra("time", getCashBean.getData().getTime_create());
-						startActivity(intent);
-					}
-					else
-					{
-						Toast.makeText(ShopGetInComeCashActivity.this, getCashBean.getInfo(), Toast.LENGTH_SHORT).show();
-						return;
-					}
-				}
 			}
 			@Override
 			public void onFinish()

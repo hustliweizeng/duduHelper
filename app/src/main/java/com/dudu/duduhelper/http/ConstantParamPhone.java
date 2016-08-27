@@ -97,7 +97,6 @@ public class ConstantParamPhone
 
 
     public static final String USER_LOGIN = "/api/app/user/login";//用户登录接口
-    public static final String CREATE_PAYMENT = "/cashier";//收款列表和创建收款
     public static final String GET_REDBAG_LIST = "/rpList";//获取红包列表
     public static final String ADD_REDBAG = "/addRp";//添加红包
     public static final String UPLOAD_PIC = "/api/app/tool/uploadpic";//上传图片
@@ -116,6 +115,11 @@ public class ConstantParamPhone
     public static final String  ADD_BANKCARD = "/api/app/bank";//添加银行卡信息
     public static final String  CHANGE_BANKCARD_INFO = "/api/app/bank/1";//修改银行卡信息
     public static final String  DEL_BANKCARD = "/api/app/bank/2";//删除银行卡信息
+
+   //收银相关
+   public static final String  CREATE_PAY_PIC = "/api/app/cashier";//创建收银二维码
+   public static final String  CREATE_PAYMENT = "/api/app/cashier";//创建收银
+
 
 
 

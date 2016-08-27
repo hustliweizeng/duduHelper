@@ -1,46 +1,12 @@
 package com.dudu.duduhelper.wxapi;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-
-
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.GetInComeCashBean;
-import com.dudu.duduhelper.Utils.Util;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.tencent.mm.sdk.modelbase.BaseReq;
-import com.tencent.mm.sdk.modelbase.BaseResp;
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
-
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -57,6 +23,32 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dudu.duduhelper.BaseActivity;
+import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tencent.mm.sdk.modelbase.BaseReq;
+import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
+
+import org.apache.http.Header;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
@@ -146,29 +138,16 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
 		}
 	}
 	
-//	private void initFilter() 
-//	{
-//		// TODO Auto-generated method stub
-//		// 设置广播信息过滤      
-//		IntentFilter intentFilter = new IntentFilter();     
-//		intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);//开关状态
-//		intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);//设备开始绑定
-//		// 注册广播接收器，接收并处理搜索结果      
-//		registerReceiver(receiver, intentFilter);     
-//	}
-	
-	private void initData() 
+	private void initData()
 	{
 		// TODO Auto-generated method stub
 		ColorDialog.showRoundProcessDialog(WXEntryActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.add("token", this.share.getString("token", ""));
+		params.add("free", "88");
+		params.add("body","二维码收款");
 		params.setContentEncoding("UTF-8");
 		//保存cookie，自动保存到了shareprefercece  
-		AsyncHttpClient client = new AsyncHttpClient();
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(WXEntryActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.get(ConstantParamPhone.IP+type, params,new TextHttpResponseHandler()
+		HttpUtils.getConnection(context,params,ConstantParamPhone.CREATE_PAY_PIC, "post",new TextHttpResponseHandler()
 		{
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -178,47 +157,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				GetInComeCashBean getCashBean=new Gson().fromJson(arg2,GetInComeCashBean.class);
-				if(getCashBean.getStatus()== -1006)
-				{
-					MyDialog.showDialog(WXEntryActivity.this, "该账号已在其他手机登录，是否重新登录", false, true, "取消", "确定",new OnClickListener() 
-					{
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					},new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) 
-						{
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(WXEntryActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				else
-				{
-					if(getCashBean.getStatus()==1)
-					{
-						if(!TextUtils.isEmpty(getCashBean.getData().getQrcode()))
-						{
-							imageUrl=getCashBean.getData().getUrl();
-							ImageCode=(ImageView) WXEntryActivity.this.findViewById(R.id.ImageCode);
-							ImageAware imageAware = new ImageViewAware(ImageCode, false);
-							imageLoader.displayImage(getCashBean.getData().getQrcode(), imageAware);
-							codeImagedesprition=(TextView) WXEntryActivity.this.findViewById(R.id.codeImagedesprition);
-							codeImagedesprition.setText(content);
-							
-						}
-					}
-					else
-					{
-						Toast.makeText(WXEntryActivity.this, getCashBean.getInfo(), Toast.LENGTH_SHORT).show();
-					}
-				}
+
 			}
 			
 			@Override
@@ -229,71 +168,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
 			}
 		});
 	}
-//	private void initView() 
-//	{
-//		// TODO Auto-generated method stub
-//		ImageCode=(ImageView) this.findViewById(R.id.ImageCode);
-//		ImageAware imageAware = new ImageViewAware(ImageCode, false);
-//		imageLoader.displayImage(imageUrl, imageAware);
-//		printbutton=(Button) this.findViewById(R.id.printbutton);
-//		printbutton.setVisibility(View.VISIBLE);
-//		printbutton.setOnClickListener(new OnClickListener() 
-//		{
-//			@Override
-//			public void onClick(View v) 
-//			{
-//				// TODO Auto-generated method stub
-//				bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
-//				if(bluetoothAdapter==null)
-//				{
-//					Toast.makeText(WXEntryActivity.this,"该设备不支持蓝牙", Toast.LENGTH_SHORT).show();
-//					return;
-//				}
-//				
-//				else if(!bluetoothAdapter.isEnabled())//isEnabled enable是激活,开启蓝牙
-//				{
-//					//开启
-//					ColorDialog.showRoundProcessDialog(WXEntryActivity.this,R.layout.loading_process_dialog_color);
-//					Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);     
-//					// 设置蓝牙可见性，最多300秒      
-//					intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3000);     
-//					startActivityForResult(intent, 1); 
-//				}
-//				else
-//				{
-//					SharedPreferences sharePrint= getSharedPreferences("printinfo", MODE_PRIVATE);
-//					if(!TextUtils.isEmpty(sharePrint.getString("blueAddress", "")))
-//					{
-//						
-//						device=bluetoothAdapter.getRemoteDevice(sharePrint.getString("blueAddress", ""));
-//						if(device.getBondState() == BluetoothDevice.BOND_NONE)
-//						{
-//							try 
-//							{
-//								Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
-//								createBondMethod.invoke(device);
-//							}
-//							catch (Exception e) 
-//							{
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//								Toast.makeText(WXEntryActivity.this, "配对失败！", Toast.LENGTH_SHORT).show(); 
-//							}  
-//						}
-//						else
-//						{
-//							getConnect();
-//						}
-//					}
-//					else
-//					{
-//						Intent intent=new Intent(WXEntryActivity.this,SearchBlueToothActivity.class);
-//						startActivity(intent);
-//					}
-//				}
-//			}
-//		});
-//	}
+
 	@Override
 	public void RightButtonClick() 
 	{

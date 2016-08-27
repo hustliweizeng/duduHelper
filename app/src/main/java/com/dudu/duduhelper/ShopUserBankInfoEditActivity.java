@@ -1,18 +1,5 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.ProvienceBean;
-import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,6 +12,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.bean.ProvienceBean;
+import com.dudu.duduhelper.bean.ResponsBean;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 public class ShopUserBankInfoEditActivity extends BaseActivity 
 {
@@ -333,7 +333,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
+				// 获取验证码
 				getMessage();
 			}
 		});
@@ -357,6 +357,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 				SaveData();
 			}
 		});
+
 		userBankCityLin.setOnClickListener(new OnClickListener() 
 		{
 			@Override
@@ -374,6 +375,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 				startActivityForResult(intent, 3);
 			}
 		});
+		//选择省份
 		kaihuPriviencelin.setOnClickListener(new OnClickListener() 
 		{
 			

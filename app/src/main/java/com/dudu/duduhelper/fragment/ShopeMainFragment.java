@@ -102,6 +102,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		switch (v.getId())
 		{
 			case R.id.orderBtnLin:
+				//订单按钮
 				intent.setClass(getActivity(), ShopOrderActivity.class);
 				break;
 			case R.id.getCashRelBtn:
@@ -109,21 +110,26 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 				intent=new Intent(getActivity(),ShopGetInComeCashActivity.class);
 				break;
 			case R.id.getHexiaoRelBtn:
+				//核销
 				intent=new Intent(getActivity(),MipcaActivityCapture.class);
-
 				intent.putExtra("action", "hexiao");
 				break;
+
 			case R.id.getCountBtn:
+				//统计
 				intent = new Intent(getActivity(), ShopAccountDataActivity.class);
 				break;
 			case R.id.configPrintBtn:
+				//打印机
 			    intent = new Intent(getActivity(),ShopSearchBlueToothActivity.class);
 			    break;
 			case R.id.dapaibuyBtn:
+				//大牌抢购
 				intent=new Intent(getActivity(),shopProductListActivity.class);
 				intent.putExtra("category", "buying");
 			    break;
 			case R.id.youhuiBtn:
+				//优惠券
 				intent=new Intent(getActivity(),shopProductListActivity.class);
 				intent.putExtra("category", "coupon");
 			    break;
@@ -139,15 +145,19 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 				//intent.putExtra("category", "hongbao");
 			    return;
 			case R.id.wuzheBtn:
+				//五折验证
 				intent=new Intent(getActivity(),ShopGetInComeCashActivity.class);
 				intent.putExtra("action", "wuzhe");
 			    break;
 			case R.id.memberBtn:
+				//员工管理
 				intent=new Intent(getActivity(),ShopMemberListActivity.class);
 			    break;
 			case R.id.shopmanagerBtn:
+				//门店管理
 				intent=new Intent(getActivity(),ShopListManagerActivity.class);
 			    break;
+			//账单流水
 			case R.id.moneyRecordLinButton:
 				intent=new Intent(getActivity(),ShopMoneyRecordListActivity.class);
 			    break;
@@ -174,7 +184,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		 ]
 		 */
 		//请求参数设置
-		String token = getActivity().getSharedPreferences("umeng_token", Context.MODE_PRIVATE).getString("token","");
+		String token = getActivity().getSharedPreferences("userconig", Context.MODE_PRIVATE).getString("umeng_token","");
 		parmas.put("token",token);
 		parmas.put("page",1);
 		parmas.put("sort_list","getmore,getless,moremoney,lessmoney");
