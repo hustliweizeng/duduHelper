@@ -4,27 +4,13 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.ShopMemberListActivity;
-import com.dudu.duduhelper.bean.MemberBean;
-import com.dudu.duduhelper.bean.MemberDataBean;
-import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.javabean.BankCardListBean;
 import com.dudu.duduhelper.widget.CircleImageView;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
-import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +19,7 @@ public class BankListAdapter extends BaseAdapter
 {
 	private Context context;
     private ViewHolder viewHolder;
-    List<MemberDataBean> list=new ArrayList<MemberDataBean>();
+    List<BankCardListBean.DataBean> list=new ArrayList<>();
     //private OnClick listener=null;
     
     public BankListAdapter(Context context)
@@ -50,7 +36,7 @@ public class BankListAdapter extends BaseAdapter
     	list.clear();
     	notifyDataSetChanged();
     }
-    public void addAll(List<MemberDataBean> list)
+    public void addAll(List<BankCardListBean.DataBean> list)
     {
     	this.list.addAll(this.list.size(), list);
     	notifyDataSetChanged();
@@ -60,7 +46,7 @@ public class BankListAdapter extends BaseAdapter
 		return  list.get(position).getId();
 	}
 	@Override
-	public MemberDataBean getItem(int arg0) 
+	public BankCardListBean.DataBean getItem(int arg0)
 	{
 		// TODO Auto-generated method stub
 		return list.get(arg0);
@@ -76,120 +62,52 @@ public class BankListAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
-		// TODO Auto-generated method stub
 		if(convertView == null)
 		{
 			viewHolder = new ViewHolder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.shop_bank_item, null);
-			viewHolder.bankNameText=(TextView) convertView.findViewById(R.id.bankNameText);
-			viewHolder.bankCardNum=(TextView) convertView.findViewById(R.id.bankCardNum);
-//			viewHolder.delectButton=(ImageButton) convertView.findViewById(R.id.delectButton);
-//			viewHolder.listener=new OnClick();
-//			viewHolder.delectButton.setOnClickListener(viewHolder.listener);
+			viewHolder.bankNameText = (TextView) convertView.findViewById(R.id.bankNameText);
+			viewHolder.bankCardNum = (TextView) convertView.findViewById(R.id.bankCardNum);
+			viewHolder.bankCardUsername = (TextView) convertView.findViewById(R.id.bankCardUsername);
 			convertView.setTag(viewHolder);
 		}
 		else
 		{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+		BankCardListBean.DataBean data = list.get(position);
+		//设置数据非空判断
 		if(list.size()!=0)
-		{
-			if(!TextUtils.isEmpty(list.get(position).getUsername()))
+		{	//设置银行名称
+			if(!TextUtils.isEmpty(data.getBank_name()))
 			{
-				//viewHolder.membercount.setText("账号："+list.get(position).getUsername());
+				viewHolder.bankNameText.setText(data.getBank_name());
 			}
-			if(!TextUtils.isEmpty(list.get(position).getNickname()))
+			//设置银行卡图标
+
+
+			//设置银行卡号
+			if(!TextUtils.isEmpty(data.getCard_number()))
 			{
-				//viewHolder.membername.setText("姓名："+list.get(position).getNickname());
+				//只显示末尾4个
+				viewHolder.bankCardNum.setText(data.getCard_number());//substring(list.size()-4,list.size()-1));
 			}
-//			if(!TextUtils.isEmpty(list.get(position).getId()))
-//			{
-//				viewHolder.listener.setIdAndPostion(list.get(position).getId(),position);
-//			}
+			//设置姓名
+			if(!TextUtils.isEmpty(list.get(position).getName()))
+			{
+				viewHolder.bankCardUsername.setText(data.getName());
+			}
+			//
 		}
 		return convertView;
 	}
-	private class ViewHolder
-	{
+	private class ViewHolder {
 		TextView bankNameText;
 		TextView bankCardNum;
 		TextView bankCardUsername;
 		CircleImageView banklogoImg;
-        OnClick listener;
 	}
-	private class OnClick implements OnClickListener
-	{
-		private String id;
-		private int postion;
-		
 
-		public void setIdAndPostion(String id,int postion) {
-			this.id = id;
-			this.postion=postion;
-		}
 
-		@Override
-		public void onClick(View v) 
-		{
-			// TODO Auto-generated method stub
-			MyDialog.showDialog(context, "是否删除该店员", true, true, "确定", "取消", new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
-					RequestParams params = new RequestParams();
-					params.add("token", ((ShopMemberListActivity)context).share.getString("token", ""));
-					params.add("id",id);
-					params.add("version", ConstantParamPhone.VERSION);
-					params.setContentEncoding("UTF-8");
-					AsyncHttpClient client = new AsyncHttpClient();
-					//保存cookie，自动保存到了shareprefercece  
-			        PersistentCookieStore myCookieStore = new PersistentCookieStore(context);    
-			        client.setCookieStore(myCookieStore); 
-			        client.post(ConstantParamPhone.IP+ConstantParamPhone.MEMBER_DELECT, params,new TextHttpResponseHandler()
-					{
-
-						@Override
-						public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-						{
-							Toast.makeText(context, "网络不给力呀", Toast.LENGTH_LONG).show();
-						}
-						@Override
-						public void onSuccess(int arg0, Header[] arg1, String arg2) 
-						{
-							MemberBean responsBean=new Gson().fromJson(arg2,MemberBean.class);
-							if(!responsBean.getStatus().equals("1"))
-							{
-								Toast.makeText(context, "出错啦！", Toast.LENGTH_LONG).show();
-							}
-							else
-							{
-								Toast.makeText(context, "删除成功啦！", Toast.LENGTH_LONG).show();
-							}
-							MyDialog.cancel();
-						}
-						@Override
-						public void onFinish() 
-						{
-							// TODO Auto-generated method stub
-							ColorDialog.dissmissProcessDialog();
-							list.remove(postion);
-							notifyDataSetChanged();
-						}
-					});
-				}
-			}, new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					MyDialog.cancel();
-				}
-			});
-			
-		}
-		
-	}
 
 }

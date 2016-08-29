@@ -121,6 +121,7 @@ public class ConstantParamPhone
 
     //提现
     public static final String  CREATE_GET_MONEY ="/api/app/outmoney";//创建提现
+    public static final String  GET_OUT_MONEY_LIST ="/api/app/outmoney";//获取提现列表
 
    //订单列表
    public static final String  GET_ORDER_LIST = "/api/app/order";//获取订单列表

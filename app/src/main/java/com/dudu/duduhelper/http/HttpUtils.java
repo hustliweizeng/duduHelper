@@ -28,7 +28,7 @@ public class HttpUtils {
 		client.setCookieStore(myCookieStore);
 		if ("get".equalsIgnoreCase(method)){
 
-			client.get(url, params,mTextHttpResponseHandler);
+			client.get(ConstantParamPhone.BASE_URL+url, params,mTextHttpResponseHandler);
 
 		}else if ("post".equalsIgnoreCase(method)){
 			client.post(mContext,ConstantParamPhone.BASE_URL+url,params,mTextHttpResponseHandler);

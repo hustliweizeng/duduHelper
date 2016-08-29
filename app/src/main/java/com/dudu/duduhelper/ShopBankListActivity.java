@@ -30,10 +30,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.BankListAdapter;
-import com.dudu.duduhelper.bean.MemberDataBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.BankCardListBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.WaveHelper;
 import com.dudu.duduhelper.widget.WaveView;
@@ -60,6 +61,7 @@ public class ShopBankListActivity extends BaseActivity
     private String action = "";
     private PopupWindow popupWindow;
     private LinearLayout backgroundLinearlayout;
+	private int pagnum = 1;//初始化时加载的页面
     
   //波浪助手
   	private WaveHelper mWaveHelper;
@@ -131,7 +133,7 @@ public class ShopBankListActivity extends BaseActivity
 		memberListswipeLayout.setProgressBackgroundColor(R.color.bg_color);
 
 		memberList=(ListView) this.findViewById(R.id.memberList);
-		//设置适配器
+		//设置适配器，显示银行卡信息列表
 		memberList.setAdapter(memberAdapter);
 		reloadButton=(Button) this.findViewById(R.id.reloadButton);
 		reloadButton=(Button) this.findViewById(R.id.reloadButton);
@@ -165,14 +167,15 @@ public class ShopBankListActivity extends BaseActivity
 				}
 				else
 				{
-					//进入银行卡条目
+					//进入银行卡详细信息条目，修改完成后，需要返回当前列表
 					Intent intent=new Intent(ShopBankListActivity.this,ShopUserBankInfoActivity.class);
+					//intent.putExtra("")
 					startActivityForResult(intent, 1);
 				}
 			}
 		});
 	}
-	//请求数据
+	//请求银行卡列表信息
 	private void initData() 
 	{
 		loading_progressBar.setVisibility(View.VISIBLE);
@@ -186,14 +189,85 @@ public class ShopBankListActivity extends BaseActivity
 			{
 				//显示重新加载页面
 				//reloadButton.setVisibility(View.VISIBLE);
-				Toast.makeText(context,"记载数据失败",Toast.LENGTH_LONG).show();
-				showBankCardList();
+				Toast.makeText(context,"加载失败",Toast.LENGTH_LONG).show();
+				/*showBankCardList();
+				Gson gson = new Gson();
+				BankCardListBean bean1 = gson.fromJson(arg2, BankCardListBean.class);*/
+
+				//获取数据，传递给适配器adapter
+				//伪造数据
+				BankCardListBean bean1 = new BankCardListBean();
+
+				List<BankCardListBean.DataBean>  datas = new ArrayList<>();
+				BankCardListBean.DataBean data1 = new BankCardListBean.DataBean();
+				data1.setBank_name("中国银行");
+				data1.setCard_number("8888888888");
+				data1.setProvince_id("22");
+				data1.setCity_id("1");
+				data1.setName("孙悟空");
+				data1.setId("4165466");
+
+				BankCardListBean.DataBean data2 = new BankCardListBean.DataBean();
+				data2.setBank_name("工商银行");
+				data2.setCard_number("8888343888888");
+				data2.setProvince_id("22");
+				data2.setCity_id("1");
+				data2.setName("猪八戒");
+				data2.setId("4165466");
+
+				bean1.setCode("SUCCESS");
+				bean1.setMsg("OK");
+				bean1.setData(datas);
+				//判断接收的jieguo
+				if ("SUCCESS".equalsIgnoreCase(bean1.getCode()) && "OK".equalsIgnoreCase(bean1.getMsg())){
+					memberAdapter.addAll(bean1.getData());
+					LogUtil.d("banklist","success"+bean1.toString());
+				}
 			}
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				showBankCardList();
+				Toast.makeText(context,"加载成功",Toast.LENGTH_LONG).show();
+				/*showBankCardList();
+				Gson gson = new Gson();
+				BankCardListBean bean1 = gson.fromJson(arg2, BankCardListBean.class);*/
 
+				//获取数据，传递给适配器adapter
+				//伪造数据
+				BankCardListBean bean1 = new BankCardListBean();
+
+				List<BankCardListBean.DataBean>  datas = new ArrayList<>();
+				BankCardListBean.DataBean data1 = new BankCardListBean.DataBean();
+				data1.setBank_name("中国银行");
+				data1.setCard_number("0123");
+				data1.setProvince_id("22");
+				data1.setCity_id("1");
+				data1.setName("孙悟空");
+				data1.setId("4165466");
+
+				BankCardListBean.DataBean data2 = new BankCardListBean.DataBean();
+				data2.setBank_name("工商银行");
+				data2.setCard_number("8088");
+				data2.setProvince_id("22");
+				data2.setCity_id("1");
+				data2.setName("猪八戒");
+				data2.setId("4165466");
+				//把数据添加到集合中
+				datas.add(data1);
+				datas.add(data2);
+				datas.add(data1);
+
+				bean1.setCode("SUCCESS");
+				bean1.setMsg("OK");
+				bean1.setData(datas);
+				//判断接收的结果
+				if ("SUCCESS".equalsIgnoreCase(bean1.getCode()) && "OK".equalsIgnoreCase(bean1.getMsg())){
+
+					memberAdapter.addAll(bean1.getData());
+					LogUtil.d("banklist","success"+memberAdapter.getCount());
+
+				}
+				//把数据交给适配器
 
 			}
 			@Override
@@ -205,21 +279,7 @@ public class ShopBankListActivity extends BaseActivity
 		});
 	}
 
-	private void showBankCardList() {
-		//获取数据，传递给适配器adapter
-		//伪造数据
-		List<MemberDataBean> list = new ArrayList<MemberDataBean>();
-		MemberDataBean bean1 = new MemberDataBean();
-		bean1.setNickname("小米");
-		MemberDataBean bean2 = new MemberDataBean();
-		bean1.setNickname("魅族");
-		MemberDataBean bean3 = new MemberDataBean();
-		bean1.setNickname("华为");
-		list.add(bean1);
-		list.add(bean2);
-		list.add(bean3);
-		memberAdapter.addAll(list);
-	}
+
 	//显示下来提现窗口
 	private void getCashWindow()
 	{
@@ -249,7 +309,7 @@ public class ShopBankListActivity extends BaseActivity
 				HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "GET", new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-						Toast.makeText(context,"发送失败",Toast.LENGTH_LONG).show();
+						Toast.makeText(context,"服务器错误，请稍后再试",Toast.LENGTH_LONG).show();
 						//请求网络数据
 						showResidueSeconds();
 					}
@@ -274,7 +334,7 @@ public class ShopBankListActivity extends BaseActivity
 				HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "post", new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-						Toast.makeText(context,"发送失败",Toast.LENGTH_LONG).show();
+						Toast.makeText(context,"服务器错误，请稍后再试",Toast.LENGTH_LONG).show();
 						//请求网络数据
 						showResidueSeconds();
 					}
@@ -352,6 +412,7 @@ public class ShopBankListActivity extends BaseActivity
           }
         });
 	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
