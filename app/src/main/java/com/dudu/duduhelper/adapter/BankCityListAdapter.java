@@ -9,25 +9,25 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.javabean.ProvinceListBean;
+import com.dudu.duduhelper.javabean.CityClistBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BankAreAdapter extends BaseAdapter {
+public class BankCityListAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<ProvinceListBean.DataBean> list=new ArrayList<>();
+	private List<CityClistBean.DataBean> list=new ArrayList<>();
 	//设置选中的条目
 	private String select;
-	
-	public void addAll(List<ProvinceListBean.DataBean> list, String select)
+
+	public void addAll(List<CityClistBean.DataBean> list, String select)
 	{
 		this.list.addAll(this.list.size(), list);
 		this.select=select;
     	notifyDataSetChanged();
 	}
-	public BankAreAdapter(Context context)
+	public BankCityListAdapter(Context context)
 	{
 		this.context=context;
 	}

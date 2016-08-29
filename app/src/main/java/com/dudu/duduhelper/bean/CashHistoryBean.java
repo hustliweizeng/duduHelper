@@ -4,20 +4,20 @@ import java.util.List;
 
 public class CashHistoryBean 
 {
-	private String status;
-	private String info;
+	private String code;
+	private String msg;
 	private List<CashHistoryDataBean> data;
-	public String getStatus() {
-		return status;
+	public String getCode() {
+		return code;
 	}
 	public void setStatus(String status) {
-		this.status = status;
+		this.code = status;
 	}
-	public String getInfo() {
-		return info;
+	public String getMsg() {
+		return msg;
 	}
 	public void setInfo(String info) {
-		this.info = info;
+		this.msg = info;
 	}
 	public List<CashHistoryDataBean> getData() {
 		return data;

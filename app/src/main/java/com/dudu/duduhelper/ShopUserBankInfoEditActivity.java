@@ -12,14 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.bean.ProvienceBean;
-import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.BankCardListBean;
+import com.dudu.duduhelper.javabean.ProvinceListBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -41,7 +39,6 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	private EditText userBankSonNameEditText;
 	private Button btnGetmess;
 	private EditText messageCodeEditText;
-	private TimeCount time;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -49,37 +46,12 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_user_bank_info_edit);
 		initHeadView("我的银行卡", true, false, 0);
-		time = new TimeCount(60000, 1000);//构造CountDownTimer对象
 		initView();
 		initData();
 		
 	}
-	//短信验证倒计时
-	class TimeCount extends CountDownTimer 
-	{
-		public TimeCount(long millisInFuture, long countDownInterval) 
-		{
-		    super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
-		}
-		@Override
-		public void onFinish() 
-		{
-			//计时完毕时触发
-			btnGetmess.setTextColor(btnGetmess.getResources().getColor(R.color.text_color_red));
-			btnGetmess.setText("重新获取");
-			btnGetmess.setClickable(true);
-			btnGetmess.setPressed(false);
-		}
-		@Override
-		public void onTick(long millisUntilFinished)
-		{//计时过程显示
-			btnGetmess.setTextColor(btnGetmess.getResources().getColor(R.color.title_color));
-			btnGetmess.setClickable(false);
-			btnGetmess.setPressed(true);
-			btnGetmess.setText(millisUntilFinished /1000+"秒");
-		}
-	}
-	//修改银行卡
+
+	//提交信息
 	private void SaveData() 
 	{
 		if(TextUtils.isEmpty(userBankNameEditText.getText().toString().trim()))
@@ -136,7 +108,6 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 		params.add("city_id",userBankCityTextView.getText().toString().trim());
 		params.add("bank_name",userBankSonNameEditText.getText().toString().trim());
 		params.add("code",messageCodeEditText.getText().toString().trim());
-		params.setContentEncoding("UTF-8");
 		HttpUtils.getConnection(context,params,ConstantParamPhone.CHANGE_BANKCARD_INFO, "POST",new TextHttpResponseHandler(){
 
 			@Override
@@ -148,6 +119,8 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
 				Toast.makeText(context,"修改银行卡成功",Toast.LENGTH_LONG).show();
+				finish();
+
 			}
 			@Override
 			public void onFinish() 
@@ -157,40 +130,50 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 		});
 	}
 
-	private void initData() 
+	private void initData()
 	{
-		// TODO Auto-generated method stub
-		if(!TextUtils.isEmpty(share.getString("truename", "")))
-		{
-			userBankNameEditText.setHint("*"+share.getString("truename", "").substring(1,share.getString("truename", "").length()));
-		}
-		if(!TextUtils.isEmpty(share.getString("bankno", "")))
-		{
-			userBankNumEditText.setHint("尾号:"+share.getString("bankno", "").substring(share.getString("bankno", "").length()-4, share.getString("bankno", "").length()));
-		}
-		if(!TextUtils.isEmpty(share.getString("bankname", "")))
-		{
-			userBankNameTextView.setText(share.getString("bankname", ""));
-		}
-		if(!TextUtils.isEmpty(share.getString("province", "")))
-		{
-			provienceTextView.setText(share.getString("province", ""));
-		}
-		if(!TextUtils.isEmpty(share.getString("city", "")))
-		{
-			userBankCityTextView.setText(share.getString("city", ""));
-		}
-		if(!TextUtils.isEmpty(share.getString("moreinfo", "")))
-		{
-			userBankSonNameEditText.setText(share.getString("moreinfo", ""));
+		//从编辑要么传递过来的数据
+		BankCardListBean.DataBean info = (BankCardListBean.DataBean) getIntent().getSerializableExtra("info");
+		if (info != null){
+			//显示默认数据
+			//用户名
+			if(!TextUtils.isEmpty(info.getBank_name()))
+			{
+				userBankNameEditText.setHint(info.getName());
+			}
+			//银行卡号
+			if(!TextUtils.isEmpty(info.getCard_number()))
+			{
+				userBankNumEditText.setHint(info.getCard_number());
+			}
+			//银行名称
+			if(!TextUtils.isEmpty(info.getBank_name()))
+			{
+				userBankNameTextView.setText(info.getBank_name());
+			}
+			//省份
+			if(!TextUtils.isEmpty(info.getProvince_id()))
+			{
+				provienceTextView.setText(info.getProvince_id());
+			}
+			//城市
+			if(!TextUtils.isEmpty(info.getCity_id()))
+			{
+				userBankCityTextView.setText(info.getCity_id());
+			}
+			//支行名称
+			if(!TextUtils.isEmpty(info.getBank_name()))
+			{
+				userBankSonNameEditText.setText(share.getString("moreinfo", ""));
+			}
 		}
 	}
 	
 	@Override
+	//点击左侧退出的时候，弹出对话框
 	public void LeftButtonClick() 
 	{
-		// TODO Auto-generated method stub
-
+		//任意条目不为空时
 		if(!(TextUtils.isEmpty(userBankNameEditText.getText().toString().trim()))||
 				!(TextUtils.isEmpty(userBankNumEditText.getText().toString().trim()))||
 				!(userBankNameTextView.getText().toString().trim()).equals(share.getString("bankname", ""))||
@@ -238,6 +221,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	{
 		// TODO Auto-generated method stub
 		messageCodeEditText=(EditText) this.findViewById(R.id.messageCodeEditText);
+
 		btnGetmess=(Button) this.findViewById(R.id.btnGetmess);
 		btnGetmess.setOnClickListener(new OnClickListener() 
 		{
@@ -247,6 +231,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			{
 				// 获取验证码
 				getMessage();
+				//showResidueSeconds();
 			}
 		});
 		userBankSonNameEditText=(EditText) this.findViewById(R.id.userBankSonNameEditText);
@@ -259,6 +244,9 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 		kaihuBanklin=(LinearLayout) this.findViewById(R.id.kaihuBanklin);
 		kaihuPriviencelin=(LinearLayout) this.findViewById(R.id.kaihuPriviencelin);
 		userBankCityLin=(LinearLayout) this.findViewById(R.id.userBankCityLin);
+		TextView myphonenum = (TextView) findViewById(R.id.myphonenum);
+		myphonenum.setText(sp.getString("mobile","请先绑定手机"));
+		//提交编辑后的信息
 		savebutton.setOnClickListener(new OnClickListener() 
 		{
 			
@@ -269,7 +257,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 				SaveData();
 			}
 		});
-
+		//选择城市
 		userBankCityLin.setOnClickListener(new OnClickListener() 
 		{
 			@Override
@@ -300,7 +288,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 					Toast.makeText(ShopUserBankInfoEditActivity.this, "请先选择开户行", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				Intent intent=new Intent(ShopUserBankInfoEditActivity.this,UserBankSelectActivity.class);
+				Intent intent=new Intent(context,UserBankSelectActivity.class);
 				intent.putExtra("action", "province");
 				startActivityForResult(intent, 2);
 			}
@@ -336,65 +324,71 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	              case 2:
 	              //来自按钮2的请求，作相应业务处理
 	              {
-	            	  provienceCode=((ProvienceBean)data.getSerializableExtra("province")).getId();
-	            	  provienceTextView.setText(((ProvienceBean)data.getSerializableExtra("province")).getName());
+					  //省份列表
+					  provienceCode = ((ProvinceListBean.DataBean)data.getSerializableExtra("province")).getCode();
+	            	  provienceTextView.setText(((ProvinceListBean.DataBean)data.getSerializableExtra("province")).getName());
 	            	  userBankCityTextView.setText(null);
 	              }
 	              break;
 	              case 3:
 	              //来自按钮2的请求，作相应业务处理
 	              {
-	            	  cityCode=((ProvienceBean)data.getSerializableExtra("city")).getId();
-	            	  userBankCityTextView.setText(((ProvienceBean)data.getSerializableExtra("city")).getName());
+	            	  cityCode=((ProvinceListBean.DataBean)data.getSerializableExtra("city")).getId();
+	            	  userBankCityTextView.setText(((ProvinceListBean.DataBean)data.getSerializableExtra("city")).getName());
 	              }
 	              break;
 	           }
 		  }
      }
+	//获取短信验证码
 	  private void getMessage() 
 		{
-			// TODO Auto-generated method stub
-			// TODO Auto-generated method stub
 			RequestParams params = new RequestParams();
-			params.add("token", share.getString("token", ""));
-			params.add("mobile",share.getString("mobile", ""));
+			params.add("mobile",sp.getString("mobile", ""));
 			params.add("type", "changebank");
-			params.add("version", ConstantParamPhone.VERSION);
-			params.setContentEncoding("UTF-8");
-			new AsyncHttpClient().post(ConstantParamPhone.IP+ConstantParamPhone.SEND_SMS, params,new TextHttpResponseHandler(){
+			HttpUtils.getConnection(context,params,ConstantParamPhone.GET_SMS_CONFIRM, "GET",new TextHttpResponseHandler(){
 
 				@Override
 				public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
 				{
 					Toast.makeText(ShopUserBankInfoEditActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
+					//showResidueSeconds();
 				}
 				@Override
 				public void onSuccess(int arg0, Header[] arg1, String arg2) 
 				{
-					//获取短信发送状态
-					ResponsBean responsBean=new Gson().fromJson(arg2, ResponsBean.class);
-					if(responsBean.getStatus().equals("-1103"))
-					{
-						Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-						return;
-					}
-					if(responsBean.getStatus().equals("-3000"))
-					{
-						Toast.makeText(ShopUserBankInfoEditActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-						return;
-					}
-					if(responsBean.getStatus().equals("1"))
-					{
-						time.start();
-					}
-					//开始计时
+					Toast.makeText(ShopUserBankInfoEditActivity.this, "已发送短信验证，15分钟内有效", Toast.LENGTH_LONG).show();
+					showResidueSeconds();
 				}
-				@Override
-				public void onFinish() 
-				{
-					// TODO Auto-generated method stub
-				}
+
 			});
 		}
+	/**
+	 * 显示剩余秒数
+	 */
+	private void showResidueSeconds() {
+		//显示倒计时按钮
+		new CountDownTimer(60*1000,1000){
+
+			@Override
+			public void onTick(long lastTime) {
+				//倒计时执行的方法
+				btnGetmess.setClickable(false);
+				btnGetmess.setFocusable(false);
+				btnGetmess.setText(lastTime/1000+"秒后重发");
+				btnGetmess.setTextColor(getResources().getColor(R.color.text_hint_color));
+				btnGetmess.setBackgroundResource(R.drawable.btn_bg_hint);
+				// LogUtil.d("lasttime","剩余时间:"+lastTime/1000);
+			}
+
+			@Override
+			public void onFinish() {
+				btnGetmess.setClickable(true);
+				btnGetmess.setFocusable(true);
+				btnGetmess.setText("重新获取");
+
+			}
+		}.start();
+	}
 
 }

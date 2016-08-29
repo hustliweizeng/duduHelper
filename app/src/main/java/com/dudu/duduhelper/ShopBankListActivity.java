@@ -71,6 +71,7 @@ public class ShopBankListActivity extends BaseActivity
 	private String bankCardNo;
 	private EditText getCodeedit;
 	private EditText getcashmoneyedit;
+	private BankCardListBean bean1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -84,7 +85,7 @@ public class ShopBankListActivity extends BaseActivity
 	    	if(action.equals("tixian"))
 	    	{
 	    		title = "提现";
-	    		image = R.drawable.icon_qiehuan;
+	    		image = R.drawable.icon_historical;
 	    	}
 	    	else
 	    	{
@@ -99,14 +100,30 @@ public class ShopBankListActivity extends BaseActivity
 		initHeadView(title, true, true, image);
 		initView();
 		ColorDialog.showRoundProcessDialog(ShopBankListActivity.this,R.layout.loading_process_dialog_color);
-		initData();
+		if (savedInstanceState!=null){
+			//重新获取保存的信息
+			bean1 = (BankCardListBean) savedInstanceState.getSerializable("data");
+			memberAdapter.addAll(bean1.getData());
+		}else {
+			//第一次进入加载数据
+			initData();
+		}
 	}
 	
 	@Override
+	//新增银行卡页面
 	public void RightButtonClick() 
-	{
-		Intent intent=new Intent(ShopBankListActivity.this,ShopUserBankInfoEditActivity.class);
-		startActivity(intent);
+	{	//进入提现记录
+		if (action.equalsIgnoreCase("tixian")){
+			startActivity(new Intent(context,GetCashHistoryListActivity.class));
+
+		}else {
+			//进入新增银行卡页面
+			Intent intent=new Intent(ShopBankListActivity.this,ShopUserBankInfoEditActivity.class);
+			//不需要传递银行卡信息过去
+			startActivity(intent);
+
+		}
 	}
 
 	@SuppressLint("ResourceAsColor") 
@@ -169,7 +186,8 @@ public class ShopBankListActivity extends BaseActivity
 				{
 					//进入银行卡详细信息条目，修改完成后，需要返回当前列表
 					Intent intent=new Intent(ShopBankListActivity.this,ShopUserBankInfoActivity.class);
-					//intent.putExtra("")
+					Bundle bundle = new Bundle();
+					intent.putExtra("cardInfo",bean1.getData().get(position));
 					startActivityForResult(intent, 1);
 				}
 			}
@@ -178,7 +196,7 @@ public class ShopBankListActivity extends BaseActivity
 	//请求银行卡列表信息
 	private void initData() 
 	{
-		loading_progressBar.setVisibility(View.VISIBLE);
+		//loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
 		RequestParams params = new RequestParams();
         HttpUtils.getConnection(context,params,ConstantParamPhone.GET_BANKCARD_LIST, "GET",new TextHttpResponseHandler()
@@ -190,51 +208,19 @@ public class ShopBankListActivity extends BaseActivity
 				//显示重新加载页面
 				//reloadButton.setVisibility(View.VISIBLE);
 				Toast.makeText(context,"加载失败",Toast.LENGTH_LONG).show();
-				/*showBankCardList();
-				Gson gson = new Gson();
-				BankCardListBean bean1 = gson.fromJson(arg2, BankCardListBean.class);*/
 
-				//获取数据，传递给适配器adapter
-				//伪造数据
-				BankCardListBean bean1 = new BankCardListBean();
-
-				List<BankCardListBean.DataBean>  datas = new ArrayList<>();
-				BankCardListBean.DataBean data1 = new BankCardListBean.DataBean();
-				data1.setBank_name("中国银行");
-				data1.setCard_number("8888888888");
-				data1.setProvince_id("22");
-				data1.setCity_id("1");
-				data1.setName("孙悟空");
-				data1.setId("4165466");
-
-				BankCardListBean.DataBean data2 = new BankCardListBean.DataBean();
-				data2.setBank_name("工商银行");
-				data2.setCard_number("8888343888888");
-				data2.setProvince_id("22");
-				data2.setCity_id("1");
-				data2.setName("猪八戒");
-				data2.setId("4165466");
-
-				bean1.setCode("SUCCESS");
-				bean1.setMsg("OK");
-				bean1.setData(datas);
-				//判断接收的jieguo
-				if ("SUCCESS".equalsIgnoreCase(bean1.getCode()) && "OK".equalsIgnoreCase(bean1.getMsg())){
-					memberAdapter.addAll(bean1.getData());
-					LogUtil.d("banklist","success"+bean1.toString());
-				}
 			}
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				Toast.makeText(context,"加载成功",Toast.LENGTH_LONG).show();
+				//Toast.makeText(context,"加载成功",Toast.LENGTH_LONG).show();
 				/*showBankCardList();
 				Gson gson = new Gson();
 				BankCardListBean bean1 = gson.fromJson(arg2, BankCardListBean.class);*/
 
 				//获取数据，传递给适配器adapter
 				//伪造数据
-				BankCardListBean bean1 = new BankCardListBean();
+				bean1 = new BankCardListBean();
 
 				List<BankCardListBean.DataBean>  datas = new ArrayList<>();
 				BankCardListBean.DataBean data1 = new BankCardListBean.DataBean();
@@ -279,6 +265,14 @@ public class ShopBankListActivity extends BaseActivity
 		});
 	}
 
+	//当前activity结束时保存状态
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		//把当前的数据保存
+		outState.putSerializable("data",bean1);
+
+	}
 
 	//显示下来提现窗口
 	private void getCashWindow()
@@ -414,12 +408,14 @@ public class ShopBankListActivity extends BaseActivity
 	}
 
 	@Override
+	//当开启的activity结束以后，重新加载数据
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		//清空adapter数据
+		//清空adapter数据，重新载入数据
 		memberAdapter.clear();
 		//loadMoreView.setVisibility(View.GONE);
-		ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
+		//
+		// ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		initData();
 	}
 	/**

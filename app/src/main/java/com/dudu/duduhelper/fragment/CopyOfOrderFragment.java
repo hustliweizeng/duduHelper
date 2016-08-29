@@ -1,30 +1,5 @@
 package com.dudu.duduhelper.fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.MainActivity;
-import com.dudu.duduhelper.ShopOrderDetailActivity;
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.adapter.BankAreAdapter;
-import com.dudu.duduhelper.adapter.ShopOrderAdapter;
-import com.dudu.duduhelper.adapter.ProductAdapter;
-import com.dudu.duduhelper.bean.OrderBean;
-import com.dudu.duduhelper.bean.ProvienceBean;
-import com.dudu.duduhelper.Utils.Util;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-import com.umeng.analytics.MobclickAgent;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
@@ -40,19 +15,44 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.PopupWindow.OnDismissListener;
 import android.widget.Toast;
+
+import com.dudu.duduhelper.LoginActivity;
+import com.dudu.duduhelper.MainActivity;
+import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.ShopOrderDetailActivity;
+import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.adapter.BankAreAdapter;
+import com.dudu.duduhelper.adapter.ProductAdapter;
+import com.dudu.duduhelper.adapter.ShopOrderAdapter;
+import com.dudu.duduhelper.bean.OrderBean;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.javabean.ProvinceListBean.DataBean;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+import com.umeng.analytics.MobclickAgent;
+
+import org.apache.http.Header;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CopyOfOrderFragment extends Fragment {
 	private View OrderFragmentView;
@@ -394,26 +394,26 @@ public class CopyOfOrderFragment extends Fragment {
         int popWidth=popupWindow.getWidth();  
         popupWindow.showAsDropDown(selectLine);
         ListView productSelectList=(ListView) view.findViewById(R.id.productSelectList);
-        final List<ProvienceBean> selectList=new ArrayList<ProvienceBean>();
+        final List<DataBean> selectList=new ArrayList<>();
         if(action.equals("order"))
         {
     		bankAreAdapter=new BankAreAdapter(getActivity());
-        	ProvienceBean provienceBean=new ProvienceBean();
-        	provienceBean.setId("0");
-        	provienceBean.setName("全部来源");
-        	selectList.add(provienceBean);
-        	ProvienceBean provienceBean1=new ProvienceBean();
-        	provienceBean1.setId("1");
-        	provienceBean1.setName("大牌抢购");
-        	selectList.add(provienceBean1);
-        	ProvienceBean provienceBean2=new ProvienceBean();
-        	provienceBean2.setId("7");
-        	provienceBean2.setName("优惠券");
-        	selectList.add(provienceBean2);
-        	ProvienceBean provienceBean3=new ProvienceBean();
-        	provienceBean3.setId("4");
-        	provienceBean3.setName("会员卡");
-        	selectList.add(provienceBean3);
+			DataBean DataBean=new DataBean();
+        	DataBean.setId("0");
+        	DataBean.setName("全部来源");
+        	selectList.add(DataBean);
+        	DataBean DataBean1=new DataBean();
+        	DataBean1.setId("1");
+        	DataBean1.setName("大牌抢购");
+        	selectList.add(DataBean1);
+        	DataBean DataBean2=new DataBean();
+        	DataBean2.setId("7");
+        	DataBean2.setName("优惠券");
+        	selectList.add(DataBean2);
+        	DataBean DataBean3=new DataBean();
+        	DataBean3.setId("4");
+        	DataBean3.setName("会员卡");
+        	selectList.add(DataBean3);
 
         	bankAreAdapter.addAll(selectList,orderType.getText().toString());
 	        productSelectList.setAdapter(bankAreAdapter);
@@ -422,48 +422,48 @@ public class CopyOfOrderFragment extends Fragment {
         if(action.equals("product"))
         {
     		bankAreAdapter=new BankAreAdapter(getActivity());
-        	ProvienceBean provienceBean5=new ProvienceBean();
-        	provienceBean5.setId("0");
-        	provienceBean5.setName("全部订单");
-        	selectList.add(provienceBean5);
-        	ProvienceBean provienceBean4=new ProvienceBean();
-        	provienceBean4.setId("1");
-        	provienceBean4.setName("新订单");
-        	selectList.add(provienceBean4);
-//        	ProvienceBean provienceBean5=new ProvienceBean();
-//        	provienceBean5.setId("2");
-//        	provienceBean5.setName("已上架");
-//        	selectList.add(provienceBean5);
+        	DataBean DataBean5=new DataBean();
+        	DataBean5.setId("0");
+        	DataBean5.setName("全部订单");
+        	selectList.add(DataBean5);
+        	DataBean DataBean4=new DataBean();
+        	DataBean4.setId("1");
+        	DataBean4.setName("新订单");
+        	selectList.add(DataBean4);
+//        	DataBean DataBean5=new DataBean();
+//        	DataBean5.setId("2");
+//        	DataBean5.setName("已上架");
+//        	selectList.add(DataBean5);
         	bankAreAdapter.addAll(selectList,productAction.getText().toString());
 	        productSelectList.setAdapter(bankAreAdapter);
         }
         if(action.equals("status"))
         {
     		bankAreAdapter=new BankAreAdapter(getActivity());
-        	ProvienceBean provienceBean6=new ProvienceBean();
-        	provienceBean6.setId("");
-        	provienceBean6.setName("所有状态");
-        	selectList.add(provienceBean6);
-        	ProvienceBean provienceBean7=new ProvienceBean();
-        	provienceBean7.setId("1");
-        	provienceBean7.setName("未支付");
-        	selectList.add(provienceBean7);
-        	ProvienceBean provienceBean8=new ProvienceBean();
-        	provienceBean8.setId("2");
-        	provienceBean8.setName("已支付");
-        	selectList.add(provienceBean8);
-        	ProvienceBean provienceBean9=new ProvienceBean();
-        	provienceBean9.setId("3");
-        	provienceBean9.setName("已完成");
-        	selectList.add(provienceBean9);
-        	ProvienceBean provienceBean10=new ProvienceBean();
-        	provienceBean10.setId("-1");
-        	provienceBean10.setName("已过期");
-        	selectList.add(provienceBean10);
-        	ProvienceBean provienceBean11=new ProvienceBean();
-        	provienceBean11.setId("0");
-        	provienceBean11.setName("已取消");
-        	selectList.add(provienceBean11);
+        	DataBean DataBean6=new DataBean();
+        	DataBean6.setId("");
+        	DataBean6.setName("所有状态");
+        	selectList.add(DataBean6);
+        	DataBean DataBean7=new DataBean();
+        	DataBean7.setId("1");
+        	DataBean7.setName("未支付");
+        	selectList.add(DataBean7);
+        	DataBean DataBean8=new DataBean();
+        	DataBean8.setId("2");
+        	DataBean8.setName("已支付");
+        	selectList.add(DataBean8);
+        	DataBean DataBean9=new DataBean();
+        	DataBean9.setId("3");
+        	DataBean9.setName("已完成");
+        	selectList.add(DataBean9);
+        	DataBean DataBean10=new DataBean();
+        	DataBean10.setId("-1");
+        	DataBean10.setName("已过期");
+        	selectList.add(DataBean10);
+        	DataBean DataBean11=new DataBean();
+        	DataBean11.setId("0");
+        	DataBean11.setName("已取消");
+        	selectList.add(DataBean11);
         	bankAreAdapter.addAll(selectList,statusAction.getText().toString());
 	        productSelectList.setAdapter(bankAreAdapter);
         }

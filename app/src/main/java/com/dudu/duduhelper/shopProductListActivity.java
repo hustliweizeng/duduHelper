@@ -36,8 +36,8 @@ import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.HongBaoBean;
 import com.dudu.duduhelper.bean.HongbaoListBean;
 import com.dudu.duduhelper.bean.ProductBean;
+import com.dudu.duduhelper.javabean.ProvinceListBean.DataBean;
 import com.dudu.duduhelper.bean.ProductListBean;
-import com.dudu.duduhelper.bean.ProvienceBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
@@ -831,58 +831,58 @@ public class shopProductListActivity extends BaseActivity
 				}
 			});
 	        ListView productSelectList=(ListView) view.findViewById(R.id.productSelectList);
-	        final List<ProvienceBean> selectList=new ArrayList<ProvienceBean>();
+	        final List<DataBean> selectList=new ArrayList<DataBean>();
 	        if(action.equals("order"))
 	        {
 	        	bankAreAdapter=new BankAreAdapter(this);
 	        	if(category.equals("hongbao"))
 			        //红包列表
 	        	{
-	        		ProvienceBean provienceBean=new ProvienceBean();
-		        	provienceBean.setId("getmore");
-		        	provienceBean.setName("默认排序");
-		        	selectList.add(provienceBean);
-		        	ProvienceBean provienceBean1=new ProvienceBean();
-		        	provienceBean1.setId("getmore");
-		        	provienceBean1.setName("领取最多");
-		        	selectList.add(provienceBean1);
-		        	ProvienceBean provienceBean2=new ProvienceBean();
-		        	provienceBean2.setId("getless");
-		        	provienceBean2.setName("领取最少");
-		        	selectList.add(provienceBean2);
-		        	ProvienceBean provienceBean3=new ProvienceBean();
-		        	provienceBean3.setId("moremoney");
-		        	provienceBean3.setName("金额最多");
-		        	selectList.add(provienceBean3);
-		        	ProvienceBean provienceBean4=new ProvienceBean();
-		        	provienceBean4.setId("lessmoney");
-		        	provienceBean4.setName("金额最少");
-		        	selectList.add(provienceBean4);
+	        		DataBean DataBean=new DataBean();
+		        	DataBean.setId("getmore");
+		        	DataBean.setName("默认排序");
+		        	selectList.add(DataBean);
+		        	DataBean DataBean1=new DataBean();
+		        	DataBean1.setId("getmore");
+		        	DataBean1.setName("领取最多");
+		        	selectList.add(DataBean1);
+		        	DataBean DataBean2=new DataBean();
+		        	DataBean2.setId("getless");
+		        	DataBean2.setName("领取最少");
+		        	selectList.add(DataBean2);
+		        	DataBean DataBean3=new DataBean();
+		        	DataBean3.setId("moremoney");
+		        	DataBean3.setName("金额最多");
+		        	selectList.add(DataBean3);
+		        	DataBean DataBean4=new DataBean();
+		        	DataBean4.setId("lessmoney");
+		        	DataBean4.setName("金额最少");
+		        	selectList.add(DataBean4);
 	        	}
 	        	else
 	        	{
 			     //商品列表
 
-		        	ProvienceBean provienceBean=new ProvienceBean();
-		        	provienceBean.setId("default");
-		        	provienceBean.setName("默认排序");
-		        	selectList.add(provienceBean);
-		        	ProvienceBean provienceBean1=new ProvienceBean();
-		        	provienceBean1.setId("soldasc");
-		        	provienceBean1.setName("销量最低");
-		        	selectList.add(provienceBean1);
-		        	ProvienceBean provienceBean2=new ProvienceBean();
-		        	provienceBean2.setId("solddesc");
-		        	provienceBean2.setName("销量最高");
-		        	selectList.add(provienceBean2);
-		        	ProvienceBean provienceBean3=new ProvienceBean();
-		        	provienceBean3.setId("viewasc");
-		        	provienceBean3.setName("人气最低");
-		        	selectList.add(provienceBean3);
-		        	ProvienceBean provienceBean4=new ProvienceBean();
-		        	provienceBean4.setId("viewdesc");
-		        	provienceBean4.setName("人气最高");
-		        	selectList.add(provienceBean4);
+		        	DataBean DataBean=new DataBean();
+		        	DataBean.setId("default");
+		        	DataBean.setName("默认排序");
+		        	selectList.add(DataBean);
+		        	DataBean DataBean1=new DataBean();
+		        	DataBean1.setId("soldasc");
+		        	DataBean1.setName("销量最低");
+		        	selectList.add(DataBean1);
+		        	DataBean DataBean2=new DataBean();
+		        	DataBean2.setId("solddesc");
+		        	DataBean2.setName("销量最高");
+		        	selectList.add(DataBean2);
+		        	DataBean DataBean3=new DataBean();
+		        	DataBean3.setId("viewasc");
+		        	DataBean3.setName("人气最低");
+		        	selectList.add(DataBean3);
+		        	DataBean DataBean4=new DataBean();
+		        	DataBean4.setId("viewdesc");
+		        	DataBean4.setName("人气最高");
+		        	selectList.add(DataBean4);
 	        	}
 	        	bankAreAdapter.addAll(selectList,orderType.getText().toString());
 		        productSelectList.setAdapter(bankAreAdapter);
@@ -893,33 +893,33 @@ public class shopProductListActivity extends BaseActivity
 	    		bankAreAdapter=new BankAreAdapter(this);
 	    		if(category.equals("hongbao"))
 	        	{
-	    			ProvienceBean provienceBean6=new ProvienceBean();
-		        	provienceBean6.setId("all");
-		        	provienceBean6.setName("所有");
-		        	selectList.add(provienceBean6);
-		        	ProvienceBean provienceBean4=new ProvienceBean();
-		        	provienceBean4.setId("ended");
-		        	provienceBean4.setName("已截止");
-		        	selectList.add(provienceBean4);
-		        	ProvienceBean provienceBean5=new ProvienceBean();
-		        	provienceBean5.setId("releasing");
-		        	provienceBean5.setName("发放中");
-		        	selectList.add(provienceBean5);
+	    			DataBean DataBean6=new DataBean();
+		        	DataBean6.setId("all");
+		        	DataBean6.setName("所有");
+		        	selectList.add(DataBean6);
+		        	DataBean DataBean4=new DataBean();
+		        	DataBean4.setId("ended");
+		        	DataBean4.setName("已截止");
+		        	selectList.add(DataBean4);
+		        	DataBean DataBean5=new DataBean();
+		        	DataBean5.setId("releasing");
+		        	DataBean5.setName("发放中");
+		        	selectList.add(DataBean5);
 	        	}
 	    		else
 	    		{
-		        	ProvienceBean provienceBean6=new ProvienceBean();
-		        	provienceBean6.setId("0");
-		        	provienceBean6.setName("所有");
-		        	selectList.add(provienceBean6);
-		        	ProvienceBean provienceBean4=new ProvienceBean();
-		        	provienceBean4.setId("1");
-		        	provienceBean4.setName("未上架");
-		        	selectList.add(provienceBean4);
-		        	ProvienceBean provienceBean5=new ProvienceBean();
-		        	provienceBean5.setId("2");
-		        	provienceBean5.setName("已上架");
-		        	selectList.add(provienceBean5);
+		        	DataBean DataBean6=new DataBean();
+		        	DataBean6.setId("0");
+		        	DataBean6.setName("所有");
+		        	selectList.add(DataBean6);
+		        	DataBean DataBean4=new DataBean();
+		        	DataBean4.setId("1");
+		        	DataBean4.setName("未上架");
+		        	selectList.add(DataBean4);
+		        	DataBean DataBean5=new DataBean();
+		        	DataBean5.setId("2");
+		        	DataBean5.setName("已上架");
+		        	selectList.add(DataBean5);
 	    		}
 	        	bankAreAdapter.addAll(selectList,productAction.getText().toString());
 		        productSelectList.setAdapter(bankAreAdapter);

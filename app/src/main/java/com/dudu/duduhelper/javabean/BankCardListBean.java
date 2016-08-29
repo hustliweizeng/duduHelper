@@ -1,5 +1,6 @@
 package com.dudu.duduhelper.javabean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ import java.util.List;
         "city_id" : "城市ID"
         }]
         }*/
-public class BankCardListBean {
+public class BankCardListBean implements Serializable{
 
     private String code;
     private String msg;
@@ -48,7 +49,7 @@ public class BankCardListBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements  Serializable{
         private String id;
         private String name;
         private String bank_key;

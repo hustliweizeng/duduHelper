@@ -112,8 +112,8 @@ public class ConstantParamPhone
     //银行卡相关接口
     public static final String  GET_BANKCARD_LIST = "/api/app/bank";//获取银行卡信息列表
     public static final String  ADD_BANKCARD = "/api/app/bank";//添加银行卡信息
-    public static final String  CHANGE_BANKCARD_INFO = "/api/app/bank/1";//修改银行卡信息
-    public static final String  DEL_BANKCARD = "/api/app/bank/2";//删除银行卡信息
+    public static final String  CHANGE_BANKCARD_INFO = "/api/app/bank";//修改银行卡信息
+    public static final String  DEL_BANKCARD = "/api/app/bank";//删除银行卡信息
 
    //收银相关
    public static final String  CREATE_PAY_PIC = "/api/app/cashier";//创建收银二维码
@@ -125,6 +125,12 @@ public class ConstantParamPhone
 
    //订单列表
    public static final String  GET_ORDER_LIST = "/api/app/order";//获取订单列表
+
+
+    //获取省份
+    public static final String  GET_PROVINCE_LIST = "/api/app/tool/geo/province";//获取省份列表
+    public static final String  GET_CITY_LIST = "/api/app/tool/geo/city";//获取城市列表
+    public static final String  GET_COUNTRY_LISY= "/api/app/tool/geo/county";//获取县区列表
 
 
 

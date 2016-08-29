@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +14,20 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.BankCardListBean;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 public class ShopUserBankInfoActivity extends BaseActivity 
 {
@@ -36,6 +46,8 @@ public class ShopUserBankInfoActivity extends BaseActivity
 	 private PopupWindow popupWindow;
 	//编辑按钮
 	private Button editButton;
+	private BankCardListBean.DataBean comeinData;
+	private Button btnGetmess;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -43,6 +55,11 @@ public class ShopUserBankInfoActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_user_bank_info);
 		initHeadView("我的银行卡", true, false, 0);
+
+		//获取传递过来的集合数据
+		comeinData = (BankCardListBean.DataBean)(getIntent().getSerializableExtra("cardInfo"));
+
+
 		editButton=(Button) this.findViewById(R.id.selectTextClickButton);
 		editButton.setText("编辑");
 		editButton.setVisibility(View.VISIBLE);
@@ -52,7 +69,6 @@ public class ShopUserBankInfoActivity extends BaseActivity
 	}
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		unbindButton = (TextView) this.findViewById(R.id.unbindButton);
 		userBankSonNameEditText=(TextView) this.findViewById(R.id.userBankSonNameTextView);
 		userBankNumTextView=(TextView) this.findViewById(R.id.userBankNumTextView);
@@ -63,12 +79,15 @@ public class ShopUserBankInfoActivity extends BaseActivity
 		kaihuBanklin=(LinearLayout) this.findViewById(R.id.kaihuBanklin);
 		kaihuPriviencelin=(LinearLayout) this.findViewById(R.id.kaihuPriviencelin);
 		userBankCityLin=(LinearLayout) this.findViewById(R.id.userBankCityLin);
+		//编辑当前银行卡按钮的点击事件
+
 		editButton.setOnClickListener(new OnClickListener() 
 		{
 			@Override
 			public void onClick(View v) 
 			{
 				Intent intent = new Intent(ShopUserBankInfoActivity.this,ShopUserBankInfoEditActivity.class);
+				intent.putExtra("info",comeinData);
 				startActivity(intent);
 			}
 		});
@@ -82,43 +101,120 @@ public class ShopUserBankInfoActivity extends BaseActivity
 			}
 			
 		});
+
 	}
+
+	//设置银行卡信息
+	/*"id" => "银行卡ID 修改时和提现时用"
+			"name" => "账户姓名"
+			"bank_key" => "银行名称"
+			"bank_name" => "支行信息"
+			"card_number" => "卡号"
+			"province_id" => "省份ID"
+			"city_id" => "城市ID"*/
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
-		if(!TextUtils.isEmpty(share.getString("truename", "")))
+		//用户名
+		if(!TextUtils.isEmpty(comeinData.getName()))
 		{
-			userBankNameTextView.setText("*"+share.getString("truename", "").substring(1,share.getString("truename", "").length()));
+			userBankNameTextView.setText(comeinData.getName());
 		}
-		if(!TextUtils.isEmpty(share.getString("bankno", "")))
+		//
+		//卡号
+		if(!TextUtils.isEmpty(comeinData.getCard_number()))
 		{
-			userBankNumTextView.setText("尾号："+share.getString("bankno", "").substring(share.getString("bankno", "").length()-4,share.getString("bankno", "").length()));
+			userBankNumTextView.setText(comeinData.getCard_number());
 		}
-		if(!TextUtils.isEmpty(share.getString("bankname", "")))
+		//银行名称
+		if(!TextUtils.isEmpty(comeinData.getBank_name()))
 		{
-			userBankNameTextView.setText(share.getString("bankname", ""));
+			userBankOpenNameTextView.setText(comeinData.getBank_name());
 		}
-		if(!TextUtils.isEmpty(share.getString("province", "")))
+		//省份
+		if(!TextUtils.isEmpty(comeinData.getProvince_id()))
 		{
-			provienceTextView.setText(share.getString("province", ""));
+			provienceTextView.setText(comeinData.getCard_number());
 		}
-		if(!TextUtils.isEmpty(share.getString("city", "")))
+		//城市
+		if(!TextUtils.isEmpty(comeinData.getCity_id()))
 		{
-			userBankCityTextView.setText(share.getString("city", ""));
+			userBankCityTextView.setText(comeinData.getCity_id());
 		}
-		if(!TextUtils.isEmpty(share.getString("moreinfo", "")))
+		//支行名称
+		if(!TextUtils.isEmpty(comeinData.getBank_name()))
 		{
-			userBankSonNameEditText.setText(share.getString("moreinfo", ""));
+			userBankSonNameEditText.setText(comeinData.getBank_name());
 		}
 	}
-	
+	//解除当前银行卡绑定
 	private void popUbingPhone()
 	{
 		AlphaAnimation animation = new AlphaAnimation((float)0, (float)1.0);
 		animation.setDuration(500); //设置持续时间5秒
 		LayoutInflater layoutInflater = (LayoutInflater)ShopUserBankInfoActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);  
-        View view = layoutInflater.inflate(R.layout.shop_unbind_phone_pop_window, null);  
-        popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);  
+        View view = layoutInflater.inflate(R.layout.shop_unbind_phone_pop_window, null);
+		//验证码按钮,请求网络获取验证码
+		btnGetmess = (Button) view.findViewById(R.id.btnGetmess);
+		btnGetmess.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				RequestParams params = new RequestParams();
+				params.put("mobile",sp.getString("mobile","当前没有绑定的手机号！"));
+				params.put("type","unbindbank");
+				HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "GET", new TextHttpResponseHandler() {
+					@Override
+					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+						Toast.makeText(context,"网络异常，请稍后再试",Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onSuccess(int i, Header[] headers, String s) {
+						//显示倒计时
+						showResidueSeconds();
+					}
+				});
+			}
+		});
+		TextView bindPhoneText = (TextView) view.findViewById(R.id.bindPhoneText);
+		bindPhoneText.setText(sp.getString("mobile","请先绑定手机号"));
+		final EditText messageCodeEditText = (EditText) view.findViewById(R.id.messageCodeEditText);
+        popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);
+		//提交确认解除绑定
+		Button submitPhoneBtn = (Button) view.findViewById(R.id.submitPhoneBtn);
+		submitPhoneBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				String code = messageCodeEditText.getText().toString().trim();
+				if (TextUtils.isEmpty(code)){
+					Toast.makeText(context,"验证码输入为空",Toast.LENGTH_LONG).show();
+				}
+				RequestParams params = new RequestParams();
+				params.put("code",code);
+				params.put("id",comeinData.getId());
+				HttpUtils.getConnection(context, params, ConstantParamPhone.DEL_BANKCARD, "get", new TextHttpResponseHandler() {
+					@Override
+					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+						Toast.makeText(context,"网络异常",Toast.LENGTH_LONG).show();
+
+					}
+
+					@Override
+					public void onSuccess(int i, Header[] headers, String s) {
+						Toast.makeText(context,"解绑成功",Toast.LENGTH_LONG).show();
+						finish();
+						//回到银行卡列表
+						startActivity(new Intent(context,ShopBankListActivity.class));
+					}
+				});
+
+			}
+
+
+		});
+
+
+
+
         popupWindow.setFocusable(true);  
         popupWindow.setOutsideTouchable(true);  
         //这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景  
@@ -161,6 +257,33 @@ public class ShopUserBankInfoActivity extends BaseActivity
 			}
 		});
 
+	}
+	/**
+	 * 显示剩余秒数
+	 */
+	private void showResidueSeconds() {
+		//显示倒计时按钮
+		new CountDownTimer(60*1000,1000){
+
+			@Override
+			public void onTick(long lastTime) {
+				//倒计时执行的方法
+				btnGetmess.setClickable(false);
+				btnGetmess.setFocusable(false);
+				btnGetmess.setText(lastTime/1000+"秒后重发");
+				btnGetmess.setTextColor(getResources().getColor(R.color.text_hint_color));
+				btnGetmess.setBackgroundResource(R.drawable.btn_bg_hint);
+				// LogUtil.d("lasttime","剩余时间:"+lastTime/1000);
+			}
+
+			@Override
+			public void onFinish() {
+				btnGetmess.setClickable(true);
+				btnGetmess.setFocusable(true);
+				btnGetmess.setText("重新获取");
+
+			}
+		}.start();
 	}
 
 }

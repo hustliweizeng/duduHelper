@@ -6,19 +6,19 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.adapter.BankAreAdapter;
+import com.dudu.duduhelper.adapter.BankCityListAdapter;
 import com.dudu.duduhelper.adapter.ProductTypeAdapter;
-import com.dudu.duduhelper.bean.ProvienceBean;
 import com.dudu.duduhelper.bean.UserBankListBean;
-import com.dudu.duduhelper.bean.UserBankProvienceBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.MyDialog;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.CityClistBean;
+import com.dudu.duduhelper.javabean.ProvinceListBean;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
@@ -30,9 +30,13 @@ public class UserBankSelectActivity extends BaseActivity
 {
 	private ListView cuserbankListView;
 	private SwipeRefreshLayout userbankswipeLayout;
+	//银行列表
 	private ProductTypeAdapter productTypeAdapter;
+	//省份列表
 	private BankAreAdapter bankAreAdapter;
 	private String provienceCode;
+	//城市列表
+	private BankCityListAdapter cityListAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -43,15 +47,17 @@ public class UserBankSelectActivity extends BaseActivity
 		String title = null;
 		productTypeAdapter=new ProductTypeAdapter(this);
 		bankAreAdapter=new BankAreAdapter(this);
+		cityListAdapter = new BankCityListAdapter(this);
+		//根据不同来源初始化数据
 		if(getIntent().getStringExtra("action").equals("bank"));
 		{
-			initBankData();
 			title = "我的银行卡";
+			initBankData();
 		}
 		if(getIntent().getStringExtra("action").equals("province"))
 		{
-			initProvince();
 			title ="选择省份";
+			initProvince();
 		}
 		if(getIntent().getStringExtra("action").equals("city"))
 		{
@@ -60,18 +66,16 @@ public class UserBankSelectActivity extends BaseActivity
 			initCity();
 		}
 		initHeadView(title, true, false, 0);
+		//初始化其他信息
 		initView();
 	}
 
+	//初始化城市列表
 	private void initCity() 
 	{
-		// TODO Auto-generated method stub
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("provinceid",provienceCode);
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		new AsyncHttpClient().get(ConstantParamPhone.IP+ConstantParamPhone.GET_USER_BANK_CITY, params,new TextHttpResponseHandler(){
+		params.add("id",provienceCode);
+		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_CITY_LIST, "get",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -81,57 +85,27 @@ public class UserBankSelectActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				UserBankProvienceBean userBankProvienceBean=new Gson().fromJson(arg2,UserBankProvienceBean.class);
-				if(userBankProvienceBean.getStatus().equals("-1006"))
-				{
-					//Toast.makeText(UserBankSelectActivity.this, "出错啦！", Toast.LENGTH_LONG).show();
-					//Toast.makeText(getActivity(), "出错啦！", Toast.LENGTH_SHORT).show();
-					MyDialog.showDialog(UserBankSelectActivity.this, "该账号已在其他手机登录，是否重新登录", true, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(UserBankSelectActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				if(userBankProvienceBean.getStatus().equals("1"))
-				{
-					if(userBankProvienceBean.getData()!=null)
-					{
-						bankAreAdapter.addAll(userBankProvienceBean.getData(),"");
-					}
-					else
-					{
-						Toast.makeText(UserBankSelectActivity.this, "暂无数据！", Toast.LENGTH_LONG).show();
+				CityClistBean city = new Gson().fromJson(arg2,CityClistBean.class);
+				if ("SUCCESS".equalsIgnoreCase(city.getCode())){
+					//请求数据成功
+					if (city!= null){
+
+						cityListAdapter.addAll(city.getData(),"");
 					}
 				}
 			}
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}
-
+	//直接联网加载省份信息
 	private void initProvince() 
 	{
-		// TODO Auto-generated method stub
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		new AsyncHttpClient().get(ConstantParamPhone.IP+ConstantParamPhone.GET_USER_BANK_PROVINCE, params,new TextHttpResponseHandler(){
+		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_PROVINCE_LIST, "GET",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -141,23 +115,18 @@ public class UserBankSelectActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				UserBankProvienceBean userBankProvienceBean=new Gson().fromJson(arg2,UserBankProvienceBean.class);
-				if(!userBankProvienceBean.getStatus().equals("1"))
+				ProvinceListBean province = new Gson().fromJson(arg2, ProvinceListBean.class);
+				if(!province.getCode().equals("SUCCESS"))
 				{
-					Toast.makeText(UserBankSelectActivity.this, "出错啦！", Toast.LENGTH_LONG).show();
+					Toast.makeText(UserBankSelectActivity.this, "请稍后再试", Toast.LENGTH_LONG).show();
 				}
 				else
 				{
-					userBankProvienceBean.getData();
-					bankAreAdapter.addAll(userBankProvienceBean.getData(),"");
+					//请求数据成功,初始化时没有条目被选中
+					bankAreAdapter.addAll(province.getData(),"");
 				}
 			}
-			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-				
-			}
+
 		});
 	}
 
@@ -206,13 +175,16 @@ public class UserBankSelectActivity extends BaseActivity
 		userbankswipeLayout.setColorSchemeResources(R.color.text_color);
 		userbankswipeLayout.setSize(SwipeRefreshLayout.DEFAULT);
 		userbankswipeLayout.setProgressBackgroundColor(R.color.bg_color);
+		//listview设置条目点击事件
 		cuserbankListView=(ListView) this.findViewById(R.id.cuserbankListView);
+		//银行列表
 		if(getIntent().getStringExtra("action").equals("bank"))
 		{
 			cuserbankListView.setAdapter(productTypeAdapter);
 		}
 		else
 		{
+			//省市列表
 			cuserbankListView.setAdapter(bankAreAdapter);
 		
 		}
@@ -222,7 +194,6 @@ public class UserBankSelectActivity extends BaseActivity
 			@Override
 			public void onRefresh() 
 			{
-				// TODO Auto-generated method stub
 				userbankswipeLayout.setRefreshing(false);
 			}
 		});
@@ -240,11 +211,11 @@ public class UserBankSelectActivity extends BaseActivity
 				 }
 				 if(UserBankSelectActivity.this.getIntent().getStringExtra("action").equals("province"))
 				 {
-					 intent.putExtra("province", (ProvienceBean)bankAreAdapter.getItem(position));
+					 intent.putExtra("province", (ProvinceListBean.DataBean)bankAreAdapter.getItem(position));
 				 }
 				 if(UserBankSelectActivity.this.getIntent().getStringExtra("action").equals("city"))
 				 {
-					 intent.putExtra("city", (ProvienceBean)bankAreAdapter.getItem(position));
+					 intent.putExtra("city", (CityClistBean.DataBean)cityListAdapter.getItem(position));
 				 }
                  setResult(RESULT_OK, intent);  
                  finish();  
