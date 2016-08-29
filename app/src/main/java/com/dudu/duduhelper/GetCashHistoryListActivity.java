@@ -19,6 +19,9 @@ import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GetCashHistoryListActivity extends BaseActivity {
 	private GetCashHistoryAdapter getCashHistoryAdapter;
 	private ListView cashHistoryListView;
@@ -52,7 +55,6 @@ public class GetCashHistoryListActivity extends BaseActivity {
 			@Override
 			public void onRefresh() 
 			{
-				// TODO Auto-generated method stub
 				page++;
 				initData(page);
 			}
@@ -80,9 +82,12 @@ public class GetCashHistoryListActivity extends BaseActivity {
 					CashHistoryDataBean bean = new CashHistoryDataBean();
 					bean.setMoney("300");
 					bean.setTime("2016-08-26");
-					bean.setStatus("提现成功");
-					cashHistoryBean.getData().add(bean);
-					getCashHistoryAdapter.addAll(cashHistoryBean.getData());
+					bean.setStatus("1");
+					//cashHistoryBean.getData().add(bean);
+					List<CashHistoryDataBean> hisory = new ArrayList<CashHistoryDataBean>();
+					hisory.add(bean);
+					getCashHistoryAdapter.addAll(hisory);
+
 				}
 
 			}

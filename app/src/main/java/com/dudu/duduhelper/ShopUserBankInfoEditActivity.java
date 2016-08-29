@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BankCardListBean;
+import com.dudu.duduhelper.javabean.CityClistBean;
 import com.dudu.duduhelper.javabean.ProvinceListBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
@@ -325,7 +326,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	              //来自按钮2的请求，作相应业务处理
 	              {
 					  //省份列表
-					  provienceCode = ((ProvinceListBean.DataBean)data.getSerializableExtra("province")).getCode();
+					  provienceCode = ((ProvinceListBean.DataBean)data.getSerializableExtra("province")).getId();
 	            	  provienceTextView.setText(((ProvinceListBean.DataBean)data.getSerializableExtra("province")).getName());
 	            	  userBankCityTextView.setText(null);
 	              }
@@ -333,8 +334,8 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	              case 3:
 	              //来自按钮2的请求，作相应业务处理
 	              {
-	            	  cityCode=((ProvinceListBean.DataBean)data.getSerializableExtra("city")).getId();
-	            	  userBankCityTextView.setText(((ProvinceListBean.DataBean)data.getSerializableExtra("city")).getName());
+	            	  cityCode=((CityClistBean.DataBean)data.getSerializableExtra("city")).getId();
+	            	  userBankCityTextView.setText(((CityClistBean.DataBean)data.getSerializableExtra("city")).getName());
 	              }
 	              break;
 	           }

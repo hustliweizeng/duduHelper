@@ -11,6 +11,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.BankAreAdapter;
 import com.dudu.duduhelper.adapter.BankCityListAdapter;
 import com.dudu.duduhelper.adapter.ProductTypeAdapter;
@@ -61,7 +62,7 @@ public class UserBankSelectActivity extends BaseActivity
 		}
 		if(getIntent().getStringExtra("action").equals("city"))
 		{
-			provienceCode=getIntent().getStringExtra("provienceCode");
+			provienceCode = getIntent().getStringExtra("provienceCode");
 			title ="选择城市";
 			initCity();
 		}
@@ -75,7 +76,7 @@ public class UserBankSelectActivity extends BaseActivity
 	{
 		RequestParams params = new RequestParams();
 		params.add("id",provienceCode);
-		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_CITY_LIST, "get",new TextHttpResponseHandler(){
+		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_CITY_LIST, "GET",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -86,19 +87,19 @@ public class UserBankSelectActivity extends BaseActivity
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
 				CityClistBean city = new Gson().fromJson(arg2,CityClistBean.class);
-				if ("SUCCESS".equalsIgnoreCase(city.getCode())){
+				if (!"SUCCESS".equalsIgnoreCase(city.getCode())){
+					Toast.makeText(UserBankSelectActivity.this, "请稍后再试", Toast.LENGTH_LONG).show();
+				}else {
 					//请求数据成功
 					if (city!= null){
-
+						LogUtil.d("city==",city.getData().size()+"");
 						cityListAdapter.addAll(city.getData(),"");
+						LogUtil.d("size",cityListAdapter.getCount()+"");
+						cityListAdapter.notifyDataSetChanged();
 					}
 				}
 			}
-			@Override
-			public void onFinish() 
-			{
 
-			}
 		});
 	}
 	//直接联网加载省份信息
@@ -158,12 +159,6 @@ public class UserBankSelectActivity extends BaseActivity
 					productTypeAdapter.addAll(userBankListBean.getData());
 				}
 			}
-			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-				
-			}
 		});
 	}
 
@@ -182,11 +177,13 @@ public class UserBankSelectActivity extends BaseActivity
 		{
 			cuserbankListView.setAdapter(productTypeAdapter);
 		}
-		else
+		if(getIntent().getStringExtra("action").equals("province"))
 		{
 			//省市列表
 			cuserbankListView.setAdapter(bankAreAdapter);
-		
+		}
+		if (getIntent().getStringExtra("action").equals("city")){
+			cuserbankListView.setAdapter(cityListAdapter);
 		}
 		userbankswipeLayout.setOnRefreshListener(new OnRefreshListener() 
 		{

@@ -81,7 +81,7 @@ public class BaseActivity extends FragmentActivity
 
 		//每个activity都可以获取到sp中保存的用户信息
 		share = getSharedPreferences("userinfo", MODE_PRIVATE);
-		sp = getSharedPreferences("userconig",MODE_PRIVATE);
+		sp = getSharedPreferences("userconig",Context.MODE_PRIVATE);
 
 		//umeng_token = getSharedPreferences("umengtoken",MODE_PRIVATE).getString("token","");
 		DuduHelperApplication.getInstance().addActivity(this);

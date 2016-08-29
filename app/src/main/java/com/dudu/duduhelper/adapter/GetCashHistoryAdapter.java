@@ -82,7 +82,6 @@ public class GetCashHistoryAdapter extends BaseAdapter
 			viewHolder.getCashMoneyTextView.setText("+"+list.get(position).getMoney());
 			viewHolder.getCashActionTextView.setTextColor(viewHolder.getCashActionTextView.getResources().getColor(R.color.text_color_yellow));
 		}
-		
 		viewHolder.getCashTiemTextView.setText(Util.DataConVert(list.get(position).getTime()));
 		return convertView;
 	}

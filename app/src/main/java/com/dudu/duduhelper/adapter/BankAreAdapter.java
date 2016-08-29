@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.ProvinceListBean;
 
 import java.util.ArrayList;
@@ -34,15 +35,13 @@ public class BankAreAdapter extends BaseAdapter {
 	@Override
 	public int getCount() 
 	{
-		// TODO Auto-generated method stub
-			
+
 			return list.size();
 	}
 
 	@Override
 	public Object getItem(int position) 
 	{
-		// TODO Auto-generated method stub
 			return list.get(position);
 		
 	}
@@ -50,8 +49,7 @@ public class BankAreAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) 
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return Long.parseLong(list.get(position).getId());
 	}
 
 	@SuppressLint("ResourceAsColor") @Override
@@ -67,6 +65,7 @@ public class BankAreAdapter extends BaseAdapter {
 			textView.setTextColor(textView.getResources().getColor(R.color.text_green_color));
 			textView.setBackgroundColor(0xfff4f4f4);
 		}
+		LogUtil.d("province_getview",position+"");
 		return convertView;
 	}
 

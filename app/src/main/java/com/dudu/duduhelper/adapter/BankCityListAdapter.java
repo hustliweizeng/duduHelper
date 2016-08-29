@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.CityClistBean;
 
 import java.util.ArrayList;
@@ -17,14 +18,16 @@ import java.util.List;
 public class BankCityListAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<CityClistBean.DataBean> list=new ArrayList<>();
+	private List<CityClistBean.DataBean> list = new ArrayList<>();
 	//设置选中的条目
 	private String select;
 
 	public void addAll(List<CityClistBean.DataBean> list, String select)
 	{
-		this.list.addAll(this.list.size(), list);
-		this.select=select;
+		//在指定位置加入集合
+		this.list.addAll(list);
+		this.select = select;
+		//更新数据
     	notifyDataSetChanged();
 	}
 	public BankCityListAdapter(Context context)
@@ -34,29 +37,23 @@ public class BankCityListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() 
 	{
-		// TODO Auto-generated method stub
-			
-			return list.size();
+		return list.size();
 	}
 
 	@Override
 	public Object getItem(int position) 
 	{
-		// TODO Auto-generated method stub
-			return list.get(position);
-		
+		return list.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) 
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return Long.parseLong(list.get(position).getId());
 	}
 
-	@SuppressLint("ResourceAsColor") @Override
-	public View getView(int position, View convertView, ViewGroup parent) 
-	{
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		convertView = LayoutInflater.from(context).inflate(R.layout.activity_product_window_select_item, null);
 		TextView textView=(TextView) convertView.findViewById(R.id.selectTypeTextView);
@@ -67,7 +64,7 @@ public class BankCityListAdapter extends BaseAdapter {
 			textView.setTextColor(textView.getResources().getColor(R.color.text_green_color));
 			textView.setBackgroundColor(0xfff4f4f4);
 		}
+		LogUtil.d("city_getview",position+"");
 		return convertView;
 	}
-
 }
