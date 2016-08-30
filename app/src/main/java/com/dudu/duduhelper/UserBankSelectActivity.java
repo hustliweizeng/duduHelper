@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.LogUtil;
-import com.dudu.duduhelper.adapter.BankAreAdapter;
+import com.dudu.duduhelper.adapter.OrderSelectorBean;
 import com.dudu.duduhelper.adapter.BankCityListAdapter;
 import com.dudu.duduhelper.adapter.ProductTypeAdapter;
 import com.dudu.duduhelper.bean.UserBankListBean;
@@ -34,7 +34,7 @@ public class UserBankSelectActivity extends BaseActivity
 	//银行列表
 	private ProductTypeAdapter productTypeAdapter;
 	//省份列表
-	private BankAreAdapter bankAreAdapter;
+	private OrderSelectorBean orderSelectorBean;
 	private String provienceCode;
 	//城市列表
 	private BankCityListAdapter cityListAdapter;
@@ -47,7 +47,7 @@ public class UserBankSelectActivity extends BaseActivity
 
 		String title = null;
 		productTypeAdapter=new ProductTypeAdapter(this);
-		bankAreAdapter=new BankAreAdapter(this);
+		orderSelectorBean =new OrderSelectorBean(this);
 		cityListAdapter = new BankCityListAdapter(this);
 		//根据不同来源初始化数据
 		if(getIntent().getStringExtra("action").equals("bank"));
@@ -124,7 +124,7 @@ public class UserBankSelectActivity extends BaseActivity
 				else
 				{
 					//请求数据成功,初始化时没有条目被选中
-					bankAreAdapter.addAll(province.getData(),"");
+					orderSelectorBean.addAll(province.getData(),"");
 				}
 			}
 
@@ -180,7 +180,7 @@ public class UserBankSelectActivity extends BaseActivity
 		if(getIntent().getStringExtra("action").equals("province"))
 		{
 			//省市列表
-			cuserbankListView.setAdapter(bankAreAdapter);
+			cuserbankListView.setAdapter(orderSelectorBean);
 		}
 		if (getIntent().getStringExtra("action").equals("city")){
 			cuserbankListView.setAdapter(cityListAdapter);
@@ -208,7 +208,7 @@ public class UserBankSelectActivity extends BaseActivity
 				 }
 				 if(UserBankSelectActivity.this.getIntent().getStringExtra("action").equals("province"))
 				 {
-					 intent.putExtra("province", (ProvinceListBean.DataBean)bankAreAdapter.getItem(position));
+					 intent.putExtra("province", (ProvinceListBean.DataBean) orderSelectorBean.getItem(position));
 				 }
 				 if(UserBankSelectActivity.this.getIntent().getStringExtra("action").equals("city"))
 				 {

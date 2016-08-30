@@ -1,9 +1,6 @@
 package com.dudu.duduhelper.bean;
 
-import java.util.HashMap;
 import java.util.List;
-
-import com.dudu.duduhelper.adapter.BankAreAdapter;
 
 public class OrderDetailDataBean 
 {

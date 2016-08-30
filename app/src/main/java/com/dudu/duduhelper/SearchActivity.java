@@ -1,6 +1,26 @@
 package com.dudu.duduhelper;
 
-import org.apache.http.Header;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.adapter.CouponSellHistoryAdapter;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
@@ -15,33 +35,7 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TextView.OnEditorActionListener;
+import org.apache.http.Header;
 
 public class SearchActivity extends BaseActivity 
 {
@@ -211,7 +205,7 @@ public class SearchActivity extends BaseActivity
 				{
 					if(orderBean.getData()!=null&&orderBean.getData().size()!=0)
 					{
-						orderAdapter.addAll(orderBean.getData());
+						//orderAdapter.addAll(orderBean.getData());
 						reloadButton.setVisibility(View.GONE);
 						loading_progressBar.setVisibility(View.GONE);
 						loading_text.setText("加载完啦！");
@@ -336,7 +330,7 @@ public class SearchActivity extends BaseActivity
 				{
 					// TODO Auto-generated method stub
 					Intent intent=new Intent(SearchActivity.this, ShopOrderDetailActivity.class);
-					intent.putExtra("no", orderAdapter.getItem(position).getNo());
+					//intent.putExtra("no", orderAdapter.getItem(position).getNo());
 					intent.putExtra("status", orderAdapter.getItem(position).getStatus());
 					startActivityForResult(intent, 1);
 				}

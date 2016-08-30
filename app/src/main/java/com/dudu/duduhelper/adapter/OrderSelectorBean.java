@@ -15,7 +15,10 @@ import com.dudu.duduhelper.javabean.ProvinceListBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BankAreAdapter extends BaseAdapter {
+/**
+ * 订单筛选列表选择器
+ */
+public class OrderSelectorBean extends BaseAdapter {
 
 	private Context context;
 	private List<ProvinceListBean.DataBean> list=new ArrayList<>();
@@ -28,7 +31,7 @@ public class BankAreAdapter extends BaseAdapter {
 		this.select=select;
     	notifyDataSetChanged();
 	}
-	public BankAreAdapter(Context context)
+	public OrderSelectorBean(Context context)
 	{
 		this.context=context;
 	}
@@ -55,7 +58,6 @@ public class BankAreAdapter extends BaseAdapter {
 	@SuppressLint("ResourceAsColor") @Override
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
-		// TODO Auto-generated method stub
 		convertView = LayoutInflater.from(context).inflate(R.layout.activity_product_window_select_item, null);
 		TextView textView=(TextView) convertView.findViewById(R.id.selectTypeTextView);
 		textView.setText(list.get(position).getName());

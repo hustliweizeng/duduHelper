@@ -1,11 +1,30 @@
 package com.dudu.duduhelper.fragment;
 
-import org.apache.http.Header;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.LoginActivity;
 import com.dudu.duduhelper.MainActivity;
-import com.dudu.duduhelper.ShopOrderDetailActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.ShopOrderDetailActivity;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.bean.OrderBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -17,26 +36,7 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
+import org.apache.http.Header;
 
 public class NewOrderFragment extends Fragment 
 {
@@ -146,7 +146,7 @@ public class NewOrderFragment extends Fragment
 				{
 					if(orderBean.getData()!=null&&orderBean.getData().size()!=0)
 					{
-						orderAdapter.addAll(orderBean.getData());
+						//orderAdapter.addAll(orderBean.getData());
 						reloadButton.setVisibility(View.GONE);
 						if(page==1&&orderBean.getData().size()<10)
 						{
@@ -215,7 +215,7 @@ public class NewOrderFragment extends Fragment
 			{
 				// TODO Auto-generated method stub
 				Intent intent=new Intent(getActivity(), ShopOrderDetailActivity.class);
-				intent.putExtra("no", orderAdapter.getItem(position).getNo());
+				//intent.putExtra("no", orderAdapter.getItem(position).getNo());
 				intent.putExtra("status", orderAdapter.getItem(position).getStatus());
 				startActivityForResult(intent, 1);
 			}

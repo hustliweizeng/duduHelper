@@ -27,22 +27,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.Util;
-import com.dudu.duduhelper.adapter.BankAreAdapter;
+import com.dudu.duduhelper.adapter.OrderSelectorBean;
 import com.dudu.duduhelper.adapter.ProductAdapter;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.OrderBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.OrderListBean;
+import com.dudu.duduhelper.javabean.OrderStatusBean;
 import com.dudu.duduhelper.javabean.ProvinceListBean.DataBean;
 import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +75,7 @@ public class ShopOrderActivity extends BaseActivity
     private View footView;
     private ProgressBar loading_progressBar;
     private TextView loading_text;
-    private BankAreAdapter bankAreAdapter;
+    private OrderSelectorBean orderSelectorBean;
     public ProductAdapter productAdapter;
     private String status="";
     private String from="0";
@@ -87,6 +89,7 @@ public class ShopOrderActivity extends BaseActivity
 		orderAdapter=new ShopOrderAdapter(this);
 		initHeadView("订单管理", true, true, R.drawable.icon_sousuo);
 		DuduHelperApplication.getInstance().addActivity(this);
+		//初始化view
 		initViewFragment();
 		initData();
 	}
@@ -99,13 +102,13 @@ public class ShopOrderActivity extends BaseActivity
 		orderAdapter.clear();
 		initData();
 	}
-
+	//第一次请求时，请求所有数据
 	private void initData() 
 	{
 
 		loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
-		allOrderListView.setAdapter(orderAdapter);
+
 		/*"moduleid" => "模块ID,多个模块用逗号分隔"
 		"status" => "订单状态"
 		"date" => "指定日期,用于新订单和收款列表"
@@ -113,19 +116,18 @@ public class ShopOrderActivity extends BaseActivity
 		"limit" => "每页多少条"
 		"ispay" => "是否支付"*/
 		RequestParams params = new RequestParams();
-		params.add("page",String.valueOf(page));
+		/*params.add("page",String.valueOf(page));
 		params.add("pagesize","10");
 		params.add("status",status);
 		params.add("from",from);
-		params.add("ispay", isnew);
+		params.add("ispay", isnew);*/
 		
 		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_ORDER_LIST, "GET",new TextHttpResponseHandler()
 		{
-
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
 			{
-				//Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "网络不给力呀", Toast.LENGTH_SHORT).show();
 				if(page==1)
 				{
 					reloadButton.setVisibility(View.VISIBLE);
@@ -134,67 +136,31 @@ public class ShopOrderActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				OrderBean orderBean=new Gson().fromJson(arg2,OrderBean.class);
-				if(!orderBean.getStatus().equals("1"))
-				{
-					MyDialog.showDialog(ShopOrderActivity.this, "该账号已在其他手机登录，是否重新登录", false, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(ShopOrderActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				else
-				{
-					if(orderBean.getData()!=null&&orderBean.getData().size()!=0)
-					{
-						orderAdapter.addAll(orderBean.getData());
-						reloadButton.setVisibility(View.GONE);
-						
-						if(page==1&&orderBean.getData().size()<10)
-						{
-							loading_progressBar.setVisibility(View.GONE);
-							loading_text.setText("加载完啦！");
-						}
-						
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						OrderListBean order = new Gson().fromJson(arg2, OrderListBean.class);
+						orderAdapter.addAll(order.getList());
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 					}
-					else
-					{
-						if(page==1)
-						{
-							//Toast.makeText(getActivity(), "啥也没有！", Toast.LENGTH_SHORT).show();
-							loading_progressBar.setVisibility(View.GONE);
-							loading_text.setText("啥也没有！");
-							reloadButton.setVisibility(View.VISIBLE);
-						}
-						else
-						{
-							Toast.makeText(ShopOrderActivity.this, "加载完啦", Toast.LENGTH_SHORT).show();
-							loading_progressBar.setVisibility(View.GONE);
-							loading_text.setText("加载完啦！");
-							reffinish=true;
-						}
-					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				orderallswipeLayout.setRefreshing(false);
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
+		//设置适配器
+		allOrderListView.setAdapter(orderAdapter);
 	}
 
 	@Override
@@ -205,14 +171,12 @@ public class ShopOrderActivity extends BaseActivity
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		MobclickAgent.onPageStart("OrderFragment");
 	}
 
 	@SuppressLint("ResourceAsColor") 
 	private void initViewFragment() {
-		// TODO Auto-generated method stub
 		statusAction=(TextView) ShopOrderActivity.this.findViewById(R.id.statusAction);
 		actionRel=(RelativeLayout) ShopOrderActivity.this.findViewById(R.id.actionRel);
 		statusTypeArror=(ImageView) ShopOrderActivity.this.findViewById(R.id.statusTypeArror);
@@ -231,7 +195,6 @@ public class ShopOrderActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				orderType.setTextColor(getResources().getColor(R.color.text_color));
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_shang);
 				statusAction.setTextColor(getResources().getColor(R.color.text_color_gray));
@@ -247,7 +210,6 @@ public class ShopOrderActivity extends BaseActivity
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				productAction.setTextColor(getResources().getColor(R.color.text_color));
 				productTypeArror.setImageResource(R.drawable.icon_jiantou_shang);
 				orderType.setTextColor(getResources().getColor(R.color.text_color_gray));
@@ -265,7 +227,6 @@ public class ShopOrderActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				orderType.setTextColor(getResources().getColor(R.color.text_color_gray));
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				statusAction.setTextColor(getResources().getColor(R.color.text_color));
@@ -276,48 +237,45 @@ public class ShopOrderActivity extends BaseActivity
 			}
 		});
 		
-		
-		footView = LayoutInflater.from(ShopOrderActivity.this).inflate(R.layout.activity_listview_foot, null);
+
 		loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
 		loading_text=(TextView) footView.findViewById(R.id.loading_text);
-		
-		// TODO Auto-generated method stub
+		//重新载入按钮
 		reloadButton=(Button) ShopOrderActivity.this.findViewById(R.id.reloadButton);
-		//数据重载按钮
-		reloadButton.setOnClickListener(new OnClickListener() 
+		reloadButton.setOnClickListener(new OnClickListener()
 		{
 			
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.showRoundProcessDialog(ShopOrderActivity.this,R.layout.loading_process_dialog_color);
 				initData();
 			}
 		});
+		//listview初始化
 		allOrderListView=(ListView) ShopOrderActivity.this.findViewById(R.id.allOrderListView);
+		footView = LayoutInflater.from(ShopOrderActivity.this).inflate(R.layout.activity_listview_foot, null);
 		allOrderListView.addFooterView(footView,null,false);
+		//listview条目点击事件
 		allOrderListView.setOnItemClickListener(new OnItemClickListener() 
 		{
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
 			{
-				// TODO Auto-generated method stub
 				Intent intent=new Intent(ShopOrderActivity.this, ShopOrderDetailActivity.class);
-				intent.putExtra("no", orderAdapter.getItem(position).getNo());
+				intent.putExtra("no", orderAdapter.getItem(position).getId());
 				intent.putExtra("status", orderAdapter.getItem(position).getStatus());
 				startActivityForResult(intent, 1);
 			}
 		});
+		//listview滚动监听
 		allOrderListView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) 
 			{
-				// TODO Auto-generated method stub
-				//
-				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE&&lastItemIndex == orderAdapter.getCount()) 
+				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE&&lastItemIndex == orderAdapter.getCount())
 				{  
                     //Log.i(TAG, "onScrollStateChanged");  
                     //加载数据代码，此处省略了  
@@ -336,10 +294,10 @@ public class ShopOrderActivity extends BaseActivity
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) 
 			{
-				// TODO Auto-generated method stub
-				lastItemIndex = firstVisibleItem + visibleItemCount -1; 
+				lastItemIndex = firstVisibleItem + visibleItemCount -1;
 			}
 		});
+		//下拉刷新
 		orderallswipeLayout = (SwipeRefreshLayout)ShopOrderActivity.this.findViewById(R.id.orderallswipeLayout);
 		orderallswipeLayout.setColorSchemeResources(R.color.text_color);
 		orderallswipeLayout.setSize(SwipeRefreshLayout.DEFAULT);
@@ -349,7 +307,6 @@ public class ShopOrderActivity extends BaseActivity
 			@Override
 			public void onRefresh() 
 			{
-				// TODO Auto-generated method stub
 				page=1;
 				reftype=1;
 				orderAdapter.clear();
@@ -357,63 +314,42 @@ public class ShopOrderActivity extends BaseActivity
 			}
 		});
 	}
-	//弹出选择框
+	//弹出选择框，根据action进入不同的下拉界面
 	private void showSelectPopupWindow(final String action) 
 	{
-		// TODO Auto-generated method stub
-		LayoutInflater layoutInflater = (LayoutInflater)ShopOrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);  
+		OrderStatusBean selector = new OrderStatusBean();
+		LayoutInflater layoutInflater = (LayoutInflater)ShopOrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.activity_product_window_select, null);  
         popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);  
         popupWindow.setFocusable(true);  
         popupWindow.setOutsideTouchable(true);  
-        
-        //设置半透明
-//		        WindowManager.LayoutParams params=getActivity().getWindow().getAttributes();  
-//		        params.alpha=0.7f;  
-//		        getActivity().getWindow().setAttributes(params);  
-        
-        // 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景  
+        // 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
         popupWindow.setBackgroundDrawable(new BitmapDrawable()); 
-        
         popupWindow.showAsDropDown(selectLine);
         ImageView closeImageButton = (ImageView) view.findViewById(R.id.closeImageButton);
         closeImageButton.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				popupWindow.dismiss();
 			}
 		});
+		//筛选器里面的listview
         ListView productSelectList=(ListView) view.findViewById(R.id.productSelectList);
         final List<DataBean> selectList=new ArrayList<>();
+		//订单模块
         if(action.equals("order"))
         {
-    		bankAreAdapter=new BankAreAdapter(ShopOrderActivity.this);
-        	DataBean DataBean=new DataBean();
-        	DataBean.setId("0");
-        	DataBean.setName("全部来源");
-        	selectList.add(DataBean);
-        	DataBean DataBean1=new DataBean();
-        	DataBean1.setId("1");
-        	DataBean1.setName("大牌抢购");
-        	selectList.add(DataBean1);
-        	DataBean DataBean2=new DataBean();
-        	DataBean2.setId("7");
-        	DataBean2.setName("优惠券");
-        	selectList.add(DataBean2);
-        	DataBean DataBean3=new DataBean();
-        	DataBean3.setId("4");
-        	DataBean3.setName("会员卡");
-        	selectList.add(DataBean3);
-
-        	bankAreAdapter.addAll(selectList,orderType.getText().toString());
-	        productSelectList.setAdapter(bankAreAdapter);
+			//获取所有订单来源信息
+    		orderSelectorBean =new OrderSelectorBean(context);
+			List<OrderStatusBean.OrderSource> sources  = selector.getAllOrderSource();
+        	orderSelectorBean.addAll(selectList,orderType.getText().toString());
+	        productSelectList.setAdapter(orderSelectorBean);
         	
         }
+		//订单类型
         if(action.equals("product"))
         {
-    		bankAreAdapter=new BankAreAdapter(ShopOrderActivity.this);
+    		orderSelectorBean =new OrderSelectorBean(ShopOrderActivity.this);
         	DataBean DataBean5=new DataBean();
         	DataBean5.setId("0");
         	DataBean5.setName("全部订单");
@@ -422,42 +358,16 @@ public class ShopOrderActivity extends BaseActivity
         	DataBean4.setId("1");
         	DataBean4.setName("新订单");
         	selectList.add(DataBean4);
-//        	DataBean DataBean5=new DataBean();
-//        	DataBean5.setId("2");
-//        	DataBean5.setName("已上架");
-//        	selectList.add(DataBean5);
-        	bankAreAdapter.addAll(selectList,productAction.getText().toString());
-	        productSelectList.setAdapter(bankAreAdapter);
+        	orderSelectorBean.addAll(selectList,productAction.getText().toString());
+	        productSelectList.setAdapter(orderSelectorBean);
         }
+		//订单状态
         if(action.equals("status"))
         {
-    		bankAreAdapter=new BankAreAdapter(ShopOrderActivity.this);
-        	DataBean DataBean6=new DataBean();
-        	DataBean6.setId("");
-        	DataBean6.setName("所有状态");
-        	selectList.add(DataBean6);
-        	DataBean DataBean7=new DataBean();
-        	DataBean7.setId("1");
-        	DataBean7.setName("未支付");
-        	selectList.add(DataBean7);
-        	DataBean DataBean8=new DataBean();
-        	DataBean8.setId("2");
-        	DataBean8.setName("已支付");
-        	selectList.add(DataBean8);
-        	DataBean DataBean9=new DataBean();
-        	DataBean9.setId("3");
-        	DataBean9.setName("已完成");
-        	selectList.add(DataBean9);
-        	DataBean DataBean10=new DataBean();
-        	DataBean10.setId("-1");
-        	DataBean10.setName("已过期");
-        	selectList.add(DataBean10);
-        	DataBean DataBean11=new DataBean();
-        	DataBean11.setId("0");
-        	DataBean11.setName("已取消");
-        	selectList.add(DataBean11);
-        	bankAreAdapter.addAll(selectList,statusAction.getText().toString());
-	        productSelectList.setAdapter(bankAreAdapter);
+    		orderSelectorBean =new OrderSelectorBean(ShopOrderActivity.this);
+
+        	orderSelectorBean.addAll(selectList,statusAction.getText().toString());
+	        productSelectList.setAdapter(orderSelectorBean);
         }
         productSelectList.setOnItemClickListener(new OnItemClickListener() 
         {
@@ -465,7 +375,6 @@ public class ShopOrderActivity extends BaseActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
 			{
-				// TODO Auto-generated method stub
 				if(action.equals("order"))
 				{
 					from=selectList.get(position).getId();

@@ -1,28 +1,5 @@
 package com.dudu.duduhelper.fragment;
 
-import java.util.List;
-
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.MainActivity;
-import com.dudu.duduhelper.ShopOrderDetailActivity;
-import com.dudu.duduhelper.shopProductListActivity;
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.adapter.ShopOrderAdapter;
-import com.dudu.duduhelper.bean.OrderBean;
-import com.dudu.duduhelper.bean.OrderDataBean;
-import com.dudu.duduhelper.bean.ProductBean;
-import com.dudu.duduhelper.bean.ProductListBean;
-import com.dudu.duduhelper.http.ConstantParamPhone;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,15 +12,31 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.dudu.duduhelper.LoginActivity;
+import com.dudu.duduhelper.MainActivity;
+import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.ShopOrderDetailActivity;
+import com.dudu.duduhelper.adapter.ShopOrderAdapter;
+import com.dudu.duduhelper.bean.OrderBean;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 public class AllOrderFragment extends Fragment 
 {
 	private View AllOrderFragmentView;
@@ -144,7 +137,7 @@ public class AllOrderFragment extends Fragment
 				{
 					if(orderBean.getData()!=null&&orderBean.getData().size()!=0)
 					{
-						orderAdapter.addAll(orderBean.getData());
+						//orderAdapter.addAll(orderBean.getData());
 						reloadButton.setVisibility(View.GONE);
 						
 						if(page==1&&orderBean.getData().size()<10)
@@ -215,7 +208,7 @@ public class AllOrderFragment extends Fragment
 			{
 				// TODO Auto-generated method stub
 				Intent intent=new Intent(getActivity(), ShopOrderDetailActivity.class);
-				intent.putExtra("no", orderAdapter.getItem(position).getNo());
+				//intent.putExtra("no", orderAdapter.getItem(position).getNo());
 				intent.putExtra("status", orderAdapter.getItem(position).getStatus());
 				startActivityForResult(intent, 1);
 			}

@@ -1,13 +1,6 @@
 package com.dudu.duduhelper.adapter;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.bean.OrderDataBean;
-import com.dudu.duduhelper.Utils.Util;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,58 +9,64 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.javabean.OrderListBean;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShopOrderAdapter extends BaseAdapter 
 {
     private Context context;
     private ViewHolder viewHolder;
-    List<OrderDataBean> list=new ArrayList<OrderDataBean>();
+    List<OrderListBean.ListBean> list=new ArrayList<>();
 	public ShopOrderAdapter(Context context)
 	{
-		// TODO Auto-generated constructor stub
 		this.context=context;
 	}
 	public void clear()
     {
     	list.clear();
     }
-    public void addAll(List<OrderDataBean> list)
+    public void addAll(List<OrderListBean.ListBean> list)
     {
     	this.list.addAll(this.list.size(), list);
     	notifyDataSetChanged();
     }
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 
 	@Override
-	public OrderDataBean getItem(int position) {
-		// TODO Auto-generated method stub
+	public OrderListBean.ListBean getItem(int position) {
 		return list.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
-		// TODO Auto-generated method stub
 		if(convertView == null)
 		{
 			viewHolder = new ViewHolder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.shop_order_all_item, null);
+			//订单号
 			viewHolder.orderNumTextView=(TextView) convertView.findViewById(R.id.orderNumTextView);
+			//订单状态
 			viewHolder.orderActionTextView=(TextView)convertView.findViewById(R.id.orderActionTextView);
+			//订单类型
 			viewHolder.orderTypeTextView=(TextView)convertView.findViewById(R.id.orderTypeTextView);
+			//订单时间
 			viewHolder.orderTimeTextView=(TextView)convertView.findViewById(R.id.orderTimeTextView);
-//			viewHolder.orderNameTextView=(TextView)convertView.findViewById(R.id.orderNameTextView);
-//			viewHolder.orderPhoneTextView=(TextView)convertView.findViewById(R.id.orderPhoneTextView);
+			//订单金额
 			viewHolder.orderPriceTextView=(TextView)convertView.findViewById(R.id.orderPriceTextView);
+			//订单来源
 			viewHolder.orderSourceText=(TextView)convertView.findViewById(R.id.orderSourceText);
 			convertView.setTag(viewHolder);
 		}
@@ -77,7 +76,9 @@ public class ShopOrderAdapter extends BaseAdapter
 		}
 		if(list.size()!=0)
 		{
-			viewHolder.orderNumTextView.setText(list.get(position).getNo());
+			//设置订单号
+			viewHolder.orderNumTextView.setText(list.get(position).getId());
+			//设置订单状态
 			if(list.get(position).getStatus().equals("-1"))
 			{
 				viewHolder.orderActionTextView.setText("已过期");
@@ -103,30 +104,14 @@ public class ShopOrderAdapter extends BaseAdapter
 				viewHolder.orderActionTextView.setText("已完成");
 				viewHolder.orderActionTextView.setTextColor(viewHolder.orderActionTextView.getResources().getColor(R.color.text_gray_color));
 			}
+			//设置订单类型
 			viewHolder.orderTypeTextView.setText(list.get(position).getSubject());
+			//设置订单时间
 			viewHolder.orderTimeTextView.setText(Util.DataConVertMint(list.get(position).getTime()));
-//			if(!TextUtils.isEmpty(list.get(position).getName()))
-//			{
-//			    viewHolder.orderNameTextView.setText(list.get(position).getName());
-//			}
-//			else
-//			{
-//				viewHolder.orderNameTextView.setText("未填写");
-//				//viewHolder.orderNameTextView.setVisibility(View.GONE);
-//				//viewHolder.icon_man.setVisibility(View.GONE);
-//			}
-//			if(!TextUtils.isEmpty(list.get(position).getMobile()))
-//			{
-//			    viewHolder.orderPhoneTextView.setText(list.get(position).getMobile());
-//			}
-//			else
-//			{
-//				viewHolder.orderPhoneTextView.setText("未填写");
-//				 //viewHolder.orderPhoneTextView.setVisibility(View.GONE);
-//				 //viewHolder.icon_phone.setVisibility(View.GONE);
-//			}
+			//设置价格
 			viewHolder.orderPriceTextView.setText("￥"+list.get(position).getFee());
-			viewHolder.orderSourceText.setText(list.get(position).getSource().getName());
+			//设置来源
+			viewHolder.orderSourceText.setText(list.get(position).getFrom());
 			Log.i("info", String.valueOf(position));
 		}
 		return convertView;
