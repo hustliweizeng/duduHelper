@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BankCardListBean;
@@ -23,6 +24,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ShopUserBankInfoEditActivity extends BaseActivity 
 {
@@ -83,7 +86,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 		}
 		if(TextUtils.isEmpty(userBankSonNameEditText.getText().toString().trim()))
 		{
-			Toast.makeText(ShopUserBankInfoEditActivity.this, "请选择开户行所在城市", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShopUserBankInfoEditActivity.this, "请输入支行网点名称", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if(TextUtils.isEmpty(messageCodeEditText.getText().toString().trim()))
@@ -119,14 +122,21 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				Toast.makeText(context,"修改银行卡成功",Toast.LENGTH_LONG).show();
-				finish();
+				try {
+					JSONObject json = new JSONObject(arg2);
+					String code = json.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						Toast.makeText(context,"修改银行卡成功",Toast.LENGTH_LONG).show();
+						finish();
+					}else {
+						Toast.makeText(context,"服务器异常，请稍后再试",Toast.LENGTH_LONG).show();
 
-			}
-			@Override
-			public void onFinish() 
-			{
-				ColorDialog.dissmissProcessDialog();
+					}
+
+				}catch (JSONException exception){
+					LogUtil.d("json","json解析异常");
+				}
+
 			}
 		});
 	}

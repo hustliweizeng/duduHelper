@@ -2,6 +2,7 @@ package com.dudu.duduhelper;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,21 +19,32 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.adapter.ShopCategoryAdapter;
+import com.dudu.duduhelper.adapter.ShopCircleAdapter;
 import com.dudu.duduhelper.adapter.ShopImageAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.ShopCategoryBean;
+import com.dudu.duduhelper.javabean.ShopCricleBean;
+import com.dudu.duduhelper.javabean.ShopInfoBean;
 import com.dudu.duduhelper.widget.MyAlertDailog;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ShopInfoEditActivity extends BaseActivity implements View.OnClickListener {
     private ImageButton backButton;
@@ -64,10 +75,16 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     private String startTime;
     private String endTime;
     private ArrayList<String> picsPath;
+    private int category_id;
+    private int circle_id;
+    private SharedPreferences sharePre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //设置新版样式，时间选择器是新版样式
+       //setTheme(android.R.style.Theme_Holo_Light);
+        sharePre = getSharedPreferences("shop_info",MODE_PRIVATE);
         setContentView(R.layout.shop_info_edit);
         initView();
         initHeadView("设置", true, false, 0);
@@ -109,7 +126,79 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     }
     //初始化数据
     private void initData() {
+        //1.先加载本地的数据
+        long time = sharePre.getLong("update_time",0);
+        LogUtil.d("ss",time+"="+sharePre.getString("info",""));
+        //如果更新日期超过一周，重新加载
+        long expireTime = 1000*60*60*24*7;
+        if ((System.currentTimeMillis()-time) <= expireTime){
+            //没超时的话加载本地数据
+            if (TextUtils.isEmpty(sharePre.getString("info",""))){
+                initDataFromJson(sharePre.getString("info",""));
+                LogUtil.d("load","从缓存加载");
+            }else {
+                //2.本地没有数据时，请求网络数据
+                requstHttpData();
+            }
+        }else {
+            //2.请求网络数据
+            requstHttpData();
+        }
 
+
+    }
+    //请求网络数据
+    private void requstHttpData() {
+        //如果超时了，加载网络数据
+        RequestParams params = new RequestParams();
+        HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SHOP_INFO, "GET", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+                Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onSuccess(int i, Header[] headers, String s) {
+                //LogUtil.d("info",s);
+
+                //保存信息到本地,标记时间戳
+                sharePre.edit().putLong("update_time", System.currentTimeMillis()).commit();
+                sharePre.edit().putString("info",s).commit();
+                try {
+                    JSONObject object = new JSONObject(s);
+                    String code =  object.getString("code");
+                    if ("SUCCESS".equalsIgnoreCase(code)){
+                        //数据请求成功后解析数据
+                        ShopInfoEditActivity.this.initDataFromJson(s);
+                        LogUtil.d("load","从缓存加载");
+
+                    }else {
+                        //显示错误信息
+                        String msg = object.getString("msg");
+                        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    //根据json数据设置控件信息
+    private void initDataFromJson(String s) {
+        ShopInfoBean info =  new Gson().fromJson(s, ShopInfoBean.class);
+        //设置logo
+        ImageLoader.getInstance().displayImage(info.getLogo(),iv_logo_shop_info);
+        //设置相册第一张
+        ImageLoader.getInstance().displayImage((String)info.getImages(),iv_img_shop_info);
+
+        ed_title_shop_info.setText(info.getName());
+        tv_class_shop_info.setText(info.getCategory_name());
+        tv_shopcircle_shop_info.setText(info.getArea_name());
+        ed_mobile_shop_info.setText(info.getContact());
+        tv_opentime_shop_info.setText(info.getOpen_time());
+        ed_address_shop_info.setText(info.getAddress());
+        ed_des_shop_info.setText(info.getDescription());
     }
 
     @Override
@@ -135,45 +224,68 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 HttpUtils.getConnection(context, null, ConstantParamPhone.GET_CATEGPRY_INFO, "GET", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-
+                        Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
                     }
-
                     @Override
                     public void onSuccess(int i, Header[] headers, String s) {
 
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            String code =  object.getString("code");
+                            if ("SUCCESS".equalsIgnoreCase(code)){
+                                //数据请求成功
+                              //  LogUtil.d("category",s);
+                               ShopCategoryBean categoryBean =  new Gson().fromJson(s, ShopCategoryBean.class);
+                                showCategorySelctor(categoryBean.getData(),"选择行业");
+                            }else {
+                                //数据请求失败
+                                String msg = object.getString("msg");
+                                Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
-                final String[] cats = {"旅游","餐饮","休闲","酒店"};
-                showDailogSelctor(cats,"选择行业");
                 break;
             case R.id.rl_shopcircle_shop_info:
                 //请求网络数据获取行业分类信息
                 HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SHOPCIRCLE_INFO, "GET", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-
+                        Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
                     }
-
                     @Override
                     public void onSuccess(int i, Header[] headers, String s) {
-
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            String code =  object.getString("code");
+                            if ("SUCCESS".equalsIgnoreCase(code)){
+                                //数据请求成功
+                                ShopCricleBean cricleBean =  new Gson().fromJson(s, ShopCricleBean.class);
+                                showCircleSelctor(cricleBean.getData(),"选择商圈");
+                            }else {
+                                //数据请求失败
+                                String msg = object.getString("msg");
+                                Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
-                //请求网络数据
-                //伪造数据,弹出对话选择框
-                final String[] circls = {"二七广场","万达","火车站","酒店"};
-                showDailogSelctor(circls,"选择商圈");
-
                 break;
             case R.id.rl_opentime_shop_info:
                 final Calendar  calendar = Calendar.getInstance();
+
                 //设置开始时间
-                TimePickerDialog dailog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                //第二个参数是设置选择器的主题，这样就不需要自定义修改了
+                TimePickerDialog dailog = new TimePickerDialog(context, R.style.AppTheme_Dialog,new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                         startTime = hour+":"+minute;
                         //设置结束时间
-                        TimePickerDialog dailog1 = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                        TimePickerDialog dailog1 = new TimePickerDialog(context,R.style.AppTheme_Dialog, new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                                 endTime = hour+":"+minute;
@@ -185,7 +297,6 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                     }
                 },calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),true);
                 dailog.setTitle("设置开始时间");
-
                 dailog.show();
 
                 break;
@@ -202,27 +313,98 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 break;
         }
     }
-    //显示选择框
-    private void showDailogSelctor(final String[]  items, final String title) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,R.layout.item_circle_select);
-        adapter.addAll(items);
+    //显示行业选择框
+    private void showCategorySelctor(final List<ShopCategoryBean.DataBean> category, final String title) {
+        ShopCategoryAdapter adapter = new ShopCategoryAdapter(context,R.layout.item_circle_select);
+        adapter.addAll(category);
+        LogUtil.d("adapter",adapter.getCount()+"");
         MyAlertDailog.show(context,title,adapter );
         //通过接口回调，确认选择的条目，并展示出来
         MyAlertDailog.setOnItemClickListentner(new MyAlertDailog.OnItemClickListentner() {
             @Override
             public void Onclick(int poistion) {
-                if ("选择行业".equals(title)){
-                    tv_class_shop_info.setText(items[poistion]);
-                }else if ("选择商圈".equals(title)){
-                    tv_shopcircle_shop_info.setText(items[poistion]);
-                }
+                //设置选中的行业
+                tv_class_shop_info.setText(category.get(poistion).getName());
+                //设置选中的行业id
+                category_id = Integer.parseInt(category.get(poistion).getId());
+            }
+        });
+
+    }
+    //显示商圈选择框
+    private void showCircleSelctor(final List<ShopCricleBean.DataBean> category, final String title) {
+        ShopCircleAdapter adapter = new ShopCircleAdapter(context,R.layout.item_circle_select);
+        adapter.addAll(category);
+        MyAlertDailog.show(context,title,adapter );
+        //通过接口回调，确认选择的条目，并展示出来
+        MyAlertDailog.setOnItemClickListentner(new MyAlertDailog.OnItemClickListentner() {
+            @Override
+            public void Onclick(int poistion) {
+                //设置选中的行业
+                tv_shopcircle_shop_info.setText(category.get(poistion).getName());
+                //设置选中的行业id
+                circle_id = Integer.parseInt(category.get(poistion).getId());
             }
         });
 
     }
 
+    //上传保存的信息
     private void requstHttpConnection() {
-       // HttpUtils.getConnection();
+        //获取图片的信息
+        /*iv_logo_shop_info.setDrawingCacheEnabled(true);
+        Bitmap iv_logo = iv_logo_shop_info.getDrawingCache();
+        iv_logo_shop_info.setDrawingCacheEnabled(false);*/
+        String title = ed_title_shop_info.getText().toString().trim();
+        String category = tv_class_shop_info.getText().toString();
+        String circle = tv_shopcircle_shop_info.getText().toString();
+        String mobile = ed_mobile_shop_info.getText().toString();
+        String address = ed_mobile_shop_info.getText().toString();
+        String descrip = ed_des_shop_info.getText().toString().trim();
+        String open_time = tv_opentime_shop_info.getText().toString();
+        //非空判断
+        if (TextUtils.isEmpty(title)|TextUtils.isEmpty(category)|TextUtils.isEmpty(circle)|TextUtils.isEmpty(open_time)
+                |TextUtils.isEmpty(mobile)|TextUtils.isEmpty(address)|TextUtils.isEmpty(descrip)){
+            Toast.makeText(context,"内容填写不完整",Toast.LENGTH_LONG).show();
+            return;
+        }
+        //修改哪个上传哪个
+        RequestParams params = new RequestParams();
+        params.put("name",title);
+        //params.put("logo",);
+        params.put("contact",mobile);
+        params.put("address",address);
+        params.put("description",descrip);
+        //params.put("images",);
+        params.put("category",category_id);
+        params.put("area",circle_id);
+        params.put("open_time",open_time);
+
+        HttpUtils.getConnection(context, params, ConstantParamPhone.SAVE_SHOP_INFO, "POST", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+                Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onSuccess(int i, Header[] headers, String s) {
+                LogUtil.d("submit",s);
+                try {
+                    JSONObject object = new JSONObject(s);
+                    String code =  object.getString("code");
+                    if ("SUCCESS".equalsIgnoreCase(code)){
+                        //数据请求成功
+                        Toast.makeText(context,"修改成功！",Toast.LENGTH_LONG).show();
+                        finish();
+                    }else {
+                        //数据请求失败
+                        String msg = object.getString("msg");
+                        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -296,46 +478,4 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         return dateFormat.format(date) + ".jpg";
     }
 
-    private void submit() {
-        // validate
-        String shopName = ed_title_shop_info.getText().toString().trim();
-        if (TextUtils.isEmpty(shopName)) {
-            Toast.makeText(this, "请输入店铺名称", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String mobie = ed_mobile_shop_info.getText().toString().trim();
-        if (TextUtils.isEmpty(mobie)) {
-            Toast.makeText(this, "请输入联系方式", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String address = ed_address_shop_info.getText().toString().trim();
-        if (TextUtils.isEmpty(address)) {
-            Toast.makeText(this, "请输入店铺地址", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String descrption = ed_des_shop_info.getText().toString().trim();
-        if (TextUtils.isEmpty(descrption)) {
-            Toast.makeText(this, "请输入店家描述...", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-       String url = ConstantParamPhone.SAVE_SHOP_INFO;
-        RequestParams params = new RequestParams();
-//        params.add("name",);
-//        params.add("contact",);
-//        params.add("address",);
-//        params.add("descprition",);
-//        params.add("category",);
-//        params.add("area",);
-//        params.add("open_time",);
-
-        //请求网络传递信息
-       // HttpUtils.getConnection(context,);
-
-
-
-    }
 }

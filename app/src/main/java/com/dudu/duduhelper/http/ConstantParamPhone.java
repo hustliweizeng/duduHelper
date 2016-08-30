@@ -93,21 +93,16 @@ public class ConstantParamPhone
     public static final String FAIL = "FAIL";
 
 
-
-
-
     public static final String USER_LOGIN = "/api/app/user/login";//用户登录接口
     public static final String GET_REDBAG_LIST = "/rpList";//获取红包列表
     public static final String ADD_REDBAG = "/addRp";//添加红包
     public static final String UPLOAD_PIC = "/api/app/tool/uploadpic";//上传图片
     public static final String GET_USER_INFO = "/api/app/user/info";//获取用户信息
-    public static final String SAVE_SHOP_INFO = "/api/app/shop/info";//保存店铺信息
     public static final String  GET_SMS_CONFIRM = "/api/app/tool/sms"; //短信验证
     public static final String  CHANGE_PWD_BYSMS ="/api/app/user/changepwdbycode";//通过验证码修改密码
     public static final String  CHANGE_PWD_BYPWD = "/api/app/user/changepwdbypwd";//通过旧密码修改
     public static final String  LOG_OUT = "/api/app/user/logout";//退出登录
-    public static final String  GET_CATEGPRY_INFO = "/api/app/shop/category";//获取行业分类信息
-    public static final String  GET_SHOPCIRCLE_INFO = "/api/app/shop/area";//获取商圈信息
+
 
     //银行卡相关接口
     public static final String  GET_BANKCARD_LIST = "/api/app/bank";//获取银行卡信息列表
@@ -132,6 +127,11 @@ public class ConstantParamPhone
     public static final String  GET_CITY_LIST = "/api/app/tool/geo/city";//获取城市列表
     public static final String  GET_COUNTRY_LISY= "/api/app/tool/geo/county";//获取县区列表
 
+    //获取店铺
+    public static final String  GET_SHOP_INFO = "/api/app/shop/info";//获取店铺信息
+    public static final String  GET_CATEGPRY_INFO = "/api/app/shop/category";//获取行业分类信息
+    public static final String  GET_SHOPCIRCLE_INFO = "/api/app/shop/area";//获取商圈信息
+    public static final String  SAVE_SHOP_INFO = "/api/app/shop/info";//保存店铺信息
 
 
 

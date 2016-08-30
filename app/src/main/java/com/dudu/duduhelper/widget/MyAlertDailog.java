@@ -5,7 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,7 +26,7 @@ public class MyAlertDailog {
      * @param title
      * @param adapter
      */
-    public static void show(Context context, String title, ArrayAdapter<String> adapter) {
+    public static void show(Context context, String title, BaseAdapter adapter) {
         dailog = new AlertDialog.Builder(context).create();
         dailog.show();
         //获取window之前必须先show

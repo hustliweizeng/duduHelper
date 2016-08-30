@@ -1,18 +1,18 @@
 package com.dudu.duduhelper.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.bean.CashHistoryDataBean;
-import com.dudu.duduhelper.Utils.Util;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.bean.CashHistoryDataBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GetCashHistoryAdapter extends BaseAdapter 
 {
@@ -22,7 +22,6 @@ public class GetCashHistoryAdapter extends BaseAdapter
 	
 	public GetCashHistoryAdapter(Context context) 
 	{
-		// TODO Auto-generated constructor stub
 		this.context=context;
 	}
     public void addAll(List<CashHistoryDataBean> list)
@@ -32,26 +31,22 @@ public class GetCashHistoryAdapter extends BaseAdapter
     }
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return list.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
-		// TODO Auto-generated method stub
 		if(convertView==null)
 		{
 			viewHolder=new ViewHolder();

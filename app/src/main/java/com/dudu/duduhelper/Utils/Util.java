@@ -1,5 +1,33 @@
 package com.dudu.duduhelper.Utils;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -18,43 +46,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.text.DateFormat;
-
-import com.google.gson.Gson;
-
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-
-import android.content.ContentUris;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap.CompressFormat;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
 
 public class Util 
 {
@@ -89,8 +87,7 @@ public class Util
 	
 	/** 
      * 日期格式字符串转换成时间戳 
-     * @param date 字符串日期 
-     * @param format 如：yyyy-MM-dd HH:mm:ss 
+     * @param format 如：yyyy-MM-dd HH:mm:ss
      * @return 
      */  
     public static String date2TimeStamp(String date_str,String format){  
@@ -109,7 +106,7 @@ public class Util
 //    	SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd " );
 //    	return format.format(new Date(Long.parseLong(data)));
     	
-    	return new SimpleDateFormat("yyyy-MM-dd ").format(new java.util.Date(new Long(data) * 1000));
+    	return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.parseLong(data)));
     	
     }
   //时间戳转换字符串
@@ -118,7 +115,7 @@ public class Util
 //    	SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd " );
 //    	return format.format(new Date(Long.parseLong(data)));
     	
-    	return new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new java.util.Date(new Long(data) * 1000));
+    	return new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date(Long.parseLong(data)));
     	
     }
     //MD5加密
@@ -388,8 +385,7 @@ public class Util
      *  
      * C.支持的图片格式 ,png, jpg,bmp,gif等等 
      *  
-     * @param url 
-     * @return 
+     * @return
      */  
     public static byte[] decodeBitmap(String path) 
     {  

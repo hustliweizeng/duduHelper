@@ -42,6 +42,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -201,13 +203,12 @@ public class ShopBankListActivity extends BaseActivity
 		RequestParams params = new RequestParams();
         HttpUtils.getConnection(context,params,ConstantParamPhone.GET_BANKCARD_LIST, "GET",new TextHttpResponseHandler()
 		{
-
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
 			{
 				//显示重新加载页面
-				//reloadButton.setVisibility(View.VISIBLE);
-				Toast.makeText(context,"加载失败",Toast.LENGTH_LONG).show();
+				reloadButton.setVisibility(View.VISIBLE);
+				Toast.makeText(context,"当前没有要显示的数据",Toast.LENGTH_LONG).show();
 
 			}
 			@Override
@@ -248,12 +249,12 @@ public class ShopBankListActivity extends BaseActivity
 				bean1.setData(datas);
 				//判断接收的结果
 				if ("SUCCESS".equalsIgnoreCase(bean1.getCode()) && "OK".equalsIgnoreCase(bean1.getMsg())){
-
 					memberAdapter.addAll(bean1.getData());
 					LogUtil.d("banklist","success"+memberAdapter.getCount());
 
+				}else {
+					Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 				}
-				//把数据交给适配器
 
 			}
 			@Override
@@ -304,14 +305,23 @@ public class ShopBankListActivity extends BaseActivity
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 						Toast.makeText(context,"服务器错误，请稍后再试",Toast.LENGTH_LONG).show();
-						//请求网络数据
-						showResidueSeconds();
 					}
 
 					@Override
 					public void onSuccess(int i, Header[] headers, String s) {
-						//请求网络数据
-						showResidueSeconds();
+						JSONObject object = new JSONObject();
+						try {
+							String code =  object.getString("code");
+							if ("SUCCESS".equalsIgnoreCase(code)){
+								showResidueSeconds();
+
+							}else {
+								String msg = object.getString("msg");
+								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 					}
 				});
 			}
@@ -335,10 +345,18 @@ public class ShopBankListActivity extends BaseActivity
 
 					@Override
 					public void onSuccess(int i, Header[] headers, String s) {
-						//请求网络数据
-						showResidueSeconds();
-						Toast.makeText(context,"提醒成功",Toast.LENGTH_LONG).show();
-						finish();
+						try {
+							String code = new JSONObject(s).getString("code");
+							if ("SUCCESS".equalsIgnoreCase(code)){
+								//显示倒计时
+								showResidueSeconds();
+								Toast.makeText(context,"提现成功",Toast.LENGTH_LONG).show();
+								finish();
+							}
+
+						}catch (Exception ex){
+
+						}
 					}
 				});
 			}
@@ -374,19 +392,14 @@ public class ShopBankListActivity extends BaseActivity
 				animation.setDuration(500); //设置持续时间5秒
 				animation.setAnimationListener(new AnimationListener() 
 				{
-					
 					@Override
 					public void onAnimationStart(Animation animation) 
 					{
-
 					}
-					
 					@Override
 					public void onAnimationRepeat(Animation animation) 
 					{
-
 					}
-					
 					@Override
 					public void onAnimationEnd(Animation animation) 
 					{

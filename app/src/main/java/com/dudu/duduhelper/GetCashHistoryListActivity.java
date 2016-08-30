@@ -13,6 +13,7 @@ import com.dudu.duduhelper.bean.CashHistoryBean;
 import com.dudu.duduhelper.bean.CashHistoryDataBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -77,11 +78,11 @@ public class GetCashHistoryListActivity extends BaseActivity {
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) {
 				CashHistoryBean cashHistoryBean = new Gson().fromJson(arg2, CashHistoryBean.class);
-				if ("SUCESS".equalsIgnoreCase(cashHistoryBean.getCode())){
+				if ("SUCCESS".equalsIgnoreCase(cashHistoryBean.getCode())){
 					//请求数据成功
 					CashHistoryDataBean bean = new CashHistoryDataBean();
 					bean.setMoney("300");
-					bean.setTime("2016-08-26");
+					bean.setTime(System.currentTimeMillis()+"");
 					bean.setStatus("1");
 					//cashHistoryBean.getData().add(bean);
 					List<CashHistoryDataBean> hisory = new ArrayList<CashHistoryDataBean>();
@@ -95,7 +96,7 @@ public class GetCashHistoryListActivity extends BaseActivity {
 			public void onFinish() 
 			{
 				// TODO Auto-generated method stub
-				//ColorDialog.dissmissProcessDialog();
+				ColorDialog.dissmissProcessDialog();
 				cashHistoryswipeLayout.setRefreshing(false);
 			}
 		});

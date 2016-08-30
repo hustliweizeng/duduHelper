@@ -17,6 +17,11 @@
     <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
  <!-- 指定消失的动画xml -->
   </style>
-  
+    <!-- 官方的对话框有点小bug，自己修改下就ok -->
+    <style name="AppTheme.Dialog" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 
 </resources>
