@@ -37,7 +37,7 @@ public class ProvinceListBean implements Serializable{
         this.data = data;
     }
 
-    public static class DataBean implements  Serializable{
+    public static class DataBean extends  SelectorBean implements  Serializable{
         private String id;
         private String name;
         private String code;

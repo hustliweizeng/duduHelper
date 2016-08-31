@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
-import com.dudu.duduhelper.adapter.SelectorBean;
+import com.dudu.duduhelper.javabean.SelectorBean;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;

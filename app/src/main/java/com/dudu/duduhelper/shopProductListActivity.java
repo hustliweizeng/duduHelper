@@ -116,6 +116,7 @@ public class shopProductListActivity extends BaseActivity
 	private TextView loading_text;
 	private boolean isShowChekckBox = false;
 	private TextView tv_chekcAll_product_list;
+	private ImageButton backButton;
 	//private View foot;
 
 	@Override
@@ -249,6 +250,14 @@ public class shopProductListActivity extends BaseActivity
 		loading_text=(TextView) footView.findViewById(R.id.loading_text);
 		downbutton=(Button) this.findViewById(R.id.downbutton);
 		upbutton=(Button) this.findViewById(R.id.upButton);
+		backButton = (ImageButton)findViewById(R.id.backButton);
+		//返回键
+		backButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		productAllDelectButton=(ImageView) this.findViewById(R.id.productAllDelectButton);
 		reloadButton=(Button) this.findViewById(R.id.reloadButton);
 		//全选图标
@@ -326,7 +335,6 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				//productAdapter.getItem(productAdapter.selectid);
 
 				String groupid="";
@@ -337,11 +345,11 @@ public class shopProductListActivity extends BaseActivity
 
 				if(isDisCount)
 				{
-					AllMethod("delete",groupid,"",ConstantParamPhone.COUPON_MULIT);
+					AllMethod("delete",groupid,"",ConstantParamPhone.DEL_BIG_BAND);
 				}
 				else
 				{
-					AllMethod("delete",groupid,"",ConstantParamPhone.GOODS_MULIT);
+					AllMethod("delete",groupid,"",ConstantParamPhone.DEL_BIG_BAND);
 				}
 
 				//Toast.makeText(ProductListActivity.this, groupid, Toast.LENGTH_SHORT).show();
@@ -374,20 +382,19 @@ public class shopProductListActivity extends BaseActivity
 					}
 					else
 					{
-						initData(ConstantParamPhone.GET_PRODUCT_LIST);
+						initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 					}
 				}
 			}
 		});
+		//下拉刷新设置
 		productSwipeLayout=(SwipeRefreshLayout) this.findViewById(R.id.productSwipeLayout);
 		productSwipeLayout.setColorSchemeResources(R.color.text_color);
 		productSwipeLayout.setSize(SwipeRefreshLayout.DEFAULT);
 		productSwipeLayout.setProgressBackgroundColor(R.color.bg_color);
 		productListView=(ListView) this.findViewById(R.id.productListView);
 
-		//loadMoreView = getLayoutInflater().inflate(R.layout.activity_listview_loadmore, null);
-		//productListView.addFooterView(loadMoreView);
-
+		//筛选器控件
 		allType=(TextView) this.findViewById(R.id.allType);
 		allTypeArror=(ImageView) this.findViewById(R.id.allTypeArror);
 		orderType=(TextView) this.findViewById(R.id.orderType);
@@ -478,13 +485,12 @@ public class shopProductListActivity extends BaseActivity
 				lastItemIndex = firstVisibleItem + visibleItemCount -1;
 			}
 		});
-		//弹出分类选择事件
+		//弹出分类选择事件颜色变化
 		allTypeRel.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				allType.setTextColor(allType.getResources().getColor(R.color.text_color));
 				allTypeArror.setImageResource(R.drawable.icon_jiantou_shang);
 				orderType.setTextColor(orderType.getResources().getColor(R.color.text_color_gray));
@@ -495,7 +501,7 @@ public class shopProductListActivity extends BaseActivity
 			}
 
 		});
-		//弹出分类选择事件
+		//弹出分类选择事件颜色变化
 		orderTypeRel.setOnClickListener(new OnClickListener()
 		{
 
@@ -543,17 +549,20 @@ public class shopProductListActivity extends BaseActivity
 				productAdapter.clear();
 				if(isDisCount)
 				{
+					//优惠券列表
 					initData(ConstantParamPhone.GET_COUPON_LIST);
 				}
 				else
 				{
 					if(isHongbao)
 					{
+						//红包列表
 						initData(ConstantParamPhone.GET_HONGBAO_LIST);
 					}
 					else
 					{
-						initData(ConstantParamPhone.GET_PRODUCT_LIST);
+						//大牌产品列表
+						initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 					}
 				}
 			}
@@ -647,19 +656,15 @@ public class shopProductListActivity extends BaseActivity
 
 		});
 	}
-	//弹出选择框
+	//弹出选择框poupwindow
 	private void showSelectPopupWindow(final String action)
 	{
-		// TODO Auto-generated method stub
 		LayoutInflater layoutInflater = (LayoutInflater)shopProductListActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.activity_product_window_select, null);
 		popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);
 		popupWindow.setFocusable(true);
 		popupWindow.setOutsideTouchable(true);
-		//设置半透明
-		//WindowManager.LayoutParams params=getActivity().getWindow().getAttributes();
-		//params.alpha=0.7f;
-		//getActivity().getWindow().setAttributes(params);
+
 		//这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
 		popupWindow.setBackgroundDrawable(new BitmapDrawable());
 		int screenWidth=shopProductListActivity.this.getWindowManager().getDefaultDisplay().getWidth();
@@ -670,10 +675,10 @@ public class shopProductListActivity extends BaseActivity
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				popupWindow.dismiss();
 			}
 		});
+		//下拉的列表
 		ListView productSelectList=(ListView) view.findViewById(R.id.productSelectList);
 		final List<DataBean> selectList=new ArrayList<DataBean>();
 		if(action.equals("order"))
@@ -858,7 +863,6 @@ public class shopProductListActivity extends BaseActivity
 	}
 	private void AllMethod(final String action,String ids,final String statetype,String methord)
 	{
-		// TODO Auto-generated method stub
 		if(TextUtils.isEmpty(ids))
 		{
 			Toast.makeText(shopProductListActivity.this, "您尚未选中任何商品", Toast.LENGTH_SHORT).show();
@@ -866,17 +870,8 @@ public class shopProductListActivity extends BaseActivity
 		}
 		ColorDialog.showRoundProcessDialog(shopProductListActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("category",category);
-		params.add("action",action);
-		params.add("version", ConstantParamPhone.VERSION);
-		if(!TextUtils.isEmpty(statetype))
-		{
-			params.add("status",statetype);
-		}
-		params.add("ids",ids);
-		params.setContentEncoding("UTF-8");
-		new AsyncHttpClient().post(ConstantParamPhone.IP+methord, params,new TextHttpResponseHandler(){
+		params.add("id",ids);
+		HttpUtils.getConnection(context,params,methord, "post",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
@@ -886,119 +881,26 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
-				ResponsBean responsBean=new Gson().fromJson(arg2,ResponsBean.class);
-				if(responsBean.getStatus().equals("-1006"))
-				{
-					//Toast.makeText(ProductListActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-					//Toast.makeText(getActivity(), "出错啦！", Toast.LENGTH_SHORT).show();
-					MyDialog.showDialog(shopProductListActivity.this, "该账号已在其他手机登录，是否重新登录", false, true, "取消", "确定",new OnClickListener() {
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						Toast.makeText(context,"删除成功",Toast.LENGTH_SHORT).show();
 
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(shopProductListActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				else
-				{
-					if(responsBean.getStatus().equals("1"))
-					{
-
-						//更新listview数据
-						if(action.equals("delete"))
-						{
-							Log.i("tag",String.valueOf(productAdapter.getCount()));
-							List<ProductListBean> ids=new ArrayList<ProductListBean>();
-							for(int i=0;i<productAdapter.getCount();i++)
-							{
-
-								if(productAdapter.ischeck.get(i))
-								{
-									ids.add((ProductListBean)productAdapter.getItem(i));
-									productAdapter.ischeck.put(i,false);
-								}
-							}
-							//必须要一次删除集合，单次删除会造成list长度减一，
-							productAdapter.list.removeAll(ids);
-							productAdapter.notifyDataSetChanged();
-							Toast.makeText(shopProductListActivity.this, "删除成功啦", Toast.LENGTH_SHORT).show();
-							isAllChoice=false;
-							productAllCheckImg.setImageResource(R.drawable.icon_xuanze);
-						}
-						else
-						{
-
-							//							if(status.equals("1"))
-							//							{
-							//								list.get(postion).setStatus("2");
-							//							}
-							//							if(status.equals("2"))
-							//							{
-							//								list.get(postion).setStatus("1");
-							//							}
-							//							notifyDataSetChanged();
-
-							if(statetype.equals("1"))
-							{
-
-								for(int i=0;i<productAdapter.getCount();i++)
-								{
-
-									if(productAdapter.ischeck.get(i))
-									{
-										//ids.add(productAdapter.getItem(i));
-										productAdapter.list.get(i).setStatus("1");
-										productAdapter.ischeck.put(i,false);
-									}
-								}
-								//必须要一次删除集合，单次删除会造成list长度减一，
-								productAdapter.notifyDataSetChanged();
-								Toast.makeText(shopProductListActivity.this, "修改成功啦", Toast.LENGTH_SHORT).show();
-								isAllChoice=false;
-								productAllCheckImg.setImageResource(R.drawable.icon_xuanze);
-							}
-							if(statetype.equals("2"))
-							{
-								for(int i=0;i<productAdapter.getCount();i++)
-								{
-
-									if(productAdapter.ischeck.get(i))
-									{
-										//ids.add(productAdapter.getItem(i));
-										productAdapter.list.get(i).setStatus("2");
-										productAdapter.ischeck.put(i,false);
-									}
-								}
-								//必须要一次删除集合，单次删除会造成list长度减一，
-								productAdapter.notifyDataSetChanged();
-								Toast.makeText(shopProductListActivity.this, "修改成功啦", Toast.LENGTH_SHORT).show();
-								isAllChoice=false;
-								productAllCheckImg.setImageResource(R.drawable.icon_xuanze);
-							}
-						}
-
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 					}
-					else
-					{
-						Toast.makeText(shopProductListActivity.this, responsBean.getInfo(), Toast.LENGTH_SHORT).show();
-						return;
-					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
 
 			@Override
 			public void onFinish()
 			{
-				// TODO Auto-generated method stub
 				productSwipeLayout.setRefreshing(false);
 				ColorDialog.dissmissProcessDialog();
 			}
