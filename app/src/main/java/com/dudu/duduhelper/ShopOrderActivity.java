@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
@@ -65,7 +64,10 @@ public class ShopOrderActivity extends BaseActivity
 
 	private LinearLayout selectLine;
 	private ListView allOrderListView;
+	//订单列表适配器
 	private ShopOrderAdapter orderAdapter;
+	//订单选择适配器
+	private OrderSelectorAdapter orderSelectorAdapter;
 	private int page=1;
 	private SwipeRefreshLayout orderallswipeLayout;
 	private Button reloadButton;
@@ -78,7 +80,7 @@ public class ShopOrderActivity extends BaseActivity
     private View footView;
     private ProgressBar loading_progressBar;
     private TextView loading_text;
-    private OrderSelectorAdapter orderSelectorAdapter;
+
     public ProductAdapter productAdapter;
     private String status="";
 	//筛选需要的参数
@@ -92,6 +94,7 @@ public class ShopOrderActivity extends BaseActivity
 	int pageLimit = 10;
 	private OrderListBean orderData;
 	private String lastId;
+	private int orderId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -114,6 +117,13 @@ public class ShopOrderActivity extends BaseActivity
 		orderAdapter.clear();
 		initData();
 	}
+
+	@Override
+	public void RightButtonClick() {
+		super.RightButtonClick();
+		startActivityForResult(new Intent(context,SearchActivity.class),100);
+	}
+
 	//第一次请求时，请求所有数据
 	private void initData()
 	{
@@ -133,10 +143,17 @@ public class ShopOrderActivity extends BaseActivity
 		params.add("limit",pageLimit+"");
 		params.add("lastid", lastId);
 
+
 		//订单筛选需要3个条件
 		params.add("status",statuss+"");
-		params.add("from",source+"");
+		params.add("moduleid",source+"");
 		params.add("ispay", isNew+"");
+		//根据订单id查找
+		if (orderId !=0){
+			//清空之前的搜索项
+			params = new RequestParams();
+			params.add("id",orderId+"");
+		}
 
 		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_ORDER_LIST, "GET",new TextHttpResponseHandler()
 		{
@@ -161,7 +178,7 @@ public class ShopOrderActivity extends BaseActivity
 						orderAdapter.addAll(orderData.getList());
 						//设置最后一个订单的id
 						lastId = orderAdapter.getLastId();
-						LogUtil.d("lastid=", lastId);
+						//LogUtil.d("lastid=", lastId);
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -418,8 +435,11 @@ public class ShopOrderActivity extends BaseActivity
 	}
 
 	@Override
+	//通过搜索返回的结果id号
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		orderId = data.getIntExtra("id",0);
+		initData();
 	}
 
 }

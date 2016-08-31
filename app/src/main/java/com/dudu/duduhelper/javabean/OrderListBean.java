@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by lwz on 2016/8/30.
+ * 订单列表
  */
 public class OrderListBean {
 

@@ -126,12 +126,12 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			case R.id.dapaibuyBtn:
 				//大牌抢购
 				intent=new Intent(getActivity(),shopProductListActivity.class);
-				intent.putExtra("category", "buying");
+				intent.putExtra("category", "bigband");
 			    break;
 			case R.id.youhuiBtn:
 				//优惠券
 				intent=new Intent(getActivity(),shopProductListActivity.class);
-				intent.putExtra("category", "coupon");
+				intent.putExtra("category", "discount");
 			    break;
 			case R.id.hongbaoBtn:
 				//进入红包页面

@@ -133,6 +133,11 @@ public class ConstantParamPhone
     public static final String  GET_SHOPCIRCLE_INFO = "/api/app/shop/area";//获取商圈信息
     public static final String  SAVE_SHOP_INFO = "/api/app/shop/info";//保存店铺信息
 
+    //大牌抢购
+    public static final String GET_BIG_BAND_LIST = "/api/app/panic/listinfo";//大牌抢购列表
+    public static final String GET_BIG_BAND_DETAIL = "/api/app/panic/panicinfo";//大牌抢购详情
+    public static final String DEL_BIG_BAND ="/api/app/panic/delpanic";//删除大牌抢购条目
+
 
 
 

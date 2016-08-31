@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.OrderListBean;
+import com.dudu.duduhelper.javabean.OrderStatusBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,31 +83,50 @@ public class ShopOrderAdapter extends BaseAdapter
 			//设置订单号
 			viewHolder.orderNumTextView.setText(list.get(position).getId());
 			//设置订单状态
-			if(list.get(position).getStatus().equals("-1"))
-			{
-				viewHolder.orderActionTextView.setText("已过期");
-				viewHolder.orderActionTextView.setTextColor(viewHolder.orderActionTextView.getResources().getColor(R.color.text_gray_color));
+			int status = Integer.parseInt(list.get(position).getStatus());
+			int color = R.color.text_green_color;
+			String content = "";
+			switch (status){
+				case 0 :
+					content = "已取消";
+					color = R.color.text_gray_color;
+					break;
+				case 1 :
+					content = "待支付";
+					color = R.color.text_color_yellow;
+				case 2 :
+					content = "已支付";
+					color = R.color.text_green_color;
+					break;
+				case 3 :
+					content = "已完成";
+					color = R.color.text_gray_color;
+					break;
+				case 4 :
+					content = "待发货";
+					break;
+				case 5 :
+					content = "待收货";
+					break;
+				case 6 :
+					content = "待核销";
+					break;
+				case 7 :
+					content = "待评价";
+					break;
+				case -1 :
+					content = "已过期";
+					color = R.color.text_gray_color;
+					break;
+				case -2 :
+					content = "已退款";
+					break;
 			}
-			if(list.get(position).getStatus().equals("0"))
-			{
-				viewHolder.orderActionTextView.setText("已取消");
-				viewHolder.orderActionTextView.setTextColor(viewHolder.orderActionTextView.getResources().getColor(R.color.text_gray_color));
-			}
-			if(list.get(position).getStatus().equals("1"))
-			{
-				viewHolder.orderActionTextView.setText("未支付");
-				viewHolder.orderActionTextView.setTextColor(viewHolder.orderActionTextView.getResources().getColor(R.color.text_color_yellow));
-			}
-			if(list.get(position).getStatus().equals("2"))
-			{
-				viewHolder.orderActionTextView.setText("已支付");
-				viewHolder.orderActionTextView.setTextColor(viewHolder.orderActionTextView.getResources().getColor(R.color.text_green_color));
-			}
-			if(list.get(position).getStatus().equals("3"))
-			{
-				viewHolder.orderActionTextView.setText("已完成");
-				viewHolder.orderActionTextView.setTextColor(viewHolder.orderActionTextView.getResources().getColor(R.color.text_gray_color));
-			}
+			//设置内容
+			viewHolder.orderActionTextView.setText(content);
+			//设置颜色
+			viewHolder.orderActionTextView.setTextColor(viewHolder.orderActionTextView.getResources().getColor(color));
+			
 			//设置订单类型
 			viewHolder.orderTypeTextView.setText(list.get(position).getSubject());
 			//设置订单时间
@@ -114,7 +134,12 @@ public class ShopOrderAdapter extends BaseAdapter
 			//设置价格
 			viewHolder.orderPriceTextView.setText("￥"+list.get(position).getFee());
 			//设置来源
-			viewHolder.orderSourceText.setText(list.get(position).getFrom());
+			//遍历集合
+			for(SelectorBean bean: (new OrderStatusBean().getAllOrderSource())){
+				if (bean.id == Integer.parseInt(list.get(position).getFrom())){
+					viewHolder.orderSourceText.setText(bean.name);
+				}
+			}
 			Log.i("info", String.valueOf(position));
 		}
 		return convertView;

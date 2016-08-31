@@ -15,6 +15,7 @@ public class ProductListBean implements Serializable
 	private String time_start;
 	private String time_end;
 	private String verify;
+
 	
 	public String getVerify() {
 		return verify;

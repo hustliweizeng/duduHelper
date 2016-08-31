@@ -25,8 +25,8 @@ import android.widget.Toast;
 import com.dudu.duduhelper.adapter.CouponSellHistoryAdapter;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.bean.GetCouponSellBean;
-import com.dudu.duduhelper.bean.OrderBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -67,6 +67,7 @@ public class SearchActivity extends BaseActivity
 		setContentView(R.layout.activity_search);
 		keyword=getIntent().getStringExtra("keyword");
 		id=getIntent().getStringExtra("id");
+
 		initView();
 		ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		if(TextUtils.isEmpty(id))
@@ -156,20 +157,13 @@ public class SearchActivity extends BaseActivity
 	}
 	private void initData() 
 	{
-		loading_progressBar.setVisibility(View.VISIBLE);
-		loading_text.setText("加载中...");
+		//loading_progressBar.setVisibility(View.VISIBLE);
+		//loading_text.setText("加载中...");
 		// TODO Auto-generated method stub
 		allOrderListView.setAdapter(orderAdapter);
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("no", keyword);
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(SearchActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.get(ConstantParamPhone.IP+ConstantParamPhone.ORDER_SEARCH, params,new TextHttpResponseHandler()
+
+        HttpUtils.getConnection(context,params,ConstantParamPhone.ORDER_SEARCH, "get",new TextHttpResponseHandler()
 		{
 
 			@Override
@@ -179,69 +173,23 @@ public class SearchActivity extends BaseActivity
 				reloadButton.setVisibility(View.VISIBLE);
 			}
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-			{
-				OrderBean orderBean=new Gson().fromJson(arg2,OrderBean.class);
-				if(!orderBean.getStatus().equals("1"))
-				{
-					MyDialog.showDialog(SearchActivity.this, "该账号已在其他手机登录，是否重新登录", false, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(SearchActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				else
-				{
-					if(orderBean.getData()!=null&&orderBean.getData().size()!=0)
-					{
-						//orderAdapter.addAll(orderBean.getData());
-						reloadButton.setVisibility(View.GONE);
-						loading_progressBar.setVisibility(View.GONE);
-						loading_text.setText("加载完啦！");
-						
-					}
-					else
-					{
-						//Toast.makeText(getActivity(), "啥也没有！", Toast.LENGTH_SHORT).show();
-						loading_progressBar.setVisibility(View.GONE);
-						loading_text.setText("啥也没有！");
-						reloadButton.setVisibility(View.VISIBLE);
-					}
-				}
+			public void onSuccess(int arg0, Header[] arg1, String arg2) {
 			}
-			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-				orderallswipeLayout.setRefreshing(false);
-				ColorDialog.dissmissProcessDialog();
-			}
+
 		});
 	}
 
 	@SuppressLint("ResourceAsColor") 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		backButton=(ImageButton) this.findViewById(R.id.backButton);
 		searchBarEdit=(EditText) this.findViewById(R.id.searchBarEdit);
 		selectClickButton=(Button) this.findViewById(R.id.selectClickButton);
+		//返回键
 		backButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				finish();
 			}
 		});
@@ -249,12 +197,12 @@ public class SearchActivity extends BaseActivity
 		{
 			searchBarEdit.setText(keyword);
 		}
+		//搜索键
 		selectClickButton.setOnClickListener(new OnClickListener() 
 		{
 			@Override
 			public void onClick(View arg0) 
 			{
-				// TODO Auto-generated method stub
 				keyword=searchBarEdit.getText().toString().trim();
 				if(TextUtils.isEmpty(id))
 				{
@@ -268,6 +216,7 @@ public class SearchActivity extends BaseActivity
 				}
 			}
 		});
+		//搜索框监听
 		searchBarEdit.setOnEditorActionListener(new OnEditorActionListener() 
 		{
 

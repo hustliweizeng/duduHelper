@@ -1,18 +1,27 @@
 package com.dudu.duduhelper.adapter;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import org.apache.http.Header;
-
-import com.dudu.duduhelper.shopProductListActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.HongbaoListBean;
-import com.dudu.duduhelper.bean.ProductListBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.javabean.BigBandBuy;
+import com.dudu.duduhelper.shopProductListActivity;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -23,20 +32,11 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Paint;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import org.apache.http.Header;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ProductAdapter extends BaseAdapter 
 {
@@ -45,19 +45,28 @@ public class ProductAdapter extends BaseAdapter
     private DisplayImageOptions options;
     private boolean isHongbao=false;//是否是红包
     private boolean isMulChoice;//是否显示批量删除
-    public  HashMap<Integer, Integer> visiblecheck ;//用来记录是否显示checkBox
-    public  HashMap<Integer, Boolean> ischeck;//checkbox选中状态
-    public List<String> selectid = new ArrayList<String>();//保存选中的
-    public List<ProductListBean> list=new ArrayList<ProductListBean>();
-    public List<HongbaoListBean> hongBaolist=new ArrayList<HongbaoListBean>();
+	private boolean isDisCount=false;//是
+
+    public  HashMap<Integer, Integer> visiblecheck ;//是否显示复选框
+    public  HashMap<Integer, Boolean> ischeck;//复选框是否选中
+
+    public List<String> selectid = new ArrayList<String>();//保存选中的id
+    public List<BigBandBuy.DataBean> list=new ArrayList<>();//大牌产品列表
+    public List<HongbaoListBean> hongBaolist=new ArrayList<HongbaoListBean>();//红包列表
     protected ImageLoader imageLoader = ImageLoader.getInstance();
-    private boolean isCash=false;
-    //初始化listview的checkbox
-    public ProductAdapter(Context context,boolean isMulChoice,boolean isCash,boolean isHongbao)
+	//是否全选
+	public boolean isAllSelect;
+	//是否显示复选框
+	public  boolean isShowCheckBox;
+
+
+	//初始化listview的checkbox
+    public ProductAdapter(Context context,boolean isMulChoice,boolean isDisCount,boolean isHongbao)
     {
-    	this.isCash=isCash;
+    	this.isDisCount=isDisCount;
     	this.isHongbao=isHongbao;
     	this.context=context;
+		//设置图片加载的信息
     	options = new DisplayImageOptions.Builder()
 		.showImageOnLoading(R.drawable.icon_head)
 		.showImageForEmptyUri(R.drawable.icon_head)
@@ -65,6 +74,8 @@ public class ProductAdapter extends BaseAdapter
 		.cacheInMemory(true).considerExifParams(true)
 		.bitmapConfig(Bitmap.Config.RGB_565)
 		.displayer(new FadeInBitmapDisplayer(100)).build();
+
+
     	this.isMulChoice=isMulChoice;
     	visiblecheck = new HashMap<Integer, Integer>();
     	ischeck = new HashMap<Integer, Boolean>();
@@ -83,17 +94,13 @@ public class ProductAdapter extends BaseAdapter
     	}
     	
     }
-    
-//    public void removeAll(List<Integer> ids)
-//    {
-//    	list.removeAll(ids);
-//    	notifyDataSetChanged();
-//    }
-    
-    public void addAll(List<ProductListBean> list,boolean isChoose)
+    public void addAll(List<BigBandBuy.DataBean> list,boolean isAllSelect)
     {
+
     	this.list.addAll(this.list.size(), list);
-    	if(isChoose)
+		this.isAllSelect = isAllSelect;
+		//是否全选状态
+    	if(isAllSelect)
     	{
     		//设置所有checkbox可见
             for(int i=0;i<getCount();i++)
@@ -102,6 +109,7 @@ public class ProductAdapter extends BaseAdapter
             	{
             		if(ischeck.get(i))
                 	{
+						//所有条目设置为选中
                 		ischeck.put(i, true);
                 	}
             	}
@@ -109,10 +117,11 @@ public class ProductAdapter extends BaseAdapter
             	{
             		ischeck.put(i, false);
             	}
-            	
+            	//设置所有复选框可见
                 visiblecheck.put(i, CheckBox.VISIBLE);
             }
         }
+		//不是全选状态
         else
         {
             for(int i=0;i<getCount();i++)
@@ -163,7 +172,6 @@ public class ProductAdapter extends BaseAdapter
 	@Override
 	public int getCount() 
 	{
-		// TODO Auto-generated method stub
 		if(isHongbao)
 		{
 			return hongBaolist.size();
@@ -172,13 +180,11 @@ public class ProductAdapter extends BaseAdapter
 		{
 			return list.size();
 		}
-		
 	}
 
 	@Override
 	public Object getItem(int position) 
 	{
-		// TODO Auto-generated method stub
 		if(isHongbao)
 		{
 			return hongBaolist.get(position);
@@ -192,7 +198,6 @@ public class ProductAdapter extends BaseAdapter
 	@Override
 	public long getItemId(int position) 
 	{
-		// TODO Auto-generated method stub
 		if(isHongbao)
 		{
 			return hongBaolist.size();
@@ -206,13 +211,13 @@ public class ProductAdapter extends BaseAdapter
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) 
 	{
-		// TODO Auto-generated method stub
 		OnClick listener=null;
 		OnClick2 listener2=null;
 		if(convertView==null)
 		{
 			viewHolder = new ViewHolder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.shop_fragment_product_item, null);
+			//复选框
 			viewHolder.productCheckImg=(ImageView) convertView.findViewById(R.id.productCheckImg);
 			viewHolder.productRelPriceTextView=(TextView) convertView.findViewById(R.id.productRelPriceTextView);
 			viewHolder.productRelPriceTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG );
@@ -224,6 +229,7 @@ public class ProductAdapter extends BaseAdapter
 			viewHolder.productImage=(ImageView) convertView.findViewById(R.id.productImage);
 			viewHolder.downButton=(ImageView) convertView.findViewById(R.id.downButton);
 			viewHolder.productGetNum=(TextView) convertView.findViewById(R.id.productGetNum);
+			//红包页面的时候，有几个控件设置不可见
 			if(isHongbao)
 			{
 				viewHolder.downButton.setVisibility(View.GONE);
@@ -236,227 +242,223 @@ public class ProductAdapter extends BaseAdapter
 			listener2=new OnClick2();
 			viewHolder.delectButton.setOnClickListener(listener);
 			viewHolder.downButton.setOnClickListener(listener2);
+			//设置tag复用
 			convertView.setTag(viewHolder.delectButton.getId(), listener);
 			convertView.setTag(viewHolder.downButton.getId(), listener2);
 			convertView.setTag(viewHolder);
 		}
+		//开始复用
 		else
 		{
 			viewHolder = (ViewHolder) convertView.getTag();
 			listener=(OnClick) convertView.getTag(viewHolder.delectButton.getId());
 			listener2=(OnClick2) convertView.getTag(viewHolder.downButton.getId());
 		}
+		//根据传递过来的布尔值
+		if (isShowCheckBox){
+			//是否显示多选框
+			viewHolder.productCheckImg.setVisibility(View.VISIBLE);
+		}else {
+			viewHolder.productCheckImg.setVisibility(View.GONE);
+		}
+
+		//如果是红包页面
 		if(isHongbao)
 		{
-			if(hongBaolist.size()!=0)
+
+			if(!TextUtils.isEmpty(hongBaolist.get(position).getId()))
 			{
-				if(!TextUtils.isEmpty(hongBaolist.get(position).getId()))
+				//
+				listener.setpositionAndId(hongBaolist.get(position).getId(),position,ConstantParamPhone.DELECT_HONGBAO);
+			}
+			if(!TextUtils.isEmpty(hongBaolist.get(position).getSend_num())&&!TextUtils.isEmpty(hongBaolist.get(position).getNum()))
+			{
+				viewHolder.productGetNum.setText("已领："+hongBaolist.get(position).getSend_num()+"/"+hongBaolist.get(position).getNum());
+			}
+			if(!TextUtils.isEmpty(hongBaolist.get(position).getTitle()))
+			{
+				viewHolder.productName.setText(hongBaolist.get(position).getTitle());
+			}
+			if(!TextUtils.isEmpty(hongBaolist.get(position).getTotal()))
+			{
+				viewHolder.producthaveNum.setText("总额:"+hongBaolist.get(position).getTotal());
+			}
+			if(!TextUtils.isEmpty(hongBaolist.get(position).getTotal())&&!TextUtils.isEmpty(hongBaolist.get(position).getSend_money()))
+			{
+				viewHolder.productSellNum.setText("余额:"+(Double.parseDouble(hongBaolist.get(position).getTotal())-Double.parseDouble(hongBaolist.get(position).getSend_money())));
+			}
+			if(!TextUtils.isEmpty(hongBaolist.get(position).getTime_end()))
+			{
+				if(System.currentTimeMillis()>Long.parseLong(hongBaolist.get(position).getTime_end())*1000)
 				{
-					listener.setpositionAndId(hongBaolist.get(position).getId(),position,ConstantParamPhone.DELECT_HONGBAO);
-					//listener2.setpositionAndId(hongBaolist.get(position).getId(),hongBaolist.get(position).getStatus(),position,ConstantParamPhone.EDIT_COUPON_INFO);
+				   viewHolder.productAction.setText("已截止");
+				   viewHolder.productAction.setTextColor(viewHolder.productAction.getResources().getColor(R.color.text_color_light));
 				}
-//				if(!TextUtils.isEmpty(hongBaolist.get(position).getPrice2()))
-//				{
-//					viewHolder.productRelPriceTextView.setText(hongBaolist.get(position).getPrice2());
-//				}
-//				if(!TextUtils.isEmpty(hongBaolist.get(position).getPrice1()))
-//				{
-//					viewHolder.productPrice.setText("￥"+hongBaolist.get(position).getPrice1());
-//				}
-				if(!TextUtils.isEmpty(hongBaolist.get(position).getSend_num())&&!TextUtils.isEmpty(hongBaolist.get(position).getNum()))
+				else
 				{
-					viewHolder.productGetNum.setText("已领："+hongBaolist.get(position).getSend_num()+"/"+hongBaolist.get(position).getNum());
+					viewHolder.productAction.setText("发放中");
 				}
-				if(!TextUtils.isEmpty(hongBaolist.get(position).getTitle()))
+			}
+			if(!TextUtils.isEmpty(hongBaolist.get(position).getLogo()))
+			{
+				String imagepath = hongBaolist.get(position).getLogo();
+				if(!imagepath.equals(viewHolder.productImage.getTag()))
 				{
-					viewHolder.productName.setText(hongBaolist.get(position).getTitle());
+					viewHolder.productImage.setTag(imagepath);
+					imageLoader.displayImage(hongBaolist.get(position).getLogo(),viewHolder.productImage, options);
 				}
-				if(!TextUtils.isEmpty(hongBaolist.get(position).getTotal()))
+			}
+
+			//迭代设置所有checkbox是否选中，做全选，清空重置使用
+			/*
+			 * 在复用时对其进行判断，根据其状态来显示相应的内容，这样在滑动时条目就不会再错乱了
+			 */
+			//根据之前复选框信息，设置当前条目样式
+			if(ischeck.get(position))
+			{
+				viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze_sel);
+			}
+			else
+			{
+				viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze);
+			}
+			//复选框的监听
+			viewHolder.productCheckImg.setOnClickListener(new OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
 				{
-					viewHolder.producthaveNum.setText("总额:"+hongBaolist.get(position).getTotal());
-				}
-				if(!TextUtils.isEmpty(hongBaolist.get(position).getTotal())&&!TextUtils.isEmpty(hongBaolist.get(position).getSend_money()))
-				{
-					viewHolder.productSellNum.setText("余额:"+(Double.parseDouble(hongBaolist.get(position).getTotal())-Double.parseDouble(hongBaolist.get(position).getSend_money())));
-				}
-				if(!TextUtils.isEmpty(hongBaolist.get(position).getTime_end()))
-				{
-					if(System.currentTimeMillis()>Long.parseLong(hongBaolist.get(position).getTime_end())*1000)
+					// TODO Auto-generated method stub
+					if(ischeck.get(position))
 					{
-					   viewHolder.productAction.setText("已截止");
-					   viewHolder.productAction.setTextColor(viewHolder.productAction.getResources().getColor(R.color.text_color_light));
+						viewHolder.productCheckImg.setImageResource(R.drawable.icon_dingdan);
+						//设置点击后其选中状态，不选中
+						ischeck.put(position,false);
+						//记录是否需要删除的数据id
+						selectid.remove(hongBaolist.get(position).getId());
 					}
 					else
 					{
-						viewHolder.productAction.setText("发放中");
+						viewHolder.productCheckImg.setImageResource(R.drawable.icon_guanyu);
+						ischeck.put(position,true);
+						//记录是否需要删除的数据id
+						selectid.add(hongBaolist.get(position).getId());
 					}
+					notifyDataSetChanged();
 				}
-				if(!TextUtils.isEmpty(hongBaolist.get(position).getLogo()))
-				{
-					String imagepath = hongBaolist.get(position).getLogo();
-					if(!imagepath.equals(viewHolder.productImage.getTag()))
-					{ 
-						viewHolder.productImage.setTag(imagepath); 
-						imageLoader.displayImage(hongBaolist.get(position).getLogo(),viewHolder.productImage, options);
-					}
-				}
-				
-				//迭代设置所有checkbox是否选中，做全选，清空重置使用
-				/*
-				 * 在复用时对其进行判断，根据其状态来显示相应的内容，这样在滑动时条目就不会再错乱了
-				 */
-				if(ischeck.get(position))
-				{
-					viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze_sel);
-				}
-				else 
-				{
-					viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze);
-				}
-				viewHolder.productCheckImg.setOnClickListener(new OnClickListener() 
-				{
-					@Override
-					public void onClick(View v) 
-					{
-						// TODO Auto-generated method stub
-		                if(ischeck.get(position))
-		                {
-		                	viewHolder.productCheckImg.setImageResource(R.drawable.icon_dingdan);
-		                	//设置点击后其选中状态，不选中
-		                	ischeck.put(position,false);
-		                	//记录是否需要删除的数据id
-		                	selectid.remove(hongBaolist.get(position).getId());
-		                	
-		                	
-		                }
-		                else
-		                {
-		                	viewHolder.productCheckImg.setImageResource(R.drawable.icon_guanyu);
-		                	
-		                	ischeck.put(position,true);
-		                	
-		                	//记录是否需要删除的数据id
-		                	selectid.add(hongBaolist.get(position).getId());
-		                }
-		                notifyDataSetChanged();
-					}
-				});
-				//迭代设置所有checkbox的可见性
-				viewHolder.productCheckImg.setVisibility(visiblecheck.get(position));
-			}
+			});
+			//迭代设置所有checkbox的可见性
+			//viewHolder.productCheckImg.setVisibility(visiblecheck.get(position));
 		}
+		//如果是商品列表
 		else
 		{
-			if(list.size()!=0)
+			if(!TextUtils.isEmpty(list.get(position).getId()))
 			{
-				if(!TextUtils.isEmpty(list.get(position).getId()))
+				if(isDisCount)
 				{
-					if(isCash)
+					//设置商品删除或编辑
+					listener.setpositionAndId(list.get(position).getId(),position,ConstantParamPhone.DELECT_COUPON);
+					listener2.setpositionAndId(list.get(position).getId(),list.get(position).getStatus(),position,ConstantParamPhone.EDIT_COUPON_INFO);
+				}
+				else
+				{
+					//设置商品删除或编辑
+					listener.setpositionAndId(list.get(position).getId(),position,ConstantParamPhone.DELECT_PRODUCT);
+					listener2.setpositionAndId(list.get(position).getId(),list.get(position).getStatus(),position,ConstantParamPhone.EDIT_PRODUCT_INFO);
+				}
+
+			}
+			//商品原价
+			if(!TextUtils.isEmpty(list.get(position).getPrice()))
+			{
+				viewHolder.productRelPriceTextView.setText(list.get(position).getPrice());
+			}
+			//商品价格
+			if(!TextUtils.isEmpty(list.get(position).getCurrent_price()))
+			{
+				viewHolder.productPrice.setText("￥"+list.get(position).getCurrent_price());
+			}
+			//产品名称
+			if(!TextUtils.isEmpty(list.get(position).getName()))
+			{
+				viewHolder.productName.setText(list.get(position).getName());
+			}
+			//库存
+			if(!TextUtils.isEmpty(list.get(position).getStock()))
+			{
+				viewHolder.producthaveNum.setText("库存:"+list.get(position).getStock());
+			}
+			//已售出
+			if(!TextUtils.isEmpty(list.get(position).getSaled_count()))
+			{
+				viewHolder.productSellNum.setText("已售:"+list.get(position).getSaled_count());
+			}
+			//状态
+			if(list.get(position).getStatus().equals("1"))
+			{
+				viewHolder.productAction.setText("未上架");
+				viewHolder.downButton.setImageResource(R.drawable.icon_shangjia);
+			}
+			if(list.get(position).getStatus().equals("2"))
+			{
+				viewHolder.productAction.setText("已上架");
+				viewHolder.downButton.setImageResource(R.drawable.icon_xiajia);
+
+			}
+			//商品图片
+			if(!TextUtils.isEmpty(list.get(position).getShow_img()))
+			{
+				String imagepath = list.get(position).getShow_img();
+				if(!imagepath.equals(viewHolder.productImage.getTag()))
+				{
+					viewHolder.productImage.setTag(imagepath);
+					imageLoader.displayImage(list.get(position).getShow_img(),viewHolder.productImage, options);
+				}
+			}
+
+
+
+			//迭代设置所有checkbox是否选中，做全选，清空重置使用
+			/*
+			 * 在复用时对其进行判断，根据其状态来显示相应的内容，这样在滑动时条目就不会再错乱了
+			 */
+			if(ischeck.get(position))
+			{
+				viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze_sel);
+			}
+			else
+			{
+				viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze);
+			}
+			viewHolder.productCheckImg.setOnClickListener(new OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					// TODO Auto-generated method stub
+					if(ischeck.get(position))
 					{
-						listener.setpositionAndId(list.get(position).getId(),position,ConstantParamPhone.DELECT_COUPON);
-						listener2.setpositionAndId(list.get(position).getId(),list.get(position).getStatus(),position,ConstantParamPhone.EDIT_COUPON_INFO);
+						viewHolder.productCheckImg.setImageResource(R.drawable.icon_dingdan);
+						//设置点击后其选中状态，不选中
+						ischeck.put(position,false);
+						//记录是否需要删除的数据id
+						selectid.remove(list.get(position).getId());
 					}
 					else
 					{
-						listener.setpositionAndId(list.get(position).getId(),position,ConstantParamPhone.DELECT_PRODUCT);
-						listener2.setpositionAndId(list.get(position).getId(),list.get(position).getStatus(),position,ConstantParamPhone.EDIT_PRODUCT_INFO);
+						viewHolder.productCheckImg.setImageResource(R.drawable.icon_guanyu);
+
+						ischeck.put(position,true);
+
+						//记录是否需要删除的数据id
+						selectid.add(list.get(position).getId());
 					}
-					
+					notifyDataSetChanged();
 				}
-				if(!TextUtils.isEmpty(list.get(position).getPrice2()))
-				{
-					viewHolder.productRelPriceTextView.setText(list.get(position).getPrice2());
-				}
-				if(!TextUtils.isEmpty(list.get(position).getPrice1()))
-				{
-					viewHolder.productPrice.setText("￥"+list.get(position).getPrice1());
-				}
-				if(!TextUtils.isEmpty(list.get(position).getSubject()))
-				{
-					viewHolder.productName.setText(list.get(position).getSubject());
-				}
-				if(!TextUtils.isEmpty(list.get(position).getStock()))
-				{
-					viewHolder.producthaveNum.setText("库存:"+list.get(position).getStock());
-				}
-				if(!TextUtils.isEmpty(list.get(position).getSold()))
-				{
-					viewHolder.productSellNum.setText("已售:"+list.get(position).getSold());
-				}
-				if(list.get(position).getStatus().equals("1"))
-				{
-	//				if(isCash)
-	//				{
-	//					viewHolder.downButton.setVisibility(View.GONE);
-	//				}
-					viewHolder.productAction.setText("未上架");
-					viewHolder.downButton.setImageResource(R.drawable.icon_shangjia);
-				}
-				if(list.get(position).getStatus().equals("2"))
-				{
-	//				if(isCash)
-	//				{
-	//					viewHolder.downButton.setVisibility(View.GONE);
-	//				}
-					viewHolder.productAction.setText("已上架");
-					viewHolder.downButton.setImageResource(R.drawable.icon_xiajia);
-					
-				}
-				if(!TextUtils.isEmpty(list.get(position).getPic()))
-				{
-					String imagepath = list.get(position).getPic();
-					if(!imagepath.equals(viewHolder.productImage.getTag()))
-					{ 
-						viewHolder.productImage.setTag(imagepath); 
-						imageLoader.displayImage(list.get(position).getPic(),viewHolder.productImage, options);
-					}
-				}
-				
-				
-				
-				//迭代设置所有checkbox是否选中，做全选，清空重置使用
-				/*
-				 * 在复用时对其进行判断，根据其状态来显示相应的内容，这样在滑动时条目就不会再错乱了
-				 */
-				if(ischeck.get(position))
-				{
-					viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze_sel);
-				}
-				else 
-				{
-					viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze);
-				}
-				viewHolder.productCheckImg.setOnClickListener(new OnClickListener() 
-				{
-					@Override
-					public void onClick(View v) 
-					{
-						// TODO Auto-generated method stub
-		                if(ischeck.get(position))
-		                {
-		                	viewHolder.productCheckImg.setImageResource(R.drawable.icon_dingdan);
-		                	//设置点击后其选中状态，不选中
-		                	ischeck.put(position,false);
-		                	//记录是否需要删除的数据id
-		                	selectid.remove(list.get(position).getId());
-		                	
-		                	
-		                }
-		                else
-		                {
-		                	viewHolder.productCheckImg.setImageResource(R.drawable.icon_guanyu);
-		                	
-		                	ischeck.put(position,true);
-		                	
-		                	//记录是否需要删除的数据id
-		                	selectid.add(list.get(position).getId());
-		                }
-		                notifyDataSetChanged();
-					}
-				});
-				//迭代设置所有checkbox的可见性
-				viewHolder.productCheckImg.setVisibility(visiblecheck.get(position));
-			}
+			});
+			//迭代设置所有checkbox的可见性
+			//viewHolder.productCheckImg.setVisibility(visiblecheck.get(position));
 		}
 		return convertView;
 	}
