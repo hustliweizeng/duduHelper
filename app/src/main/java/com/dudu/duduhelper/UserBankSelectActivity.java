@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.LogUtil;
-import com.dudu.duduhelper.adapter.OrderSelectorBean;
+import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.BankCityListAdapter;
 import com.dudu.duduhelper.adapter.ProductTypeAdapter;
 import com.dudu.duduhelper.bean.UserBankListBean;
@@ -34,7 +34,7 @@ public class UserBankSelectActivity extends BaseActivity
 	//银行列表
 	private ProductTypeAdapter productTypeAdapter;
 	//省份列表
-	private OrderSelectorBean orderSelectorBean;
+	private OrderSelectorAdapter orderSelectorBean;
 	private String provienceCode;
 	//城市列表
 	private BankCityListAdapter cityListAdapter;
@@ -47,7 +47,7 @@ public class UserBankSelectActivity extends BaseActivity
 
 		String title = null;
 		productTypeAdapter=new ProductTypeAdapter(this);
-		orderSelectorBean =new OrderSelectorBean(this);
+		orderSelectorBean =new OrderSelectorAdapter(this);
 		cityListAdapter = new BankCityListAdapter(this);
 		//根据不同来源初始化数据
 		if(getIntent().getStringExtra("action").equals("bank"));
@@ -124,7 +124,7 @@ public class UserBankSelectActivity extends BaseActivity
 				else
 				{
 					//请求数据成功,初始化时没有条目被选中
-					orderSelectorBean.addAll(province.getData(),"");
+					//orderSelectorBean.addAll(province.getData(),"");
 				}
 			}
 

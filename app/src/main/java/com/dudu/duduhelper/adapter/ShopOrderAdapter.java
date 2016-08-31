@@ -34,6 +34,9 @@ public class ShopOrderAdapter extends BaseAdapter
     	this.list.addAll(this.list.size(), list);
     	notifyDataSetChanged();
     }
+	public  String getLastId(){
+		return list.get(list.size()-1).getId();
+	}
 	@Override
 	public int getCount() {
 		return list.size();
@@ -46,7 +49,7 @@ public class ShopOrderAdapter extends BaseAdapter
 
 	@Override
 	public long getItemId(int position) {
-		return 0;
+		return Long.parseLong(list.get(list.size()-1).getId());
 	}
 
 	@Override

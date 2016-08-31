@@ -26,40 +26,43 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
-import com.dudu.duduhelper.adapter.OrderSelectorBean;
+import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
+import com.dudu.duduhelper.adapter.SelectorBean;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.OrderListBean;
 import com.dudu.duduhelper.javabean.OrderStatusBean;
-import com.dudu.duduhelper.javabean.ProvinceListBean.DataBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShopOrderActivity extends BaseActivity 
 {
-	private TextView orderType;
+	//状态选择器的显示信息
 	private ImageView orderTypeArror;
 	private ImageView statusTypeArror;
+	private TextView orderType;
 	private TextView productAction;
 	private TextView statusAction;
 	private ImageView productTypeArror;
-	private RelativeLayout orderTypeRel;
+
+
+	private RelativeLayout orderSource;
 	private RelativeLayout productRel;
 	private RelativeLayout actionRel;
+
 	private LinearLayout selectLine;
 	private ListView allOrderListView;
 	private ShopOrderAdapter orderAdapter;
@@ -75,14 +78,23 @@ public class ShopOrderActivity extends BaseActivity
     private View footView;
     private ProgressBar loading_progressBar;
     private TextView loading_text;
-    private OrderSelectorBean orderSelectorBean;
+    private OrderSelectorAdapter orderSelectorAdapter;
     public ProductAdapter productAdapter;
     private String status="";
-    private String from="0";
+	//筛选需要的参数
+    private int source= 0;
+	private int isNew= 0;
+	private int statuss = -1;
+
     private String isnew="0";
+	private List<SelectorBean> list;
+	//第一次加载的数据条目
+	int pageLimit = 10;
+	private OrderListBean orderData;
+	private String lastId;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_order);
@@ -103,7 +115,7 @@ public class ShopOrderActivity extends BaseActivity
 		initData();
 	}
 	//第一次请求时，请求所有数据
-	private void initData() 
+	private void initData()
 	{
 
 		loading_progressBar.setVisibility(View.VISIBLE);
@@ -115,17 +127,21 @@ public class ShopOrderActivity extends BaseActivity
 		"lastid" => "分页标识,上一页最后一个订单id"
 		"limit" => "每页多少条"
 		"ispay" => "是否支付"*/
+
 		RequestParams params = new RequestParams();
-		/*params.add("page",String.valueOf(page));
-		params.add("pagesize","10");
-		params.add("status",status);
-		params.add("from",from);
-		params.add("ispay", isnew);*/
-		
+		//每次请求10个条目
+		params.add("limit",pageLimit+"");
+		params.add("lastid", lastId);
+
+		//订单筛选需要3个条件
+		params.add("status",statuss+"");
+		params.add("from",source+"");
+		params.add("ispay", isNew+"");
+
 		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_ORDER_LIST, "GET",new TextHttpResponseHandler()
 		{
 			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
+			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 			{
 				Toast.makeText(context, "网络不给力呀", Toast.LENGTH_SHORT).show();
 				if(page==1)
@@ -134,15 +150,18 @@ public class ShopOrderActivity extends BaseActivity
 				}
 			}
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
+			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
 				try {
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
-						//数据请求成功
-						OrderListBean order = new Gson().fromJson(arg2, OrderListBean.class);
-						orderAdapter.addAll(order.getList());
+						//数据请求成功,每次请求成功后，添加数据到集合
+						orderData = new Gson().fromJson(arg2, OrderListBean.class);
+						orderAdapter.addAll(orderData.getList());
+						//设置最后一个订单的id
+						lastId = orderAdapter.getLastId();
+						LogUtil.d("lastid=", lastId);
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -153,7 +172,7 @@ public class ShopOrderActivity extends BaseActivity
 				}
 			}
 			@Override
-			public void onFinish() 
+			public void onFinish()
 			{
 				orderallswipeLayout.setRefreshing(false);
 				ColorDialog.dissmissProcessDialog();
@@ -163,19 +182,7 @@ public class ShopOrderActivity extends BaseActivity
 		allOrderListView.setAdapter(orderAdapter);
 	}
 
-	@Override
-	public void onPause() {
-		super.onPause();
-		MobclickAgent.onPageEnd("OrderFragment");
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		MobclickAgent.onPageStart("OrderFragment");
-	}
-
-	@SuppressLint("ResourceAsColor") 
+	@SuppressLint("ResourceAsColor")
 	private void initViewFragment() {
 		statusAction=(TextView) ShopOrderActivity.this.findViewById(R.id.statusAction);
 		actionRel=(RelativeLayout) ShopOrderActivity.this.findViewById(R.id.actionRel);
@@ -186,14 +193,14 @@ public class ShopOrderActivity extends BaseActivity
 		productTypeArror = (ImageView) ShopOrderActivity.this.findViewById(R.id.productTypeArror);
 		selectLine = (LinearLayout) ShopOrderActivity.this.findViewById(R.id.selectLine);
 		productRel = (RelativeLayout) ShopOrderActivity.this.findViewById(R.id.productRel);
-		orderTypeRel = (RelativeLayout) ShopOrderActivity.this.findViewById(R.id.orderTypeRel);
-		
-		//弹出订单分类选择事件
-		orderTypeRel.setOnClickListener(new OnClickListener() 
+		orderSource = (RelativeLayout) ShopOrderActivity.this.findViewById(R.id.orderSource);
+
+		//弹出订单来源选择事件，
+		// 当条目点击的时候，本条目颜色变化，图标也变化，其他条目恢复默认值
+		orderSource.setOnClickListener(new OnClickListener()
 		{
-			
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				orderType.setTextColor(getResources().getColor(R.color.text_color));
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_shang);
@@ -201,13 +208,13 @@ public class ShopOrderActivity extends BaseActivity
 				statusTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				productAction.setTextColor(getResources().getColor(R.color.text_color_gray));
 				productTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
-				showSelectPopupWindow("order");
+				showSelectPopupWindow("source");
 			}
 		});
-		//弹出分类选择事件
-		productRel.setOnClickListener(new OnClickListener() 
+		//弹出是否新订单选择事件
+		// 当条目点击的时候，本条目颜色变化，图标也变化，其他条目恢复默认值
+		productRel.setOnClickListener(new OnClickListener()
 		{
-			
 			@Override
 			public void onClick(View v) {
 				productAction.setTextColor(getResources().getColor(R.color.text_color));
@@ -216,16 +223,15 @@ public class ShopOrderActivity extends BaseActivity
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				statusAction.setTextColor(getResources().getColor(R.color.text_color_gray));
 				statusTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
-				showSelectPopupWindow("product");
-				
+				showSelectPopupWindow("isNew");
 			}
 		});
-		//弹出分类选择事件
-		actionRel.setOnClickListener(new OnClickListener() 
+		//弹出状态选择事件
+		// 当条目点击的时候，本条目颜色变化，图标也变化，其他条目恢复默认值
+		actionRel.setOnClickListener(new OnClickListener()
 		{
-			
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				orderType.setTextColor(getResources().getColor(R.color.text_color_gray));
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
@@ -236,15 +242,11 @@ public class ShopOrderActivity extends BaseActivity
 				showSelectPopupWindow("status");
 			}
 		});
-		
-
-		loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
-		loading_text=(TextView) footView.findViewById(R.id.loading_text);
 		//重新载入按钮
 		reloadButton=(Button) ShopOrderActivity.this.findViewById(R.id.reloadButton);
 		reloadButton.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
@@ -255,13 +257,14 @@ public class ShopOrderActivity extends BaseActivity
 		//listview初始化
 		allOrderListView=(ListView) ShopOrderActivity.this.findViewById(R.id.allOrderListView);
 		footView = LayoutInflater.from(ShopOrderActivity.this).inflate(R.layout.activity_listview_foot, null);
+		loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
+		loading_text=(TextView) footView.findViewById(R.id.loading_text);
 		allOrderListView.addFooterView(footView,null,false);
 		//listview条目点击事件
-		allOrderListView.setOnItemClickListener(new OnItemClickListener() 
+		allOrderListView.setOnItemClickListener(new OnItemClickListener()
 		{
-
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
+			public void onItemClick(AdapterView<?> parent, View view,int position, long id)
 			{
 				Intent intent=new Intent(ShopOrderActivity.this, ShopOrderDetailActivity.class);
 				intent.putExtra("no", orderAdapter.getItem(position).getId());
@@ -269,30 +272,29 @@ public class ShopOrderActivity extends BaseActivity
 				startActivityForResult(intent, 1);
 			}
 		});
-		//listview滚动监听
+		//listview滚动监听,当滚动到最后时候请求新的数据
 		allOrderListView.setOnScrollListener(new OnScrollListener() {
-			
+
 			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) 
+			public void onScrollStateChanged(AbsListView view, int scrollState)
 			{
+				//当滚动停止，并且已经是最后一条数据的时候
 				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE&&lastItemIndex == orderAdapter.getCount())
-				{  
-                    //Log.i(TAG, "onScrollStateChanged");  
-                    //加载数据代码，此处省略了  
-					page++;
-					//设置刷新方式
+				{
+					//pageLimit+=10;
+					//设置刷新方式,这里是下拉刷新
 					reftype=2;
 					if(!reffinish)
 					{
+						//再次请求加载数据的时候，需要上一页最后条目的id，以及这次刷新的数量
 						initData();
 					}
 					allOrderListView.setSelection(lastItemIndex-1);
-					//Toast.makeText(ProductListActivity.this, "加载中",  Toast.LENGTH_SHORT).show();
-                }  
+                }
 			}
-			
+
 			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) 
+			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount)
 			{
 				lastItemIndex = firstVisibleItem + visibleItemCount -1;
 			}
@@ -302,29 +304,31 @@ public class ShopOrderActivity extends BaseActivity
 		orderallswipeLayout.setColorSchemeResources(R.color.text_color);
 		orderallswipeLayout.setSize(SwipeRefreshLayout.DEFAULT);
 		orderallswipeLayout.setProgressBackgroundColor(R.color.bg_color);
+		//上拉加载
 		orderallswipeLayout.setOnRefreshListener(new OnRefreshListener() {
-			
+
 			@Override
-			public void onRefresh() 
+			public void onRefresh()
 			{
 				page=1;
 				reftype=1;
+				//清空适配器中的数据
 				orderAdapter.clear();
 				initData();
 			}
 		});
 	}
 	//弹出选择框，根据action进入不同的下拉界面
-	private void showSelectPopupWindow(final String action) 
+	private void showSelectPopupWindow(final String action)
 	{
-		OrderStatusBean selector = new OrderStatusBean();
+		final OrderStatusBean selector = new OrderStatusBean();
 		LayoutInflater layoutInflater = (LayoutInflater)ShopOrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.activity_product_window_select, null);  
-        popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);  
-        popupWindow.setFocusable(true);  
-        popupWindow.setOutsideTouchable(true);  
+        View view = layoutInflater.inflate(R.layout.activity_product_window_select, null);
+        popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
         // 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
-        popupWindow.setBackgroundDrawable(new BitmapDrawable()); 
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.showAsDropDown(selectLine);
         ImageView closeImageButton = (ImageView) view.findViewById(R.id.closeImageButton);
         closeImageButton.setOnClickListener(new OnClickListener() {
@@ -335,91 +339,86 @@ public class ShopOrderActivity extends BaseActivity
 		});
 		//筛选器里面的listview
         ListView productSelectList=(ListView) view.findViewById(R.id.productSelectList);
-        final List<DataBean> selectList=new ArrayList<>();
+		list = null;
 		//订单模块
-        if(action.equals("order"))
+        if(action.equals("source"))
         {
 			//获取所有订单来源信息
-    		orderSelectorBean =new OrderSelectorBean(context);
-			List<OrderStatusBean.OrderSource> sources  = selector.getAllOrderSource();
-        	orderSelectorBean.addAll(selectList,orderType.getText().toString());
-	        productSelectList.setAdapter(orderSelectorBean);
-        	
+			orderSelectorAdapter =new OrderSelectorAdapter(context);
+			//获取所有订单信息
+			list = selector.getAllOrderSource();
+			orderSelectorAdapter.addAll(list,orderType.getText().toString());
+	        productSelectList.setAdapter(orderSelectorAdapter);
         }
 		//订单类型
-        if(action.equals("product"))
+        if(action.equals("isNew"))
         {
-    		orderSelectorBean =new OrderSelectorBean(ShopOrderActivity.this);
-        	DataBean DataBean5=new DataBean();
-        	DataBean5.setId("0");
-        	DataBean5.setName("全部订单");
-        	selectList.add(DataBean5);
-        	DataBean DataBean4=new DataBean();
-        	DataBean4.setId("1");
-        	DataBean4.setName("新订单");
-        	selectList.add(DataBean4);
-        	orderSelectorBean.addAll(selectList,productAction.getText().toString());
-	        productSelectList.setAdapter(orderSelectorBean);
+			orderSelectorAdapter =new OrderSelectorAdapter(ShopOrderActivity.this);
+        	list = selector.getAllOrderType();
+			orderSelectorAdapter.addAll(list,productAction.getText().toString());
+	        productSelectList.setAdapter(orderSelectorAdapter);
         }
 		//订单状态
         if(action.equals("status"))
         {
-    		orderSelectorBean =new OrderSelectorBean(ShopOrderActivity.this);
-
-        	orderSelectorBean.addAll(selectList,statusAction.getText().toString());
-	        productSelectList.setAdapter(orderSelectorBean);
+			orderSelectorAdapter =new OrderSelectorAdapter(ShopOrderActivity.this);
+			list = selector.getAllOrderStatus();
+			//把数据和选中的条目传递给adapter
+			orderSelectorAdapter.addAll(list,statusAction.getText().toString());
+	        productSelectList.setAdapter(orderSelectorAdapter);
         }
-        productSelectList.setOnItemClickListener(new OnItemClickListener() 
+		//筛选条目的点击事件,保存选中的条目信息
+        productSelectList.setOnItemClickListener(new OnItemClickListener()
         {
-
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
+			//保存选中的状态
+			public void onItemClick(AdapterView<?> parent, View view,int position, long id)
 			{
-				if(action.equals("order"))
+				if(action.equals("source"))
 				{
-					from=selectList.get(position).getId();
-					orderType.setText(selectList.get(position).getName());
+					source = list.get(position).id;
+					orderType.setText(list.get(position).name);
 				}
-				if(action.equals("product"))
+				if(action.equals("isNew"))
 				{
-					isnew=selectList.get(position).getId();
-					productAction.setText(selectList.get(position).getName());
+					isNew = list.get(position).id;
+					productAction.setText(list.get(position).name);
 				}
 				if(action.equals("status"))
 				{
-					status=selectList.get(position).getId();
-					statusAction.setText(selectList.get(position).getName());
+					statuss = list.get(position).id;
+					statusAction.setText(list.get(position).name);
 				}
+				//条目点击之后，根据条件请求新的数据
 				ColorDialog.showRoundProcessDialog(ShopOrderActivity.this,R.layout.loading_process_dialog_color);
-				page=1;
 				reffinish=false;
+				//清空所有数据
 				orderAdapter.clear();
 				initData();
 				popupWindow.dismiss();
 
 			}
 		});
-        popupWindow.setOnDismissListener(new OnDismissListener() 
+
+		//popwindow消失后的响应事件
+        popupWindow.setOnDismissListener(new OnDismissListener()
         {
-			
+
 			@Override
-			public void onDismiss() 
+			public void onDismiss()
 			{
-				// TODO Auto-generated method stub
 				orderType.setTextColor(ShopOrderActivity.this.getResources().getColor(R.color.text_color_gray));
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				productAction.setTextColor(ShopOrderActivity.this.getResources().getColor(R.color.text_color_gray));
 				productTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				statusAction.setTextColor(getResources().getColor(R.color.text_color_gray));
 				statusTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
-				
 			}
 		});
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 

@@ -30,7 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.adapter.OrderSelectorBean;
+import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.HongBaoBean;
@@ -67,7 +67,7 @@ public class shopProductListActivity extends BaseActivity
 	private LinearLayout selectLine;
 	private PopupWindow popupWindow;
 	//商品下拉选择数据加载
-	private OrderSelectorBean orderSelectorBean;
+	private OrderSelectorAdapter orderSelectorBean;
 	public ProductAdapter productAdapter;
 	private SwipeRefreshLayout productSwipeLayout;
 	private ListView productListView;
@@ -834,7 +834,7 @@ public class shopProductListActivity extends BaseActivity
 	        final List<DataBean> selectList=new ArrayList<DataBean>();
 	        if(action.equals("order"))
 	        {
-	        	orderSelectorBean =new OrderSelectorBean(this);
+	        	orderSelectorBean =new OrderSelectorAdapter(this);
 	        	if(category.equals("hongbao"))
 			        //红包列表
 	        	{
@@ -884,13 +884,13 @@ public class shopProductListActivity extends BaseActivity
 		        	DataBean4.setName("人气最高");
 		        	selectList.add(DataBean4);
 	        	}
-	        	orderSelectorBean.addAll(selectList,orderType.getText().toString());
+	        	//orderSelectorBean.addAll(selectList,orderType.getText().toString());
 		        productSelectList.setAdapter(orderSelectorBean);
 	        	
 	        }
 	        else
 	        {
-	    		orderSelectorBean =new OrderSelectorBean(this);
+	    		orderSelectorBean =new OrderSelectorAdapter(this);
 	    		if(category.equals("hongbao"))
 	        	{
 	    			DataBean DataBean6=new DataBean();
@@ -921,7 +921,7 @@ public class shopProductListActivity extends BaseActivity
 		        	DataBean5.setName("已上架");
 		        	selectList.add(DataBean5);
 	    		}
-	        	orderSelectorBean.addAll(selectList,productAction.getText().toString());
+	        	//orderSelectorBean.addAll(selectList,productAction.getText().toString());
 		        productSelectList.setAdapter(orderSelectorBean);
 	        }
 	        

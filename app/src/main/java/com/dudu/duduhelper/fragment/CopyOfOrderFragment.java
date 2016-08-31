@@ -34,7 +34,7 @@ import com.dudu.duduhelper.MainActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.ShopOrderDetailActivity;
 import com.dudu.duduhelper.Utils.Util;
-import com.dudu.duduhelper.adapter.OrderSelectorBean;
+import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.bean.OrderBean;
@@ -80,7 +80,7 @@ public class CopyOfOrderFragment extends Fragment {
     private View footView;
     private ProgressBar loading_progressBar;
     private TextView loading_text;
-    private OrderSelectorBean orderSelectorBean;
+    private OrderSelectorAdapter orderSelectorBean;
     public ProductAdapter productAdapter;
     private String status="";
     private String from="0";
@@ -397,7 +397,7 @@ public class CopyOfOrderFragment extends Fragment {
         final List<DataBean> selectList=new ArrayList<>();
         if(action.equals("order"))
         {
-    		orderSelectorBean =new OrderSelectorBean(getActivity());
+    		orderSelectorBean =new OrderSelectorAdapter(getActivity());
 			DataBean DataBean=new DataBean();
         	DataBean.setId("0");
         	DataBean.setName("全部来源");
@@ -415,13 +415,13 @@ public class CopyOfOrderFragment extends Fragment {
         	DataBean3.setName("会员卡");
         	selectList.add(DataBean3);
 
-        	orderSelectorBean.addAll(selectList,orderType.getText().toString());
+        	//orderSelectorBean.addAll(selectList,orderType.getText().toString());
 	        productSelectList.setAdapter(orderSelectorBean);
         	
         }
         if(action.equals("product"))
         {
-    		orderSelectorBean =new OrderSelectorBean(getActivity());
+    		orderSelectorBean =new OrderSelectorAdapter(getActivity());
         	DataBean DataBean5=new DataBean();
         	DataBean5.setId("0");
         	DataBean5.setName("全部订单");
@@ -434,12 +434,12 @@ public class CopyOfOrderFragment extends Fragment {
 //        	DataBean5.setId("2");
 //        	DataBean5.setName("已上架");
 //        	selectList.add(DataBean5);
-        	orderSelectorBean.addAll(selectList,productAction.getText().toString());
+        	//orderSelectorBean.addAll(selectList,productAction.getText().toString());
 	        productSelectList.setAdapter(orderSelectorBean);
         }
         if(action.equals("status"))
         {
-    		orderSelectorBean =new OrderSelectorBean(getActivity());
+    		orderSelectorBean =new OrderSelectorAdapter(getActivity());
         	DataBean DataBean6=new DataBean();
         	DataBean6.setId("");
         	DataBean6.setName("所有状态");
@@ -464,7 +464,7 @@ public class CopyOfOrderFragment extends Fragment {
         	DataBean11.setId("0");
         	DataBean11.setName("已取消");
         	selectList.add(DataBean11);
-        	orderSelectorBean.addAll(selectList,statusAction.getText().toString());
+        	//orderSelectorBean.addAll(selectList,statusAction.getText().toString());
 	        productSelectList.setAdapter(orderSelectorBean);
         }
         productSelectList.setOnItemClickListener(new OnItemClickListener() 
