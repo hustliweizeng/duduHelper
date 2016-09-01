@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.dudu.duduhelper.bean.ProductListBean;
 import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.widget.WheelIndicatorItem;
 import com.dudu.duduhelper.widget.WheelIndicatorTongjiNoXuxianView;
 import com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView;
@@ -18,113 +19,101 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
-public class ShopProductDetailActivity extends BaseActivity 
+public class ShopProductDetailActivity extends BaseActivity
 {
-	private Button editCouponButton;
+	private Button editproductinfoButton;
 	private RiseNumberTextView totalNumText;
 	private RiseNumberTextView sellNumText;
 	private RiseNumberTextView leftNumText;
 	//商品id
-	private ProductListBean coupon;
-	private ImageView couponImage;
-	private TextView couponName;
-	private TextView couponTime;
+	private BigBandBuy.DataBean productinfo;
+	private ImageView productinfoImage;
+	private TextView productinfoName;
+	private TextView productinfoTime;
 	private TextView soldPerTextView;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private float sold;
 	private float soldPer;
 	//商品分类
-    public String category;
+	public String category;
 	private WheelIndicatorTongjiNoXuxianView wheelIndicatorTongjiNoXuxianView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_product_detail);
 		initHeadView("大牌抢购",true, false, 0);
 		category=getIntent().getStringExtra("category");
-		coupon=(ProductListBean) getIntent().getSerializableExtra("coupon");
+		//获取传递过来的商品详情
+		productinfo =(BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
 		initView();
 		initData();
 	}
 
-	private void initData() 
+	private void initData()
 	{
 		// TODO Auto-generated method stub
-		
+
 		//设置使用金额
-		
-		 //设置数据  
-		totalNumText.withNumber(Float.parseFloat(coupon.getStock()));  
-		sellNumText.withNumber(Float.parseFloat(coupon.getSold()));  
-		leftNumText.withNumber(Float.parseFloat(String.valueOf(Integer.parseInt(coupon.getStock())-Integer.parseInt(coupon.getSold()))));  
-		
+
+		//设置数据  
+		totalNumText.withNumber(Float.parseFloat(productinfo.getStock()));
+		sellNumText.withNumber(Float.parseFloat(productinfo.getSaled_count()));
+		leftNumText.withNumber(Float.parseFloat(String.valueOf(Integer.parseInt(productinfo.getStock())-Integer.parseInt(productinfo.getSaled_count()))));
+
 		totalNumText.setDuration(1200);
 		sellNumText.setDuration(1200);
 		leftNumText.setDuration(1200);
-		
-		 //开始播放动画  
-		totalNumText.start();  
-		sellNumText.start();  
-		leftNumText.start();  
-		
-//		totalNumText.setText(coupon.getStock());
-//		sellNumText.setText(coupon.getSold());
-//		leftNumText.setText(String.valueOf(Integer.parseInt(coupon.getStock())-Integer.parseInt(coupon.getSold())));
-		
-        WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat(coupon.getSold())/Float.parseFloat(coupon.getStock()), Color.parseColor("#ff5000"),Util.dip2px(this, 4));
-        WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(Float.parseFloat(coupon.getSold())/Float.parseFloat(coupon.getStock()), Color.parseColor("#ffffff"),Util.dip2px(this, 2));
-        wheelIndicatorTongjiNoXuxianView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
-        wheelIndicatorTongjiNoXuxianView.addWheelIndicatorItem(bikeActivityIndicatorItem);
-        wheelIndicatorTongjiNoXuxianView.startItemsAnimation(); 
-		
-		ImageAware imageAware = new ImageViewAware(couponImage, false);
-		imageLoader.displayImage(coupon.getPic(), imageAware);
-		couponName.setText(coupon.getSubject());
-		couponTime.setText(Util.DataConVert2(coupon.getTime_start())+"-"+Util.DataConVert2(coupon.getTime_end()));
-		sold=Float.parseFloat(coupon.getSold());
-        
-		editCouponButton=(Button) this.findViewById(R.id.editCouponButton);
-		editCouponButton.setOnClickListener(new OnClickListener() 
+
+		//开始播放动画  
+		totalNumText.start();
+		sellNumText.start();
+		leftNumText.start();
+
+
+		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat(productinfo.getSaled_count())/Float.parseFloat(productinfo.getStock()), Color.parseColor("#ff5000"),Util.dip2px(this, 4));
+		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(Float.parseFloat(productinfo.getSaled_count())/Float.parseFloat(productinfo.getStock()), Color.parseColor("#ffffff"),Util.dip2px(this, 2));
+		wheelIndicatorTongjiNoXuxianView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
+		wheelIndicatorTongjiNoXuxianView.addWheelIndicatorItem(bikeActivityIndicatorItem);
+		wheelIndicatorTongjiNoXuxianView.startItemsAnimation();
+
+		ImageAware imageAware = new ImageViewAware(productinfoImage, false);
+		imageLoader.displayImage(productinfo.getThumbnail(), imageAware);
+		productinfoName.setText(productinfo.getName());
+		String open_time = productinfo.getRule();
+		productinfoTime.setText(open_time);//Util.DataConVert2(productinfo.getTime_start())+"-"+Util.DataConVert2(productinfo.getTime_end()));
+		sold=Float.parseFloat(productinfo.getSaled_count());
+		//编辑按钮
+		editproductinfoButton=(Button) this.findViewById(R.id.editCouponButton);
+		editproductinfoButton.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
 				//进入商品编辑页面
 				Intent intent=new Intent(ShopProductDetailActivity.this,ShopProductAddActivity.class);
-				intent.putExtra("id", coupon.getId());
+				intent.putExtra("info", productinfo);
 				intent.putExtra("category", category);
 				startActivity(intent);
 			}
 		});
-		
-//		historyCouponButton.setOnClickListener(new OnClickListener() 
-//		{	
-//			@Override
-//			public void onClick(View v) 
-//			{
-//				// TODO Auto-generated method stub
-//				Intent intent=new Intent(ShopProductDetailActivity.this,CouponSellHistoryActivity.class);
-//				intent.putExtra("id", coupon.getId());
-//				startActivity(intent);
-//			}
-//		});
+
 	}
 
-	private void initView() 
+	private void initView()
 	{
 		// TODO Auto-generated method stub
 		leftNumText = (RiseNumberTextView) this.findViewById(R.id.leftNumText);
 		totalNumText = (RiseNumberTextView) this.findViewById(R.id.totalNumText);
 		sellNumText = (RiseNumberTextView) this.findViewById(R.id.sellNumText);
-		couponImage=(ImageView) this.findViewById(R.id.couponImage);
-		couponName=(TextView) this.findViewById(R.id.couponName);
-		couponTime=(TextView) this.findViewById(R.id.couponTime);
+		productinfoImage=(ImageView) this.findViewById(R.id.couponImage);
+		productinfoName=(TextView) this.findViewById(R.id.couponName);
+		productinfoTime=(TextView) this.findViewById(R.id.couponTime);
 		wheelIndicatorTongjiNoXuxianView = (WheelIndicatorTongjiNoXuxianView) findViewById(R.id.wheel_indicator_view);
 		wheelIndicatorTongjiNoXuxianView.setItemsLineWidth(Util.dip2px(this, 2));
-        
+
 	}
 }

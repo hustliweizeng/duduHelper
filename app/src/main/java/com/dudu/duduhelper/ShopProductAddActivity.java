@@ -30,6 +30,7 @@ import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.widget.SwitchView;
@@ -93,102 +94,27 @@ public class ShopProductAddActivity extends BaseActivity
 		setContentView(R.layout.shop_product_add);
 		initHeadView("详情编辑",true, false, 0);
 		DuduHelperApplication.getInstance().addActivity(this);
-		//商品id；
+		/*//商品id；
 		id=getIntent().getStringExtra("id");
 		//商品分类category；
-		category=getIntent().getStringExtra("category");
-		//sendShaiShaiAdapter=new SendShaiShaiAdapter(this);
+		category=getIntent().getStringExtra("category");*/
 		initView();
 		initData();
 	}
 
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
-		ColorDialog.showRoundProcessDialog(ShopProductAddActivity.this,R.layout.loading_process_dialog_color);
-		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("category",category);
-		params.add("id",id);
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopProductAddActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.get(ConstantParamPhone.IP+ConstantParamPhone.GET_PRODUCT_INFO, params,new TextHttpResponseHandler(){
-
-			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-			{
-				Toast.makeText(ShopProductAddActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
-			}
-			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-			{
-				ProductDetailBean productDetailBean=new Gson().fromJson(arg2,ProductDetailBean.class);
-				if(productDetailBean.getStatus().equals("-1006"))
-				{
-					//Toast.makeText(ProductListActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-					//Toast.makeText(getActivity(), "出错啦！", Toast.LENGTH_SHORT).show();
-					MyDialog.showDialog(ShopProductAddActivity.this, "该账号已在其他手机登录，是否重新登录", true, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(ShopProductAddActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				if(!productDetailBean.getStatus().equals("1"))
-				{
-					Toast.makeText(ShopProductAddActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-				}
-				else
-				{
-					if(productDetailBean.getData()!=null)
-					{
-						productNameEditText.setText(productDetailBean.getData().getSubject());
-						productSoldTextView.setText(productDetailBean.getData().getSold());
-						productYuanPriceEditText.setText(productDetailBean.getData().getPrice2());
-						productNowPriceEditText.setText(productDetailBean.getData().getPrice1());
-						productKuCunNumEditText.setText(productDetailBean.getData().getStock());
-						tv_startTime_shop_product.setText(Util.DataConVertMint(productDetailBean.getData().getTime_end()));
-						productDetaliTextView.setText(productDetailBean.getData().getDescription());
-						//切换开关已经抛弃
-						if(productDetailBean.getData().getStatus().equals("1"))
-						{
-							//productStatusSwitch.setState(false);
-						}
-						else
-						{
-							//productStatusSwitch.setState(true);
-						}
-						//利用UIL加载数据
-						ImageAware imageAware = new ImageViewAware(productImageView, false);
-						imageLoader.displayImage(productDetailBean.getData().getThumb(), imageAware);
-					}
-					else
-					{
-						Toast.makeText(ShopProductAddActivity.this, "暂无数据！", Toast.LENGTH_SHORT).show();
-					}
-				}
-			}
-			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-				ColorDialog.dissmissProcessDialog();
-			}
-		});
+		//接收传递过来的数据
+		BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("info");
+		//设置页面信息
+		productNameEditText.setText(data.getName());
+		productSoldTextView.setText(data.getSaled_count());
+		productYuanPriceEditText.setText(data.getPrice());
+		productNowPriceEditText.setText(data.getCurrent_price());
+		productKuCunNumEditText.setText(data.getStock());
+		tv_startTime_shop_product.setText(Util.DataConVertMint(data.getRule()));
+		productDetaliTextView.setText(data.getExplain());
+					
 	}
 	
 	private void SubmitProduct() 

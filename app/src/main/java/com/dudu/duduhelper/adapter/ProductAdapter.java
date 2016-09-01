@@ -401,13 +401,14 @@ public class ProductAdapter extends BaseAdapter
 
 			}
 			//商品图片
-			if(!TextUtils.isEmpty(list.get(position).getShow_img()))
+			if(!TextUtils.isEmpty(list.get(position).getThumbnail()))
 			{
-				String imagepath = list.get(position).getShow_img();
+				String imagepath = list.get(position).getThumbnail();
 				if(!imagepath.equals(viewHolder.productImage.getTag()))
 				{
+					//设置tag，这样图片加载时就不会跳了
 					viewHolder.productImage.setTag(imagepath);
-					imageLoader.displayImage(list.get(position).getShow_img(),viewHolder.productImage, options);
+					imageLoader.displayImage(list.get(position).getThumbnail(),viewHolder.productImage, options);
 				}
 			}
 

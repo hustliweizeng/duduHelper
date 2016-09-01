@@ -40,6 +40,7 @@ import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
+import com.dudu.duduhelper.javabean.DiscountListBEAN;
 import com.dudu.duduhelper.javabean.ProductStatus;
 import com.dudu.duduhelper.javabean.ProvinceListBean.DataBean;
 import com.dudu.duduhelper.javabean.RedBagStatus;
@@ -119,6 +120,7 @@ public class shopProductListActivity extends BaseActivity
 	private boolean isShowChekckBox = false;
 	private TextView tv_chekcAll_product_list;
 	private ImageButton backButton;
+	private BigBandBuy bigBandBuy;
 	//private View foot;
 
 	@Override
@@ -135,7 +137,7 @@ public class shopProductListActivity extends BaseActivity
 		//根据不同类型请求不同的参数
 		if(category.equals("discount"))
 		{
-			//折扣列表
+			//优惠券列表
 			productAdapter=new ProductAdapter(this,isMulChoice,isDisCount,isHongbao);
 			initData(ConstantParamPhone.GET_COUPON_LIST);
 		}
@@ -181,13 +183,25 @@ public class shopProductListActivity extends BaseActivity
 				@Override
 				public void onSuccess(int arg0, Header[] arg1, String arg2)
 				{
-					//LogUtil.d("bigband",arg2);
 					try {
 						JSONObject object = new JSONObject(arg2);
 						String code =  object.getString("code");
 						if ("SUCCESS".equalsIgnoreCase(code)){
-							//数据请求成功
-							BigBandBuy bigBandBuy = new Gson().fromJson(arg2, BigBandBuy.class);
+							//解析优惠券的信息
+							if (category.equals("discount")){
+								bigBandBuy = new Gson().fromJson(arg2, BigBandBuy.class);
+							}
+							//解析红包列表信息
+							if (category.equals("hongbao")){
+								
+
+							}
+							//解析大牌抢购列表信息
+							if (category.equals("bigband")){
+								DiscountListBEAN discountListBEAN = new DiscountListBEAN();
+								discountListBEAN = new Gson().fromJson(arg2,DiscountListBEAN.class);
+							}
+							
 							productAdapter.addAll(bigBandBuy.getData(),isAllChoice);
 
 						}else {
@@ -366,7 +380,7 @@ public class shopProductListActivity extends BaseActivity
 				// TODO Auto-generated method stub
 				if(isDisCount)
 				{
-					Intent intent=new Intent(shopProductListActivity.this,ShopCouponDetailActivity.class);
+					Intent intent=new Intent(context,ShopCouponDetailActivity.class);
 					intent.putExtra("coupon", (ProductListBean)productAdapter.getItem(position));
 					intent.putExtra("category", category);
 					startActivityForResult(intent, 1);
@@ -375,14 +389,15 @@ public class shopProductListActivity extends BaseActivity
 				{
 					if(isHongbao)
 					{
-						Intent intent=new Intent(shopProductListActivity.this,ShopHongBaoDetailActivity.class);
+						Intent intent=new Intent(context,ShopHongBaoDetailActivity.class);
 						intent.putExtra("hongbao", ((HongbaoListBean)productAdapter.getItem(position)));
 						startActivityForResult(intent, 1);
 					}
 					else
 					{
-						Intent intent=new Intent(shopProductListActivity.this,ShopProductDetailActivity.class);
-						intent.putExtra("coupon", ((ProductListBean)productAdapter.getItem(position)));
+						//进入商品详情页面
+						Intent intent=new Intent(context,ShopProductDetailActivity.class);
+						intent.putExtra("productinfo", ((BigBandBuy.DataBean)productAdapter.getItem(position)));
 						intent.putExtra("category", category);
 						startActivityForResult(intent, 1);
 					}
@@ -448,7 +463,7 @@ public class shopProductListActivity extends BaseActivity
 								{
 									//大牌抢购页面，重新加载数据刷新之前清空集合数据
 									productAdapter.list.clear();
-									initData(ConstantParamPhone.GET_BIG_BAND_LIST);
+									//initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 								}
 							}
 						}
