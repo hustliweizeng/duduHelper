@@ -1,7 +1,5 @@
 package com.dudu.duduhelper.javabean;
 
-import com.dudu.duduhelper.adapter.SelectorBean;
-
 import java.util.ArrayList;
 import java.util.List;
 

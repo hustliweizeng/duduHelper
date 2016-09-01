@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
-import com.dudu.duduhelper.adapter.SelectorBean;
+import com.dudu.duduhelper.javabean.SelectorBean;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -438,7 +438,7 @@ public class ShopOrderActivity extends BaseActivity
 	//通过搜索返回的结果id号
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		orderId = data.getIntExtra("id",0);
+		//orderId = data.getIntExtra("id",0);
 		initData();
 	}
 

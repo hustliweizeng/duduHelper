@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.bean.HongbaoListBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -50,7 +51,7 @@ public class ProductAdapter extends BaseAdapter
     public  HashMap<Integer, Integer> visiblecheck ;//是否显示复选框
     public  HashMap<Integer, Boolean> ischeck;//复选框是否选中
 
-    public List<String> selectid = new ArrayList<String>();//保存选中的id
+    public List<String> selectid = new ArrayList<String>();//保存选中条目的id
     public List<BigBandBuy.DataBean> list=new ArrayList<>();//大牌产品列表
     public List<HongbaoListBean> hongBaolist=new ArrayList<HongbaoListBean>();//红包列表
     protected ImageLoader imageLoader = ImageLoader.getInstance();
@@ -212,7 +213,6 @@ public class ProductAdapter extends BaseAdapter
 	public View getView(final int position, View convertView, ViewGroup parent) 
 	{
 		OnClick listener=null;
-		OnClick2 listener2=null;
 		if(convertView==null)
 		{
 			viewHolder = new ViewHolder();
@@ -239,12 +239,9 @@ public class ProductAdapter extends BaseAdapter
 			}
 			viewHolder.delectButton=(Button) convertView.findViewById(R.id.delectButton);
 			listener=new OnClick();
-			listener2=new OnClick2();
 			viewHolder.delectButton.setOnClickListener(listener);
-			viewHolder.downButton.setOnClickListener(listener2);
 			//设置tag复用
 			convertView.setTag(viewHolder.delectButton.getId(), listener);
-			convertView.setTag(viewHolder.downButton.getId(), listener2);
 			convertView.setTag(viewHolder);
 		}
 		//开始复用
@@ -252,7 +249,6 @@ public class ProductAdapter extends BaseAdapter
 		{
 			viewHolder = (ViewHolder) convertView.getTag();
 			listener=(OnClick) convertView.getTag(viewHolder.delectButton.getId());
-			listener2=(OnClick2) convertView.getTag(viewHolder.downButton.getId());
 		}
 		//根据传递过来的布尔值
 		if (isShowCheckBox){
@@ -359,13 +355,11 @@ public class ProductAdapter extends BaseAdapter
 				{
 					//设置商品删除或编辑
 					listener.setpositionAndId(list.get(position).getId(),position,ConstantParamPhone.DELECT_COUPON);
-					listener2.setpositionAndId(list.get(position).getId(),list.get(position).getStatus(),position,ConstantParamPhone.EDIT_COUPON_INFO);
 				}
 				else
 				{
 					//设置商品删除或编辑
 					listener.setpositionAndId(list.get(position).getId(),position,ConstantParamPhone.DELECT_PRODUCT);
-					listener2.setpositionAndId(list.get(position).getId(),list.get(position).getStatus(),position,ConstantParamPhone.EDIT_PRODUCT_INFO);
 				}
 
 			}
@@ -394,13 +388,13 @@ public class ProductAdapter extends BaseAdapter
 			{
 				viewHolder.productSellNum.setText("已售:"+list.get(position).getSaled_count());
 			}
-			//状态
-			if(list.get(position).getStatus().equals("1"))
+			//上架状态
+			if(list.get(position).getStatus().equals("0"))
 			{
 				viewHolder.productAction.setText("未上架");
 				viewHolder.downButton.setImageResource(R.drawable.icon_shangjia);
 			}
-			if(list.get(position).getStatus().equals("2"))
+			if(list.get(position).getStatus().equals("1"))
 			{
 				viewHolder.productAction.setText("已上架");
 				viewHolder.downButton.setImageResource(R.drawable.icon_xiajia);
@@ -444,6 +438,8 @@ public class ProductAdapter extends BaseAdapter
 						ischeck.put(position,false);
 						//记录是否需要删除的数据id
 						selectid.remove(list.get(position).getId());
+						LogUtil.d("item_remove",list.get(position).getId());
+
 					}
 					else
 					{
@@ -453,6 +449,8 @@ public class ProductAdapter extends BaseAdapter
 
 						//记录是否需要删除的数据id
 						selectid.add(list.get(position).getId());
+						LogUtil.d("item_add",list.get(position).getId());
+						
 					}
 					notifyDataSetChanged();
 				}
@@ -479,7 +477,6 @@ public class ProductAdapter extends BaseAdapter
 	//商品删除事件
 	private class OnClick implements OnClickListener
 	{
-		//ConstantParamPhone.DELECT_PRODUCT
         String id;
         int postion;
         String methord;
@@ -589,81 +586,5 @@ public class ProductAdapter extends BaseAdapter
 	        
 		}
 	}
-	//商品上架
-		private class OnClick2 implements OnClickListener
-		{
-			//ConstantParamPhone.EDIT_PRODUCT_INFO
-	        String id;
-	        String status;
-	        int postion;
-	        String methord;
-	        public void setpositionAndId(String id,String status,int postion,String methord)
-	        {
-	        	this.id=id;
-	        	this.postion=postion;
-	        	this.status=status;
-	        	this.methord=methord;
-	        }
-			@Override
-			public void onClick(View v) 
-			{
-				// TODO Auto-generated method stub
-				ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
-				RequestParams params = new RequestParams();
-				params.add("token", ((shopProductListActivity)context).share.getString("token", ""));
-				params.add("category",((shopProductListActivity)context).category);
-				params.add("id",id);
-				params.add("version", ConstantParamPhone.VERSION);
-				if(status.equals("1"))
-				{
-					params.add("status","2");
-				}
-				if(status.equals("2"))
-				{
-					params.add("status","1");
-				}
-				params.setContentEncoding("UTF-8");
-				AsyncHttpClient client = new AsyncHttpClient();
-				//保存cookie，自动保存到了shareprefercece  
-		        PersistentCookieStore myCookieStore = new PersistentCookieStore(context);    
-		        client.setCookieStore(myCookieStore); 
-		        client.post(ConstantParamPhone.IP+methord, params,new TextHttpResponseHandler()
-				{
 
-					@Override
-					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-					{
-						Toast.makeText(context, "网络不给力呀", Toast.LENGTH_SHORT).show();
-					}
-					@Override
-					public void onSuccess(int arg0, Header[] arg1, String arg2) 
-					{
-						ResponsBean responsBean=new Gson().fromJson(arg2,ResponsBean.class);
-						if(!responsBean.getStatus().equals("1"))
-						{
-							Toast.makeText(context, "出错啦！", Toast.LENGTH_SHORT).show();
-						}
-						else
-						{
-							Toast.makeText(context, "修改成功啦！", Toast.LENGTH_SHORT).show();
-						}
-					}
-					@Override
-					public void onFinish() 
-					{
-						// TODO Auto-generated method stub
-						ColorDialog.dissmissProcessDialog();
-						if(status.equals("1"))
-						{
-							list.get(postion).setStatus("2");
-						}
-						if(status.equals("2"))
-						{
-							list.get(postion).setStatus("1");
-						}
-						notifyDataSetChanged();
-					}
-				});
-			}
-		}
 }

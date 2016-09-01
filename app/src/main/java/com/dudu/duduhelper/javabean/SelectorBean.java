@@ -1,4 +1,4 @@
-package com.dudu.duduhelper.adapter;
+package com.dudu.duduhelper.javabean;
 
 /**
  * Created by lwz on 2016/8/31.
