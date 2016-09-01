@@ -438,7 +438,7 @@ public class ShopOrderActivity extends BaseActivity
 	//通过搜索返回的结果id号
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		orderId = data.getIntExtra("id",0);
+		//orderId = data.getIntExtra("id",0);
 		initData();
 	}
 

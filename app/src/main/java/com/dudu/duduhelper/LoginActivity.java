@@ -235,6 +235,9 @@ public class LoginActivity extends BaseActivity
 						LoginBean loginBean = new Gson().fromJson(arg2,LoginBean.class);
 						//判断返回状态是否成功
 						if (ConstantParamPhone.SUCCESS.equalsIgnoreCase(loginBean.getCode())){
+							
+							//对bean的数据做非空判断
+							
 							//1.通过sp保存用户信息
 							SharedPreferences.Editor edit = sp.edit();
 							edit.putString("username",loginBean.getUser().getName())

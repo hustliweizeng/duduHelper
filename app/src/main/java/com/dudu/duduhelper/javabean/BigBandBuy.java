@@ -1,11 +1,12 @@
 package com.dudu.duduhelper.javabean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by lwz on 2016/8/31.
  */
-public class BigBandBuy {
+public class BigBandBuy implements Serializable{
 
     private String code;
     private String msg;
@@ -35,11 +36,11 @@ public class BigBandBuy {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements  Serializable{
         private String id;
         private String status;
         private String name;
-        private Object thumbnail;
+        private String thumbnail;
         private String show_img;
         private String shop_id;
         private String price;
@@ -75,11 +76,11 @@ public class BigBandBuy {
             this.name = name;
         }
 
-        public Object getThumbnail() {
+        public String getThumbnail() {
             return thumbnail;
         }
 
-        public void setThumbnail(Object thumbnail) {
+        public void setThumbnail(String thumbnail) {
             this.thumbnail = thumbnail;
         }
 

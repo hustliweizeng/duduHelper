@@ -69,11 +69,11 @@ public class SearchActivity extends BaseActivity
 		id=getIntent().getStringExtra("id");
 
 		initView();
-		ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
+		//ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		if(TextUtils.isEmpty(id))
 		{
 			orderAdapter=new ShopOrderAdapter(this);
-			initData();
+			//initData();
 		}
 		else
 		{

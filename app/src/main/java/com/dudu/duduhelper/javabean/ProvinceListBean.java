@@ -9,8 +9,8 @@ import java.util.List;
 public class ProvinceListBean implements Serializable{
 
 
-    private String code;
-    private String msg;
+    public String code;
+    public String msg;
     private List<DataBean> data;
 
     public String getCode() {
@@ -37,9 +37,9 @@ public class ProvinceListBean implements Serializable{
         this.data = data;
     }
 
-    public static class DataBean extends  SelectorBean implements  Serializable{
-        private String id;
-        private String name;
+    public static class DataBean extends SelectorBean implements  Serializable{
+        public String id;
+        public String name;
         private String code;
         private String county_id;
 

@@ -138,6 +138,10 @@ public class ConstantParamPhone
     public static final String GET_BIG_BAND_DETAIL = "/api/app/panic/panicinfo";//大牌抢购详情
     public static final String DEL_BIG_BAND ="/api/app/panic/delpanic";//删除大牌抢购条目
 
+   //优惠券列表
+   public static final String GET_DISCOUNT_LIST = "/api/app/coupon/listinfo";//获取优惠券信息列表
+   public static final String  GET_DISCOUT_DETAIL = "/api/app/coupon/couponinfo";//优惠券详情
+   public static final String  DEL_DISECOUNT = "/api/app/coupon/delcoupon";//删除优惠券
 
 
 
