@@ -101,10 +101,6 @@ public class shopProductListActivity extends BaseActivity
 	private String order="default";
 	//商品状态
 	private String status="0";
-	//下拉分页
-	private int page=1;
-	private int lastItemIndex;
-	//private View loadMoreView;
 	//判断是上拉还是下拉
 	private int reftype;
 	//判断数据是否加载完成
@@ -121,6 +117,8 @@ public class shopProductListActivity extends BaseActivity
 	private TextView tv_chekcAll_product_list;
 	private ImageButton backButton;
 	private BigBandBuy bigBandBuy;
+	private SwipeRefreshLayout swipe_product_list;
+	private int page;
 	//private View foot;
 
 	@Override
@@ -139,7 +137,7 @@ public class shopProductListActivity extends BaseActivity
 		{
 			//优惠券列表
 			productAdapter=new ProductAdapter(this,isMulChoice,isDisCount,isHongbao);
-			initData(ConstantParamPhone.GET_COUPON_LIST);
+			initData(ConstantParamPhone.GET_DISCOUNT_LIST);
 		}
 		if(category.equals("bigband"))
 		{
@@ -163,65 +161,61 @@ public class shopProductListActivity extends BaseActivity
 	//请求不同的接口url
 	private void initData(String url)
 	{
-		loading_progressBar.setVisibility(View.VISIBLE);
+		//loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
 		productListView.setAdapter(productAdapter);
 		RequestParams params = new RequestParams();
-		if(category.equals("bigband"))
+		HttpUtils.getConnection(context,params,url, "post",new TextHttpResponseHandler()
 		{
-			HttpUtils.getConnection(context,params,url, "post",new TextHttpResponseHandler()
+			@Override
+			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 			{
-				@Override
-				public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
-				{
-					Toast.makeText(shopProductListActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
-					if(page==1)
-					{
-						reloadButton.setVisibility(View.VISIBLE);
-					}
-				}
-				@Override
-				public void onSuccess(int arg0, Header[] arg1, String arg2)
-				{
-					try {
-						JSONObject object = new JSONObject(arg2);
-						String code =  object.getString("code");
-						if ("SUCCESS".equalsIgnoreCase(code)){
-							//解析优惠券的信息
-							if (category.equals("discount")){
-								bigBandBuy = new Gson().fromJson(arg2, BigBandBuy.class);
-							}
-							//解析红包列表信息
-							if (category.equals("hongbao")){
-								
-
-							}
-							//解析大牌抢购列表信息
-							if (category.equals("bigband")){
-								DiscountListBEAN discountListBEAN = new DiscountListBEAN();
-								discountListBEAN = new Gson().fromJson(arg2,DiscountListBEAN.class);
-							}
-							
-							productAdapter.addAll(bigBandBuy.getData(),isAllChoice);
-
-						}else {
-							//数据请求失败
-							String msg = object.getString("msg");
-							Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+				Toast.makeText(shopProductListActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
+				reloadButton.setVisibility(View.VISIBLE);
+			}
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, String arg2)
+			{
+				LogUtil.d("product",arg2);
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//解析优惠券的信息
+						if (category.equals("bigband")){
+							bigBandBuy = new Gson().fromJson(arg2, BigBandBuy.class);
 						}
-					} catch (JSONException e) {
-						e.printStackTrace();
+						//解析红包列表信息
+						if (category.equals("hongbao")){
+
+
+						}
+						//解析大牌抢购列表信息
+						if (category.equals("discount")){
+
+							bigBandBuy = new Gson().fromJson(arg2,BigBandBuy.class);
+						}
+
+						productAdapter.addAll(bigBandBuy.getData(),isAllChoice);
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-				@Override
-				public void onFinish()
-				{
-					//隐藏对话框
-					ColorDialog.dissmissProcessDialog();
-					loading_progressBar.setVisibility(View.GONE);
-				}
-			});
-		}
+			}
+			@Override
+			public void onFinish()
+			{
+				//隐藏对话框
+				ColorDialog.dissmissProcessDialog();
+				loading_progressBar.setVisibility(View.GONE);
+			}
+		});
+
 	}
 
 	@SuppressLint("ResourceAsColor")
@@ -262,6 +256,52 @@ public class shopProductListActivity extends BaseActivity
 		}
 		footView = LayoutInflater.from(this).inflate(R.layout.activity_listview_foot, null);
 		loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
+		//刷新布局
+		swipe_product_list = (SwipeRefreshLayout) findViewById(R.id.swipe_product_list);
+		swipe_product_list.setColorSchemeResources(R.color.text_color);
+		swipe_product_list.setSize(SwipeRefreshLayout.DEFAULT);
+		swipe_product_list.setProgressBackgroundColor(R.color.bg_color);
+		//上拉加载
+		swipe_product_list.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh()
+			{
+				page = 1;
+				reftype=1;
+				//清空适配器中的数据
+				productAdapter.clear();
+				//根据不同类型请求不同的参数
+				if(category.equals("discount"))
+				{
+					//优惠券列表
+					initData(ConstantParamPhone.GET_DISCOUNT_LIST);
+				}
+				if(category.equals("bigband"))
+				{
+					LogUtil.d("bigband","商品列表");
+					//商品列表
+					initData(ConstantParamPhone.GET_BIG_BAND_LIST);
+				}
+				if(category.equals("hongbao"))
+				{
+					//红包列表
+					//商品排序
+					order="getmore";
+					//商品状态
+					status="all";
+					//接口出来后要改回来！！！
+					initData(ConstantParamPhone.GET_HONGBAO_LIST);
+				}
+			}
+		});
+
+
+
+
+
+
+
 		//返回键
 		backButton = (ImageButton) findViewById(R.id.backButton);
 		backButton.setOnClickListener(new OnClickListener() {
@@ -353,7 +393,7 @@ public class shopProductListActivity extends BaseActivity
 				}
 			}
 		});
-		
+
 		productListView=(ListView) this.findViewById(R.id.productListView);
 
 		//loadMoreView = getLayoutInflater().inflate(R.layout.activity_listview_loadmore, null);
@@ -409,15 +449,19 @@ public class shopProductListActivity extends BaseActivity
 		productListView.setOnScrollListener(new OnScrollListener()
 		{
 			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+			}
+
+			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState)
 			{
 				//当滚动停止的时候
 				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) // productAdapter.getCount()记录的是数据的长度
 				{
-					// 判断滚动到底部  
+					// 判断滚动到底部
 					if (productListView.getLastVisiblePosition() == (productListView.getCount() - 1)) {
 						LogUtil.d("scrool","底部");
-						reftype=1;
 						if(!reffinish)
 						{
 							if(isDisCount)
@@ -441,10 +485,9 @@ public class shopProductListActivity extends BaseActivity
 							}
 						}
 					}
-					// 判断滚动到顶部  
+					// 判断滚动到顶部
 					if(productListView.getFirstVisiblePosition() == 0){
 						LogUtil.d("scrool","顶部");
-						reftype = 2;
 						if(!reffinish)
 						{
 							if(isDisCount)
@@ -467,17 +510,11 @@ public class shopProductListActivity extends BaseActivity
 								}
 							}
 						}
-						
+
 					}
 				}
 			}
 
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) //totalItemCount记录的是整个listView的长度
-			{
-				// TODO Auto-generated method stub
-				lastItemIndex = firstVisibleItem + visibleItemCount -1;
-			}
 		});
 		//显示所有默认信息
 		allTypeRel.setOnClickListener(new OnClickListener()
@@ -530,7 +567,7 @@ public class shopProductListActivity extends BaseActivity
 
 			}
 		});
-		
+
 		//全选按钮点击事件
 		productAllCheckImg.setOnClickListener(new OnClickListener()
 		{
@@ -650,7 +687,7 @@ public class shopProductListActivity extends BaseActivity
 		final List<SelectorBean> selectList=new ArrayList<>();
 		RedBagStatus redBagStatus = new RedBagStatus();
 		ProductStatus products = new ProductStatus();
-		
+
 		//左侧筛选
 		if(action.equals("order"))
 		{
@@ -669,7 +706,7 @@ public class shopProductListActivity extends BaseActivity
 			productSelectList.setAdapter(orderSelectorAdapter);
 
 		}
-		
+
 		//右侧筛选
 		else
 		{
@@ -709,10 +746,9 @@ public class shopProductListActivity extends BaseActivity
 					//更新适配器中被选中的条目
 					orderSelectorAdapter.select = selectList.get(position).name;
 				}
-				
+
 				productAdapter=new ProductAdapter(context,isMulChoice,isDisCount,isHongbao);
 				ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
-				page=1;
 				reffinish=false;
 				if(isDisCount)
 				{
@@ -753,8 +789,6 @@ public class shopProductListActivity extends BaseActivity
 	@Override
 	public void onActivityResult(int arg0, int arg1, Intent arg2)
 	{
-		// TODO Auto-generated method stub
-		page=1;
 		//清空adapter数据
 		productAdapter.clear();
 		//loadMoreView.setVisibility(View.GONE);
@@ -780,8 +814,8 @@ public class shopProductListActivity extends BaseActivity
 	/**
 	 * 根据action不同，去请求网络
 	 * @param ids    提供的所有id
-     * @param url   请求的url地址
-     */
+	 * @param url   请求的url地址
+	 */
 	private void AllMethod( final String ids, String url)
 	{
 		if(TextUtils.isEmpty(ids))
@@ -789,7 +823,7 @@ public class shopProductListActivity extends BaseActivity
 			Toast.makeText(shopProductListActivity.this, "您尚未选中任何商品", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		
+
 		ColorDialog.showRoundProcessDialog(shopProductListActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("id",ids);
@@ -807,7 +841,7 @@ public class shopProductListActivity extends BaseActivity
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
-						
+
 						//再次请求数据
 						initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 						//清空选中的条目

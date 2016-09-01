@@ -41,7 +41,7 @@ public class BigBandBuy implements Serializable{
         private String status;
         private String name;
         private String thumbnail;
-        private String show_img;
+        private String[] show_img;
         private String shop_id;
         private String price;
         private String current_price;
@@ -84,11 +84,11 @@ public class BigBandBuy implements Serializable{
             this.thumbnail = thumbnail;
         }
 
-        public String getShow_img() {
+        public String[] getShow_img() {
             return show_img;
         }
 
-        public void setShow_img(String show_img) {
+        public void setShow_img(String[] show_img) {
             this.show_img = show_img;
         }
 

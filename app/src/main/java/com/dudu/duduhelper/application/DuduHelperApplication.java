@@ -94,6 +94,7 @@ public class DuduHelperApplication extends Application
 				.discCacheFileNameGenerator(new Md5FileNameGenerator())
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
 				.writeDebugLogs()
+
 				.defaultDisplayImageOptions(options)
 				.build();
 

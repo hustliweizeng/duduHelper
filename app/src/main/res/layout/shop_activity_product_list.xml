@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
+    android:orientation="vertical"
     android:fitsSystemWindows="true" >
 
     <include
@@ -136,12 +137,13 @@
         </RelativeLayout>
     </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/selectLine"
-            
-            >
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_product_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" >
 
             <ListView
                 android:id="@+id/productListView"
@@ -153,7 +155,7 @@
                 android:scrollbarSize="4dp"
                 android:scrollbarThumbVertical="@color/text_color"
                 android:scrollbarTrackVertical="@color/text_color_yellow" />
-        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <Button
         android:id="@+id/reloadButton"
@@ -224,4 +226,4 @@
         android:textColor="@color/text_green_color"
         android:textSize="16sp" />
 
-</RelativeLayout>
+</LinearLayout>

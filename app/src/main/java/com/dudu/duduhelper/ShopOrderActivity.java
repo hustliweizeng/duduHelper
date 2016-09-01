@@ -130,19 +130,10 @@ public class ShopOrderActivity extends BaseActivity
 
 		loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
-
-		/*"moduleid" => "模块ID,多个模块用逗号分隔"
-		"status" => "订单状态"
-		"date" => "指定日期,用于新订单和收款列表"
-		"lastid" => "分页标识,上一页最后一个订单id"
-		"limit" => "每页多少条"
-		"ispay" => "是否支付"*/
-
 		RequestParams params = new RequestParams();
 		//每次请求10个条目
 		params.add("limit",pageLimit+"");
 		params.add("lastid", lastId);
-
 
 		//订单筛选需要3个条件
 		params.add("status",statuss+"");
@@ -306,6 +297,7 @@ public class ShopOrderActivity extends BaseActivity
 						//再次请求加载数据的时候，需要上一页最后条目的id，以及这次刷新的数量
 						initData();
 					}
+					//定位到最后一个条目
 					allOrderListView.setSelection(lastItemIndex-1);
                 }
 			}
