@@ -27,6 +27,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ShopPasswordEditActivity extends BaseActivity
 {
@@ -268,11 +270,27 @@ public class ShopPasswordEditActivity extends BaseActivity
 
 		@Override
 		public void onSuccess(int i, Header[] headers, String s) {
-			Toast.makeText(context,"修改成功，请重新登陆",Toast.LENGTH_LONG).show();
-			startActivity(new Intent(context,LoginActivity.class));
-			//退出所有界面
-			DuduHelperApplication application = (DuduHelperApplication)getApplication();
-			application.exit();
+			LogUtil.d("code",s);
+			try {
+				JSONObject object = new JSONObject(s);
+				String code =  object.getString("code");
+				if ("SUCCESS".equalsIgnoreCase(code)){
+					//数据请求成功
+
+					Toast.makeText(context,"修改成功，请重新登陆",Toast.LENGTH_LONG).show();
+					startActivity(new Intent(context,LoginActivity.class));
+					//退出所有界面
+					DuduHelperApplication application = (DuduHelperApplication)getApplication();
+					application.exit();
+
+				}else {
+					//数据请求失败
+					String msg = object.getString("msg");
+					Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 	};
 	/**

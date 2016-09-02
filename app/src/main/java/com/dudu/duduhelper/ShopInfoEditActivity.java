@@ -352,6 +352,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     //上传保存的信息
     private void requstHttpConnection() {
         //获取图片的信息
+       
         /*iv_logo_shop_info.setDrawingCacheEnabled(true);
         Bitmap iv_logo = iv_logo_shop_info.getDrawingCache();
         iv_logo_shop_info.setDrawingCacheEnabled(false);*/
@@ -368,6 +369,15 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
             Toast.makeText(context,"内容填写不完整",Toast.LENGTH_LONG).show();
             return;
         }
+        /* "name" => ""
+        "logo" => ""
+        "contact" => ""
+        "address" => ""
+        "description" => ""
+        "images" => ""
+        "category" => ""
+        "area" => ""
+        "open_time" => ""*/
         //修改哪个上传哪个
         RequestParams params = new RequestParams();
         params.put("name",title);

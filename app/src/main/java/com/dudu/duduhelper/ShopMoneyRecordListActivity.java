@@ -10,11 +10,21 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.adapter.MoneyHistoryAdapter;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.CashHistoryBean;
 import com.dudu.duduhelper.widget.CalendarView;
 import com.dudu.duduhelper.widget.ColorDialog;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -97,7 +107,41 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 	 */
 	private void getData() {
 		RequestParams param =  new RequestParams();
-		param.add("token",share.getString("token",""));
+		//param.add("token",share.getString("token",""));
+		HttpUtils.getConnection(context, param, ConstantParamPhone.GET_CASH_HISTORY, "GET", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						CashHistoryBean historyBean = new Gson().fromJson(s, CashHistoryBean.class);
+						
+
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
 		//String url = ConstantParamPhone.IP+;
 		//HttpUtils.getConnection(this,param,);
 		//数据请求成功后弹窗消失

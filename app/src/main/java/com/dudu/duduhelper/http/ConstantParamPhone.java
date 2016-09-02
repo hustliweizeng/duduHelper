@@ -28,7 +28,6 @@ public class ConstantParamPhone
     public static final String GET_USER_BANK_PROVINCE="/geo/province";//GET /geo/province 获取省份列表
     public static final String GET_USER_BANK_CITY="/geo/city";//GET /geo/city 获取城市列表
     public static final String EDIT_USER_BANK="/user/bank";//POST /user/bank 修改用户的银行卡信息
-    public static final String GET_CASH_HISTORY="/user/outmoney";//GET /user/outmoney 获取提现记录
     public static final String SEND_SMS="/sms/send";//POST /sms/send 短信发送接口
     public static final String BIND_PHONE="/user/bindmobile";//POST /user/bindmobile 手机绑定操作
     public static final String UNBIND_PHONE="/user/unbindmobile";//POST /user/unbindmobile 手机解绑操作
@@ -113,6 +112,7 @@ public class ConstantParamPhone
    //收银相关
    public static final String  CREATE_PAY_PIC = "/api/app/cashier";//创建收银二维码
    public static final String  CREATE_PAYMENT = "/api/app/cashier";//创建收银
+    public static final String GET_CASH_HISTORY ="/api/app/cashier";//获取账单流水
 
     //提现
     public static final String  CREATE_GET_MONEY ="/api/app/outmoney";//创建提现

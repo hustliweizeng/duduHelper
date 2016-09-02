@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -84,9 +85,9 @@ public class ShopOrderActivity extends BaseActivity
     public ProductAdapter productAdapter;
     private String status="";
 	//筛选需要的参数
-    private int source= 0;
+    private int source= -100;
 	private int isNew= 0;
-	private int statuss = -1;
+	private int statuss = -100;
 
     private String isnew="0";
 	private List<SelectorBean> list;
@@ -103,7 +104,6 @@ public class ShopOrderActivity extends BaseActivity
 		setContentView(R.layout.shop_order);
 		orderAdapter=new ShopOrderAdapter(this);
 		initHeadView("订单管理", true, true, R.drawable.icon_sousuo);
-		DuduHelperApplication.getInstance().addActivity(this);
 		//初始化view
 		initViewFragment();
 		initData();
@@ -127,18 +127,24 @@ public class ShopOrderActivity extends BaseActivity
 	//第一次请求时，请求所有数据
 	private void initData()
 	{
-
 		loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
 		RequestParams params = new RequestParams();
 		//每次请求10个条目
 		params.add("limit",pageLimit+"");
-		params.add("lastid", lastId);
-
+		//第一次运行时为空,想上滑动才需要这个参数
+		if(lastId != null && reftype ==2 ){
+			params.add("lastid", lastId);
+		}
 		//订单筛选需要3个条件
-		params.add("status",statuss+"");
-		params.add("moduleid",source+"");
-		params.add("ispay", isNew+"");
+		if (statuss != -100 ){
+			params.add("status",statuss+"");
+		}
+		//初始值不参与请求
+		if (source !=-100){
+			params.add("moduleid",source+"");
+		}
+		//params.add("ispay", isNew+"");
 		//根据订单id查找
 		if (orderId !=0){
 			//清空之前的搜索项
@@ -295,12 +301,18 @@ public class ShopOrderActivity extends BaseActivity
 					reftype=2;
 					if(!reffinish)
 					{
+						
 						//再次请求加载数据的时候，需要上一页最后条目的id，以及这次刷新的数量
 						initData();
 					}
+					
 					//定位到最后一个条目
 					allOrderListView.setSelection(lastItemIndex-1);
                 }
+				//当滚到第一个条目时,请求父控件处理事件
+				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE && allOrderListView.getFirstVisiblePosition()  == 0){
+					allOrderListView.getParent().requestDisallowInterceptTouchEvent(false);
+				}
 			}
 
 			@Override

@@ -237,7 +237,7 @@ public class LoginActivity extends BaseActivity
 							
 							//对bean的数据做非空判断
 							
-							/*//1.通过sp保存用户信息
+							//1.通过sp保存用户信息
 							SharedPreferences.Editor edit = sp.edit();
 							edit.putString("username",loginBean.getUser().getName())
 							.putString("nickename",loginBean.getUser().getNickname())
@@ -254,15 +254,13 @@ public class LoginActivity extends BaseActivity
 							.putString("useableMoney",loginBean.getTotalstat().getUsablemoney())
 							//在后台处理
 							.apply();
-							//跳转到主页*/
+							//跳转到主页
 
-							Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-							//startActivity(new Intent(context,MainActivity.class));
-							startActivity(intent);
+							startActivity(new Intent(context,MainActivity.class));
 							finish();
 
 						}else if (ConstantParamPhone.FAIL.equalsIgnoreCase(loginBean.getCode())){
-							Toast.makeText(LoginActivity.this,"信息存储有误",Toast.LENGTH_LONG).show();
+							Toast.makeText(LoginActivity.this,"用户名或者密码不正确",Toast.LENGTH_LONG).show();
 						}
 
 					}
