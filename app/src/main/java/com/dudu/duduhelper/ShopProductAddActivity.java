@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.ResponsBean;
@@ -52,7 +53,6 @@ import java.util.Locale;
 
 public class ShopProductAddActivity extends BaseActivity 
 {
-	//private SendShaiShaiAdapter sendShaiShaiAdapter;
 	private String id;
 	private String category;
 	
@@ -68,6 +68,9 @@ public class ShopProductAddActivity extends BaseActivity
 	
 	private LinearLayout ll_startTime_shop_product;
 	private TextView tv_startTime_shop_product;
+	
+	private LinearLayout ll_endTime_shop_product;
+	private TextView tv_endTime_shop_product;
 	
 	private SwitchView productStatusSwitch;
 	
@@ -94,26 +97,30 @@ public class ShopProductAddActivity extends BaseActivity
 		setContentView(R.layout.shop_product_add);
 		initHeadView("详情编辑",true, false, 0);
 		DuduHelperApplication.getInstance().addActivity(this);
-		/*//商品id；
-		id=getIntent().getStringExtra("id");
+		//商品id；
+		//id=getIntent().getStringExtra("id");
 		//商品分类category；
-		category=getIntent().getStringExtra("category");*/
+		category=getIntent().getStringExtra("category");
+		LogUtil.d("Category",category);
 		initView();
 		initData();
 	}
 
 	private void initData() 
 	{
-		//接收传递过来的数据
-		BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("info");
-		//设置页面信息
-		productNameEditText.setText(data.getName());
-		productSoldTextView.setText(data.getSaled_count());
-		productYuanPriceEditText.setText(data.getPrice());
-		productNowPriceEditText.setText(data.getCurrent_price());
-		productKuCunNumEditText.setText(data.getStock());
-		tv_startTime_shop_product.setText(Util.DataConVertMint(data.getRule()));
-		productDetaliTextView.setText(data.getExplain());
+		//接收传递过来的数据(说明进入编辑页面，否则是进入新增商品页面)
+		BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
+		if (data!= null){
+
+			//设置页面信息
+			productNameEditText.setText(data.getName());
+			productSoldTextView.setText(data.getSaled_count());
+			productYuanPriceEditText.setText(data.getPrice());
+			productNowPriceEditText.setText(data.getCurrent_price());
+			productKuCunNumEditText.setText(data.getStock());
+			//tv_startTime_shop_product.setText(data.getRule());
+			productDetaliTextView.setText(data.getExplain());
+		}
 					
 	}
 	
@@ -293,8 +300,14 @@ public class ShopProductAddActivity extends BaseActivity
 		productYuanPriceEditText=(EditText) this.findViewById(R.id.productYuanPriceEditText);
 		productNowPriceEditText=(EditText) this.findViewById(R.id.productNowPriceEditText);
 		productKuCunNumEditText=(EditText) this.findViewById(R.id.productKuCunNumEditText);
+		//开始时间
 		ll_startTime_shop_product=(LinearLayout) this.findViewById(R.id.ll_startTime_shop_product);
 		tv_startTime_shop_product=(TextView) this.findViewById(R.id.tv_startTime_shop_product);
+		//结束时间
+		ll_endTime_shop_product = (LinearLayout) this.findViewById(R.id.ll_startTime_shop_product);
+		tv_endTime_shop_product =(TextView) this.findViewById(R.id.tv_startTime_shop_product);
+		
+		
 		productDetailLine=(LinearLayout) this.findViewById(R.id.productDetailLine);
 		productDetaliTextView=(TextView) this.findViewById(R.id.productDetaliTextView);
 		//选择图片上传
@@ -343,6 +356,12 @@ public class ShopProductAddActivity extends BaseActivity
 				showDataDialog(tv_startTime_shop_product);
 			}
 		});
+		ll_endTime_shop_product.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDataDialog(tv_endTime_shop_product);
+			}
+		});
 		
 		saveProductbutton.setOnClickListener(new OnClickListener() 
 		{
@@ -355,17 +374,17 @@ public class ShopProductAddActivity extends BaseActivity
 			}
 		});
 		
-		if(category.equals("buying"))
+		if("bigband".equals(category))
 		{
 			productTypeTextView.setText("大牌抢购");
 		}
-		if(category.equals("coupon"))
+		if("discount".equals(category))
 		{
 			productTypeTextView.setText("优惠券");
 		}
-		if(category.equals("goods"))
+		if("hongbao".equals(category))
 		{
-			productTypeTextView.setText("店铺商品");
+			productTypeTextView.setText("商家红包");
 		}
 	}
 	@Override

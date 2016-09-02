@@ -48,9 +48,28 @@ public class BigBandBuy implements Serializable{
         private String rule;
         private String stock;
         private String amount;
+
+        public String getDownshelf() {
+            return downshelf;
+        }
+
+        public void setDownshelf(String downshelf) {
+            this.downshelf = downshelf;
+        }
+
+        public String getUpshelf() {
+            return upshelf;
+        }
+
+        public void setUpshelf(String upshelf) {
+            this.upshelf = upshelf;
+        }
+
         private String saled_count;
         private String validation_count;
         private String explain;
+        private String upshelf;
+        private String downshelf;
 
         public String getId() {
             return id;

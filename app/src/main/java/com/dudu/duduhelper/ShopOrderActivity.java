@@ -264,6 +264,7 @@ public class ShopOrderActivity extends BaseActivity
 		});
 		//listview初始化
 		allOrderListView=(ListView) ShopOrderActivity.this.findViewById(R.id.allOrderListView);
+		
 		footView = LayoutInflater.from(ShopOrderActivity.this).inflate(R.layout.activity_listview_foot, null);
 		loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
 		loading_text=(TextView) footView.findViewById(R.id.loading_text);

@@ -61,9 +61,6 @@ import java.util.List;
 
 public class shopProductListActivity extends BaseActivity
 {
-	private RelativeLayout allTypeRel;
-	private TextView allType;
-	private ImageView allTypeArror;
 	private TextView orderType;
 	private ImageView orderTypeArror;
 	private TextView productAction;
@@ -78,18 +75,12 @@ public class shopProductListActivity extends BaseActivity
 	private ListView productListView;
 	//编辑按钮
 	private Button editButton;
-	//编辑按钮
-	//private ImageButton addButton;
 	//编辑栏
 	private LinearLayout editProductLine;
 	//重载按钮
 	private Button reloadButton;
 	//全选按钮
 	private ImageButton productAllCheckImg;
-	//上架按钮
-	private Button upbutton;
-	//下架按钮
-	private Button downbutton;
 	private Button addButton;
 	private ImageView productAllDelectButton;
 	private boolean isMulChoice = false; //是否显示编辑界面
@@ -119,6 +110,7 @@ public class shopProductListActivity extends BaseActivity
 	private BigBandBuy bigBandBuy;
 	private SwipeRefreshLayout swipe_product_list;
 	private int page;
+	private int lastItemIndex;
 	//private View foot;
 
 	@Override
@@ -128,7 +120,8 @@ public class shopProductListActivity extends BaseActivity
 		setContentView(R.layout.shop_activity_product_list);
 		//获取进入的列表类型
 		category=getIntent().getStringExtra("category");
-		ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
+		//全屏显示的对话框进度条
+		//ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 
@@ -213,6 +206,8 @@ public class shopProductListActivity extends BaseActivity
 				//隐藏对话框
 				ColorDialog.dissmissProcessDialog();
 				loading_progressBar.setVisibility(View.GONE);
+				//隐藏swipe的进度条
+				swipe_product_list.setRefreshing(false);
 			}
 		});
 
@@ -221,6 +216,7 @@ public class shopProductListActivity extends BaseActivity
 	@SuppressLint("ResourceAsColor")
 	private void initView()
 	{
+		//新建商品按钮
 		addButton=(Button) this.findViewById(R.id.addButton);
 		addButton.setOnClickListener(new OnClickListener()
 		{
@@ -229,19 +225,21 @@ public class shopProductListActivity extends BaseActivity
 			public void onClick(View v)
 			{
 				Intent intent=new Intent(shopProductListActivity.this,ShopProductAddActivity.class);
-				intent.putExtra("category", "coupon");
+				intent.putExtra("category", category);
 				startActivity(intent);
 			}
 		});
+		//第二个筛选项
 		productAction=(TextView) this.findViewById(R.id.productAction);
-		if(category.equals("coupon"))
+		//设置头布局
+		if(category.equals("discount"))
 		{
 			initHeadView("优惠券", true, false, 0);
 			isDisCount=true;
 			isHongbao=false;
 			productAction.setText("优惠券状态");
 		}
-		if(category.equals("buying"))
+		if(category.equals("bigband"))
 		{
 			initHeadView("大牌抢购", true, false, 0);
 			isDisCount=false;
@@ -254,8 +252,13 @@ public class shopProductListActivity extends BaseActivity
 			isHongbao=true;
 			productAction.setText("红包状态");
 		}
+		
+		//listview脚布局
 		footView = LayoutInflater.from(this).inflate(R.layout.activity_listview_foot, null);
 		loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
+		loading_text=(TextView) footView.findViewById(R.id.loading_text);
+		
+		
 		//刷新布局
 		swipe_product_list = (SwipeRefreshLayout) findViewById(R.id.swipe_product_list);
 		swipe_product_list.setColorSchemeResources(R.color.text_color);
@@ -267,7 +270,7 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onRefresh()
 			{
-				page = 1;
+				//page = 1;
 				reftype=1;
 				//清空适配器中的数据
 				productAdapter.clear();
@@ -295,11 +298,6 @@ public class shopProductListActivity extends BaseActivity
 				}
 			}
 		});
-
-
-
-
-
 
 
 		//返回键
@@ -351,7 +349,7 @@ public class shopProductListActivity extends BaseActivity
 				}
 				if(isDisCount)
 				{
-					//AllMethod("delete",groupid,"",ConstantParamPhone.COUPON_MULIT);
+					AllMethod(groupid,ConstantParamPhone.DEL_DISECOUNT);
 				}
 				else
 				{
@@ -396,20 +394,15 @@ public class shopProductListActivity extends BaseActivity
 
 		productListView=(ListView) this.findViewById(R.id.productListView);
 
-		//loadMoreView = getLayoutInflater().inflate(R.layout.activity_listview_loadmore, null);
-		//productListView.addFooterView(loadMoreView);
-
-		allType=(TextView) this.findViewById(R.id.allType);
-		allTypeArror=(ImageView) this.findViewById(R.id.allTypeArror);
 		orderType=(TextView) this.findViewById(R.id.orderType);
 		orderTypeArror=(ImageView) this.findViewById(R.id.orderTypeArror);
 
 		productTypeArror=(ImageView) this.findViewById(R.id.productTypeArror);
 		selectLine=(LinearLayout) this.findViewById(R.id.selectLine);
 		productRel=(RelativeLayout) this.findViewById(R.id.productRel);
-		allTypeRel=(RelativeLayout) this.findViewById(R.id.allTypeRel);
 		orderTypeRel=(RelativeLayout) this.findViewById(R.id.orderTypeRel);
-		//productListView.addFooterView(footView);
+		
+		//产品列表
 		productListView.addFooterView(footView,null,false);
 		productListView.setOnItemClickListener(new OnItemClickListener()
 		{
@@ -421,7 +414,7 @@ public class shopProductListActivity extends BaseActivity
 				if(isDisCount)
 				{
 					Intent intent=new Intent(context,ShopCouponDetailActivity.class);
-					intent.putExtra("coupon", (ProductListBean)productAdapter.getItem(position));
+					intent.putExtra("coupon", (BigBandBuy.DataBean)productAdapter.getItem(position));
 					intent.putExtra("category", category);
 					startActivityForResult(intent, 1);
 				}
@@ -450,7 +443,7 @@ public class shopProductListActivity extends BaseActivity
 		{
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
+				lastItemIndex = firstVisibleItem + visibleItemCount -1;
 			}
 
 			@Override
@@ -467,7 +460,9 @@ public class shopProductListActivity extends BaseActivity
 							if(isDisCount)
 							{
 								//优惠券列表
-								initData(ConstantParamPhone.GET_COUPON_LIST);
+								//initData(ConstantParamPhone.GET_DISCOUNT_LIST);
+								Toast.makeText(context,"数据已经加载完毕",Toast.LENGTH_LONG).show();
+								productListView.removeFooterView(footView);
 							}
 							else
 							{
@@ -478,58 +473,23 @@ public class shopProductListActivity extends BaseActivity
 								}
 								else
 								{
-									//大牌抢购页面
+									//大牌抢购页面,api没有提供分页加载接口
 									//initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 									Toast.makeText(context,"数据已经加载完毕",Toast.LENGTH_LONG).show();
+									productListView.removeFooterView(footView);
 								}
 							}
 						}
+						//定位到最后一个条目
+						productListView.setSelection(lastItemIndex-1);
 					}
 					// 判断滚动到顶部
 					if(productListView.getFirstVisiblePosition() == 0){
 						LogUtil.d("scrool","顶部");
-						if(!reffinish)
-						{
-							if(isDisCount)
-							{
-								//优惠券列表
-								initData(ConstantParamPhone.GET_COUPON_LIST);
-							}
-							else
-							{
-								if(isHongbao)
-								{
-									//红包列表
-									initData(ConstantParamPhone.GET_HONGBAO_LIST);
-								}
-								else
-								{
-									//大牌抢购页面，重新加载数据刷新之前清空集合数据
-									productAdapter.list.clear();
-									//initData(ConstantParamPhone.GET_BIG_BAND_LIST);
-								}
-							}
-						}
-
+						//交给父控件处理事件
+						productListView.getParent().requestDisallowInterceptTouchEvent(false);
 					}
 				}
-			}
-
-		});
-		//显示所有默认信息
-		allTypeRel.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				// TODO Auto-generated method stub
-				allType.setTextColor(allType.getResources().getColor(R.color.text_color));
-				allTypeArror.setImageResource(R.drawable.icon_jiantou_shang);
-				orderType.setTextColor(orderType.getResources().getColor(R.color.text_color_gray));
-				orderTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
-				productAction.setTextColor(getResources().getColor(R.color.text_color_gray));
-				productTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
-				showSelectPopupWindow("all");
 			}
 
 		});
@@ -543,8 +503,6 @@ public class shopProductListActivity extends BaseActivity
 				// TODO Auto-generated method stub
 				orderType.setTextColor(getResources().getColor(R.color.text_green_color));
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_shang);
-				allType.setTextColor(getResources().getColor(R.color.text_color_gray));
-				allTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				productAction.setTextColor(getResources().getColor(R.color.text_color_gray));
 				productTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				showSelectPopupWindow("order");
@@ -559,8 +517,6 @@ public class shopProductListActivity extends BaseActivity
 				// TODO Auto-generated method stub
 				productAction.setTextColor(getResources().getColor(R.color.text_green_color));
 				productTypeArror.setImageResource(R.drawable.icon_jiantou_shang);
-				orderType.setTextColor(getResources().getColor(R.color.text_color_gray));
-				orderTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				orderType.setTextColor(getResources().getColor(R.color.text_color_gray));
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				showSelectPopupWindow("product");
@@ -698,7 +654,8 @@ public class shopProductListActivity extends BaseActivity
 				selectList.addAll(redBagStatus.getRedBagOrderby());
 			}
 			else
-			{;
+			{
+				//产品列表
 				selectList.addAll(products.getProductORderBy());
 			}
 			//把数据集合添加到适配器中
@@ -722,7 +679,7 @@ public class shopProductListActivity extends BaseActivity
 			orderSelectorAdapter.addAll(selectList,productAction.getText().toString());
 			productSelectList.setAdapter(orderSelectorAdapter);
 		}
-		//listview条目点击事件
+		//listview产品条目点击事件
 		productSelectList.setOnItemClickListener(new OnItemClickListener()
 		{
 
@@ -777,8 +734,6 @@ public class shopProductListActivity extends BaseActivity
 			public void onDismiss()
 			{
 				//重置所有按钮
-				allType.setTextColor(shopProductListActivity.this.getResources().getColor(R.color.text_color_gray));
-				allTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				orderType.setTextColor(shopProductListActivity.this.getResources().getColor(R.color.text_color_gray));
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_xia);
 				productAction.setTextColor(shopProductListActivity.this.getResources().getColor(R.color.text_color_gray));
@@ -793,10 +748,10 @@ public class shopProductListActivity extends BaseActivity
 		productAdapter.clear();
 		//loadMoreView.setVisibility(View.GONE);
 		reffinish=false;
-		ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
+		//ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		if(isDisCount)
 		{
-			initData(ConstantParamPhone.GET_COUPON_LIST);
+			initData(ConstantParamPhone.GET_DISCOUNT_LIST);
 		}
 		else
 		{
@@ -843,7 +798,12 @@ public class shopProductListActivity extends BaseActivity
 					if ("SUCCESS".equalsIgnoreCase(code)){
 
 						//再次请求数据
-						initData(ConstantParamPhone.GET_BIG_BAND_LIST);
+						if (category.equals("discount")){
+							initData(ConstantParamPhone.GET_DISCOUNT_LIST);
+						}
+						if (category.equals("bigband")){
+							initData(ConstantParamPhone.GET_BIG_BAND_LIST);
+						}
 						//清空选中的条目
 						productAdapter.selectid.clear();
 						Toast.makeText(shopProductListActivity.this, "删除成功啦", Toast.LENGTH_SHORT).show();

@@ -175,14 +175,6 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		//ColorDialog.showRoundProcessDialog(getActivity(),R.layout.loading_process_dialog_color);
 		String url = ConstantParamPhone.GET_REDBAG_LIST;
 		RequestParams parmas = new RequestParams();
-		/**
-		 *
-		 "token" => "用户Token"
-		 "page" => "0"
-		 "sort_list" => "getmore,getless,moremoney,lessmoney"
-		 "status_list" => "all,ended,releasing"
-		 ]
-		 */
 		//请求参数设置
 		String token = getActivity().getSharedPreferences("userconig", Context.MODE_PRIVATE).getString("umeng_token","");
 		parmas.put("token",token);

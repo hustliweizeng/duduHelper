@@ -223,8 +223,7 @@ public class LoginActivity extends BaseActivity
 					@Override
 					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 					{
-						Toast.makeText(LoginActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
-						finish();
+						Toast.makeText(LoginActivity.this, "网络不给力呀,请稍后再试", Toast.LENGTH_LONG).show();
 
 					}
 					@Override

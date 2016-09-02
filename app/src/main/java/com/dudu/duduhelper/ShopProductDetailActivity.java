@@ -82,9 +82,11 @@ public class ShopProductDetailActivity extends BaseActivity
 		imageLoader.displayImage(productinfo.getThumbnail(), imageAware);
 		productinfoName.setText(productinfo.getName());
 		String open_time = productinfo.getRule();
+		
 		productinfoTime.setText(open_time);//Util.DataConVert2(productinfo.getTime_start())+"-"+Util.DataConVert2(productinfo.getTime_end()));
 		sold=Float.parseFloat(productinfo.getSaled_count());
-		//编辑按钮
+		
+		//编辑按钮,进入商品编辑页面
 		editproductinfoButton=(Button) this.findViewById(R.id.editCouponButton);
 		editproductinfoButton.setOnClickListener(new OnClickListener()
 		{
@@ -95,7 +97,7 @@ public class ShopProductDetailActivity extends BaseActivity
 				// TODO Auto-generated method stub
 				//进入商品编辑页面
 				Intent intent=new Intent(ShopProductDetailActivity.this,ShopProductAddActivity.class);
-				intent.putExtra("info", productinfo);
+				intent.putExtra("productinfo", productinfo);
 				intent.putExtra("category", category);
 				startActivity(intent);
 			}
@@ -105,7 +107,6 @@ public class ShopProductDetailActivity extends BaseActivity
 
 	private void initView()
 	{
-		// TODO Auto-generated method stub
 		leftNumText = (RiseNumberTextView) this.findViewById(R.id.leftNumText);
 		totalNumText = (RiseNumberTextView) this.findViewById(R.id.totalNumText);
 		sellNumText = (RiseNumberTextView) this.findViewById(R.id.sellNumText);
@@ -114,6 +115,7 @@ public class ShopProductDetailActivity extends BaseActivity
 		productinfoTime=(TextView) this.findViewById(R.id.couponTime);
 		wheelIndicatorTongjiNoXuxianView = (WheelIndicatorTongjiNoXuxianView) findViewById(R.id.wheel_indicator_view);
 		wheelIndicatorTongjiNoXuxianView.setItemsLineWidth(Util.dip2px(this, 2));
+		
 
 	}
 }
