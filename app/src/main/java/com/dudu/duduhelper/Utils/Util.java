@@ -117,6 +117,11 @@ public class Util
     {
         return new SimpleDateFormat("HH:mm:ss").format(new Date(Long.parseLong(time)));
     }
+    //获取当前年月日
+    public static String DateForomate3()
+    {
+        return new SimpleDateFormat("yyyy年MM月dd日").format(new Date());
+    }
     
     //MD5加密
     public static String md5(String string) 

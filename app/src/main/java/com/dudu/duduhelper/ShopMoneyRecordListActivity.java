@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.MoneyHistoryAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -40,6 +41,8 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 	private ListView lv_checckmoneyhisory;
 	private MoneyHistoryAdapter adapter;
 	private String downDate1;
+	private SimpleDateFormat format;
+	private CalendarView calendar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -48,7 +51,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 		setContentView(R.layout.shop_money_record_list);
 		adapter = new MoneyHistoryAdapter(this);
 		//初始化当天日期
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		format = new SimpleDateFormat("yyyy-MM-dd");
 		downDate1 = format.format(new Date());
 		LogUtil.d("收银流水",downDate1);
 		initHeadView("收银流水", true, false, 0);
@@ -82,10 +85,15 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 	{
 		LayoutInflater layoutInflater = (LayoutInflater)ShopMoneyRecordListActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.shop_data_popwindow, null);
-		calendarCenter = (TextView) view.findViewById(R.id.calendarCenter);
-		calener = (CalendarView) view.findViewById(R.id.calendar);
-
-		popupWindow = new PopupWindow(view, ActionBar.LayoutParams.MATCH_PARENT,  ActionBar.LayoutParams.MATCH_PARENT);
+		
+		if (popupWindow == null){
+			//每次都new的话一些数据会遗失
+			popupWindow = new PopupWindow(view, ActionBar.LayoutParams.MATCH_PARENT,  ActionBar.LayoutParams.MATCH_PARENT);
+			//当前日期,第一次初始化
+			calendarCenter = (TextView) view.findViewById(R.id.calendarCenter);
+			calendarCenter.setText(new SimpleDateFormat("yyyy年MM月dd日").format(new Date()));
+			calener = (CalendarView) view.findViewById(R.id.calendar);
+		}
 		popupWindow.setFocusable(true);
 		popupWindow.setOutsideTouchable(true);
 		// 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
@@ -94,17 +102,19 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 		popupWindow.showAsDropDown(relayout_mytitle);
 
 		//初始化自定义日历calender
-		final CalendarView calendar = (CalendarView) view.findViewById(R.id.calendar);
+		calendar = (CalendarView) view.findViewById(R.id.calendar);
 		calendar.setOnItemClickListener(new CalendarView.OnItemClickListener() {
 			@Override
 			public void OnItemClick(Date selectedStartDate, Date selectedEndDate, Date downDate) {
-				//获取view中的按下日期
-				downDate1 = calendar.getFormateDownDate();
+				//获取view中的按下日期，准备请求数据
+				downDate1 = format.format(downDate);
+				getData();
 				LogUtil.d("收银流水",downDate1);
-				calendarCenter.setText(downDate1);
+				//更新标题的日期
+				calendarCenter.setText(new SimpleDateFormat("yyyy年MM月dd日").format(downDate));
 				//弹窗收回，请求数据
 				popupWindow.dismiss();
-				getData();
+				
 			}
 		});
 	}

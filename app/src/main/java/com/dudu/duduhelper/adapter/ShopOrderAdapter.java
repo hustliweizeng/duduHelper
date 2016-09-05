@@ -22,7 +22,7 @@ public class ShopOrderAdapter extends BaseAdapter
 {
     private Context context;
     private ViewHolder viewHolder;
-    List<OrderListBean.ListBean> list=new ArrayList<>();
+    public  List<OrderListBean.ListBean> list=new ArrayList<>();
 	public ShopOrderAdapter(Context context)
 	{
 		this.context=context;
@@ -35,6 +35,9 @@ public class ShopOrderAdapter extends BaseAdapter
     {
     	this.list.addAll(this.list.size(), list);
     	notifyDataSetChanged();
+    }
+	public  List<OrderListBean.ListBean> getInfo(){
+	     return list;
     }
 	public  String getLastId(){
 		return list.get(list.size()-1).getId();
@@ -95,6 +98,7 @@ public class ShopOrderAdapter extends BaseAdapter
 				case 1 :
 					content = "待支付";
 					color = R.color.text_color_yellow;
+					break;
 				case 2 :
 					content = "已支付";
 					color = R.color.text_green_color;

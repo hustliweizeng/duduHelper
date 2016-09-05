@@ -36,6 +36,10 @@ public class CalendarView extends View implements View.OnTouchListener
     //给控件设置监听事件
     private OnItemClickListener onItemClickListener;
     private String formateDownDate;
+    //返回按下的日期，date格式
+    public Date getDownDate(){
+        return downDate;
+    }
     //返回按下的日期
     public String getFormateDownDate(){
     return formateDownDate;

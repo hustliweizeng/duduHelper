@@ -55,7 +55,6 @@ public class ConstantParamPhone
     public static final String GET_FULL_LIST="/order/fulllist";//GET /order/list 获取所有商品订单
     public static final String GET_ALLORDER_LIST="/order/list";//GET /order/list 获取所有商品订单
     public static final String GET_NEWORDER_LIST="/order/newlist";//GET /order/newlist 获取新商品订单-当天
-    public static final String GET_ORDER_DETAIL="/order/info";//GET /order/info 获取商品信息
     public static final String EDIT_ORDER_STATUS="/order/status";//POST /order/status 修改状态
     public static final String GET_VERSION="/version/android";//GET /version/android 安卓系统版本
     public static final String ORDER_SEARCH="/order/search";//POST /goods/mulit 批量操作
@@ -120,6 +119,8 @@ public class ConstantParamPhone
 
    //订单列表
    public static final String  GET_ORDER_LIST = "/api/app/order";//获取订单列表
+    public static final String SEARCH_ORDER = "/api/app/order/search";//搜索订单
+    public static final String GET_ORDER_DETAIL = "/api/app/order";//订单详情
 
 
     //获取省份

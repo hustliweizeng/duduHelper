@@ -281,9 +281,9 @@ public class ShopOrderActivity extends BaseActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id)
 			{
-				Intent intent=new Intent(ShopOrderActivity.this, ShopOrderDetailActivity.class);
-				intent.putExtra("no", orderAdapter.getItem(position).getId());
-				intent.putExtra("status", orderAdapter.getItem(position).getStatus());
+				Intent intent=new Intent(context, ShopOrderDetailActivity.class);
+				//传递当前条目的数据过去
+				intent.putExtra("info", orderAdapter.getInfo().get(position));
 				startActivityForResult(intent, 1);
 			}
 		});
@@ -418,7 +418,6 @@ public class ShopOrderActivity extends BaseActivity
 				orderAdapter.clear();
 				initData();
 				popupWindow.dismiss();
-
 			}
 		});
 

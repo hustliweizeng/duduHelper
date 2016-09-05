@@ -7,14 +7,19 @@ import java.util.Vector;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.OrderDetailAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.OrderDetailBean;
 import com.dudu.duduhelper.bean.OrderGoods;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.OrderDetailBean;
+import com.dudu.duduhelper.javabean.OrderListBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -60,7 +65,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 	private Button noButton;
 	private Button enterButton;
 	private String no;
-	private String action;
 	private OrderDetailAdapter orderDetailAdapter;
 	private BluetoothAdapter bluetoothAdapter;
 	private BluetoothDevice device;
@@ -74,8 +78,10 @@ public class ShopOrderDetailActivity extends BaseActivity
 	private TextView couponStatusTextView;
 	private RelativeLayout couponNumLin;
 	private RelativeLayout couponStatusLin;
-	private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");    
-	
+	private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	private OrderListBean.ListBean data;
+	private OrderDetailBean.DataBean orderData;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -83,8 +89,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_order_detail);
 		initHeadView("订单详情",true, false,0);
-		no=getIntent().getStringExtra("no");
-		action=getIntent().getStringExtra("status");
+		data = (OrderListBean.ListBean) getIntent().getSerializableExtra("info");
 		orderDetailAdapter=new OrderDetailAdapter(this);
 		DuduHelperApplication.getInstance().addActivity(this);
 		initFilter();
@@ -104,215 +109,112 @@ public class ShopOrderDetailActivity extends BaseActivity
 
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
-		ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
+		if (TextUtils.isEmpty(data.getId())){
+			Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_SHORT).show();
+			return;
+		}
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("no",no);
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopOrderDetailActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.get(ConstantParamPhone.IP+ConstantParamPhone.GET_ORDER_DETAIL, params,new TextHttpResponseHandler()
-		{
+		params.add("id",data.getId());
+		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_ORDER_DETAIL, "GET", new TextHttpResponseHandler() {
 			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-			{
-				Toast.makeText(ShopOrderDetailActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络错误，稍后再试",Toast.LENGTH_SHORT).show();
 			}
+
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-			{
-				orderDetailBean=new Gson().fromJson(arg2,OrderDetailBean.class);
-				if(orderDetailBean.getStatus().equals("-1006"))
-				{
-					//Toast.makeText(ProductListActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-					//Toast.makeText(getActivity(), "出错啦！", Toast.LENGTH_SHORT).show();
-					MyDialog.showDialog(ShopOrderDetailActivity.this, "该账号已在其他手机登录，是否重新登录", true, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(ShopOrderDetailActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				if(!orderDetailBean.getStatus().equals("1"))
-				{
-					Toast.makeText(ShopOrderDetailActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-				}
-				else
-				{
-					orderNumTextView.setText(orderDetailBean.getData().getNo());
-					if(orderDetailBean.getData().getSource()!=null)
-					{
-						if(!TextUtils.isEmpty(orderDetailBean.getData().getSource().getName()))
-						{
-							orderSourceTextView.setText(orderDetailBean.getData().getSource().getName());
-						}
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						LogUtil.d("detail",s);
+						orderData  = new Gson().fromJson(s,OrderDetailBean.class).getData();
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 					}
-					
-					if(!TextUtils.isEmpty(orderDetailBean.getData().getSource().getId()))
-					{
-						if(orderDetailBean.getData().getSource().getId().equals("coupon"))
-						{
-							couponStatusLin.setVisibility(View.VISIBLE);
-							if(!TextUtils.isEmpty(orderDetailBean.getData().getCoupon().getSn()))
-							{
-								couponNumLin.setVisibility(View.VISIBLE);
-								couponNumTextView.setText(orderDetailBean.getData().getCoupon().getSn());
-							}	
-							
-							if((System.currentTimeMillis()-Long.parseLong(orderDetailBean.getData().getCoupon().getExptime()))>0)
-							{
-								couponStatusTextView.setText("已过期");
-								couponStatusTextView.setTextColor(couponStatusTextView.getResources().getColor(R.color.text_color_light));
-							}
-//							else
-//							{
-//								couponStatusTextView.setText("未验证");
-//								couponStatusTextView.setTextColor(couponStatusTextView.getResources().getColor(R.color.text_color_yellow));
-//							}
-							
-							if(!orderDetailBean.getData().getCoupon().getVerifytime().equals("0"))
-							{
-								couponStatusTextView.setText("已验证");
-								couponStatusTextView.setTextColor(couponStatusTextView.getResources().getColor(R.color.text_color));
-							}
-							else
-							{
-								couponStatusTextView.setText("未验证");
-								couponStatusTextView.setTextColor(couponStatusTextView.getResources().getColor(R.color.text_color_yellow));
-							}
-							
-						}
-					}
-					
-					
-//					if(!orderDetailBean.getData().getCoupon().getVerifytime())
-//					{
-//						
-//					}
-					
-					if(orderDetailBean.getData().getStatus().equals("-1"))
-					{
-						orderActionTextView.setText("已过期");
-						orderActionTextView.setTextColor(orderActionTextView.getResources().getColor(R.color.text_color_light));
-						enterButton.setVisibility(View.GONE);
-						noButton.setVisibility(View.GONE);
-					}
-					if(orderDetailBean.getData().getStatus().equals("0"))
-					{
-						orderActionTextView.setText("已取消");
-						orderActionTextView.setTextColor(orderActionTextView.getResources().getColor(R.color.text_color_light));
-						enterButton.setVisibility(View.GONE);
-						noButton.setVisibility(View.GONE);
-					}
-					if(orderDetailBean.getData().getStatus().equals("1"))
-					{
-						orderActionTextView.setText("未支付");
-						orderActionTextView.setTextColor(orderActionTextView.getResources().getColor(R.color.text_color_yellow));
-						enterButton.setVisibility(View.GONE);
-						noButton.setVisibility(View.GONE);
-					}
-					if(orderDetailBean.getData().getStatus().equals("2"))
-					{
-						orderActionTextView.setText("已支付");
-						orderActionTextView.setTextColor(orderActionTextView.getResources().getColor(R.color.text_color));
-						
-						if(orderDetailBean.getData().getSource()!=null)
-						{
-							if(orderDetailBean.getData().getSource().getId().equals("coupon"))
-							{
-								enterButton.setVisibility(View.VISIBLE);
-								enterButton.setText("打印凭据");
-								noButton.setVisibility(View.GONE);
-								enterButton.setOnClickListener(new OnClickListener() 
-								{
-									@Override
-									public void onClick(View v) 
-									{
-										// TODO Auto-generated method stub
-										OpenBlueTooth();
-									}
-								});
-							}
-							else
-							{
-								enterButton.setVisibility(View.VISIBLE);
-								noButton.setVisibility(View.VISIBLE);
-							}
-						}
-					}
-					if(orderDetailBean.getData().getStatus().equals("3"))
-					{
-						orderActionTextView.setText("已完成");
-						orderActionTextView.setTextColor(orderActionTextView.getResources().getColor(R.color.text_color_dark));
-						enterButton.setVisibility(View.VISIBLE);
-						enterButton.setText("打印凭据");
-						noButton.setVisibility(View.GONE);
-						enterButton.setOnClickListener(new OnClickListener() 
-						{
-							@Override
-							public void onClick(View v) 
-							{
-								// TODO Auto-generated method stub
-								OpenBlueTooth();
-							}
-						});
-					}
-					if(!TextUtils.isEmpty(orderDetailBean.getData().getTotal_fee()))
-					{
-						orderFeeTextView.setText("￥"+orderDetailBean.getData().getTotal_fee());
-					}
-					if(!TextUtils.isEmpty(orderDetailBean.getData().getDiscount_shop_fee()))
-					{
-						orderdiscountTextView.setText("￥"+orderDetailBean.getData().getDiscount_shop_fee());
-					}
-					orderPayTypeTextView.setText(orderDetailBean.getData().getPaytype().getName());
-					orderNameTextView.setText(orderDetailBean.getData().getSubject());
-					if(!TextUtils.isEmpty(orderDetailBean.getData().getName()))
-					{
-					    orderContrectTextView.setText(orderDetailBean.getData().getName());
-					}
-					if(!TextUtils.isEmpty(orderDetailBean.getData().getMobile()))
-					{
-					    orderPhoneTextView.setText(orderDetailBean.getData().getMobile());
-					}
-					totalPriceTextView.setText("￥"+orderDetailBean.getData().getFee());
-					if(orderDetailBean.getData().getGoods()!=null)
-					{
-						orderDetailAdapter.addAll(orderDetailBean.getData().getGoods());
-					}
-					orderDetailList.setAdapter(orderDetailAdapter);
-					if(orderDetailBean.getData().getSource()!=null)
-					{
-						if(orderDetailBean.getData().getSource().getId().equals("membercard"))
-						{
-							orderDetailList.setVisibility(View.GONE);
-						}
-					}
-					setListViewHeightBasedOnChildren(orderDetailList);
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
 			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-				ColorDialog.dissmissProcessDialog();
+			public void onFinish() {
+				super.onFinish();
+				fillData();
 			}
 		});
 	}
+
+	private void fillData() {
+		if(orderData == null){
+			Toast.makeText(context,"没有要显示的数据",Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		//设置店名
+		orderNameTextView.setText(orderData.getBody());
+		int color = 0;
+		String content =null;
+		switch (Integer.parseInt(orderData.getStatus())){
+			case 0 :
+				content = "已取消";
+				color = R.color.text_gray_color;
+				break;
+			case 1 :
+				content = "待支付";
+				color = R.color.text_color_yellow;
+				break;
+			case 2 :
+				content = "已支付";
+				color = R.color.text_green_color;
+				break;
+			case 3 :
+				content = "已完成";
+				color = R.color.text_gray_color;
+				break;
+			case 4 :
+				content = "待发货";
+				break;
+			case 5 :
+				content = "待收货";
+				break;
+			case 6 :
+				content = "待核销";
+				break;
+			case 7 :
+				content = "待评价";
+				break;
+			case -1 :
+				content = "已过期";
+				color = R.color.text_gray_color;
+				break;
+			case -2 :
+				content = "已退款";
+				break;
+		}
+		//设置状态
+		orderActionTextView.setText(content);
+		//设置颜色
+		orderActionTextView.setTextColor(getResources().getColor(color));
+		//订单号
+		orderNumTextView.setText(orderData.getId());
+		//订单来源
+		orderSourceTextView.setText(orderData.getFrom());
+		//下单时间
+		orderPayTypeTextView.setText(orderData.getTime());
+		//联系人
+		orderContrectTextView.setText(orderData.getName());
+		//电话
+		orderPhoneTextView.setText(orderData.getMobile());
+		//订单金额
+		orderFeeTextView.setText(orderData.getFee());
+		//折扣金额
+		orderdiscountTextView.setText(orderData.getDiscount_activity_fee());
+		//总额
+		orderdiscountTextView.setText(orderData.getTotal_fee());
+	}
+
 	public void setListViewHeightBasedOnChildren(ListView listView) {   
         // 获取ListView对应的Adapter   
 		OrderDetailAdapter orderDetailAdapter = (OrderDetailAdapter) listView.getAdapter();   
@@ -506,7 +408,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 	//发送打印
 	private void sendPrint() 
 	{
-		if (this.isConnection) 
+		/*if (this.isConnection) 
 		{    
             System.out.println("开始打印！！");    
             try 
@@ -527,7 +429,7 @@ public class ShopOrderDetailActivity extends BaseActivity
                 //esc.addSetCharcterSize(WIDTH_ZOOM.MUL_3, HEIGHT_ZOOM.MUL_3);//设置字符尺寸
                 esc.addSelectJustification(JUSTIFICATION.LEFT);//设置打印左对齐
                 esc.addText("时间：        "+Util.DataConVert2(orderDetailBean.getData().getTime())+"\n");   //  打印文字    
-                esc.addText("订单号：      "+orderDetailBean.getData().getNo()+"\n");   //  打印文字
+                esc.addText("订单号：      "+orderDetailBean.getData().getId()+"\n");   //  打印文字
                 esc.addText("--------------------------------\n");   //  打印文字
                 esc.addText("名称");   //  打印文字
                 //设置距左边绝对位置
@@ -604,7 +506,7 @@ public class ShopOrderDetailActivity extends BaseActivity
             Toast.makeText(ShopOrderDetailActivity.this, "设备未连接，请重新连接！", Toast.LENGTH_SHORT).show();   
             enterButton.setClickable(true);
             enterButton.setPressed(false);
-        }    
+        }    */
 	}
 	private void getConnect()
 	{
@@ -628,7 +530,6 @@ public class ShopOrderDetailActivity extends BaseActivity
                 enterButton.setPressed(false);
                 return;
             }    
-            //Toast.makeText(this, this.device.getName() + "连接成功！", Toast.LENGTH_SHORT).show();   
         } 
         sendPrint();
 	}

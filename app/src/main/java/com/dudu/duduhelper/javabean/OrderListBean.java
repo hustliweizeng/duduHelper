@@ -1,12 +1,13 @@
 package com.dudu.duduhelper.javabean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by lwz on 2016/8/30.
  * 订单列表
  */
-public class OrderListBean {
+public class OrderListBean implements  Serializable{
 
     private String code;
     private String msg;
@@ -36,7 +37,7 @@ public class OrderListBean {
         this.list = list;
     }
 
-    public static class ListBean {
+    public static class ListBean implements Serializable{
         private String id;
         private String subject;
         private String fee;

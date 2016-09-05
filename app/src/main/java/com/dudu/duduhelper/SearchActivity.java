@@ -1,6 +1,7 @@
 package com.dudu.duduhelper;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -25,8 +27,10 @@ import android.widget.Toast;
 import com.dudu.duduhelper.adapter.CouponSellHistoryAdapter;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.bean.GetCouponSellBean;
+import com.dudu.duduhelper.fragment.NewOrderFragment;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.OrderListBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -36,6 +40,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SearchActivity extends BaseActivity 
 {
@@ -65,107 +71,21 @@ public class SearchActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
-		keyword=getIntent().getStringExtra("keyword");
-		id=getIntent().getStringExtra("id");
-
+		orderAdapter = new ShopOrderAdapter(this);
+		//keyword=getIntent().getStringExtra("keyword");
 		initView();
-		//ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
-		if(TextUtils.isEmpty(id))
-		{
-			orderAdapter=new ShopOrderAdapter(this);
-			//initData();
-		}
-		else
-		{
-			getCashAdapter=new CouponSellHistoryAdapter(this);
-			allOrderListView.setAdapter(getCashAdapter);
-			initData1();
-		}
 		
 	}
-	private void initData1() 
-	{
-		// TODO Auto-generated method stub
-		loading_progressBar.setVisibility(View.VISIBLE);
-		loading_text.setText("加载中...");
-		RequestParams params = new RequestParams();
-		params.add("token", this.share.getString("token", ""));
-		params.add("id",id);
-		params.add("sn",keyword);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(SearchActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.get(ConstantParamPhone.IP+ConstantParamPhone.COUPON_RECORD_SEARCH, params,new TextHttpResponseHandler()
-		{
-
-			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-			{
-				reloadButton.setVisibility(View.VISIBLE);
-			}
-			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-			{
-				GetCouponSellBean getCouponSellBean=new Gson().fromJson(arg2,GetCouponSellBean.class);
-				if(!getCouponSellBean.getStatus().equals("1"))
-				{
-					MyDialog.showDialog(SearchActivity.this, "该账号已在其他手机登录，是否重新登录", false, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(SearchActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				else
-				{
-					if(getCouponSellBean.getData()!=null&&getCouponSellBean.getData().size()!=0)
-					{
-						getCashAdapter.addAll(getCouponSellBean.getData());
-						reloadButton.setVisibility(View.GONE);
-						loading_progressBar.setVisibility(View.GONE);
-						loading_text.setText("加载完啦！");
-						
-					}
-					else
-					{
-						loading_progressBar.setVisibility(View.GONE);
-						loading_text.setText("啥也没有！");
-						reloadButton.setVisibility(View.VISIBLE);
-					}
-				}
-			}
-			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-				orderallswipeLayout.setRefreshing(false);
-				ColorDialog.dissmissProcessDialog();
-			}
-		});
-	}
+	
 	private void initData() 
 	{
-		//loading_progressBar.setVisibility(View.VISIBLE);
-		//loading_text.setText("加载中...");
-		// TODO Auto-generated method stub
-		allOrderListView.setAdapter(orderAdapter);
+		loading_progressBar.setVisibility(View.VISIBLE);
+		loading_text.setText("加载中...");
+		
 		RequestParams params = new RequestParams();
-
-        HttpUtils.getConnection(context,params,ConstantParamPhone.ORDER_SEARCH, "get",new TextHttpResponseHandler()
+		params.add("id",keyword);
+        HttpUtils.getConnection(context,params,ConstantParamPhone.SEARCH_ORDER, "get",new TextHttpResponseHandler()
 		{
-
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
 			{
@@ -174,8 +94,31 @@ public class SearchActivity extends BaseActivity
 			}
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) {
+
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						OrderListBean data = new Gson().fromJson(arg2, OrderListBean.class);
+						orderAdapter.addAll(data.getList());
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
 
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				loading_progressBar.setVisibility(View.GONE);
+				allOrderListView.setAdapter(orderAdapter);
+			}
 		});
 	}
 
@@ -204,15 +147,13 @@ public class SearchActivity extends BaseActivity
 			public void onClick(View arg0) 
 			{
 				keyword=searchBarEdit.getText().toString().trim();
-				if(TextUtils.isEmpty(id))
-				{
+				if (TextUtils.isEmpty(keyword)){
+					Toast.makeText(context,"输入不能为空",Toast.LENGTH_SHORT).show();
+				}else {
 					orderAdapter.clear();
 					initData();
-				}
-				else
-				{
-					getCashAdapter.clear();
-					initData1();
+					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(searchBarEdit.getWindowToken(),0);
 				}
 			}
 		});
@@ -227,16 +168,11 @@ public class SearchActivity extends BaseActivity
 				if(arg1 ==EditorInfo.IME_ACTION_SEARCH)
 				{
 					keyword=searchBarEdit.getText().toString().trim();
-					if(TextUtils.isEmpty(id))
-					{
-						orderAdapter.clear();
-						initData();
-					}
-					else
-					{
-						getCashAdapter.clear();
-						initData1();
-					}
+					orderAdapter.clear();
+					initData();
+					//隐藏软键盘
+					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(searchBarEdit.getWindowToken(),0);
 	               return true;
 	            }
 				return false;
@@ -245,7 +181,6 @@ public class SearchActivity extends BaseActivity
 		footView = LayoutInflater.from(this).inflate(R.layout.activity_listview_foot, null);
 		loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
 		loading_text=(TextView) footView.findViewById(R.id.loading_text);
-		// TODO Auto-generated method stub
 		reloadButton=(Button) this.findViewById(R.id.reloadButton);
 		//数据重载按钮
 		reloadButton.setOnClickListener(new OnClickListener() 
@@ -253,18 +188,9 @@ public class SearchActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.showRoundProcessDialog(SearchActivity.this,R.layout.loading_process_dialog_color);
-				if(TextUtils.isEmpty(id))
-				{
-					orderAdapter.clear();
-					initData();
-				}
-				else
-				{
-					getCashAdapter.clear();
-					initData1();
-				}
+				orderAdapter.clear();
+				initData();
 			}
 		});
 		allOrderListView=(ListView) this.findViewById(R.id.allOrderListView);
@@ -277,10 +203,8 @@ public class SearchActivity extends BaseActivity
 			{
 				if(TextUtils.isEmpty(id))
 				{
-					// TODO Auto-generated method stub
 					Intent intent=new Intent(SearchActivity.this, ShopOrderDetailActivity.class);
-					//intent.putExtra("no", orderAdapter.getItem(position).getNo());
-					intent.putExtra("status", orderAdapter.getItem(position).getStatus());
+					intent.putExtra("info", orderAdapter.getInfo().get(position));
 					startActivityForResult(intent, 1);
 				}
 				else
@@ -300,18 +224,10 @@ public class SearchActivity extends BaseActivity
 			@Override
 			public void onRefresh() 
 			{
-				// TODO Auto-generated method stub
 				reftype=1;
-				if(TextUtils.isEmpty(id))
-				{
-					orderAdapter.clear();
-					initData();
-				}
-				else
-				{
-					getCashAdapter.clear();
-					initData1();
-				}
+				orderAdapter.clear();
+				initData();
+				ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}
