@@ -778,7 +778,6 @@ public class shopProductListActivity extends BaseActivity
 			Toast.makeText(shopProductListActivity.this, "您尚未选中任何商品", Toast.LENGTH_SHORT).show();
 			return;
 		}
-
 		ColorDialog.showRoundProcessDialog(shopProductListActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("id",ids);

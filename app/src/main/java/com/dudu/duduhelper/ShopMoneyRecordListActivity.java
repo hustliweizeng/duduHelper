@@ -12,6 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.MoneyHistoryAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -26,6 +27,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ShopMoneyRecordListActivity extends BaseActivity
@@ -36,14 +38,22 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 	private TextView calendarCenter;
 	private CalendarView calener;
 	private ListView lv_checckmoneyhisory;
+	private MoneyHistoryAdapter adapter;
+	private String downDate1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_money_record_list);
+		adapter = new MoneyHistoryAdapter(this);
+		//初始化当天日期
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		downDate1 = format.format(new Date());
+		LogUtil.d("收银流水",downDate1);
 		initHeadView("收银流水", true, false, 0);
 		initView();
+		getData();
 
 	}
 
@@ -62,7 +72,6 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 		});
 		//刚开始listview不可见
 		lv_checckmoneyhisory = (ListView) findViewById(R.id.lv_checckmoneyhisory);
-		//lv_checckmoneyhisory.setVisibility(View.GONE);
 
 	}
 
@@ -90,14 +99,12 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 			@Override
 			public void OnItemClick(Date selectedStartDate, Date selectedEndDate, Date downDate) {
 				//获取view中的按下日期
-				String downDate1 = calendar.getFormateDownDate();
-				//Log.d("账单流水",downDate1);
+				downDate1 = calendar.getFormateDownDate();
+				LogUtil.d("收银流水",downDate1);
 				calendarCenter.setText(downDate1);
 				//弹窗收回，请求数据
 				popupWindow.dismiss();
-				ColorDialog.showRoundProcessDialog(ShopMoneyRecordListActivity.this, R.layout.loading_process_dialog_color);
 				getData();
-
 			}
 		});
 	}
@@ -106,24 +113,24 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 	 * 异步请求数据
 	 */
 	private void getData() {
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams param =  new RequestParams();
-		//param.add("token",share.getString("token",""));
+		param.add("date","");
+		param.add("lastid","0");
 		HttpUtils.getConnection(context, param, ConstantParamPhone.GET_CASH_HISTORY, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("list",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
 						CashHistoryBean historyBean = new Gson().fromJson(s, CashHistoryBean.class);
-						
-
+						adapter.addAll(historyBean.getData());
 
 					}else {
 						//数据请求失败
@@ -134,22 +141,18 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 					e.printStackTrace();
 				}
 			}
-		});
-		
-		
-		
-		
-		
-		
-		
-		//String url = ConstantParamPhone.IP+;
-		//HttpUtils.getConnection(this,param,);
-		//数据请求成功后弹窗消失
-		//SystemClock.sleep(1000);
-		ColorDialog.dissmissProcessDialog();
 
-		lv_checckmoneyhisory.setVisibility(View.VISIBLE);
-		lv_checckmoneyhisory.setAdapter(new MoneyHistoryAdapter(this));
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				//数据请求成功后弹窗消失
+				ColorDialog.dissmissProcessDialog();
+				lv_checckmoneyhisory.setVisibility(View.VISIBLE);
+				//数据解析成功后，展示列表
+				lv_checckmoneyhisory.setAdapter(adapter);
+				
+			}
+		});
 	}
 
 }

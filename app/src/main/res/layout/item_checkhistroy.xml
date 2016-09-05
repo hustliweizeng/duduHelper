@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="2016-08-16"
         android:textColor="@color/text_bg_color"
         android:textSize="16sp"
@@ -69,9 +70,11 @@
     </LinearLayout>
     <ImageView
         android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider_line_color"/>
+        android:layout_height="0.5dp"
+        android:background="@color/text_hint_color"/>
 
 
 

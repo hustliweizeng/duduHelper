@@ -54,8 +54,8 @@ public class ShopGetInComeCashActivity extends BaseActivity
 	@Override
 	public void RightButtonClick()
 	{
-		// TODO Auto-generated method stub
-		Intent intent = new Intent(this,ShopGetCashhistoryListActivity.class);
+		//进入收款历史纪录
+		Intent intent = new Intent(this,ShopMoneyRecordListActivity.class);
 		startActivity(intent);
 	}
 

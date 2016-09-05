@@ -103,21 +103,21 @@ public class Util
     //时间戳转换字符串
     public static String DataConVert(String data)
     {
-//    	SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd " );
-//    	return format.format(new Date(Long.parseLong(data)));
-    	
     	return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.parseLong(data)));
     	
     }
   //时间戳转换字符串
     public static String DataConVert2(String data)
     {
-//    	SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd " );
-//    	return format.format(new Date(Long.parseLong(data)));
-    	
     	return new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date(Long.parseLong(data)));
     	
     }
+    //时分秒转换
+    public static String TimeConVert(String time)
+    {
+        return new SimpleDateFormat("HH:mm:ss").format(new Date(Long.parseLong(time)));
+    }
+    
     //MD5加密
     public static String md5(String string) 
     {
