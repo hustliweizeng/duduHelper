@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.OrderListBean;
 import com.dudu.duduhelper.javabean.OrderStatusBean;
@@ -54,7 +55,8 @@ public class ShopOrderAdapter extends BaseAdapter
 
 	@Override
 	public long getItemId(int position) {
-		return Long.parseLong(list.get(list.size()-1).getId());
+		return Long.parseLong(list.get(position).getId());
+		
 	}
 
 	@Override

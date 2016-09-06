@@ -125,7 +125,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 	private void getData() {
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams param =  new RequestParams();
-		param.add("date","");
+		param.add("date",downDate1);
 		param.add("lastid","0");
 		HttpUtils.getConnection(context, param, ConstantParamPhone.GET_CASH_HISTORY, "GET", new TextHttpResponseHandler() {
 			@Override

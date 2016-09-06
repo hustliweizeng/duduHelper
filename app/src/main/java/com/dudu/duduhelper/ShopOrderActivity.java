@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
@@ -90,6 +91,7 @@ public class ShopOrderActivity extends BaseActivity
 	private int statuss = -100;
 
     private String isnew="0";
+	//筛选的集合
 	private List<SelectorBean> list;
 	//第一次加载的数据条目
 	int pageLimit = 10;
@@ -172,9 +174,16 @@ public class ShopOrderActivity extends BaseActivity
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功,每次请求成功后，添加数据到集合
 						orderData = new Gson().fromJson(arg2, OrderListBean.class);
+						if (orderData.getList() == null || orderData.getList().size()== 0 ){
+							Toast.makeText(context,"当前没有要显示的数据",Toast.LENGTH_SHORT).show();
+							loading_text.setText("当前没有要显示的数据");
+							loading_progressBar.setVisibility(View.GONE);
+							return;
+						}
 						orderAdapter.addAll(orderData.getList());
-						//设置最后一个订单的id
+						//设置最后一个订单的id,
 						lastId = orderAdapter.getLastId();
+						
 						//LogUtil.d("lastid=", lastId);
 					}else {
 						//数据请求失败
@@ -283,7 +292,8 @@ public class ShopOrderActivity extends BaseActivity
 			{
 				Intent intent=new Intent(context, ShopOrderDetailActivity.class);
 				//传递当前条目的数据过去
-				intent.putExtra("info", orderAdapter.getInfo().get(position));
+				intent.putExtra("id", orderAdapter.getItemId(position));
+				LogUtil.d("POS",orderAdapter.getItemId(position)+"");
 				startActivityForResult(intent, 1);
 			}
 		});
@@ -400,16 +410,19 @@ public class ShopOrderActivity extends BaseActivity
 				{
 					source = list.get(position).id;
 					orderType.setText(list.get(position).name);
+					LogUtil.d("source",source+"");
 				}
 				if(action.equals("isNew"))
 				{
 					isNew = list.get(position).id;
 					productAction.setText(list.get(position).name);
+					LogUtil.d("isnew",statuss+"");
 				}
 				if(action.equals("status"))
 				{
 					statuss = list.get(position).id;
 					statusAction.setText(list.get(position).name);
+					LogUtil.d("status",statuss+"");
 				}
 				//条目点击之后，根据条件请求新的数据
 				ColorDialog.showRoundProcessDialog(ShopOrderActivity.this,R.layout.loading_process_dialog_color);

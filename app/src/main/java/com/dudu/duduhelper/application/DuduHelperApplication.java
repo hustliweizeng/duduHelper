@@ -80,7 +80,7 @@ public class DuduHelperApplication extends Application
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.cacheInMemory(true)
 				.cacheOnDisc(true)
-				.showImageOnLoading(R.drawable.icon_head)
+				//.showImageOnLoading(R.drawable.icon_head)//加载时候显示的图片
 				.showImageForEmptyUri(R.drawable.icon_head)
 				.showImageOnFail(R.drawable.icon_head)
 				.cacheInMemory(true).considerExifParams(true)

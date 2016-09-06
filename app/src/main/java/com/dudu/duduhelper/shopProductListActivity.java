@@ -808,6 +808,19 @@ public class shopProductListActivity extends BaseActivity
 						Toast.makeText(shopProductListActivity.this, "删除成功啦", Toast.LENGTH_SHORT).show();
 						isAllChoice = false;
 						productAllCheckImg.setImageResource(R.drawable.icon_xuanze);
+						editButton.setText("批量");
+						//不显示复选框
+						isShowChekckBox = false;
+						productAdapter.isShowCheckBox = isShowChekckBox;
+						//删除图片不可见
+						editProductLine.setVisibility(View.GONE);
+						//新建和添加按钮可见
+						addButton.setVisibility(View.VISIBLE);
+						//当前不是复选状态
+						isMulChoice = false;
+						//设置不可见，不选中
+						//productAdapter.isAllSelect = false;
+						productAdapter.notifyDataSetChanged();
 
 					}else {
 						//数据请求失败

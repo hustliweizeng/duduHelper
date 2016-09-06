@@ -110,8 +110,11 @@ public class ConstantParamPhone
 
    //收银相关
    public static final String  CREATE_PAY_PIC = "/api/app/cashier";//创建收银二维码
-   public static final String  CREATE_PAYMENT = "/api/app/cashier";//创建收银
     public static final String GET_CASH_HISTORY ="/api/app/cashier";//获取账单流水
+    public static final String PAY_BY_CAMERA = "/api/app/cashier/card";//扫码支付
+    public static final String CREATE_PAYMENT_ORDER = "/api/app/cashier/order";//生成扫码支付订单
+    public static final String GET_PAYMENT_RESULT = "/api/app/cashier/query";//查询付款结果
+    
 
     //提现
     public static final String  CREATE_GET_MONEY ="/api/app/outmoney";//创建提现
@@ -120,7 +123,7 @@ public class ConstantParamPhone
    //订单列表
    public static final String  GET_ORDER_LIST = "/api/app/order";//获取订单列表
     public static final String SEARCH_ORDER = "/api/app/order/search";//搜索订单
-    public static final String GET_ORDER_DETAIL = "/api/app/order";//订单详情
+    public static final String GET_ORDER_DETAIL = "/api/app/order/";//订单详情
 
 
     //获取省份
@@ -136,7 +139,7 @@ public class ConstantParamPhone
 
     //大牌抢购
     public static final String GET_BIG_BAND_LIST = "/api/app/panic/listinfo";//大牌抢购列表
-    public static final String GET_BIG_BAND_DETAIL = "/api/app/panic/panicinfo";//大牌抢购详情
+    public static final String GET_BIG_BAND_DETAIL = "/api/app/panic/panicinfo";//大牌抢购详情，也是大牌抢购编辑的接口
     public static final String DEL_BIG_BAND ="/api/app/panic/delpanic";//删除大牌抢购条目
 
    //优惠券列表

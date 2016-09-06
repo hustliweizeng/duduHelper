@@ -7,11 +7,15 @@ import java.util.Vector;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.bean.ScanInComeBean;
 import com.dudu.duduhelper.bean.SelectScanOrderBean;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.ConfirmView;
 import com.dudu.duduhelper.widget.DilatingDotsProgressBar;
@@ -61,8 +65,8 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 	private boolean isExpand=false;//是否已展开的状态
 	private int firstValue;
 	private String auth_code;
-	private String fee;
-	private String body;
+	private String price;
+	private String id;
 	private TextView discountScanNum;
 	private String ordernum;
 	private Button printButton;
@@ -78,6 +82,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 	
 	private Button goHomeBtn;
 	private Button goCashutton;
+	private ImageView imageCashCodeImg;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -92,7 +97,6 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 	}
 	private void initFilter() 
 	{
-		// TODO Auto-generated method stub
 		// 设置广播信息过滤      
 		IntentFilter intentFilter = new IntentFilter();     
 		intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);//开关状态
@@ -103,27 +107,28 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 
 	private void initViewData() 
 	{
-		// TODO Auto-generated method stub
-		if(!TextUtils.isEmpty(getIntent().getStringExtra("fee")))
+		//初始化价格
+		if(!TextUtils.isEmpty(getIntent().getStringExtra("price")))
 		{
-		   fee=getIntent().getStringExtra("fee");
-		   discountScanMoney.setText(fee+"元");
+		   price = getIntent().getStringExtra("price");
+		   discountScanMoney.setText(price+"元");
 		}
 		else
 		{
 			setFailResult("扫码失败"); 
 			return;
 		}
-		if(!TextUtils.isEmpty(getIntent().getStringExtra("body")))
+		//初始化描述信息
+		if(!TextUtils.isEmpty(getIntent().getStringExtra("id")))
 		{
-			body=getIntent().getStringExtra("body");
-			discountScanDiscriptText.setText(body);
+			id=getIntent().getStringExtra("id");
 		}
 		else
 		{
 			setFailResult("扫码失败"); 
 			return;
 		}
+		//初始化结果码
 		if(!TextUtils.isEmpty(getIntent().getStringExtra("result")))
 		{
 			auth_code=getIntent().getStringExtra("result");
@@ -138,19 +143,19 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
  
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
+		//返回首页
 		goHomeBtn = (Button) this.findViewById(R.id.goHomeButton);
+		//继续收银
 		goCashutton = (Button) this.findViewById(R.id.goCashutton);
 		goHomeBtn.setOnClickListener(new OnClickListener()
 		{
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(ShopDiscountScanSucessActivity.this,MainActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				finish();
+			Intent intent = new Intent(ShopDiscountScanSucessActivity.this,MainActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			finish();
 			}
 		});
 		goCashutton.setOnClickListener(new OnClickListener() 
@@ -159,17 +164,21 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(ShopDiscountScanSucessActivity.this,ShopGetInComeCashActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				finish();
+			Intent intent = new Intent(ShopDiscountScanSucessActivity.this,ShopGetInComeCashActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			finish();
 			}
 		});
-		
+		//收款金额
 		discountScanMoney=(TextView) this.findViewById(R.id.discountScanMoney);
+		//收款时间
 		discountScanTime=(TextView) this.findViewById(R.id.discountScanTime);
+		//打印按钮
 		printButton=(Button) this.findViewById(R.id.printButton);
+		//显示结果
+		imageCashCodeImg = (ImageView) findViewById(R.id.imageCashCodeImg);
+		
 		discountScanNum=(TextView) this.findViewById(R.id.discountScanNum);
 		descriptionRelayout=(RelativeLayout) this.findViewById(R.id.descriptionRelayout);
 		discountScanDiscriptText=(TextView) this.findViewById(R.id.discountScanDiscriptText);
@@ -194,19 +203,8 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
         mDilatingDotsProgressBar.showNow();
 		confirmView = (ConfirmView) findViewById(R.id.confirm_view);
 		confirmView.animatedWithState(ConfirmView.State.Progressing);
+		//付款结果
 		result=(TextView) findViewById(R.id.result);
-//		result.setText(getIntent().getStringExtra("result"));
-//		result.setOnClickListener(new OnClickListener() 
-//		{
-//			
-//			@Override
-//			public void onClick(View v) 
-//			{
-//				// TODO Auto-generated method stub
-//				mDilatingDotsProgressBar.hideNow();
-//				confirmView.animatedWithState(ConfirmView.State.Success);
-//			}
-//		});
 		descriptionRelayout.setOnClickListener(new View.OnClickListener() 
 		{
 
@@ -297,174 +295,43 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 	//请求扫码支付接口
 	private void getInComeResult() 
 	{
-		// TODO Auto-generated method stub
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.add("token", this.share.getString("token", ""));
-		params.add("fee",fee);
-		params.add("body",body);
-		params.add("auth_code",auth_code);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopDiscountScanSucessActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.post(ConstantParamPhone.IP+ConstantParamPhone.SCAN_CASH_ORDER, params,new TextHttpResponseHandler()
-		{
+		params.put("id",id);
+		params.put("code",auth_code);
+		LogUtil.d("ss","id="+id+"//code="+auth_code);
+		HttpUtils.getConnection(context, params, ConstantParamPhone.PAY_BY_CAMERA, "post", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-			{
-				Toast.makeText(ShopDiscountScanSucessActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
-			}
-			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-			{
-				ScanInComeBean scanInComeBean=new Gson().fromJson(arg2,ScanInComeBean.class);
-				if(!TextUtils.isEmpty(scanInComeBean.getOrder_flag()))
-				{
-					discountScanNum.setText(scanInComeBean.getOrder_flag());
-					ordernum=scanInComeBean.getOrder_flag();
-				}
-				if(!TextUtils.isEmpty(scanInComeBean.getTime_flag()))
-				{
-					discountScanTime.setText(Util.DataConVertMint(scanInComeBean.getTime_flag()));
-				}
-				if(scanInComeBean.getReturn_code().equals("FAIL"))
-				{
-					//Toast.makeText(DiscountScanSucessActivity.this, scanInComeBean.getReturn_msg(), Toast.LENGTH_SHORT).show();
-					setFailResult("scanInComeBean.getReturn_msg()");
-				}
-				if(scanInComeBean.getResult_code().equals("FAIL"))
-				{
-					//接口返回错误,系统超时，请稍后查询订单状态
-					if(scanInComeBean.getErr_code().equals("SYSTEMERROR"))
-					{
-						time.start();
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						LogUtil.d("success",s);
+						//设置页面信息
+						result.setText("收款成功！");
+						//设置成功的图片
+						imageCashCodeImg.setImageResource(R.drawable.icon_success);
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						LogUtil.d("fail",s);
+						Toast.makeText(context,s,Toast.LENGTH_LONG).show();
 					}
-					//参数错误
-					if(scanInComeBean.getErr_code().equals("PARAM_ERROR"))
-					{
-						setFailResult("参数错误");
-					}
-					//订单已支付
-					if(scanInComeBean.getErr_code().equals("ORDERPAID"))
-					{
-						setFailResult("订单已支付");
-					}
-					//商户无权限
-					if(scanInComeBean.getErr_code().equals("NOAUTH"))
-					{
-						setFailResult("商户无权限");
-					}
-					//用户的条码已经过期
-					if(scanInComeBean.getErr_code().equals("AUTHCODEEXPIRE"))
-					{
-						setFailResult("用户的条码已经过期");
-					}
-					//余额不足
-					if(scanInComeBean.getErr_code().equals("NOTENOUGH"))
-					{
-						setFailResult("余额不足");
-					}
-					//不支持卡类型
-					if(scanInComeBean.getErr_code().equals("NOTSUPORTCARD"))
-					{
-						setFailResult("不支持卡类型");
-					}
-					//订单已关闭
-					if(scanInComeBean.getErr_code().equals("ORDERCLOSED"))
-					{
-						setFailResult("订单已关闭");
-					}
-					//订单已撤销
-					if(scanInComeBean.getErr_code().equals("ORDERREVERSED"))
-					{
-						setFailResult("订单已撤销");
-					}
-					//银行端超时，请稍后查询订单状态
-					if(scanInComeBean.getErr_code().equals("BANKERROR"))
-					{
-						//selectOrderStatus();
-						time.start();
-					}
-					//用户支付中，需要输入密码
-					if(scanInComeBean.getErr_code().equals("USERPAYING"))
-					{
-						//result.setText("等待用户输入密码");
-						time.start();
-					}
-					//每个二维码仅限使用一次，请刷新再试
-					if(scanInComeBean.getErr_code().equals("AUTH_CODE_ERROR"))
-					{
-						setFailResult("每个二维码仅限使用一次，请刷新再试");
-					}
-					//请扫描微信支付被扫条码/二维码
-					if(scanInComeBean.getErr_code().equals("AUTH_CODE_INVALID"))
-					{
-						setFailResult("请扫描微信支付被扫条码/二维码");
-					}
-					//XML格式错误
-					if(scanInComeBean.getErr_code().equals("XML_FORMAT_ERROR"))
-					{
-						setFailResult("XML格式错误");
-					}
-					//请使用post方法
-					if(scanInComeBean.getErr_code().equals("REQUIRE_POST_METHOD"))
-					{
-						setFailResult("请使用post方法");
-					}
-					//签名错误
-					if(scanInComeBean.getErr_code().equals("SIGNERROR"))
-					{
-						setFailResult("签名错误");
-					}
-					//缺少参数
-					if(scanInComeBean.getErr_code().equals("LACK_PARAMS"))
-					{
-						setFailResult("缺少参数");
-					}
-					//编码格式错误
-					if(scanInComeBean.getErr_code().equals("NOT_UTF8"))
-					{
-						setFailResult("编码格式错误");
-					}
-					//支付帐号错误
-					if(scanInComeBean.getErr_code().equals("BUYER_MISMATCH"))
-					{
-						setFailResult("支付帐号错误");
-					}
-					//APPID不存在
-					if(scanInComeBean.getErr_code().equals("APPID_NOT_EXIST"))
-					{
-						setFailResult("APPID不存在");
-					}
-					//MCHID不存在	
-					if(scanInComeBean.getErr_code().equals("MCHID_NOT_EXIST"))
-					{
-						setFailResult("MCHID不存在");
-					}
-					//商户订单号重复
-					if(scanInComeBean.getErr_code().equals("OUT_TRADE_NO_USED"))
-					{
-						setFailResult("商户订单号重复");
-					}
-					//appid和mch_id不匹配
-					if(scanInComeBean.getErr_code().equals("APPID_MCHID_NOT_MATCH"))
-					{
-						setFailResult("appid和mch_id不匹配");
-					}
-				}
-				if(scanInComeBean.getResult_code().equals("SUCCESS")&&scanInComeBean.getReturn_code().equals("SUCCESS"))
-				{
-					setSucessResult();
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
-			
+
 			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-				
+			public void onFinish() {
+				super.onFinish();
+				ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}
@@ -474,14 +341,9 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 		// TODO Auto-generated method stub
 		result.setText("正在查询支付结果");
 		RequestParams params = new RequestParams();
-		params.add("token", this.share.getString("token", ""));
-		params.add("order",ordernum);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopDiscountScanSucessActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.post(ConstantParamPhone.IP+ConstantParamPhone.GET_SCAN_ORDER, params,new TextHttpResponseHandler()
+		params.add("id",id );
+		params.add("code", this.share.getString("token", ""));
+        HttpUtils.getConnection(context,params,ConstantParamPhone.GET_SCAN_ORDER, "get",new TextHttpResponseHandler()
 		{
 
 			@Override
@@ -492,73 +354,6 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				SelectScanOrderBean selectScanOrderBean=new Gson().fromJson(arg2,SelectScanOrderBean.class);
-				if(selectScanOrderBean.getReturn_code().equals("FAIL"))
-				{
-					//Toast.makeText(DiscountScanSucessActivity.this, scanInComeBean.getReturn_msg(), Toast.LENGTH_SHORT).show();
-					setFailResult("scanInComeBean.getReturn_msg()");
-				}
-				if(selectScanOrderBean.getResult_code().equals("FAIL"))
-				{
-					setFailResult("系统错误");
-				}
-				if(selectScanOrderBean.getResult_code().equals("SUCCESS")&&selectScanOrderBean.getReturn_code().equals("SUCCESS"))
-				{
-					if(!TextUtils.isEmpty(selectScanOrderBean.getTrade_state()))
-					{
-						//支付成功
-						if(selectScanOrderBean.getTrade_state().equals("SUCCESS"))
-						{
-						   setSucessResult();
-						   time.cancel();
-						}
-						//转入退款
-						if(selectScanOrderBean.getTrade_state().equals("REFUND"))
-						{
-							time.cancel();
-						}
-						//未支付
-						if(selectScanOrderBean.getTrade_state().equals("NOTPAY"))
-						{
-							setFailResult(selectScanOrderBean.getTrade_state_desc());
-							time.cancel();
-						}
-						//已关闭
-						if(selectScanOrderBean.getTrade_state().equals("CLOSED"))
-						{
-							setFailResult("订单已关闭");
-							time.cancel();
-						}
-						//已撤销
-						if(selectScanOrderBean.getTrade_state().equals("REVOKED"))
-						{
-							setFailResult("订单已撤销");
-							time.cancel();
-						}
-						//等待用户输入密码
-						if(selectScanOrderBean.getTrade_state().equals("USERPAYING"))
-						{
-							result.setText("用户支付中");
-						}
-						if(selectScanOrderBean.getTrade_state().equals("PAYERROR"))
-						{
-							if(TextUtils.isEmpty(selectScanOrderBean.getTrade_state_desc()))
-							{
-								setFailResult("收款失败");
-							}
-							else
-							{
-								setFailResult(selectScanOrderBean.getTrade_state_desc());
-							}
-							time.cancel();
-						}
-					}
-					else
-					{
-						setFailResult("收款失败");
-						time.cancel();
-					}
-				}
 			}
 			
 			@Override
@@ -583,12 +378,12 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				// TODO Auto-generated method stub
-				if(!TextUtils.isEmpty(fee)&&!TextUtils.isEmpty(body))
+				if(!TextUtils.isEmpty(price)&&!TextUtils.isEmpty(id))
 				{
 					Intent intent=new Intent(ShopDiscountScanSucessActivity.this,MipcaActivityCapture.class);
 					intent.putExtra("action", "income");
-					intent.putExtra("fee", fee);
-					intent.putExtra("body", body);
+					intent.putExtra("fee", price);
+					intent.putExtra("body", id);
 					startActivity(intent);
 					ShopDiscountScanSucessActivity.this.finish();
 				}
@@ -783,7 +578,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
                   esc.addText("金额\n");
                   esc.addText("商家收款");
                   esc.addSetAbsolutePrintPosition((short) 300);
-              	  esc.addText(fee+"\n");
+              	  esc.addText(price+"\n");
               	
 //                  esc.addText("\n\n商家优惠");   //  打印文字
 //                  esc.addSetAbsolutePrintPosition((short) 300);
@@ -798,7 +593,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
                   esc.addTurnEmphasizedModeOnOrOff(ENABLE.ON);//设置加粗
                   esc.addText("实收金额");
                   esc.addSetAbsolutePrintPosition((short) 300);
-                  esc.addText(fee+"\n\n");   //  打印文字
+                  esc.addText(price+"\n\n");   //  打印文字
                   
                   esc.addSelectJustification(JUSTIFICATION.CENTER);//设置打印居中
                   esc.addTurnEmphasizedModeOnOrOff(ENABLE.OFF);

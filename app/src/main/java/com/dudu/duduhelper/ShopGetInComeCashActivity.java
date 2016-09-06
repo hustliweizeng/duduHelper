@@ -17,13 +17,20 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.CreateCashPic;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyKeyBoard;
 import com.dudu.duduhelper.widget.MyKeyBoard.OnKeyBoardClickListener;
+import com.example.qr_codescan.MipcaActivityCapture;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ShopGetInComeCashActivity extends BaseActivity
 {
@@ -37,13 +44,14 @@ public class ShopGetInComeCashActivity extends BaseActivity
 	private LinearLayout scanHexiaoButton;
 	private RelativeLayout hexiaoRelLayout;
 	private LinearLayout wuzhelin;
+	private String orderId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_get_in_come_cash);
-		initHeadView("收款", true, true, R.drawable.icon_bangzhutouming);
+		initHeadView("收款", true, true, R.drawable.icon_historical);
 		if(getIntent().getStringExtra("action")!=null)
 		{
 			action = getIntent().getStringExtra("action");
@@ -216,7 +224,6 @@ public class ShopGetInComeCashActivity extends BaseActivity
 	//
 	private void initData()
 	{
-		// TODO Auto-generated method stub
 		if(TextUtils.isEmpty(getcashmoneyedit.getText().toString()))
 		{
 			Toast.makeText(ShopGetInComeCashActivity.this, "请填写收款金额", Toast.LENGTH_SHORT).show();
@@ -236,9 +243,8 @@ public class ShopGetInComeCashActivity extends BaseActivity
 		ColorDialog.showRoundProcessDialog(ShopGetInComeCashActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("fee",getcashmoneyedit.getText().toString());
-		params.add("body","");
-		//params.setContentEncoding("UTF-8");
-		HttpUtils.getConnection(context,params,ConstantParamPhone.CREATE_PAY_PIC, "post",new TextHttpResponseHandler()
+		params.add("body","nihao");
+		HttpUtils.getConnection(context,params,ConstantParamPhone.CREATE_PAYMENT_ORDER, "post",new TextHttpResponseHandler()
 		{
 
 			@Override
@@ -249,11 +255,32 @@ public class ShopGetInComeCashActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
-				Log.d("进入二维码页面",arg2);
-				//进入二维码收款页面
-				Intent intent=new Intent(context,ShopGetCashCodeActivity.class);
-				intent.putExtra("money","888");
-				startActivity(intent);
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+							/*"id": "20160906154048306",
+								"time_create": "1473147648",
+								"code": "SUCCESS",
+								"msg": "OK"*/
+						orderId = object.getString("id");
+						//进入（扫码收款页面）
+						Intent intent=new Intent(context,MipcaActivityCapture.class);
+						intent.putExtra("price",getcashmoneyedit.getText().toString());
+						intent.putExtra("id",orderId);
+						intent.putExtra("action","income");
+						startActivity(intent);
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
 
 			}
 			@Override

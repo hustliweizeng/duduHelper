@@ -268,7 +268,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:text="请选择商品下架时间"
+                        android:text="请选择商品上架时间"
                         android:textColor="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>

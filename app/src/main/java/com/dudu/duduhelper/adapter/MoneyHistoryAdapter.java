@@ -48,7 +48,7 @@ public class MoneyHistoryAdapter extends BaseAdapter {
             for (int i = 0; i< list.size(); i++){
                 //每级条目数相加得出总条目数
                 count += list.get(i).getOrder().size();
-                positions = new int[list.size()-1];
+                positions = new int[list.size()];
                 //记录二级目录的位置
                 positions[i] = count;
                 LogUtil.d("position",count+"");

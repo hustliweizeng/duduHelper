@@ -31,6 +31,7 @@ import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
@@ -45,6 +46,8 @@ import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -118,15 +121,24 @@ public class ShopProductAddActivity extends BaseActivity
 			productYuanPriceEditText.setText(data.getPrice());
 			productNowPriceEditText.setText(data.getCurrent_price());
 			productKuCunNumEditText.setText(data.getStock());
-			//tv_startTime_shop_product.setText(data.getRule());
+			//设置开始结束时间
+			if (!TextUtils.isEmpty(data.getRule())){
+				try {
+					String begin = new JSONObject(data.getRule()).getString("begin");
+					String end = new JSONObject(data.getRule()).getString("end");
+					tv_startTime_shop_product.setText(begin);
+					tv_endTime_shop_product.setText(end);
+				}catch (Exception e){
+
+				}
+			}
 			productDetaliTextView.setText(data.getExplain());
 		}
 					
 	}
-	
+	//提交修改的信息
 	private void SubmitProduct() 
 	{
-		// TODO Auto-generated method stub
 		
 		if(TextUtils.isEmpty(productNameEditText.getText().toString().trim()))
 		{
@@ -154,6 +166,11 @@ public class ShopProductAddActivity extends BaseActivity
 			return;
 		}
 		if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
+		{
+			Toast.makeText(ShopProductAddActivity.this, "请输入商品上架时间",Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if(TextUtils.isEmpty(tv_endTime_shop_product.getText().toString().trim()))
 		{
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品下架时间",Toast.LENGTH_SHORT).show();
 			return;
@@ -183,12 +200,7 @@ public class ShopProductAddActivity extends BaseActivity
 		{
 			params.add("status","2");
 		}
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopProductAddActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.post(ConstantParamPhone.IP+ConstantParamPhone.EDIT_PRODUCT_INFO, params,new TextHttpResponseHandler(){
+        HttpUtils.getConnection(context,params,ConstantParamPhone.GET_BIG_BAND_DETAIL, "post",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -198,23 +210,26 @@ public class ShopProductAddActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				ResponsBean responsBean=new Gson().fromJson(arg2,ResponsBean.class);
-				if(!responsBean.getStatus().equals("1"))
-				{
-					Toast.makeText(ShopProductAddActivity.this, responsBean.getInfo(), Toast.LENGTH_SHORT).show();
-				}
-				else
-				{
-					Toast.makeText(ShopProductAddActivity.this, "修改成功啦", Toast.LENGTH_SHORT).show();
-					Intent intent=new Intent();  
-	                setResult(RESULT_OK, intent);  
-	                finish();
+
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.dissmissProcessDialog();
 			}
 		});

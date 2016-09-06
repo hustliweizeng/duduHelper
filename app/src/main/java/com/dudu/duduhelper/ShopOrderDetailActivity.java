@@ -79,8 +79,8 @@ public class ShopOrderDetailActivity extends BaseActivity
 	private RelativeLayout couponNumLin;
 	private RelativeLayout couponStatusLin;
 	private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	private OrderListBean.ListBean data;
 	private OrderDetailBean.DataBean orderData;
+	private String id;
 
 
 	@Override
@@ -89,9 +89,9 @@ public class ShopOrderDetailActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_order_detail);
 		initHeadView("订单详情",true, false,0);
-		data = (OrderListBean.ListBean) getIntent().getSerializableExtra("info");
+		id = getIntent().getLongExtra("id",0)+"";
+		LogUtil.d("id",id);
 		orderDetailAdapter=new OrderDetailAdapter(this);
-		DuduHelperApplication.getInstance().addActivity(this);
 		initFilter();
 		initView();
 		initData();
@@ -109,13 +109,13 @@ public class ShopOrderDetailActivity extends BaseActivity
 
 	private void initData() 
 	{
-		if (TextUtils.isEmpty(data.getId())){
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		if (TextUtils.isEmpty(id)){
 			Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		RequestParams params = new RequestParams();
-		params.add("id",data.getId());
-		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_ORDER_DETAIL, "GET", new TextHttpResponseHandler() {
+		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_ORDER_DETAIL+id, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络错误，稍后再试",Toast.LENGTH_SHORT).show();
@@ -141,6 +141,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 			@Override
 			public void onFinish() {
 				super.onFinish();
+				ColorDialog.dissmissProcessDialog();
 				fillData();
 			}
 		});

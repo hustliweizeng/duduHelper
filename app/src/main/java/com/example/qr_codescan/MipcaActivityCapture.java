@@ -23,7 +23,10 @@ import android.widget.Toast;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.ShopDiscountScanSucessActivity;
+import com.dudu.duduhelper.ShopGetCashCodeActivity;
 import com.dudu.duduhelper.ShopGetInComeCashActivity;
+import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.javabean.CreateCashPic;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.mining.app.zxing.camera.CameraManager;
@@ -54,8 +57,6 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 	private String action;
 	private String orderName;
 	private String orderCash;
-	private String fee;
-	private String body;
 	private TextView moneyText;
 	
 	private TextView scanText;
@@ -63,6 +64,8 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 	private ImageView btnIconImg;
 	private LinearLayout getCashButton;
 	private TextView inputcodeBtn;
+	private String orderId;
+	private String price;
 	//private LinearLayout scanmycodebtn;
 
 	/** Called when the activity is first created. */
@@ -70,17 +73,18 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_capture);
-		
 		//通过其他界面跳转过来携带的参数
+		orderId = getIntent().getStringExtra("id");
+		price = getIntent().getStringExtra("price");
 		action = getIntent().getStringExtra("action");
-		orderName = getIntent().getStringExtra("orderName");
-		orderCash = getIntent().getStringExtra("orderCash");
 
-		fee = getIntent().getStringExtra("fee");
-		body = getIntent().getStringExtra("body");
-		if (action.equals("income")) 
+		initHeadView();
+	}
+
+	private void initHeadView() {
+		if (action.equals("income"))
 		{
-			initHeadView("收款", true, true, R.drawable.icon_bangzhutouming);
+			initHeadView("收款", true, true, R.drawable.icon_historical);
 		}
 		else
 		{
@@ -98,44 +102,45 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		scanText = (TextView) this.findViewById(R.id.scanText);
 		inputcodeBtn = (TextView) this.findViewById(R.id.inputcodeBtn);
 		btnIconImg=(ImageView) this.findViewById(R.id.btnIconImg);
+		//二维码收款页面
 		getCashButton= (LinearLayout) this.findViewById(R.id.getCashButton);
-		getCashButton.setOnClickListener(new OnClickListener() 
+		getCashButton.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
-				if(action.equals("income"))
-				{
-					finish();
-				}
-				else
-				{
-					Intent intent = new Intent(MipcaActivityCapture.this,ShopGetInComeCashActivity.class);
-					intent.putExtra("action", "hexiao");
-					startActivity(intent);
-				}
-			}
-		});
-		inputcodeBtn.setOnClickListener(new OnClickListener() 
-		{
-			
-			@Override
-			public void onClick(View v) 
+			if(action.equals("income"))
 			{
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(MipcaActivityCapture.this,ShopGetInComeCashActivity.class);
-				intent.putExtra("action", "getcashcode");
-				intent.putExtra("fee", fee);
-				intent.putExtra("body", body);
+				Intent intent = new Intent(context, ShopGetCashCodeActivity.class);
+				intent.putExtra("price",price);
 				startActivity(intent);
-				finish();
+			}
+			else
+			{
+				Intent intent = new Intent(MipcaActivityCapture.this,ShopGetInComeCashActivity.class);
+				intent.putExtra("action", "hexiao");
+				startActivity(intent);
+			}
 			}
 		});
-		if (action.equals("income")) 
+		inputcodeBtn.setOnClickListener(new OnClickListener()
 		{
-			moneyText.setText("¥ "+fee);
+
+			@Override
+			public void onClick(View v)
+			{
+			Intent intent = new Intent(MipcaActivityCapture.this,ShopGetInComeCashActivity.class);
+			intent.putExtra("action", "getcashcode");
+			intent.putExtra("fee", price);
+			//intent.putExtra("body", body);
+			startActivity(intent);
+			finish();
+			}
+		});
+		if (action.equals("income"))
+		{
+			moneyText.setText("￥ "+price);
 		}
 		else
 		{
@@ -146,6 +151,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 			btnIconImg.setImageResource(R.drawable.icon_tiaoxingma);
 		}
 	}
+	
 
 	@Override
 	public void onResume() {
@@ -197,6 +203,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		inactivityTimer.onActivity();
 		playBeepSoundAndVibrate();
 		String resultString = result.getText();
+		LogUtil.d("success",resultString+"");
 		if (resultString.equals("")) {
 			Toast.makeText(MipcaActivityCapture.this, "扫描失败！",
 					Toast.LENGTH_SHORT).show();
@@ -204,21 +211,14 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		} else {
 			//进入扫码成功页面
 			Intent intent = null;
-
 			if (action.equals("income")) 
 			{
 				intent = new Intent(MipcaActivityCapture.this,ShopDiscountScanSucessActivity.class);
-				intent.putExtra("fee", fee);
-				intent.putExtra("body", body);
+				intent.putExtra("price", price);
+				intent.putExtra("id",orderId);
+				intent.putExtra("result", resultString);
 			}
-			else
-			{
 
-			}
-			
-			String[] results = resultString.split("sn=");
-			String a = results[(results.length - 1)];
-			intent.putExtra("result", results[(results.length - 1)]);
 			startActivity(intent);
 		}
 		MipcaActivityCapture.this.finish();

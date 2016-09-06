@@ -19,6 +19,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
+import org.json.JSONObject;
+
 public class ShopProductDetailActivity extends BaseActivity
 {
 	private Button editproductinfoButton;
@@ -82,8 +84,15 @@ public class ShopProductDetailActivity extends BaseActivity
 		imageLoader.displayImage(productinfo.getThumbnail(), imageAware);
 		productinfoName.setText(productinfo.getName());
 		String open_time = productinfo.getRule();
-		
-		productinfoTime.setText(open_time);//Util.DataConVert2(productinfo.getTime_start())+"-"+Util.DataConVert2(productinfo.getTime_end()));
+		try {
+
+			String begin = new JSONObject(open_time).getString("begin");
+			String end = new JSONObject(open_time).getString("end");
+			productinfoTime.setText(begin+"\n"+end);//Util.DataConVert2(productinfo.getTime_start())+"-"+Util.DataConVert2(productinfo.getTime_end()));
+
+		}catch (Exception e){
+			System.out.print(e);
+		}
 		sold=Float.parseFloat(productinfo.getSaled_count());
 		
 		//编辑按钮,进入商品编辑页面
