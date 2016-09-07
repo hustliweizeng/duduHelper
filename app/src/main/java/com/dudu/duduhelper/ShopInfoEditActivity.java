@@ -1,6 +1,7 @@
 package com.dudu.duduhelper;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.Utils.ViewUtils;
 import com.dudu.duduhelper.adapter.ShopCategoryAdapter;
 import com.dudu.duduhelper.adapter.ShopCircleAdapter;
 import com.dudu.duduhelper.adapter.ShopImageAdapter;
@@ -29,6 +32,7 @@ import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.ShopCategoryBean;
 import com.dudu.duduhelper.javabean.ShopCricleBean;
 import com.dudu.duduhelper.javabean.ShopInfoBean;
+import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyAlertDailog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
@@ -40,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -78,6 +83,11 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     private int category_id;
     private int circle_id;
     private SharedPreferences sharePre;
+    private String category_name;
+    private String circle_name;
+    private String backtUrl;
+    private String uploadPicPath;
+    private StringBuffer urls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,17 +160,16 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     //请求网络数据
     private void requstHttpData() {
         //如果超时了，加载网络数据
+        ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
         RequestParams params = new RequestParams();
         HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SHOP_INFO, "GET", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
                 Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onSuccess(int i, Header[] headers, String s) {
                 //LogUtil.d("info",s);
-
                 //保存信息到本地,标记时间戳
                 sharePre.edit().putLong("update_time", System.currentTimeMillis()).commit();
                 sharePre.edit().putString("info",s).commit();
@@ -181,6 +190,12 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                ColorDialog.dissmissProcessDialog();
+            }
         });
     }
 
@@ -191,7 +206,6 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         ImageLoader.getInstance().displayImage(info.getLogo(),iv_logo_shop_info);
         //设置相册第一张
         ImageLoader.getInstance().displayImage((String)info.getImages(),iv_img_shop_info);
-
         ed_title_shop_info.setText(info.getName());
         tv_class_shop_info.setText(info.getCategory_name());
         tv_shopcircle_shop_info.setText(info.getArea_name());
@@ -327,6 +341,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 tv_class_shop_info.setText(category.get(poistion).getName());
                 //设置选中的行业id
                 category_id = Integer.parseInt(category.get(poistion).getId());
+                category_name = category.get(poistion).getName();
             }
         });
 
@@ -344,6 +359,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 tv_shopcircle_shop_info.setText(category.get(poistion).getName());
                 //设置选中的行业id
                 circle_id = Integer.parseInt(category.get(poistion).getId());
+                circle_name = category.get(poistion).getName();
             }
         });
 
@@ -360,7 +376,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         String category = tv_class_shop_info.getText().toString();
         String circle = tv_shopcircle_shop_info.getText().toString();
         String mobile = ed_mobile_shop_info.getText().toString();
-        String address = ed_mobile_shop_info.getText().toString();
+        String address = ed_address_shop_info.getText().toString();
         String descrip = ed_des_shop_info.getText().toString().trim();
         String open_time = tv_opentime_shop_info.getText().toString();
         //非空判断
@@ -369,26 +385,18 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
             Toast.makeText(context,"内容填写不完整",Toast.LENGTH_LONG).show();
             return;
         }
-        /* "name" => ""
-        "logo" => ""
-        "contact" => ""
-        "address" => ""
-        "description" => ""
-        "images" => ""
-        "category" => ""
-        "area" => ""
-        "open_time" => ""*/
         //修改哪个上传哪个
         RequestParams params = new RequestParams();
         params.put("name",title);
-        //params.put("logo",);
+        params.put("logo",uploadPicPath);
         params.put("contact",mobile);
         params.put("address",address);
         params.put("description",descrip);
-        //params.put("images",);
+        params.put("images",urls);
         params.put("category",category_id);
         params.put("area",circle_id);
         params.put("open_time",open_time);
+        System.out.print(uploadPicPath+"=="+urls);
 
         HttpUtils.getConnection(context, params, ConstantParamPhone.SAVE_SHOP_INFO, "POST", new TextHttpResponseHandler() {
             @Override
@@ -435,23 +443,34 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 case 2:
                     //裁剪结束后返回
                     iv_logo_shop_info.setImageURI(urilocal);
+                    //子线程上传图片，上传完毕handler告诉主线程
+                    String imgPath = ViewUtils.getRealFilePath(context,urilocal);
+                    uploadPicPath = ViewUtils.uploadImg(context,imgPath);
+                    LogUtil.d("logo",uploadPicPath);
 
                     break;
                 case 5:
                     //店家环境相册
                     picsPath = data.getStringArrayListExtra("pics");
-                   // LogUtil.d("pics",picsPath.size()-1+"");
                     //设置封面照片
                     iv_img_shop_info.setImageBitmap(BitmapFactory.decodeFile(picsPath.get(0)));
                     //设置相册数量
                     tv_imgNum_shop_info.setText("相册共"+ picsPath.size()+"张");
+                    //上传相册图片
+                    urls = new StringBuffer();
+                    for (String img:picsPath){
+                        urls.append(ViewUtils.uploadImg(context,img)+",");
+                    }
+                    LogUtil.d("pics", urls +"");
                 default:
                     break;
             }
 
         }
     }
-        /**
+
+
+    /**
          * 根据uri地址裁剪图片，缩放
          * @param uri
          */
@@ -488,4 +507,9 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         return dateFormat.format(date) + ".jpg";
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
 }

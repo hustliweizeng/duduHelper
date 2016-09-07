@@ -297,9 +297,6 @@ public class ShopImageViewBrower extends BaseActivity
 		//传递数据
 		intent.putExtra("pics", (Serializable) uplodImgs);
 		setResult(RESULT_OK,intent);
-
-
-
 		//通过asynHttpclient上传
 		RequestParams params = new RequestParams();
 		//获取token
