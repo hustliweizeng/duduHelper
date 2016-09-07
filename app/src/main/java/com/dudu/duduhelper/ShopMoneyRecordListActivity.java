@@ -43,6 +43,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 	private String downDate1;
 	private SimpleDateFormat format;
 	private CalendarView calendar;
+	private TextView tv_msg;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -53,6 +54,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 		//初始化当天日期
 		format = new SimpleDateFormat("yyyy-MM-dd");
 		downDate1 = format.format(new Date());
+		downDate1 ="";
 		LogUtil.d("收银流水",downDate1);
 		initHeadView("收银流水", true, false, 0);
 		initView();
@@ -62,6 +64,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 
 	private void initView()
 	{
+		tv_msg = (TextView) findViewById(R.id.tv_msg);
 		editButton=(Button) this.findViewById(R.id.selectTextClickButton);
 		editButton.setVisibility(View.VISIBLE);
 		editButton.setText("日历");
@@ -73,7 +76,6 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 				getDataPopWindow();
 			}
 		});
-		//刚开始listview不可见
 		lv_checckmoneyhisory = (ListView) findViewById(R.id.lv_checckmoneyhisory);
 
 	}
@@ -108,6 +110,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 			public void OnItemClick(Date selectedStartDate, Date selectedEndDate, Date downDate) {
 				//获取view中的按下日期，准备请求数据
 				downDate1 = format.format(downDate);
+				//清空集合
 				getData();
 				LogUtil.d("收银流水",downDate1);
 				//更新标题的日期
@@ -141,11 +144,12 @@ public class ShopMoneyRecordListActivity extends BaseActivity
 						//数据请求成功
 						CashHistoryBean historyBean = new Gson().fromJson(s, CashHistoryBean.class);
 						adapter.addAll(historyBean.getData());
-
+						tv_msg.setVisibility(View.GONE);
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
-						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						tv_msg.setVisibility(View.VISIBLE);
+						//Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

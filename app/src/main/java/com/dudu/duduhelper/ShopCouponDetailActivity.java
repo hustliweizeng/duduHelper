@@ -1,11 +1,19 @@
 package com.dudu.duduhelper;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.bean.ProductListBean;
 import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
+import com.dudu.duduhelper.javabean.DiscountDeatailBean;
+import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.WheelIndicatorItem;
 import com.dudu.duduhelper.widget.WheelIndicatorTongjiNoXuxianView;
 import com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView;
+import com.google.gson.Gson;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
@@ -17,13 +25,16 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ShopCouponDetailActivity extends BaseActivity 
 {
 	private Button editCouponButton;
-	//private Button historyCouponButton;
 	//商品id
-	private BigBandBuy.DataBean coupon;
 	private ImageView couponImage;
 	private TextView couponName;
 	private TextView couponTime;
@@ -32,6 +43,7 @@ public class ShopCouponDetailActivity extends BaseActivity
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private RiseNumberTextView leftNumText;
 	private WheelIndicatorTongjiNoXuxianView wheelIndicatorTongjiNoXuxianView;
+	private DiscountDeatailBean.Data coupon;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -46,26 +58,79 @@ public class ShopCouponDetailActivity extends BaseActivity
 	@Override
 	public void RightButtonClick() 
 	{
-		// TODO Auto-generated method stub
 		Intent intent=new Intent(ShopCouponDetailActivity.this,CouponSellHistoryActivity.class);
-		intent.putExtra("id", coupon.getId());
+		intent.putExtra("id", "");
 		startActivity(intent);
 	}
 
 	private void initData() {
-		// TODO Auto-generated method stub
-		coupon = (BigBandBuy.DataBean) getIntent().getSerializableExtra("coupon");
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		String id = getIntent().getLongExtra("id",0)+"";
+		RequestParams params = new RequestParams();
+		params.put("id",id);
+		params.put("op","info");
+		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_DISCOUT_DETAIL, "post", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试", Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				//数据请求成功
+				LogUtil.d("discout",s);
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//DiscountDeatailBean bean = new Gson().fromJson(s, DiscountDeatailBean.class);
+						JSONObject data = object.getJSONObject("data");
+						LogUtil.d("name",data.getString("name"));
+						coupon = new DiscountDeatailBean.Data();
+						coupon.setThumbnail(data.getString("thumbnail"));
+						coupon.setUpshelf(data.getString("upshelf"));
+						coupon.setDownshelf(data.getString("downshelf"));
+						coupon.setSold(data.getString("sold"));
+						coupon.setValidation_count(data.getString("validation_count"));
+						coupon.setStock(data.getString("stock"));
+						coupon.setCurrent_price(data.getString("current_price"));
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				ColorDialog.dissmissProcessDialog();
+				if (coupon ==null){
+					LogUtil.d("erro","数据为空");
+					return;
+				}
+				fillData();
+			}
+		});
+		
+		
+	}
+
+	private void fillData() {
 		ImageAware imageAware = new ImageViewAware(couponImage, false);
 		imageLoader.displayImage(coupon.getThumbnail(), imageAware);
 		couponName.setText(coupon.getName());
-		couponTime.setText(coupon.getUpshelf() + "至\n" + coupon.getDownshelf());
-		couponSold.setText(coupon.getSaled_count());
+		couponTime.setText(coupon.getUpshelf() + "\n" + coupon.getDownshelf());
+		couponSold.setText(coupon.getSold());
 		couponVerify.setText(coupon.getValidation_count());
 
 		//设置数据  
-		couponSold.withNumber(Float.parseFloat(coupon.getSaled_count()));
+		couponSold.withNumber(Float.parseFloat(coupon.getSold()));
 		couponVerify.withNumber(Float.parseFloat(coupon.getValidation_count()));
-		leftNumText.withNumber(Float.parseFloat(String.valueOf(Integer.parseInt(coupon.getSaled_count()) - Integer.parseInt(coupon.getValidation_count()))));
+		leftNumText.withNumber(Float.parseFloat(String.valueOf(Integer.parseInt(coupon.getSold()) - Integer.parseInt(coupon.getValidation_count()))));
 
 		couponSold.setDuration(1200);
 		couponVerify.setDuration(1200);
@@ -75,8 +140,8 @@ public class ShopCouponDetailActivity extends BaseActivity
 		couponSold.start();
 		couponVerify.start();
 		leftNumText.start();
-		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat(coupon.getSaled_count()) / Float.parseFloat(coupon.getStock()), Color.parseColor("#ff5000"), Util.dip2px(this, 4));
-		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(Float.parseFloat(coupon.getSaled_count()) / Float.parseFloat(coupon.getStock()), Color.parseColor("#ffffff"), Util.dip2px(this, 2));
+		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat(coupon.getSold()) / Float.parseFloat(coupon.getStock()), Color.parseColor("#ff5000"), Util.dip2px(this, 4));
+		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(Float.parseFloat(coupon.getSold()) / Float.parseFloat(coupon.getStock()), Color.parseColor("#ffffff"), Util.dip2px(this, 2));
 		wheelIndicatorTongjiNoXuxianView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
 		wheelIndicatorTongjiNoXuxianView.addWheelIndicatorItem(bikeActivityIndicatorItem);
 		wheelIndicatorTongjiNoXuxianView.startItemsAnimation();
@@ -88,7 +153,6 @@ public class ShopCouponDetailActivity extends BaseActivity
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(context,ShopProductAddActivity.class);
 				//把数据传递到编辑页面
 				intent.putExtra("productinfo", coupon);
@@ -100,7 +164,6 @@ public class ShopCouponDetailActivity extends BaseActivity
 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		leftNumText=(RiseNumberTextView) this.findViewById(R.id.leftNumText);
 		couponImage=(ImageView) this.findViewById(R.id.couponImage);
 		couponName=(TextView) this.findViewById(R.id.couponName);

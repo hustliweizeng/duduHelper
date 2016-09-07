@@ -55,7 +55,6 @@ public class ShopProductDetailActivity extends BaseActivity
 
 	private void initData()
 	{
-		// TODO Auto-generated method stub
 
 		//设置使用金额
 

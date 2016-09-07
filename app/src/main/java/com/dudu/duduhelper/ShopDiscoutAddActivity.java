@@ -27,24 +27,16 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.LogUtil;
-import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.javabean.DiscountDeatailBean;
 import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.widget.SwitchView;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.imageaware.ImageAware;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -55,7 +47,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class ShopProductAddActivity extends BaseActivity 
+public class ShopDiscoutAddActivity extends BaseActivity 
 {
 	private String id;
 	private String category;
@@ -112,33 +104,42 @@ public class ShopProductAddActivity extends BaseActivity
 	{
 		
 		
-		
-		//接收传递过来的数据(说明进入编辑页面，否则是进入新增商品页面)
-		BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
-		if (data ==null){
-			return;
-		}
-		//设置页面信息
-		productNameEditText.setText(data.getName());
-		productSoldTextView.setText(data.getSaled_count());
-		productYuanPriceEditText.setText(data.getPrice());
-		productNowPriceEditText.setText(data.getCurrent_price());
-		productKuCunNumEditText.setText(data.getStock());
-		//设置开始结束时间
-		if (!TextUtils.isEmpty(data.getRule())){
-			try {
-				String begin = new JSONObject(data.getRule()).getString("begin");
-				String end = new JSONObject(data.getRule()).getString("end");
-				tv_startTime_shop_product.setText(begin);
-				tv_endTime_shop_product.setText(end);
-			}catch (Exception e){
+			if (category == "discount"){
+				DiscountDeatailBean.Data data = (DiscountDeatailBean.Data) getIntent().getSerializableExtra("productinfo");
+				//设置页面信息
+				productNameEditText.setText(data.getName());
+				productSoldTextView.setText(data.getSold());
+				productYuanPriceEditText.setText(data.getPrice());
+				productNowPriceEditText.setText(data.getCurrent_price());
+				productKuCunNumEditText.setText(data.getStock());
+				tv_startTime_shop_product.setText(data.getUpshelf());
+				tv_endTime_shop_product.setText(data.getDownshelf());
+				
+			}else {
+				//接收传递过来的数据(说明进入编辑页面，否则是进入新增商品页面)
+				BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
+				//设置页面信息
+				productNameEditText.setText(data.getName());
+				productSoldTextView.setText(data.getSaled_count());
+				productYuanPriceEditText.setText(data.getPrice());
+				productNowPriceEditText.setText(data.getCurrent_price());
+				productKuCunNumEditText.setText(data.getStock());
+				//设置开始结束时间
+				if (!TextUtils.isEmpty(data.getRule())){
+					try {
+						String begin = new JSONObject(data.getRule()).getString("begin");
+						String end = new JSONObject(data.getRule()).getString("end");
+						tv_startTime_shop_product.setText(begin);
+						tv_endTime_shop_product.setText(end);
+					}catch (Exception e){
 
+					}
+				}
+				productDetaliTextView.setText(data.getExplain());
 			}
-		}
-		productDetaliTextView.setText(data.getExplain());
-	}
 			
-		
+		}
+					
 	
 	//提交修改的信息
 	private void SubmitProduct() 
@@ -146,45 +147,45 @@ public class ShopProductAddActivity extends BaseActivity
 		
 		if(TextUtils.isEmpty(productNameEditText.getText().toString().trim()))
 		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品名称",Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品名称",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if(TextUtils.isEmpty(productYuanPriceEditText.getText().toString().trim()))
 		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品原价",Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品原价",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if(TextUtils.isEmpty(productNowPriceEditText.getText().toString().trim()))
 		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品现价",Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品现价",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if(TextUtils.isEmpty(productKuCunNumEditText.getText().toString().trim()))
 		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品库存",Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品库存",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if(TextUtils.isEmpty(productKuCunNumEditText.getText().toString().trim()))
 		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品库存",Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品库存",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
 		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品上架时间",Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品上架时间",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if(TextUtils.isEmpty(tv_endTime_shop_product.getText().toString().trim()))
 		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品下架时间",Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品下架时间",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if(TextUtils.isEmpty(productDetaliTextView.getText().toString().trim()))
 		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品描述",Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品描述",Toast.LENGTH_SHORT).show();
 			return;
 		}
-		ColorDialog.showRoundProcessDialog(ShopProductAddActivity.this,R.layout.loading_process_dialog_color);
+		ColorDialog.showRoundProcessDialog(ShopDiscoutAddActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("token", share.getString("token", ""));
 		params.add("id",id);
@@ -209,7 +210,7 @@ public class ShopProductAddActivity extends BaseActivity
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
 			{
-				Toast.makeText(ShopProductAddActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ShopDiscoutAddActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
 			}
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
@@ -337,7 +338,7 @@ public class ShopProductAddActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(ShopProductAddActivity.this,ShopImageViewBrower.class);
+				Intent intent = new Intent(ShopDiscoutAddActivity.this,ShopImageViewBrower.class);
 				//伪造网络数据
 				ArrayList<String> list = new ArrayList<String>();
 				//网络图片地址
@@ -360,7 +361,7 @@ public class ShopProductAddActivity extends BaseActivity
 			{
 				// TODO Auto-generated method stub
 				//弹出编辑产品详情页面
-				Intent intent = new Intent(ShopProductAddActivity.this, ProductInfoEditActivity.class);
+				Intent intent = new Intent(ShopDiscoutAddActivity.this, ProductInfoEditActivity.class);
 				intent.putExtra("content", productDetaliTextView.getText().toString());
 				startActivityForResult(intent, 1);
 			}
@@ -425,7 +426,7 @@ public class ShopProductAddActivity extends BaseActivity
     	 Calendar mycalendar=Calendar.getInstance(Locale.CHINA);
          Date mydate=new Date(); //获取当前日期Date对象
          mycalendar.setTime(mydate);////为Calendar对象设置时间为当前日期
-    	 DatePickerDialog datePicker=new DatePickerDialog(ShopProductAddActivity.this,AlertDialog.THEME_HOLO_LIGHT, new OnDateSetListener() 
+    	 DatePickerDialog datePicker=new DatePickerDialog(ShopDiscoutAddActivity.this,AlertDialog.THEME_HOLO_LIGHT, new OnDateSetListener() 
     	 {
              @Override
              public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) 

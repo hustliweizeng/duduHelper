@@ -10,6 +10,15 @@
     <include
         android:id="@+id/head"
         layout="@layout/activity_head"/>
+    <TextView
+        android:id="@+id/tv_msg"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:text="当前没有要显示的数据！"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:gravity="center"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -181,7 +181,6 @@ public class shopProductListActivity extends BaseActivity
 						//解析红包列表信息
 						if (category.equals("hongbao")){
 
-
 						}
 						//解析大牌抢购列表信息
 						if (category.equals("discount")){
@@ -410,12 +409,11 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id)
 			{
-				// TODO Auto-generated method stub
 				if(isDisCount)
 				{
 					Intent intent=new Intent(context,ShopCouponDetailActivity.class);
-					intent.putExtra("coupon", (BigBandBuy.DataBean)productAdapter.getItem(position));
-					intent.putExtra("category", category);
+					intent.putExtra("id",productAdapter.getItemId(position));
+					
 					startActivityForResult(intent, 1);
 				}
 				else
@@ -475,13 +473,13 @@ public class shopProductListActivity extends BaseActivity
 								{
 									//大牌抢购页面,api没有提供分页加载接口
 									//initData(ConstantParamPhone.GET_BIG_BAND_LIST);
-									Toast.makeText(context,"数据已经加载完毕",Toast.LENGTH_LONG).show();
+									//Toast.makeText(context,"数据已经加载完毕",Toast.LENGTH_LONG).show();
 									productListView.removeFooterView(footView);
 								}
 							}
 						}
 						//定位到最后一个条目
-						productListView.setSelection(lastItemIndex-1);
+						//productListView.setSelection(lastItemIndex-1);
 					}
 					// 判断滚动到顶部
 					if(productListView.getFirstVisiblePosition() == 0){
@@ -686,7 +684,6 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id)
 			{
-				// TODO Auto-generated method stub
 				if(action.equals("order"))
 				{
 					//获取被选中条目的信息

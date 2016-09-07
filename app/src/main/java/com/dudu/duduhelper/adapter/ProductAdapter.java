@@ -201,11 +201,11 @@ public class ProductAdapter extends BaseAdapter
 	{
 		if(isHongbao)
 		{
-			return hongBaolist.size();
+			return Long.parseLong(hongBaolist.get(position).getId());
 		}
 		else
 		{
-			return list.size();
+			return Long.parseLong(list.get(position).getId());
 		}
 	}
 

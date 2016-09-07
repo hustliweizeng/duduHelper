@@ -43,21 +43,21 @@ public class MoneyHistoryAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        positions = new int[list.size()];
+        positions[0] = 0;
         if (list!=null && list.size()!=0){
             int count = 0;
             for (int i = 0; i< list.size(); i++){
-                //每级条目数相加得出总条目数
                 count += list.get(i).getOrder().size();
-                positions = new int[list.size()];
                 //记录二级目录的位置
-                positions[i] = count;
-                LogUtil.d("position",count+"");
-                //把三级目录数据加到一个统一的集合中
+                if (i < list.size()-1){
+                    positions[i+1] = count;
+                }
                 orders.addAll(list.get(i).getOrder());
             }
             return  count;
         }else {
-            Toast.makeText(context,"当前没有要显示的数据",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context,"当前没有要显示的数据",Toast.LENGTH_SHORT).show();
             return 0;
         }
     }
@@ -75,30 +75,23 @@ public class MoneyHistoryAdapter extends BaseAdapter {
             holder.tv_price_item_money_hishory = (TextView) convertView.findViewById(R.id.tv_price_item_money_hishory);
             convertView.setTag(holder);
         }
-        Log.d("adapter", "已经打印");
         holder = (ViewHolder) convertView.getTag();
         
         //设置数据,根据日期动态显示列表头
         //1.第三层的第一个条目显示日期
         //如果是这个组的第一条，那么显示日期出来
-        
         //设置第一个条目if
-        if (position == 0){
-            holder.tv_date_item_money_history.setVisibility(View.VISIBLE);
-            holder.tv_date_item_money_history.setText(orders.get(position).getId().substring(0,4)+"-"
-                    +orders.get(position).getId().substring(4,6)+"-"+orders.get(position).getId().substring(6,8));
-        }
-        //设置其他条目
-        for (int i = 0; i< positions.length; i++){
-
-            if (positions[i] ==position ){
+        for (int i :positions){
+            if (position == i){
                 holder.tv_date_item_money_history.setVisibility(View.VISIBLE);
                 holder.tv_date_item_money_history.setText(orders.get(position).getId().substring(0,4)+"-"
                         +orders.get(position).getId().substring(4,6)+"-"+orders.get(position).getId().substring(6,8));
             }else {
                 holder.tv_date_item_money_history.setVisibility(View.GONE);
+
             }
         }
+        
         //2.设置其他内容（positoin是绝对位置，但是这里需要在集合中的相对位置）=转换为相对位置
         holder.tv_subject_money_history.setText(orders.get(position).getSubject());
         holder.tv_body_money_history.setText("-"+orders.get(position).getBody());

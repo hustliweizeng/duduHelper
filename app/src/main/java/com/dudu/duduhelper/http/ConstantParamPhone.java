@@ -146,6 +146,9 @@ public class ConstantParamPhone
    public static final String GET_DISCOUNT_LIST = "/api/app/coupon/listinfo";//获取优惠券信息列表
    public static final String  GET_DISCOUT_DETAIL = "/api/app/coupon/couponinfo";//优惠券详情
    public static final String  DEL_DISECOUNT = "/api/app/coupon/delcoupon";//删除优惠券
+    
+    //产品信息描述
+    public static final String GET_APP_INFO = "/api/app/tool/geo/boot";//获取产品信息
 
 
 

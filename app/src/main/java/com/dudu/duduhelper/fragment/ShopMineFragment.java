@@ -88,6 +88,7 @@ public class ShopMineFragment extends Fragment {
         final RelativeLayout viewById1 = (RelativeLayout) MineFragmentView.findViewById(R.id.rel2);
         final RelativeLayout mineheadRelLine = (RelativeLayout) MineFragmentView.findViewById(R.id.mineheadRelLine);
         final RelativeLayout helpRel = (RelativeLayout) MineFragmentView.findViewById(R.id.helpRel);
+        //关于我们
         final RelativeLayout aboutRel = (RelativeLayout) MineFragmentView.findViewById(R.id.aboutRel);
         //二维码
         final RelativeLayout qcodeImgRel = (RelativeLayout) MineFragmentView.findViewById(R.id.qcodeImgRel);
