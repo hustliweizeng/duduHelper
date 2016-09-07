@@ -110,9 +110,6 @@ public class ShopProductAddActivity extends BaseActivity
 
 	private void initData() 
 	{
-		
-		
-		
 		//接收传递过来的数据(说明进入编辑页面，否则是进入新增商品页面)
 		BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
 		if (data ==null){

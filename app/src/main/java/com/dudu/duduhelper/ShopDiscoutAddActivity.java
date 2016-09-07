@@ -103,42 +103,41 @@ public class ShopDiscoutAddActivity extends BaseActivity
 	private void initData() 
 	{
 		
-		
-			if (category == "discount"){
-				DiscountDeatailBean.Data data = (DiscountDeatailBean.Data) getIntent().getSerializableExtra("productinfo");
-				//设置页面信息
-				productNameEditText.setText(data.getName());
-				productSoldTextView.setText(data.getSold());
-				productYuanPriceEditText.setText(data.getPrice());
-				productNowPriceEditText.setText(data.getCurrent_price());
-				productKuCunNumEditText.setText(data.getStock());
-				tv_startTime_shop_product.setText(data.getUpshelf());
-				tv_endTime_shop_product.setText(data.getDownshelf());
-				
-			}else {
-				//接收传递过来的数据(说明进入编辑页面，否则是进入新增商品页面)
-				BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
-				//设置页面信息
-				productNameEditText.setText(data.getName());
-				productSoldTextView.setText(data.getSaled_count());
-				productYuanPriceEditText.setText(data.getPrice());
-				productNowPriceEditText.setText(data.getCurrent_price());
-				productKuCunNumEditText.setText(data.getStock());
-				//设置开始结束时间
-				if (!TextUtils.isEmpty(data.getRule())){
-					try {
-						String begin = new JSONObject(data.getRule()).getString("begin");
-						String end = new JSONObject(data.getRule()).getString("end");
-						tv_startTime_shop_product.setText(begin);
-						tv_endTime_shop_product.setText(end);
-					}catch (Exception e){
-
-					}
-				}
-				productDetaliTextView.setText(data.getExplain());
-			}
+		if (category == "discount"){
+			DiscountDeatailBean.Data data = (DiscountDeatailBean.Data) getIntent().getSerializableExtra("productinfo");
+			//设置页面信息
+			productNameEditText.setText(data.getName());
+			productSoldTextView.setText(data.getSold());
+			productYuanPriceEditText.setText(data.getPrice());
+			productNowPriceEditText.setText(data.getCurrent_price());
+			productKuCunNumEditText.setText(data.getStock());
+			tv_startTime_shop_product.setText(data.getUpshelf());
+			tv_endTime_shop_product.setText(data.getDownshelf());
 			
+		}else {
+			//接收传递过来的数据(说明进入编辑页面，否则是进入新增商品页面)
+			BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
+			//设置页面信息
+			productNameEditText.setText(data.getName());
+			productSoldTextView.setText(data.getSaled_count());
+			productYuanPriceEditText.setText(data.getPrice());
+			productNowPriceEditText.setText(data.getCurrent_price());
+			productKuCunNumEditText.setText(data.getStock());
+			//设置开始结束时间
+			if (!TextUtils.isEmpty(data.getRule())){
+				try {
+					String begin = new JSONObject(data.getRule()).getString("begin");
+					String end = new JSONObject(data.getRule()).getString("end");
+					tv_startTime_shop_product.setText(begin);
+					tv_endTime_shop_product.setText(end);
+				}catch (Exception e){
+
+				}
+			}
+			productDetaliTextView.setText(data.getExplain());
 		}
+		
+	}
 					
 	
 	//提交修改的信息
