@@ -33,23 +33,23 @@ public class ProductStatus{
         //商品列表第一项
         List<SelectorBean> datas = new ArrayList<>();
         SelectorBean DataBean=new SelectorBean();
-        //DataBean.id= ("default");
+        DataBean.id = 1;
         DataBean.name = ("默认排序");
         datas.add(DataBean);
         SelectorBean DataBean1=new SelectorBean();
-        //DataBean1.id("soldasc");
+        DataBean1.id = 2;
         DataBean1.name = ("销量最低");
         datas.add(DataBean1);
         SelectorBean DataBean2=new SelectorBean();
-       //DataBean2.id("solddesc");
+        DataBean2.id = 3;
         DataBean2.name = ("销量最高");
         datas.add(DataBean2);
         SelectorBean DataBean3=new SelectorBean();
-        //DataBean3.id("viewasc");
+        DataBean3.id = 4;
         DataBean3.name = ("人气最低");
         datas.add(DataBean3);
         SelectorBean DataBean4=new SelectorBean();
-       // DataBean4.id("viewdesc");
+        DataBean4.id = 5;
         DataBean4.name = ("人气最高");
         datas.add(DataBean4);
         return datas;

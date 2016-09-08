@@ -93,6 +93,8 @@ public class ShopProductAddActivity extends BaseActivity
     private int flag1=0;
     private ImageView shopImageView;
 	private TextView tv_photo_num_shop_product;
+	private EditText ed_explain;
+	private String[] imgs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -121,18 +123,37 @@ public class ShopProductAddActivity extends BaseActivity
 		productYuanPriceEditText.setText(data.getPrice());
 		productNowPriceEditText.setText(data.getCurrent_price());
 		productKuCunNumEditText.setText(data.getStock());
+		ed_explain.setText(data.getExplain());
+		productDetaliTextView.setText(data.getExplain());
 		//设置开始结束时间
 		if (!TextUtils.isEmpty(data.getRule())){
 			try {
 				String begin = new JSONObject(data.getRule()).getString("begin");
 				String end = new JSONObject(data.getRule()).getString("end");
-				tv_startTime_shop_product.setText(begin);
-				tv_endTime_shop_product.setText(end);
+				LogUtil.d("time","begin="+begin+"end="+end);
+				if (category.equals("discount")){
+					tv_startTime_shop_product.setText(data.getUpshelf());
+					tv_endTime_shop_product.setText(data.getDownshelf());
+					
+				}else {
+					tv_startTime_shop_product.setText(begin);
+					tv_endTime_shop_product.setText(end);
+				}
 			}catch (Exception e){
 
 			}
 		}
-		productDetaliTextView.setText(data.getExplain());
+		//设置图片
+		if (data.getShow_img()!=null &&data.getShow_img().length>0){
+			imgs = data.getShow_img();
+			imageLoader.displayImage(data.getShow_img()[0],productImageView);
+			tv_photo_num_shop_product.setText("相册有"+data.getShow_img().length+"张图片");
+		}
+		if (data.getPics()!=null & data.getPics().length >0){
+			imgs = data.getPics();
+			imageLoader.displayImage(data.getPics()[0],productImageView);
+			tv_photo_num_shop_product.setText("相册有"+data.getPics().length+"张图片");
+		}
 	}
 			
 		
@@ -242,6 +263,7 @@ public class ShopProductAddActivity extends BaseActivity
 		shopImageView = (ImageView) this.findViewById(R.id.productImageView);
 		//选择配送方式
 		RadioGroup rg_shop_product_add = (RadioGroup) findViewById(R.id.rg_shop_product_add);
+		ed_explain = (EditText) findViewById(R.id.ed_explain);
 		final RadioButton rb1_shop_product_add = (RadioButton) findViewById(R.id.rb1_shop_product_add);
 		final RadioButton rb2_shop_product_add = (RadioButton) findViewById(R.id.rb2_shop_product_add);
 		//动态显示图片的数量
@@ -334,19 +356,18 @@ public class ShopProductAddActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(ShopProductAddActivity.this,ShopImageViewBrower.class);
-				//伪造网络数据
-				ArrayList<String> list = new ArrayList<String>();
-				//网络图片地址
-				list.add("http://file.duduapp.net/uploads/default/42/d0/42d0019eb35f21976a5c463bdc1bb03d.jpg");
-				list.add("http://file.duduapp.net/98/6e/986e51a7ba15dc3ace6dde27dd1df98b.png");
-				list.add("http://file.duduapp.net/uploads/default/6a/81/6a814954b66a73ac70616aea91fc5bc1.jpg");
-				list.add("http://file.duduapp.net/uploads/default/85/0d/850dccbe4e99b2a32a45c4b8c7b8d9bf.jpg");
-				//传递集合过去
-				intent.putStringArrayListExtra("imageList", list);
-				intent.putExtra("type",1);
-				//获取选中的图片
-				startActivityForResult(intent, 1);
+			Intent intent = new Intent(ShopProductAddActivity.this,ShopImageViewBrower.class);
+			//把网络数据传输过去
+			ArrayList<String> list = new ArrayList<String>();
+			for (String img:imgs){
+				list.add(img);
+			}
+			//网络图片地址
+			//传递集合过去
+			intent.putStringArrayListExtra("imageList", list);
+			intent.putExtra("type",1);
+			//获取选中的图片
+			startActivityForResult(intent, 1);
 
 			}
 		});
@@ -355,7 +376,6 @@ public class ShopProductAddActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				//弹出编辑产品详情页面
 				Intent intent = new Intent(ShopProductAddActivity.this, ProductInfoEditActivity.class);
 				intent.putExtra("content", productDetaliTextView.getText().toString());
@@ -367,7 +387,6 @@ public class ShopProductAddActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				//弹出时间对话框
 				showDataDialog(tv_startTime_shop_product);
 			}
@@ -385,7 +404,6 @@ public class ShopProductAddActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				SubmitProduct();
 			}
 		});
@@ -427,7 +445,6 @@ public class ShopProductAddActivity extends BaseActivity
              @Override
              public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) 
              {
-                 // TODO Auto-generated method stub
                  //Toast.makeText(RegisterActivity.this, year+"year "+(monthOfYear+1)+"month "+dayOfMonth+"day", Toast.LENGTH_SHORT).show();
             	 if(flag==0)
             	 {

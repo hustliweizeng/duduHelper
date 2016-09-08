@@ -303,8 +303,13 @@ public class ShopImageViewBrower extends BaseActivity
 		ArrayList<String> uplodImgs = shopImageAdapter.getImageList();
 		//设置返回的数据
 		Intent intent =null;
+		//从店铺详情传递的
 		if (sourceType == 5){
 			intent = new Intent(context,ShopInfoEditActivity.class);
+		}
+		//从大牌抢购传递的
+		if (sourceType ==1){
+			intent = new Intent(context,ShopProductAddActivity.class);
 		}
 		//传递数据
 		intent.putExtra("pics", (Serializable) uplodImgs);

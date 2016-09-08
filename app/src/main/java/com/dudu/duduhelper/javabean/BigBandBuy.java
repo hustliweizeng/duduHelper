@@ -48,6 +48,57 @@ public class BigBandBuy implements Serializable{
         private String rule;
         private String stock;
         private String amount;
+        private String saled_count;
+        private String validation_count;
+        private String explain;
+        private String upshelf;
+        private String downshelf;
+
+        public String getSold() {
+            return sold;
+        }
+
+        public void setSold(String sold) {
+            this.sold = sold;
+        }
+
+        public String getCategory_id() {
+            return category_id;
+        }
+
+        public void setCategory_id(String category_id) {
+            this.category_id = category_id;
+        }
+
+        public String[] getPics() {
+            return pics;
+        }
+
+        public void setPics(String[] pics) {
+            this.pics = pics;
+        }
+
+        public String getAgent_id() {
+            return agent_id;
+        }
+
+        public void setAgent_id(String agent_id) {
+            this.agent_id = agent_id;
+        }
+
+        public String getExpiry() {
+            return expiry;
+        }
+
+        public void setExpiry(String expiry) {
+            this.expiry = expiry;
+        }
+
+        private String sold;
+        private String category_id;
+        private String[] pics;
+        private String agent_id;
+        private String expiry;
 
         public String getDownshelf() {
             return downshelf;
@@ -65,11 +116,7 @@ public class BigBandBuy implements Serializable{
             this.upshelf = upshelf;
         }
 
-        private String saled_count;
-        private String validation_count;
-        private String explain;
-        private String upshelf;
-        private String downshelf;
+        
 
         public String getId() {
             return id;

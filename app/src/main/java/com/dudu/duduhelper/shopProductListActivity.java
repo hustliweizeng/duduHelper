@@ -112,6 +112,8 @@ public class shopProductListActivity extends BaseActivity
 	private int page;
 	private int lastItemIndex;
 	//private View foot;
+	private  String upProduct = "all";
+	private  String productStatus= "all"; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -158,6 +160,10 @@ public class shopProductListActivity extends BaseActivity
 		loading_text.setText("加载中...");
 		productListView.setAdapter(productAdapter);
 		RequestParams params = new RequestParams();
+		params.put("default",productStatus);
+		params.put("status",upProduct);
+		params.put("page","1");
+		params.put("num","10");
 		HttpUtils.getConnection(context,params,url, "post",new TextHttpResponseHandler()
 		{
 			@Override
@@ -184,10 +190,8 @@ public class shopProductListActivity extends BaseActivity
 						}
 						//解析大牌抢购列表信息
 						if (category.equals("discount")){
-
 							bigBandBuy = new Gson().fromJson(arg2,BigBandBuy.class);
 						}
-
 						productAdapter.addAll(bigBandBuy.getData(),isAllChoice);
 
 					}else {
@@ -413,7 +417,7 @@ public class shopProductListActivity extends BaseActivity
 				{
 					Intent intent=new Intent(context,ShopCouponDetailActivity.class);
 					intent.putExtra("id",productAdapter.getItemId(position));
-					
+					intent.putExtra("productinfo",((BigBandBuy.DataBean)productAdapter.getItem(position)));
 					startActivityForResult(intent, 1);
 				}
 				else
@@ -677,7 +681,7 @@ public class shopProductListActivity extends BaseActivity
 			orderSelectorAdapter.addAll(selectList,productAction.getText().toString());
 			productSelectList.setAdapter(orderSelectorAdapter);
 		}
-		//listview产品条目点击事件
+		//筛选条目点击事件
 		productSelectList.setOnItemClickListener(new OnItemClickListener()
 		{
 
@@ -685,17 +689,19 @@ public class shopProductListActivity extends BaseActivity
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id)
 			{
 				if(action.equals("order"))
+					//左侧筛选
 				{
-					//获取被选中条目的信息
-					//order= selectList.get(position).id+"";
+					//获取被选中条目的信息-左侧
+					order= selectList.get(position).id+"";
 					orderType.setText(selectList.get(position).name);
 					//更新适配器中被选中的条目
 					orderSelectorAdapter.select = selectList.get(position).name;
 				}
 				else
+				//右侧筛选
 				{
-					//获取被选中条目的信息
-					//status=selectList.get(position).id+"";
+					//获取被选中条目的信息-右侧
+					status=selectList.get(position).id+"";
 					productAction.setText(selectList.get(position).name);
 					//更新适配器中被选中的条目
 					orderSelectorAdapter.select = selectList.get(position).name;
@@ -703,7 +709,40 @@ public class shopProductListActivity extends BaseActivity
 
 				productAdapter=new ProductAdapter(context,isMulChoice,isDisCount,isHongbao);
 				ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
-				reffinish=false;
+				reffinish = false;
+				switch (order){
+					
+					case "1":
+						productStatus = "all";
+						break;
+					case "2":
+						productStatus = "saled_asc";
+						break;
+					case "3":
+						productStatus = "saled_desc";
+						break;
+					case "4":
+						productStatus = "clicked_asc";
+						break;
+					case "5":
+						productStatus = "clicked_desc";
+						break;
+				}
+				switch (status){
+					case "0":
+						upProduct = "all";
+						break;
+					case "1":
+						upProduct = "down";
+						break;
+					case "2":
+						upProduct = "up";
+						break;
+					
+				}
+				LogUtil.d("select","upproduct="+upProduct+";status="+productStatus);
+				//重新加载，设置筛选条件
+				initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 				if(isDisCount)
 				{
 					initData(ConstantParamPhone.GET_COUPON_LIST);
@@ -840,7 +879,6 @@ public class shopProductListActivity extends BaseActivity
 	public void RightButtonClick()
 	{
 		//显示添加界面
-		// TODO Auto-generated method stub
 		Intent intent=new Intent(shopProductListActivity.this,ShopHongBaoAddActivity.class);
 		startActivityForResult(intent, 1);
 	}

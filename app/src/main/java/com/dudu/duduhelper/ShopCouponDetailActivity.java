@@ -43,7 +43,7 @@ public class ShopCouponDetailActivity extends BaseActivity
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private RiseNumberTextView leftNumText;
 	private WheelIndicatorTongjiNoXuxianView wheelIndicatorTongjiNoXuxianView;
-	private DiscountDeatailBean.Data coupon;
+	private BigBandBuy.DataBean coupon;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -58,73 +58,20 @@ public class ShopCouponDetailActivity extends BaseActivity
 	@Override
 	public void RightButtonClick() 
 	{
-		Intent intent=new Intent(ShopCouponDetailActivity.this,CouponSellHistoryActivity.class);
+		/*Intent intent=new Intent(ShopCouponDetailActivity.this,CouponSellHistoryActivity.class);
 		intent.putExtra("id", "");
-		startActivity(intent);
+		startActivity(intent);*/
 	}
 
 	private void initData() {
-		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		String id = getIntent().getLongExtra("id",0)+"";
-		RequestParams params = new RequestParams();
-		params.put("id",id);
-		params.put("op","info");
-		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_DISCOUT_DETAIL, "post", new TextHttpResponseHandler() {
-			@Override
-			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				Toast.makeText(context,"网络异常，稍后再试", Toast.LENGTH_LONG).show();
-			}
-
-			@Override
-			public void onSuccess(int i, Header[] headers, String s) {
-				//数据请求成功
-				LogUtil.d("discout",s);
-				try {
-					JSONObject object = new JSONObject(s);
-					String code =  object.getString("code");
-					if ("SUCCESS".equalsIgnoreCase(code)){
-						//DiscountDeatailBean bean = new Gson().fromJson(s, DiscountDeatailBean.class);
-						JSONObject data = object.getJSONObject("data");
-						LogUtil.d("name",data.getString("name"));
-						coupon = new DiscountDeatailBean.Data();
-						coupon.setThumbnail(data.getString("thumbnail"));
-						coupon.setUpshelf(data.getString("upshelf"));
-						coupon.setDownshelf(data.getString("downshelf"));
-						coupon.setSold(data.getString("sold"));
-						coupon.setValidation_count(data.getString("validation_count"));
-						coupon.setStock(data.getString("stock"));
-						coupon.setCurrent_price(data.getString("current_price"));
-
-					}else {
-						//数据请求失败
-						String msg = object.getString("msg");
-						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-			@Override
-			public void onFinish() {
-				super.onFinish();
-				ColorDialog.dissmissProcessDialog();
-				if (coupon ==null){
-					LogUtil.d("erro","数据为空");
-					return;
-				}
-				fillData();
-			}
-		});
-		
-		
-	}
-
-	private void fillData() {
+		//获取列表中的数据
+		coupon = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
 		ImageAware imageAware = new ImageViewAware(couponImage, false);
 		imageLoader.displayImage(coupon.getThumbnail(), imageAware);
 		couponName.setText(coupon.getName());
 		couponTime.setText(coupon.getUpshelf() + "\n" + coupon.getDownshelf());
-		couponSold.setText(coupon.getSold());
+		couponSold.setText(coupon.getSaled_count());
 		couponVerify.setText(coupon.getValidation_count());
 
 		//设置数据  
@@ -148,7 +95,6 @@ public class ShopCouponDetailActivity extends BaseActivity
 
 
 		editCouponButton = (Button) this.findViewById(R.id.editCouponButton);
-		//historyCouponButton=(Button) this.findViewById(R.id.historyCouponButton);
 		editCouponButton.setOnClickListener(new OnClickListener() {
 
 			@Override
