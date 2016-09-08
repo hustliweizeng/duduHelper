@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -87,7 +88,9 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     private String circle_name;
     private String backtUrl;
     private String uploadPicPath;
-    private StringBuffer urls;
+    private String[] urls;
+    private String[] pics;
+    private ArrayList<String> imagesToBroser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +143,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         long time = sharePre.getLong("update_time",0);
         LogUtil.d("ss",time+"="+sharePre.getString("info",""));
         //如果更新日期超过一周，重新加载
-        long expireTime = 1000*60*60*24*7;
+        long expireTime = 1000*60*60*24*1;
         if ((System.currentTimeMillis()-time) <= expireTime){
             //没超时的话加载本地数据
             if (TextUtils.isEmpty(sharePre.getString("info",""))){
@@ -179,7 +182,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                     if ("SUCCESS".equalsIgnoreCase(code)){
                         //数据请求成功后解析数据
                         ShopInfoEditActivity.this.initDataFromJson(s);
-                        LogUtil.d("load","从缓存加载");
+                        LogUtil.d("load","从网络加载");
 
                     }else {
                         //显示错误信息
@@ -198,14 +201,21 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
             }
         });
     }
+   
 
     //根据json数据设置控件信息
     private void initDataFromJson(String s) {
         ShopInfoBean info =  new Gson().fromJson(s, ShopInfoBean.class);
         //设置logo
         ImageLoader.getInstance().displayImage(info.getLogo(),iv_logo_shop_info);
-        //设置相册第一张
-        ImageLoader.getInstance().displayImage((String)info.getImages(),iv_img_shop_info);
+        //获取相册照片
+        pics = info.getImages();
+        if(pics!=null &&pics.length >0){
+            //设置相册第一张
+            ImageLoader.getInstance().displayImage(pics[0],iv_img_shop_info);
+            //设置相册数量
+            tv_imgNum_shop_info.setText("相册共"+pics.length+"张");
+        }
         ed_title_shop_info.setText(info.getName());
         tv_class_shop_info.setText(info.getCategory_name());
         tv_shopcircle_shop_info.setText(info.getArea_name());
@@ -317,12 +327,29 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
             case R.id.iv_img_shop_info:
                 //进入选择相册页面
                 Intent picIntent = new Intent(context,ShopImageViewBrower.class);
+                //传递图片过去
+                imagesToBroser = new ArrayList<>();
+                for (String pic :pics){
+                    imagesToBroser.add(pic);
+                }
+                picIntent.putExtra("imageList", imagesToBroser);
                 picIntent.putExtra("type",5);
                 //进入相册之前判断之前有无选择过
                 if (picsPath!=null && picsPath.size()!=0){
                     picIntent.putStringArrayListExtra("imageList",picsPath);
                 }
                 startActivityForResult(picIntent,5);
+                //设置图片监听
+                final ShopImageViewBrower brower = new ShopImageViewBrower();
+                brower.setOnDelListener(new ShopImageViewBrower.OnDelListener() {
+                    @Override
+                    public void Ondel() {
+                        //当图片有删除动作时，主页动态监听
+                        tv_imgNum_shop_info.setText("相册共"+brower.getImgeList().size()+"张");
+                        //重新给当前图片集合赋值
+                        LogUtil.d("info","执行了回调");
+                    }
+                });
 
                 break;
         }
@@ -450,18 +477,29 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
 
                     break;
                 case 5:
-                    //店家环境相册
+                    //获取店家环境相册
                     picsPath = data.getStringArrayListExtra("pics");
+                    LogUtil.d("back","backsize="+picsPath.size());
                     //设置封面照片
                     iv_img_shop_info.setImageBitmap(BitmapFactory.decodeFile(picsPath.get(0)));
                     //设置相册数量
                     tv_imgNum_shop_info.setText("相册共"+ picsPath.size()+"张");
-                    //上传相册图片
-                    urls = new StringBuffer();
-                    for (String img:picsPath){
-                        urls.append(ViewUtils.uploadImg(context,img)+",");
+                    //上传相册图片（网络地址）
+                    urls = new String[picsPath.size()];
+                    for (int i = 0;i<picsPath.size(); i++){
+                        //只上传本地图片，网络图片地址不上传
+                        if (!picsPath.get(i).startsWith("http")&&picsPath.get(i).contains("fail")){
+                            urls[i] = ViewUtils.uploadImg(context,picsPath.get(i));
+                            picsPath.remove(i);
+                        }
                     }
-                    LogUtil.d("pics", urls +"");
+                    //把剩余不需要上传的图片放到数组中
+                    int i = urls.length;
+                    for (String pp :picsPath){
+                        urls[i] = pp;
+                        i++;
+                    }
+                    LogUtil.d("pics", urls.toString());
                 default:
                     break;
             }

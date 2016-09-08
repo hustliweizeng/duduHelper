@@ -21,6 +21,7 @@ import java.util.List;
         }*/
 public class BankCardListBean implements Serializable{
 
+
     private String code;
     private String msg;
     private List<DataBean> data;
@@ -57,19 +58,8 @@ public class BankCardListBean implements Serializable{
         private String card_number;
         private String province_id;
         private String city_id;
-
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "id='" + id + '\'' +
-                    ", name='" + name + '\'' +
-                    ", bank_key='" + bank_key + '\'' +
-                    ", bank_name='" + bank_name + '\'' +
-                    ", card_number='" + card_number + '\'' +
-                    ", province_id='" + province_id + '\'' +
-                    ", city_id='" + city_id + '\'' +
-                    '}';
-        }
+        private String province_name;
+        private String city_name;
 
         public String getId() {
             return id;
@@ -126,14 +116,21 @@ public class BankCardListBean implements Serializable{
         public void setCity_id(String city_id) {
             this.city_id = city_id;
         }
-    }
 
-    @Override
-    public String toString() {
-        return "BankCardListBean{" +
-                "code='" + code + '\'' +
-                ", msg='" + msg + '\'' +
-                ", data=" + data +
-                '}';
+        public String getProvince_name() {
+            return province_name;
+        }
+
+        public void setProvince_name(String province_name) {
+            this.province_name = province_name;
+        }
+
+        public String getCity_name() {
+            return city_name;
+        }
+
+        public void setCity_name(String city_name) {
+            this.city_name = city_name;
+        }
     }
 }

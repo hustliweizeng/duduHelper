@@ -11,7 +11,7 @@ public class ShopInfoBean {
     private String contact;
     private String address;
     private String description;
-    private Object images;
+    private String[] images;
     private String category;
     private String category_name;
     private String area;
@@ -68,11 +68,11 @@ public class ShopInfoBean {
         this.description = description;
     }
 
-    public Object getImages() {
+    public String[] getImages() {
         return images;
     }
 
-    public void setImages(Object images) {
+    public void setImages(String[] images) {
         this.images = images;
     }
 

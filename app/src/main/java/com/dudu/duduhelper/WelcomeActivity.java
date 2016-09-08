@@ -1,6 +1,7 @@
 package com.dudu.duduhelper;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -21,6 +22,9 @@ import com.dudu.duduhelper.fragment.GuideFragment3;
 import com.dudu.duduhelper.fragment.GuideFragment4;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.InfoBean;
+import com.dudu.duduhelper.javabean.ShopInfoBean;
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -28,6 +32,8 @@ import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +47,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
     // 定义ViewPager适配器  
     private ViewPagerAdapter vpAdapter;  
     private LinearLayout linearLayout;
-    //定义一个ArrayList来存放View  
-    //private ArrayList<View> views;  
   
-    // 引导图片资源  
-    //private static final int[] pics = { R.drawable.guide1, R.drawable.guide2,  
-    //R.drawable.guide3, R.drawable.guide4 };  
     // 底部小点的图片  
     private ImageView[] points;  
     // 记录当前选中位置  
@@ -64,9 +65,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 	 */
 	protected void onCreate(Bundle savedInstanceState) 
 	{
-
 		super.onCreate(savedInstanceState);
-		//Log.d("device_token",device_token);
 		setContentView(R.layout.activity_welcome);
 		//开启友盟推送
 		if(mPushAgent==null)
@@ -88,17 +87,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			//如果登陆保存过用户数据,直接请问网络
 			if(!TextUtils.isEmpty(sp.getString("username", "")))
 			{
-//				if(sp.getString("usertype", "").equals("dianzhang"))
-//				{
-//					methord=ConstantParamPhone.GET_USER_INFO;
-//				}
-//				else
-//				{
-//					methord=ConstantParamPhone.GET_SALER_INFO;
-//				}
-				//请求网络数据，并保存到本地
 				requetConnetion();
-//				
 			}
 			else
 			{
@@ -255,9 +244,40 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
-				LogUtil.d("welcome",s);
-                startActivity(new Intent(context,MainActivity.class));
-                finish();
+                try {
+                    JSONObject object = new JSONObject(s);
+                    String code =  object.getString("code");
+                    if ("SUCCESS".equalsIgnoreCase(code)){
+                        //数据请求成功
+                        InfoBean infoBean = new Gson().fromJson(s, InfoBean.class);
+                        //保存用户信息
+                        //1.通过sp保存用户信息
+                        SharedPreferences.Editor edit = sp.edit();
+                        edit.putString("username",infoBean.getUser().getName())
+                        .putString("nickename",infoBean.getUser().getNickname())//手动添加
+                        .putString("mobile",infoBean.getUser().getMobile())
+                        //2.存储商店信息
+                        .putString("id",infoBean.getShop().getId())
+                        .putString("shopLogo",infoBean.getShop().getLogo())
+                        .putString("shopName",infoBean.getShop().getName())
+                        //3.储存今日状态
+                        .putString("todayIncome",infoBean.getTodaystat().getIncome())
+                        //4.存储总计状态
+                        .putString("frozenMoney",infoBean.getTotalstat().getFreezemoney())
+                        .putString("useableMoney",infoBean.getTotalstat().getUsablemoney())
+                        //在后台处理
+                        .apply();
+                        LogUtil.d("welcome",s);
+                        startActivity(new Intent(context,MainActivity.class));
+                        finish();
+                    }else {
+                        //数据请求失败
+                        String msg = object.getString("msg");
+                        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 			}
 		});
 

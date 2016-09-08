@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -234,15 +235,19 @@ public class LoginActivity extends BaseActivity
 						LoginBean loginBean = new Gson().fromJson(arg2,LoginBean.class);
 						//判断返回状态是否成功
 						if (ConstantParamPhone.SUCCESS.equalsIgnoreCase(loginBean.getCode())){
-							
+							//判断手机绑定没有
+							if (TextUtils.isEmpty(loginBean.getUser().getMobile())){
+								Toast.makeText(context,"当前账号未绑定，请先绑定手机号",Toast.LENGTH_LONG).show();
+								startActivity(new Intent(context,BindPhoneActivity.class));
+								finish();
+							}
 							//对bean的数据做非空判断
 							
 							//1.通过sp保存用户信息
 							SharedPreferences.Editor edit = sp.edit();
 							edit.putString("username",loginBean.getUser().getName())
-							.putString("nickename",loginBean.getUser().getNickname())
-									//手动添加
-							.putString("mobile","18937228893")//loginBean.getUser().getMobile())
+							.putString("nickename",loginBean.getUser().getNickname())//手动添加
+							.putString("mobile",loginBean.getUser().getMobile())
 							//2.存储商店信息
 							.putString("id",loginBean.getShop().getId())
 							.putString("shopLogo",loginBean.getShop().getLogo())

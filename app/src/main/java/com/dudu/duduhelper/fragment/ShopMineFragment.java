@@ -101,6 +101,7 @@ public class ShopMineFragment extends Fragment {
         final TextView getCashMoneyTextView = (TextView) MineFragmentView.findViewById(R.id.getCashMoneyTextView);
         final TextView mineText = (TextView) MineFragmentView.findViewById(R.id.mineText);
         final ImageView mineImageHead = (ImageView) MineFragmentView.findViewById(R.id.mineImageHead);
+        final  TextView shopePhoneTextView = (TextView) MineFragmentView.findViewById(R.id.shopePhoneTextView);
         //初始化图片
         ImageLoader.getInstance().displayImage(sp.getString("shopLogo",""),mineImageHead);
         //滚动条
@@ -165,6 +166,8 @@ public class ShopMineFragment extends Fragment {
             earnMoneyTextView.setText(sp.getString("todayIncome", "") + "↑");
             //可提现金额
             getCashMoneyTextView.setText(sp.getString("useableMoney", ""));
+            //初始化手机号码
+            shopePhoneTextView.setText(sp.getString("mobile",""));
         }
         //
         qcodeImgRel.setOnClickListener(new OnClickListener() {
@@ -253,11 +256,6 @@ public class ShopMineFragment extends Fragment {
             }
         });
 
-		/*if(!("dianzhang".equals(share.getString("usertype", ""))))
-		{
-			bankCardRel.setVisibility(View.GONE);
-
-		}*/
 
 
     }

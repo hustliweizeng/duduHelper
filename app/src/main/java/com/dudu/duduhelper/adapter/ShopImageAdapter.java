@@ -30,8 +30,8 @@ public class ShopImageAdapter extends BaseAdapter
     private ArrayList<String> imageList = new ArrayList<String >();
 	//获取UIL实例
     protected ImageLoader imageLoader = ImageLoader.getInstance();
+	//保存要删除的条目位置
     public List<Integer> listDelect = new ArrayList<Integer>();//checkbox选中状态
-    //private List<HashMap<, boolean> listDelect = new ArrayList<Integer>();
 	public ShopImageAdapter(Context context) 
 	{
 		this.context = context;
@@ -50,14 +50,12 @@ public class ShopImageAdapter extends BaseAdapter
 	@Override
 	public Object getItem(int position) 
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int position) 
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
@@ -76,8 +74,10 @@ public class ShopImageAdapter extends BaseAdapter
 	{
 		for (Integer postion : listDelect) 
 		{
-			imageList.remove((int)postion);
+			imageList.remove((int) postion);
+			LogUtil.d("DEL","adapter删除"+postion);
 		}
+		//清空复选框集合
 		listDelect.clear();
 		notifyDataSetChanged();
 	}
@@ -110,13 +110,14 @@ public class ShopImageAdapter extends BaseAdapter
 			@Override
 			public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) 
 			{
-				// TODO Auto-generated method stub
 				if(isChecked)
 				{
+					//获取被选中的位置
 					listDelect.add(Integer.valueOf(position));
 				}
 				else
 				{
+					//移除当前条目
 					listDelect.remove(Integer.valueOf(position));
 				}
 			}

@@ -128,7 +128,7 @@ public class ViewUtils {
 		if (!TextUtils.isEmpty(backtUrl)){
 			return  backtUrl;
 		}else {
-			return "fail";
+			return "";
 		}
 	}
 

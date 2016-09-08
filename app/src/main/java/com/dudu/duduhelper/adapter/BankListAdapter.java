@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.R;
@@ -69,6 +70,7 @@ public class BankListAdapter extends BaseAdapter
 			viewHolder.bankNameText = (TextView) convertView.findViewById(R.id.bankNameText);
 			viewHolder.bankCardNum = (TextView) convertView.findViewById(R.id.bankCardNum);
 			viewHolder.bankCardUsername = (TextView) convertView.findViewById(R.id.bankCardUsername);
+			viewHolder.bankLogo = (ImageView) convertView.findViewById(R.id.banklogoImg);
 			convertView.setTag(viewHolder);
 		}
 		else
@@ -81,23 +83,70 @@ public class BankListAdapter extends BaseAdapter
 		{	//设置银行名称
 			if(!TextUtils.isEmpty(data.getBank_name()))
 			{
-				viewHolder.bankNameText.setText(data.getBank_name());
+				viewHolder.bankNameText.setText(data.getBank_key());
 			}
-			//设置银行卡图标
-
-
 			//设置银行卡号
 			if(!TextUtils.isEmpty(data.getCard_number()))
 			{
 				//只显示末尾4个
-				viewHolder.bankCardNum.setText(data.getCard_number());//substring(list.size()-4,list.size()-1));
+				viewHolder.bankCardNum.setText(data.getCard_number().substring(data.getCard_number().length()-4));
 			}
 			//设置姓名
 			if(!TextUtils.isEmpty(list.get(position).getName()))
 			{
 				viewHolder.bankCardUsername.setText(data.getName());
 			}
-			//
+			//设置银行图标
+			if(!TextUtils.isEmpty(list.get(position).getBank_key()))
+			{
+				int resource = R.drawable.defaultbank;
+				switch (list.get(position).getBank_key()){
+					case "广发银行":
+						resource = R.drawable.gfbank;
+						break;
+					case "华夏银行":
+						resource = R.drawable.hxbank;
+						break;
+					case "交通银行":
+						resource = R.drawable.jtbank;
+						break;
+					case "浦东银行":
+						resource = R.drawable.pdbank;
+						break;
+					case "兴业银行":
+						resource = R.drawable.xybank;
+						break;
+					case "招商银行":
+						resource = R.drawable.zsbank;
+						break;
+					case "中国工商银行":
+						resource = R.drawable.gsbank;
+						break;
+					case "中国光大银行":
+						resource = R.drawable.gdbank;
+						break;
+					case "中国建设银行":
+						resource = R.drawable.jsbank;
+						break;
+					case "中国民生银行":
+						resource = R.drawable.msbank;
+						break;
+					case "中国农业银行":
+						resource = R.drawable.nybank;
+						break;
+					case "中国信合":
+						resource = R.drawable.xhbank;
+						break;
+					case "中国银行":
+						resource = R.drawable.zgbank;
+						break;
+					case "中国邮政":
+						resource = R.drawable.yzbank;
+						break;
+				}
+				viewHolder.bankLogo.setImageResource(resource);
+			}
+			
 		}
 		return convertView;
 	}
@@ -105,7 +154,7 @@ public class BankListAdapter extends BaseAdapter
 		TextView bankNameText;
 		TextView bankCardNum;
 		TextView bankCardUsername;
-		CircleImageView banklogoImg;
+		ImageView bankLogo;
 	}
 
 

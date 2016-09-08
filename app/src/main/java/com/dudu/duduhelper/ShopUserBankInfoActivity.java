@@ -20,14 +20,19 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BankCardListBean;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ShopUserBankInfoActivity extends BaseActivity 
 {
@@ -126,19 +131,19 @@ public class ShopUserBankInfoActivity extends BaseActivity
 			userBankNumTextView.setText(comeinData.getCard_number());
 		}
 		//银行名称
-		if(!TextUtils.isEmpty(comeinData.getBank_name()))
+		if(!TextUtils.isEmpty(comeinData.getBank_key()))
 		{
-			userBankOpenNameTextView.setText(comeinData.getBank_name());
+			userBankOpenNameTextView.setText(comeinData.getBank_key());
 		}
 		//省份
-		if(!TextUtils.isEmpty(comeinData.getProvince_id()))
+		if(!TextUtils.isEmpty(comeinData.getProvince_name()))
 		{
-			provienceTextView.setText(comeinData.getCard_number());
+			provienceTextView.setText(comeinData.getProvince_name());
 		}
 		//城市
-		if(!TextUtils.isEmpty(comeinData.getCity_id()))
+		if(!TextUtils.isEmpty(comeinData.getCity_name()))
 		{
-			userBankCityTextView.setText(comeinData.getCity_id());
+			userBankCityTextView.setText(comeinData.getCity_name());
 		}
 		//支行名称
 		if(!TextUtils.isEmpty(comeinData.getBank_name()))
@@ -188,22 +193,37 @@ public class ShopUserBankInfoActivity extends BaseActivity
 				if (TextUtils.isEmpty(code)){
 					Toast.makeText(context,"验证码输入为空",Toast.LENGTH_LONG).show();
 				}
+				AsyncHttpClient client = new AsyncHttpClient();
+				//保存cookie，自动保存到了shareprefercece,自动保存，自动使用
+				PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
+				client.setCookieStore(myCookieStore);
 				RequestParams params = new RequestParams();
 				params.put("code",code);
-				params.put("id",comeinData.getId());
-				HttpUtils.getConnection(context, params, ConstantParamPhone.DEL_BANKCARD, "get", new TextHttpResponseHandler() {
+				client.delete( ConstantParamPhone.DEL_BANKCARD+comeinData.getId(), params, new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-						Toast.makeText(context,"网络异常",Toast.LENGTH_LONG).show();
-
+						Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+						//LogUtil.d("FAIL",s);
 					}
-
 					@Override
 					public void onSuccess(int i, Header[] headers, String s) {
-						Toast.makeText(context,"解绑成功",Toast.LENGTH_LONG).show();
-						finish();
-						//回到银行卡列表
-						startActivity(new Intent(context,ShopBankListActivity.class));
+						try {
+							JSONObject object = new JSONObject(s);
+							String code =  object.getString("code");
+							if ("SUCCESS".equalsIgnoreCase(code)){
+								//数据请求成功
+								Toast.makeText(context,"解绑成功",Toast.LENGTH_LONG).show();
+								finish();
+								//回到银行卡列表
+								startActivity(new Intent(context,ShopBankListActivity.class));
+							}else {
+								//数据请求失败
+								String msg = object.getString("msg");
+								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 					}
 				});
 

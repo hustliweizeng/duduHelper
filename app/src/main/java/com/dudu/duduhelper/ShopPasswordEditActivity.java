@@ -152,23 +152,33 @@ public class ShopPasswordEditActivity extends BaseActivity
 			public void onClick(View view) {
 				RequestParams params = new RequestParams();
 				//测试用直接发
-				params.put("mobile","18937228893");
+				params.put("mobile",sp.getString("mobile",""));
 				params.put("type","password");
-				//params.setContentEncoding("UTF-8");
 				String url = ConstantParamPhone.GET_SMS_CONFIRM;
-
 				HttpUtils.getConnection(context, params, url, "get", new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 						Toast.makeText(context,"短信发送失败",Toast.LENGTH_LONG).show();
 					}
-
 					@Override
 					public void onSuccess(int i, Header[] headers, String s) {
-						//显示剩余有效时间
-						LogUtil.d("success",s);
-						showResidueSeconds();
+						try {
+							JSONObject object = new JSONObject(s);
+							String code =  object.getString("code");
+							if ("SUCCESS".equalsIgnoreCase(code)){
+								//数据请求成功
+								LogUtil.d("success",s);
+								showResidueSeconds();
 
+							}else {
+								//数据请求失败
+								String msg = object.getString("msg");
+								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						
 					}
 				});
 			}

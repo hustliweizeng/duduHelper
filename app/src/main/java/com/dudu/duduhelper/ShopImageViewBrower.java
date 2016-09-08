@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.Utils.ViewUtils;
 import com.dudu.duduhelper.adapter.ShopImageAdapter;
@@ -26,6 +27,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,7 +63,17 @@ public class ShopImageViewBrower extends BaseActivity
 	private int sourceType;
 	private String picPath;
 
-
+	OnDelListener delListener;
+    public interface OnDelListener{
+		public void  Ondel();
+	}
+	public  void setOnDelListener(OnDelListener delListener){
+		this.delListener = delListener;
+	}
+	//获取当前集合数据
+	public ArrayList<String> getImgeList(){
+		return shopImageAdapter.getImageList();
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -77,8 +90,13 @@ public class ShopImageViewBrower extends BaseActivity
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				shopImageAdapter.delectSelectImageList();
+				//请求网络删除相应图片imagelist剩下的数据提交即可
+				//利用回调方法通知主页修改数据
+				if (delListener !=null){
+					delListener.Ondel();
+					LogUtil.d("del","删除回调");
+				}
 			}
 		});
 		delectLinearView = (LinearLayout) this.findViewById(R.id.delectLinearView);
@@ -187,11 +205,6 @@ public class ShopImageViewBrower extends BaseActivity
 	{
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		 //4.4系统获取裁剪路径的方法，但是拍照是不适用的，因为只适合图库就是图片存在的前提下
-
-        //System.out.println(path);
-		//针对4.4，可以把拍照后的图片保存在本地，通过文件名的方式寻找到uri，推荐做法
-        //Uri.fromFile(tempFile);
 		if(resultCode == RESULT_OK)
 		{
 			switch (requestCode)
@@ -234,7 +247,6 @@ public class ShopImageViewBrower extends BaseActivity
 		{
 			Toast.makeText(ShopImageViewBrower.this, "操作已取消", Toast.LENGTH_SHORT).show();
 		}
-
 	}
 
 	/**
@@ -297,49 +309,6 @@ public class ShopImageViewBrower extends BaseActivity
 		//传递数据
 		intent.putExtra("pics", (Serializable) uplodImgs);
 		setResult(RESULT_OK,intent);
-		//通过asynHttpclient上传
-		RequestParams params = new RequestParams();
-		//获取token
-		umeng_token = getSharedPreferences("umeng_token",MODE_PRIVATE).getString("token","");
-		//临时数据
-		params.add("token","dudu");
-		//Log.d("token",umeng_token);
-		//循环读取图片
-		String imageUri = null;
-		String picBase64 = null;
-		byte[] picByte = null;
-		//测试上传一张
-		//Log.d("list",uplodImgs.size()+"");
-		for(int i = 0; i< uplodImgs.size(); i++){
-			//判断数据来源，如果是网络来源(path)就不上传
-			if (!TextUtils.isEmpty(imageUri)){
-				try {
-					//图片根据path转换为字节流
-					picByte = ViewUtils.imageToBytes(imageUri);
-					//把字节流转换为BASE64编码
-					picBase64 = Base64.encodeToString(picByte,1);
-					//Log.d("base64",picBase64);
-					params.add("content",picBase64);
-					String url = ConstantParamPhone.BASE_URL+ConstantParamPhone.UPLOAD_PIC;
-					//请求网络
-					HttpUtils.getConnection(this, params, url, "POST", new TextHttpResponseHandler() {
-						@Override
-						public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-							Toast.makeText(ShopImageViewBrower.this,"上传失败，请稍后再试",Toast.LENGTH_LONG).show();
-						}
-
-						@Override
-						public void onSuccess(int i, Header[] headers, String s) {
-							Log.d("uplod",s);
-						}
-					});
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-
 	}
 
 

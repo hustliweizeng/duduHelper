@@ -38,6 +38,7 @@ import com.dudu.duduhelper.javabean.BankCardListBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.WaveHelper;
 import com.dudu.duduhelper.widget.WaveView;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -101,7 +102,6 @@ public class ShopBankListActivity extends BaseActivity
 		}
 		initHeadView(title, true, true, image);
 		initView();
-		ColorDialog.showRoundProcessDialog(ShopBankListActivity.this,R.layout.loading_process_dialog_color);
 		if (savedInstanceState!=null){
 			//重新获取保存的信息
 			bean1 = (BankCardListBean) savedInstanceState.getSerializable("data");
@@ -177,12 +177,10 @@ public class ShopBankListActivity extends BaseActivity
 			{
 				if(action.equals("tixian"))
 				{
-					
 					//弹出提现列表框
 					getCashWindow();
 					//获取当前条目的银行卡号
 					bankCardNo = memberAdapter.getCardNo(position);
-
 				}
 				else
 				{
@@ -198,7 +196,8 @@ public class ShopBankListActivity extends BaseActivity
 	//请求银行卡列表信息
 	private void initData() 
 	{
-		//loading_progressBar.setVisibility(View.VISIBLE);
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
 		RequestParams params = new RequestParams();
         HttpUtils.getConnection(context,params,ConstantParamPhone.GET_BANKCARD_LIST, "GET",new TextHttpResponseHandler()
@@ -214,53 +213,29 @@ public class ShopBankListActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				//Toast.makeText(context,"加载成功",Toast.LENGTH_LONG).show();
-				/*showBankCardList();
-				Gson gson = new Gson();
-				BankCardListBean bean1 = gson.fromJson(arg2, BankCardListBean.class);*/
-
-				//获取数据，传递给适配器adapter
-				//伪造数据
-				bean1 = new BankCardListBean();
-
-				List<BankCardListBean.DataBean>  datas = new ArrayList<>();
-				BankCardListBean.DataBean data1 = new BankCardListBean.DataBean();
-				data1.setBank_name("中国银行");
-				data1.setCard_number("0123");
-				data1.setProvince_id("22");
-				data1.setCity_id("1");
-				data1.setName("孙悟空");
-				data1.setId("4165466");
-
-				BankCardListBean.DataBean data2 = new BankCardListBean.DataBean();
-				data2.setBank_name("工商银行");
-				data2.setCard_number("8088");
-				data2.setProvince_id("22");
-				data2.setCity_id("1");
-				data2.setName("猪八戒");
-				data2.setId("4165466");
-				//把数据添加到集合中
-				datas.add(data1);
-				datas.add(data2);
-				datas.add(data1);
-
-				bean1.setCode("SUCCESS");
-				bean1.setMsg("OK");
-				bean1.setData(datas);
-				//判断接收的结果
-				if ("SUCCESS".equalsIgnoreCase(bean1.getCode()) && "OK".equalsIgnoreCase(bean1.getMsg())){
-					memberAdapter.addAll(bean1.getData());
-					LogUtil.d("banklist","success"+memberAdapter.getCount());
-
-				}else {
-					Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						//Toast.makeText(context,"加载成功",Toast.LENGTH_LONG).show();
+						Gson gson = new Gson();
+						bean1 = gson.fromJson(arg2, BankCardListBean.class);
+						memberAdapter.addAll(bean1.getData());
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-
 			}
 			@Override
 			public void onFinish() 
 			{
 				memberListswipeLayout.setRefreshing(false);
+				loading_progressBar.setVisibility(View.GONE);
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
@@ -272,7 +247,6 @@ public class ShopBankListActivity extends BaseActivity
 		super.onSaveInstanceState(outState);
 		//把当前的数据保存
 		outState.putSerializable("data",bean1);
-
 	}
 
 	//显示下来提现窗口
@@ -385,7 +359,6 @@ public class ShopBankListActivity extends BaseActivity
 			@Override
 			public void onClick(View arg0) 
 			{
-				// TODO Auto-generated method stub
 				mWaveHelper.cancel();
 				popupWindow.dismiss();
 				AlphaAnimation animation = new AlphaAnimation((float)1, (float)0);
@@ -426,9 +399,6 @@ public class ShopBankListActivity extends BaseActivity
 	{
 		//清空adapter数据，重新载入数据
 		memberAdapter.clear();
-		//loadMoreView.setVisibility(View.GONE);
-		//
-		// ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		initData();
 	}
 	/**

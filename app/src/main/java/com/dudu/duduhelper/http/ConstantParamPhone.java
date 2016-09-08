@@ -29,8 +29,6 @@ public class ConstantParamPhone
     public static final String GET_USER_BANK_CITY="/geo/city";//GET /geo/city 获取城市列表
     public static final String EDIT_USER_BANK="/user/bank";//POST /user/bank 修改用户的银行卡信息
     public static final String SEND_SMS="/sms/send";//POST /sms/send 短信发送接口
-    public static final String BIND_PHONE="/user/bindmobile";//POST /user/bindmobile 手机绑定操作
-    public static final String UNBIND_PHONE="/user/unbindmobile";//POST /user/unbindmobile 手机解绑操作
     public static final String CHECK_OLD_PHONE="/user/checkoldmobile";//GET /user/checkoldmobile 验证老手机解绑验证码
     public static final String CHANGE_PHONE="/user/changemobile";//POST /user/changemobile 更改手机号
    // public static final String GET_USER_INFO="/user/token";//GET /user/token 根据token刷新用户信息
@@ -106,7 +104,7 @@ public class ConstantParamPhone
     public static final String  GET_BANKCARD_LIST = "/api/app/bank";//获取银行卡信息列表
     public static final String  ADD_BANKCARD = "/api/app/bank";//添加银行卡信息
     public static final String  CHANGE_BANKCARD_INFO = "/api/app/bank";//修改银行卡信息
-    public static final String  DEL_BANKCARD = "/api/app/bank";//删除银行卡信息
+    public static final String  DEL_BANKCARD = "/api/app/bank/";//删除银行卡信息
 
    //收银相关
    public static final String  CREATE_PAY_PIC = "/api/app/cashier";//创建收银二维码
@@ -150,6 +148,9 @@ public class ConstantParamPhone
     //产品信息描述
     public static final String GET_APP_INFO = "/api/app/tool/geo/boot";//获取产品信息
 
+   //解绑手机
+    public static final String UNBIND_PHONE ="/api/app/user/unbindphone";//解绑手机
+    public static final String BIND_PHONE = "/api/app/user/bindphone";//绑定手机
 
 
 
