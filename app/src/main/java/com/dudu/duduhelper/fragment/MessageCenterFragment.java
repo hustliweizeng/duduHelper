@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.dudu.duduhelper.MessageCenterListActivity;
+import com.dudu.duduhelper.Activity.MessageCentreActivity.MessageCenterListActivity;
 import com.dudu.duduhelper.R;
 import com.jauker.widget.BadgeView;
 import com.umeng.analytics.MobclickAgent;

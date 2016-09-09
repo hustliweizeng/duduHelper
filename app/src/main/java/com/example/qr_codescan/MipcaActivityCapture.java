@@ -20,11 +20,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopDiscountScanSucessActivity;
+import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetCashCodeActivity;
+import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.ShopDiscountScanSucessActivity;
-import com.dudu.duduhelper.ShopGetCashCodeActivity;
-import com.dudu.duduhelper.ShopGetInComeCashActivity;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.CreateCashPic;
 import com.google.zxing.BarcodeFormat;

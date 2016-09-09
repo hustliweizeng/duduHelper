@@ -68,22 +68,22 @@
         </meta-data>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activity.WelcomeActivity.LoginActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan|stateHidden" >
 
         </activity>
-        <activity android:name=".EditRedbag2Activity"/>
+        <activity android:name=".Activity.RedBagActivity.EditRedbag2Activity"/>
         <activity
-            android:name=".CashSellActivity"
+            android:name=".Activity.CheckSellAcitivty.CashSellActivity"
             android:label="@string/title_activity_cash_sell" >
         </activity>
-        <activity android:name=".EditRedbag1Activity"/>
+        <activity android:name=".Activity.RedBagActivity.EditRedbag1Activity"/>
         <activity
             android:name="com.example.qr_codescan.MipcaActivityCapture"
             android:configChanges="orientation|keyboardHidden"
@@ -91,51 +91,51 @@
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <activity
-            android:name=".CashSellScanSucessActivity"
+            android:name=".Activity.CheckSellAcitivty.CashSellScanSucessActivity"
             android:label="@string/title_activity_cash_sell_scan_sucess" >
         </activity>
         <activity
-            android:name=".CashSellScanFailActivity"
+            android:name=".Activity.CheckSellAcitivty.CashSellScanFailActivity"
             android:label="@string/title_activity_cash_sell_scan_fail" >
         </activity>
         <activity
-            android:name=".MemberSellActivity"
+            android:name=".Activity.CheckSellAcitivty.MemberSellActivity"
             android:label="@string/title_activity_member_sell" >
         </activity>
         <activity
-            android:name=".ShopOrderDetailActivity"
+            android:name=".Activity.OrderActivity.ShopOrderDetailActivity"
             android:label="@string/title_activity_order_detail" >
         </activity>
         <activity
-            android:name=".SettingActivity"
+            android:name=".Activity.MyInfoActivity.SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
         <activity
-            android:name=".BindPhoneActivity"
+            android:name=".Activity.MyInfoActivity.BindPhoneActivity"
             android:label="@string/title_activity_bind_phone" >
         </activity>
         <activity
-            android:name=".ShopRebindPhoneSteponeActivity"
+            android:name=".Activity.MyInfoActivity.ShopRebindPhoneSteponeActivity"
             android:label="@string/title_activity_rebind_phone_stepone" >
         </activity>
         <activity
-            android:name=".ShopRebindPhoneSteptwoActivity"
+            android:name=".Activity.MyInfoActivity.ShopRebindPhoneSteptwoActivity"
             android:label="@string/title_activity_rebind_phone_steptwo" >
         </activity>
         <activity
-            android:name=".GetCashActivity"
+            android:name=".Activity.MyInfoActivity.GetCashActivity"
             android:label="@string/title_activity_get_cash" >
         </activity>
         <activity
-            android:name=".GetCashHistoryListActivity"
+            android:name=".Activity.MyInfoActivity.GetCashHistoryListActivity"
             android:label="@string/title_activity_get_cash_history_list" >
         </activity>
         <activity
-            android:name=".ShopProductAddActivity"
+            android:name=".Activity.BigBandActivity.ShopProductAddActivity"
             android:label="@string/title_activity_product_add" >
         </activity>
         <activity
-            android:name=".CouponAddActivity"
+            android:name=".Activity.DiscountCardActivity.CouponAddActivity"
             android:label="@string/title_activity_product_add" >
         </activity>
         <activity
@@ -143,45 +143,45 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".ShopAccountDataActivity"
+            android:name=".Activity.SummaryActivity.ShopAccountDataActivity"
             android:label="@string/title_activity_account_data" >
         </activity>
         <activity
-            android:name=".MemberSellStepTwoActivity"
+            android:name=".Activity.CheckSellAcitivty.MemberSellStepTwoActivity"
             android:label="@string/title_activity_get_cash_history_list" >
         </activity>
         <activity
-            android:name=".MemberSellScanSucessActivity"
+            android:name=".Activity.CheckSellAcitivty.MemberSellScanSucessActivity"
             android:label="@string/title_activity_product_add" >
         </activity>
         <activity
-            android:name=".GiftSellActivity"
+            android:name=".Activity.CheckSellAcitivty.GiftSellActivity"
             android:label="@string/title_activity_gift_sell" >
         </activity>
         <activity
-            android:name=".GiftSellScanSucessActivity"
+            android:name=".Activity.CheckSellAcitivty.GiftSellScanSucessActivity"
             android:label="@string/title_activity_gift_sell" >
         </activity>
         <activity
-            android:name=".ShopUserBankInfoEditActivity"
+            android:name=".Activity.MyInfoActivity.ShopUserBankInfoActivity"
             android:label="@string/title_activity_user_bank_info" >
         </activity>
-        <activity android:name=".UserBankInfoConfirmActivity" >
+        <activity android:name=".Activity.MyInfoActivity.UserBankInfoConfirmActivity" >
         </activity>
         <activity
-            android:name=".UserBankSelectActivity"
+            android:name=".Activity.MyInfoActivity.UserBankSelectActivity"
             android:label="@string/title_activity_user_bank_select" >
         </activity>
         <activity
-            android:name=".LoginBindPhoneActivity"
+            android:name=".Activity.WelcomeActivity.LoginBindPhoneActivity"
             android:label="@string/title_activity_user_bank_select" >
         </activity>
         <activity
-            android:name=".shopProductListActivity"
+            android:name=".Activity.BigBandActivity.shopProductListActivity"
             android:label="@string/title_activity_product_list" >
         </activity>
         <activity
-            android:name=".ProductInfoEditActivity"
+            android:name=".Activity.BigBandActivity.ProductInfoEditActivity"
             android:label="@string/title_activity_product_info_edit" >
         </activity>
 
@@ -196,7 +196,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".Activity.WelcomeActivity.WelcomeActivity"
             android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -206,19 +206,19 @@
             
         </activity>
         <activity
-            android:name=".LoadingActivity"
+            android:name=".Activity.WelcomeActivity.LoadingActivity"
             android:label="@string/title_activity_loading" >
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name=".Activity.OrderActivity.SearchActivity"
             android:label="@string/title_activity_search" >
         </activity>
         <activity
-            android:name=".WebPageActivity"
+            android:name=".Activity.MyInfoActivity.WebPageActivity"
             android:label="@string/title_activity_web_page" >
         </activity>
         <activity
-            android:name=".ShopGetInComeCashActivity"
+            android:name=".Activity.GetMoneyActivity.ShopGetInComeCashActivity"
             android:label="@string/title_activity_get_in_come_cash" >
         </activity>
         <activity
@@ -227,20 +227,20 @@
             android:label="@string/title_activity_get_in_come_cash_code_image" >
         </activity>
         <activity
-            android:name=".GetInComeActivity"
+            android:name=".Activity.CashHistoryActivity.GetInComeActivity"
             android:label="@string/title_activity_get_in_come" >
         </activity>
        
         <activity
-            android:name=".ShopSearchBlueToothActivity"
+            android:name=".Activity.ShopSearchBlueToothActivity"
             android:label="@string/title_activity_search_blue_tooth" >
         </activity>
         <activity
-            android:name=".ShopCouponDetailActivity"
+            android:name=".Activity.DiscountCardActivity.ShopCouponDetailActivity"
             android:label="@string/title_activity_coupon_detail" >
         </activity>
         <activity
-            android:name=".CouponSellHistoryActivity"
+            android:name=".Activity.DiscountCardActivity.CouponSellHistoryActivity"
             android:label="@string/title_activity_coupon_sell_history" >
         </activity>
         <!-- 友盟推送 -->
@@ -352,62 +352,62 @@
             android:exported="false" />
         -->
         <activity
-            android:name=".CouponSellDetailActivity"
+            android:name=".Activity.DiscountCardActivity.CouponSellDetailActivity"
             android:label="@string/title_activity_coupon_sell_detail" >
         </activity>
         <activity
-            android:name=".ShopMemberListActivity"
+            android:name=".Activity.EmployeeManageActivity.ShopMemberListActivity"
             android:label="@string/title_activity_member_list" >
         </activity>
         <activity
-            android:name=".ShopMemberAddActivity"
+            android:name=".Activity.EmployeeManageActivity.ShopMemberAddActivity"
             android:label="@string/title_activity_member_add" >
         </activity>
         <activity
-            android:name=".DiscountSellActivity"
+            android:name=".Activity.fiveDiscountActivity.DiscountSellActivity"
             android:label="@string/title_activity_discount_sell" >
         </activity>
         <activity
-            android:name=".DiscountSellResultActivity"
+            android:name=".Activity.fiveDiscountActivity.DiscountSellResultActivity"
             android:label="@string/title_activity_discount_sell_result" >
         </activity>
         <activity
-            android:name=".ShopDiscountScanSucessActivity"
+            android:name=".Activity.GetMoneyActivity.ShopDiscountScanSucessActivity"
             android:label="@string/title_activity_discount_scan_sucess" >
         </activity>
         <activity
-            android:name=".ShopHongBaoDetailActivity"
+            android:name=".Activity.RedBagActivity.ShopHongBaoDetailActivity"
             android:hardwareAccelerated="false"
             android:label="@string/title_activity_hong_bao_detail" >
         </activity>
-        <activity android:name=".ShopHongBaoAddActivity" >
+        <activity android:name=".Activity.RedBagActivity.ShopHongBaoAddActivity" >
         </activity>
         <activity
             android:name="org.fireking.app.imagelib.widget.ImageBrowserActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".ShopHongbaoHistoryListActivity"
+            android:name=".Activity.RedBagActivity.ShopHongbaoHistoryListActivity"
             android:label="@string/title_activity_hongbao_history_list" >
         </activity>
         <activity
-            android:name=".ShopHongbaoHistoryDetailActivity"
+            android:name=".Activity.RedBagActivity.ShopHongbaoHistoryDetailActivity"
             android:label="@string/title_activity_hongbao_history_detail" >
         </activity>
         <activity
-            android:name=".ShopOrderActivity"
+            android:name=".Activity.OrderActivity.ShopOrderActivity"
             android:label="@string/title_activity_shop_order" >
         </activity>
         <activity
-            android:name=".ShopGetCashCodeActivity"
+            android:name=".Activity.GetMoneyActivity.ShopGetCashCodeActivity"
             android:label="@string/title_activity_shop_get_cash_code" >
         </activity>
         <activity
-            android:name=".ShopScanSellActivity"
+            android:name=".Activity.CheckSellAcitivty.ShopScanSellActivity"
             android:label="@string/title_activity_shop_scan_sell" >
         </activity>
         <activity
-            android:name=".ShopAccountWatchActivity"
+            android:name=".Activity.SummaryActivity.ShopAccountWatchActivity"
             android:label="@string/title_activity_shop_account_watch" >
         </activity>
         <!--<activity-->
@@ -415,52 +415,52 @@
             <!--android:label="@string/title_activity_shop_search_blue_tooth" >-->
         <!--</activity>-->
         <activity
-            android:name=".ShopProductDetailActivity"
+            android:name=".Activity.BigBandActivity.ShopProductDetailActivity"
             android:label="" >
         </activity>
         <activity
-            android:name=".ShopSettingActivity"
+            android:name=".Activity.MyInfoActivity.ShopSettingActivity"
             android:label="@string/title_activity_shop_setting" >
         </activity>
         <activity
-            android:name=".ShopInfoEditActivity"
+            android:name=".Activity.MyInfoActivity.ShopInfoEditActivity"
             android:label="@string/title_activity_shop_info_edit" >
         </activity>
         <activity
-            android:name=".ShopGetCashhistoryListActivity"
+            android:name=".Activity.GetMoneyActivity.ShopGetCashhistoryListActivity"
             android:label="@string/title_activity_shop_get_cash" >
         </activity>
         <activity
-            android:name=".ShopBankListActivity"
+            android:name=".Activity.MyInfoActivity.ShopBankListActivity"
             android:label="@string/title_activity_shop_bank_list" >
         </activity>
         <activity
-            android:name=".ShopListManagerActivity"
+            android:name=".Activity.ShopManageActivity.ShopListManagerActivity"
             android:label="@string/title_activity_shop_manager" >
         </activity>
         <activity
-            android:name=".ShopAddActivity"
+            android:name=".Activity.ShopManageActivity.ShopAddActivity"
             android:label="@string/title_activity_shop_add" >
         </activity>
         <activity
-            android:name=".MessageCenterListActivity"
+            android:name=".Activity.MessageCentreActivity.MessageCenterListActivity"
             android:label="@string/title_activity_message_center_list" >
         </activity>
         <activity
-            android:name=".ShopImageViewBrower"
+            android:name=".Activity.ShopImageViewBrower"
             android:label="@string/title_activity_shop_image_view_brower" >
         </activity>
         <activity
-            android:name=".ShopPasswordEditActivity"
+            android:name=".Activity.MyInfoActivity.ShopPasswordEditActivity"
             android:label="@string/title_activity_password_edit" >
         </activity>
-        <activity android:name=".ShopUserBankInfoActivity" >
+        <activity android:name=".Activity.MyInfoActivity.ShopUserBankInfoEditActivity" >
         </activity>
         <activity
-            android:name=".ShopMoneyRecordListActivity"
+            android:name=".Activity.CashHistoryActivity.ShopMoneyRecordListActivity"
             android:label="@string/title_activity_shop_money_record_list" >
         </activity>
-        <activity android:name=".CreateRedBagActivity"
+        <activity android:name=".Activity.RedBagActivity.CreateRedBagActivity"
             android:label=".CreateRedBagActivity"/>
     </application>
 

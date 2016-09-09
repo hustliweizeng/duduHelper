@@ -17,12 +17,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.LoginBindPhoneActivity;
-import com.dudu.duduhelper.MainActivity;
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
+import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.ShopBankListActivity;
-import com.dudu.duduhelper.ShopSettingActivity;
-import com.dudu.duduhelper.WebPageActivity;
+import com.dudu.duduhelper.Activity.MyInfoActivity.ShopBankListActivity;
+import com.dudu.duduhelper.Activity.MyInfoActivity.ShopSettingActivity;
+import com.dudu.duduhelper.Activity.MyInfoActivity.WebPageActivity;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;

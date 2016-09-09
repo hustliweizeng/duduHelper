@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import com.dudu.duduhelper.ShopProductAddActivity;
+import com.dudu.duduhelper.Activity.BigBandActivity.ShopProductAddActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.ProductAdapter;
 import com.dudu.duduhelper.adapter.ProductTypeAdapter;

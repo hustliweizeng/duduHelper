@@ -1,6 +1,6 @@
 package com.dudu.duduhelper.fragment;
 
-import com.dudu.duduhelper.shopProductListActivity;
+import com.dudu.duduhelper.Activity.BigBandActivity.shopProductListActivity;
 import com.dudu.duduhelper.R;
 import com.umeng.analytics.MobclickAgent;
 

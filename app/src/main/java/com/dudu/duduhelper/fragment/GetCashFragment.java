@@ -4,7 +4,7 @@ package com.dudu.duduhelper.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dudu.duduhelper.ShopGetInComeCashActivity;
+import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.FragmentAdapter;
 import com.dudu.duduhelper.widget.PagerSlidingTabStrip;

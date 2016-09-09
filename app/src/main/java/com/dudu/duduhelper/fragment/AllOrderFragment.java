@@ -21,10 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.MainActivity;
+import com.dudu.duduhelper.Activity.MainActivity;
+import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.ShopOrderDetailActivity;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.bean.OrderBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;

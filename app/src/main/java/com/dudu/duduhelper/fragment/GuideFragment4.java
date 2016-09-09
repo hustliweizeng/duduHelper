@@ -1,7 +1,7 @@
 package com.dudu.duduhelper.fragment;
 
 
-import com.dudu.duduhelper.LoginActivity;
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.R;
 
 import android.content.Intent;

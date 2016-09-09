@@ -2,9 +2,9 @@ package com.dudu.duduhelper.fragment;
 
 import org.apache.http.Header;
 
-import com.dudu.duduhelper.GetInComeActivity;
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.MainActivity;
+import com.dudu.duduhelper.Activity.CashHistoryActivity.GetInComeActivity;
+import com.dudu.duduhelper.Activity.MainActivity;
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.GetCashAdapter;
 import com.dudu.duduhelper.bean.GetCashBean;
@@ -56,9 +56,9 @@ public class GetCashSonFragment extends Fragment
     private int page=1;
     private int lastItemIndex;
 	//获取加载数据类型
+	public GetCashSonFragment(){}
 	public GetCashSonFragment(String type) 
 	{
-		// TODO Auto-generated constructor stub
 		this.type=type;
 		
 	}

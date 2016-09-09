@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.apache.http.Header;
 
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.ShopMemberListActivity;
-import com.dudu.duduhelper.shopProductListActivity;
+import com.dudu.duduhelper.Activity.EmployeeManageActivity.ShopMemberListActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.GetCouponSellDataBean;
 import com.dudu.duduhelper.bean.MemberBean;

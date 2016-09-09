@@ -2,9 +2,9 @@ package com.dudu.duduhelper.fragment;
 
 import org.apache.http.Header;
 
-import com.dudu.duduhelper.GetInComeActivity;
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.MainActivity;
+import com.dudu.duduhelper.Activity.CashHistoryActivity.GetInComeActivity;
+import com.dudu.duduhelper.Activity.MainActivity;
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.GetCashAdapter;
 import com.dudu.duduhelper.bean.GetCashBean;

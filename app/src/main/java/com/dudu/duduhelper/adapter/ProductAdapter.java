@@ -22,7 +22,7 @@ import com.dudu.duduhelper.bean.HongbaoListBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.javabean.BigBandBuy;
-import com.dudu.duduhelper.shopProductListActivity;
+import com.dudu.duduhelper.Activity.BigBandActivity.shopProductListActivity;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;

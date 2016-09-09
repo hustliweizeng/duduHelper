@@ -29,10 +29,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.LoginActivity;
-import com.dudu.duduhelper.MainActivity;
+import com.dudu.duduhelper.Activity.MainActivity;
+import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.ShopOrderDetailActivity;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;

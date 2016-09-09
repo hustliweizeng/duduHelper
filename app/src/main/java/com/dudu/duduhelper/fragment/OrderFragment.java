@@ -4,8 +4,8 @@ package com.dudu.duduhelper.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dudu.duduhelper.Activity.OrderActivity.SearchActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.SearchActivity;
 import com.dudu.duduhelper.adapter.FragmentAdapter;
 import com.umeng.analytics.MobclickAgent;
 
