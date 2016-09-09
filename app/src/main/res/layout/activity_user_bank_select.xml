@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
-    tools:context="com.dudu.duduhelper.UserBankSelectActivity" >
+    tools:context="com.dudu.duduhelper.Activity.MyInfoActivity.UserBankSelectActivity" >
 
     <include
         android:id="@+id/head"

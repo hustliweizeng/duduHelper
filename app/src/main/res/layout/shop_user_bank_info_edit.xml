@@ -5,7 +5,7 @@
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.dudu.duduhelper.ShopUserBankInfoEditActivity" >
+    tools:context="com.dudu.duduhelper.Activity.MyInfoActivity.ShopUserBankInfoEditActivity" >
 
     <include
         android:id="@id/head"
@@ -60,7 +60,7 @@
                         android:background="@null"
                         android:gravity="right|center_vertical"
                         android:hint="请输入您的开户姓名"
-                        android:paddingRight="10dp"
+                        android:paddingRight="32dp"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -95,7 +95,7 @@
                         android:gravity="right|center_vertical"
                         android:hint="请输入您的银行卡号"
                         android:inputType="number"
-                        android:paddingRight="10dp"
+                        android:paddingRight="32dp"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -131,25 +131,19 @@
                         android:textColor="@color/text_color_dark"
                         android:textSize="16sp" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/userBankNameTextView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:hint="请选择开户银行"
-                        android:paddingRight="4dp"
+                        android:hint="请输入开户银行"
+                        android:layout_marginRight="32dp"
                         android:textColor="@color/text_color_light"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
 
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/icon_arrow" />
                 </LinearLayout>
 
                 <View
@@ -267,7 +261,7 @@
                         android:background="@null"
                         android:gravity="right|center_vertical"
                         android:hint="请输入开户银行支行名称"
-                        android:paddingRight="16dp"
+                        android:paddingRight="32dp"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
                 </LinearLayout>

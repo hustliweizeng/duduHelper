@@ -96,15 +96,6 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			Toast.makeText(ShopUserBankInfoEditActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		/*array:7 [▼
-		"bank_key" => "银行名称"
-		"bank_name" => "分行信息"
-		"card_number" => "银行卡号"
-		"province_id" => "省份ID"
-		"city_id" => "城市ID"
-		"name" => "持卡人姓名"
-		"code" => "验证码"
-		]*/
 		ColorDialog.showRoundProcessDialog(ShopUserBankInfoEditActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("name",userBankNameEditText.getText().toString().trim());
@@ -128,7 +119,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 					JSONObject json = new JSONObject(arg2);
 					String code = json.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
-						Toast.makeText(context,"修改银行卡成功",Toast.LENGTH_LONG).show();
+						Toast.makeText(context,"提交成功",Toast.LENGTH_LONG).show();
 						finish();
 					}else {
 						Toast.makeText(context,"服务器异常，请稍后再试",Toast.LENGTH_LONG).show();
@@ -160,24 +151,24 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 				userBankNumEditText.setHint(info.getCard_number());
 			}
 			//银行名称
-			if(!TextUtils.isEmpty(info.getBank_name()))
+			if(!TextUtils.isEmpty(info.getBank_key()))
 			{
-				userBankNameTextView.setText(info.getBank_name());
+				userBankNameTextView.setText(info.getBank_key());
 			}
 			//省份
-			if(!TextUtils.isEmpty(info.getProvince_id()))
+			if(!TextUtils.isEmpty(info.getProvince_name()))
 			{
-				provienceTextView.setText(info.getProvince_id());
+				provienceTextView.setText(info.getProvince_name());
 			}
 			//城市
-			if(!TextUtils.isEmpty(info.getCity_id()))
+			if(!TextUtils.isEmpty(info.getCity_name()))
 			{
-				userBankCityTextView.setText(info.getCity_id());
+				userBankCityTextView.setText(info.getCity_name());
 			}
 			//支行名称
 			if(!TextUtils.isEmpty(info.getBank_name()))
 			{
-				userBankSonNameEditText.setText(share.getString("moreinfo", ""));
+				userBankSonNameEditText.setText(info.getBank_name());
 			}
 		}
 	}
@@ -232,7 +223,6 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		messageCodeEditText=(EditText) this.findViewById(R.id.messageCodeEditText);
 
 		btnGetmess=(Button) this.findViewById(R.id.btnGetmess);
@@ -243,8 +233,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				// 获取验证码
-				getMessage();
-				//showResidueSeconds();
+			getMessage();
 			}
 		});
 		userBankSonNameEditText=(EditText) this.findViewById(R.id.userBankSonNameEditText);
@@ -306,7 +295,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 				startActivityForResult(intent, 2);
 			}
 		});
-		kaihuBanklin.setOnClickListener(new OnClickListener() 
+		/*kaihuBanklin.setOnClickListener(new OnClickListener() 
 		{
 			
 			@Override
@@ -317,7 +306,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 				intent.putExtra("action", "bank");
 				startActivityForResult(intent, 1);
 			}
-		});
+		});*/
 	}
 	  @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
@@ -338,15 +327,15 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	              //来自按钮2的请求，作相应业务处理
 	              {
 					  //省份列表
-					  provienceCode = ((ProvinceListBean.DataBean)data.getSerializableExtra("province")).getId();
-	            	  provienceTextView.setText(((ProvinceListBean.DataBean)data.getSerializableExtra("province")).getName());
+					  provienceCode = data.getLongExtra("province",0)+"";
+	            	  provienceTextView.setText();
 	            	  userBankCityTextView.setText(null);
 	              }
 	              break;
 	              case 3:
-	              //来自按钮2的请求，作相应业务处理
+	              //来自按钮3的请求，作相应业务处理
 	              {
-	            	  cityCode=((CityClistBean.DataBean)data.getSerializableExtra("city")).getId();
+	            	  cityCode = data.getLongExtra("city",0)+"";
 	            	  userBankCityTextView.setText(((CityClistBean.DataBean)data.getSerializableExtra("city")).getName());
 	              }
 	              break;
@@ -365,13 +354,26 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 				public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
 				{
 					Toast.makeText(ShopUserBankInfoEditActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
-					//showResidueSeconds();
 				}
 				@Override
 				public void onSuccess(int arg0, Header[] arg1, String arg2) 
 				{
-					Toast.makeText(ShopUserBankInfoEditActivity.this, "已发送短信验证，15分钟内有效", Toast.LENGTH_LONG).show();
-					showResidueSeconds();
+					try {
+						JSONObject object = new JSONObject(arg2);
+						String code =  object.getString("code");
+						if ("SUCCESS".equalsIgnoreCase(code)){
+							//数据请求成功
+							Toast.makeText(ShopUserBankInfoEditActivity.this, "已发送短信验证", Toast.LENGTH_LONG).show();
+							showResidueSeconds();
+						}else {
+							//数据请求失败
+							String msg = object.getString("msg");
+							Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					
 				}
 
 			});
