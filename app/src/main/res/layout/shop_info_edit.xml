@@ -5,7 +5,7 @@
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.dudu.duduhelper.ShopInfoEditActivity" >
+    tools:context="com.dudu.duduhelper.Activity.MyInfoActivity.ShopInfoEditActivity" >
 
     <include
         android:id="@+id/head"

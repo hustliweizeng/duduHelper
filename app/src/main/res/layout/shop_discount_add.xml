@@ -5,7 +5,7 @@
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.dudu.duduhelper.ShopProductAddActivity" >
+    tools:context="com.dudu.duduhelper.Activity.DiscountCardActivity.ShopDiscoutAddActivity" >
 
     <include
         android:id="@id/head"
@@ -381,7 +381,7 @@
             <ImageView
                 android:id="@+id/productImageView"
                 android:layout_width="96dp"
-                android:layout_height="56dp"
+                android:layout_height="72dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="14dp"
@@ -393,7 +393,7 @@
                     android:id="@+id/tv_photo_num_shop_product"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="相册共10张照片"
+                    android:text="相册共0张照片"
                     android:layout_marginLeft="22dp"
                     android:textColor="@color/text_color_light"
                     android:layout_centerVertical="true"

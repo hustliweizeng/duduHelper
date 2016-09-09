@@ -1,7 +1,6 @@
 package com.dudu.duduhelper.Activity.DiscountCardActivity;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.Activity.BigBandActivity.ShopProductAddActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.BigBandBuy;
@@ -88,10 +87,9 @@ public class ShopCouponDetailActivity extends BaseActivity
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(context,ShopProductAddActivity.class);
+				Intent intent = new Intent(context,ShopDiscoutAddActivity.class);
 				//把数据传递到编辑页面
 				intent.putExtra("productinfo", coupon);
-				intent.putExtra("category","discount");
 				startActivity(intent);
 			}
 		});

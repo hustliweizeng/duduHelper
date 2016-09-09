@@ -312,7 +312,6 @@ public class CouponAddActivity extends BaseActivity
 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		couponPriceEditText=(EditText) this.findViewById(R.id.couponPriceEditText);
 		productImageView=(ImageView) this.findViewById(R.id.productImageView);
 		saveProductbutton=(Button) this.findViewById(R.id.saveProductbutton);
@@ -374,18 +373,6 @@ public class CouponAddActivity extends BaseActivity
 			}
 		});
 		
-//		if(category.equals("buying"))
-//		{
-//			productTypeTextView.setText("大牌抢购");
-//		}
-//		if(category.equals("coupon"))
-//		{
-//			productTypeTextView.setText("优惠券");
-//		}
-//		if(category.equals("goods"))
-//		{
-//			productTypeTextView.setText("店铺商品");
-//		}
 	}
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 

@@ -1,14 +1,19 @@
 package com.dudu.duduhelper.Activity.MyInfoActivity;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +49,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,17 +85,37 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     private String imagepath;
     private String startTime;
     private String endTime;
-    private ArrayList<String> picsPath;
     private int category_id;
     private int circle_id;
     private SharedPreferences sharePre;
     private String category_name;
     private String circle_name;
     private String backtUrl;
+    protected ImageLoader imageLoader = ImageLoader.getInstance();
     private String uploadPicPath;
     private String[] urls;
     private String[] pics;
     private ArrayList<String> imagesToBroser;
+    private String[] imgs;
+    private ArrayList<String> uplodImgs;
+    private String[] picsPath;
+    private ArrayList<String> listSource;
+    private int subThreadCount;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            //把上传的url放入到数组中
+            for (int i= 0;i<uplodImgs.size();i++){
+                picsPath[i] = uplodImgs.get(i);
+            }
+            //修改数据源
+            pics= imgs =picsPath;
+            imageLoader.displayImage(picsPath[0],iv_img_shop_info);
+            tv_imgNum_shop_info.setText("相册有"+picsPath.length+"张图片");
+            Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -327,29 +353,15 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 //进入选择相册页面
                 Intent picIntent = new Intent(context,ShopImageViewBrower.class);
                 //传递图片过去
-                imagesToBroser = new ArrayList<>();
-                for (String pic :pics){
-                    imagesToBroser.add(pic);
+                Intent intent1 = new Intent(context,ShopImageViewBrower.class);
+                //把网络数据传输过去
+                listSource = new ArrayList<String>();
+                for (String img:pics){
+                    listSource.add(img);
                 }
-                picIntent.putExtra("imageList", imagesToBroser);
-                picIntent.putExtra("type",5);
-                //进入相册之前判断之前有无选择过
-                if (picsPath!=null && picsPath.size()!=0){
-                    picIntent.putStringArrayListExtra("imageList",picsPath);
-                }
-                startActivityForResult(picIntent,5);
-                //设置图片监听
-                final ShopImageViewBrower brower = new ShopImageViewBrower();
-                brower.setOnDelListener(new ShopImageViewBrower.OnDelListener() {
-                    @Override
-                    public void Ondel() {
-                        //当图片有删除动作时，主页动态监听
-                        tv_imgNum_shop_info.setText("相册共"+brower.getImgeList().size()+"张");
-                        //重新给当前图片集合赋值
-                        LogUtil.d("info","执行了回调");
-                    }
-                });
-
+                intent1.putStringArrayListExtra("imageList", listSource);
+                intent1.putExtra("type",5);
+                startActivityForResult(intent1, 5);
                 break;
         }
     }
@@ -368,6 +380,8 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 //设置选中的行业id
                 category_id = Integer.parseInt(category.get(poistion).getId());
                 category_name = category.get(poistion).getName();
+                LogUtil.d("circle_id","circle_id="+category_id);
+
             }
         });
 
@@ -385,6 +399,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 tv_shopcircle_shop_info.setText(category.get(poistion).getName());
                 //设置选中的行业id
                 circle_id = Integer.parseInt(category.get(poistion).getId());
+                LogUtil.d("shangquan","circle_id="+circle_id);
                 circle_name = category.get(poistion).getName();
             }
         });
@@ -393,11 +408,6 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
 
     //上传保存的信息
     private void requstHttpConnection() {
-        //获取图片的信息
-       
-        /*iv_logo_shop_info.setDrawingCacheEnabled(true);
-        Bitmap iv_logo = iv_logo_shop_info.getDrawingCache();
-        iv_logo_shop_info.setDrawingCacheEnabled(false);*/
         String title = ed_title_shop_info.getText().toString().trim();
         String category = tv_class_shop_info.getText().toString();
         String circle = tv_shopcircle_shop_info.getText().toString();
@@ -418,11 +428,10 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         params.put("contact",mobile);
         params.put("address",address);
         params.put("description",descrip);
-        params.put("images",urls);
+        params.put("images",picsPath);
         params.put("category",category_id);
         params.put("area",circle_id);
         params.put("open_time",open_time);
-        System.out.print(uploadPicPath+"=="+urls);
 
         HttpUtils.getConnection(context, params, ConstantParamPhone.SAVE_SHOP_INFO, "POST", new TextHttpResponseHandler() {
             @Override
@@ -467,7 +476,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                     System.out.println("开始裁剪"+data);
                     break;
                 case 2:
-                    //裁剪结束后返回
+                    //logo裁剪结束后返回
                     iv_logo_shop_info.setImageURI(urilocal);
                     //子线程上传图片，上传完毕handler告诉主线程
                     String imgPath = ViewUtils.getRealFilePath(context,urilocal);
@@ -477,28 +486,18 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                     break;
                 case 5:
                     //获取店家环境相册
-                    picsPath = data.getStringArrayListExtra("pics");
-                    LogUtil.d("back","backsize="+picsPath.size());
-                    //设置封面照片
-                    iv_img_shop_info.setImageBitmap(BitmapFactory.decodeFile(picsPath.get(0)));
-                    //设置相册数量
-                    tv_imgNum_shop_info.setText("相册共"+ picsPath.size()+"张");
-                    //上传相册图片（网络地址）
-                    urls = new String[picsPath.size()];
-                    for (int i = 0;i<picsPath.size(); i++){
-                        //只上传本地图片，网络图片地址不上传
-                        if (!picsPath.get(i).startsWith("http")&&picsPath.get(i).contains("fail")){
-                            urls[i] = ViewUtils.uploadImg(context,picsPath.get(i));
-                            picsPath.remove(i);
+                    uplodImgs = (ArrayList<String>) data.getSerializableExtra("pics");
+                    picsPath = new String[uplodImgs.size()];
+                    //后台上传本地的图片
+                    for(String s:uplodImgs){
+                        if (!s.startsWith("http")){
+                            //这边是子线程上传，所以不会立即完成
+                            uploadImg(context, s);
+                            subThreadCount = 0;
+                            subThreadCount++;
                         }
                     }
-                    //把剩余不需要上传的图片放到数组中
-                    int i = urls.length;
-                    for (String pp :picsPath){
-                        urls[i] = pp;
-                        i++;
-                    }
-                    LogUtil.d("pics", urls.toString());
+                    
                 default:
                     break;
             }
@@ -548,5 +547,59 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     protected void onDestroy() {
         super.onDestroy();
         finish();
+    }
+    /**
+     * imageUri 上传图片的本地uri地址
+     */
+    public  void uploadImg(final Context context, final String imageUri) {
+        //压缩图片再上传
+        Bitmap img = BitmapFactory.decodeFile(imageUri);
+        //字节输出流
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        //压缩
+        img.compress(Bitmap.CompressFormat.JPEG,60,baos);
+        //输出流转换为字节数组
+        byte[] picByte  = baos.toByteArray();
+        //转换为base64格式
+        String picBase64 = Base64.encodeToString(picByte,1);
+
+        //上传图片
+        RequestParams params = new RequestParams();
+        params.add("content",picBase64);
+        HttpUtils.getConnection(context, params, ConstantParamPhone.UPLOAD_PIC, "post", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+                Toast.makeText(context,"网络异常，请稍后再试",Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(int i, Header[] headers, String s) {
+                try {
+                    JSONObject object = new JSONObject(s);
+                    String code =  object.getString("code");
+                    if ("SUCCESS".equalsIgnoreCase(code)){
+                        //保存到集合中
+                        uplodImgs.add(object.getString("url"));
+                        //移除本地地址
+                        uplodImgs.remove(imageUri);
+                        subThreadCount--;
+                        //说明上传完毕
+                        if (subThreadCount ==0){
+                            handler.sendEmptyMessage(0);
+                        }
+                        LogUtil.d("pic_success",s);
+                    }else {
+                        //数据请求失败
+                        String msg = object.getString("msg");
+                        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+                        LogUtil.d("pic_fail",s);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        });
+
     }
 }

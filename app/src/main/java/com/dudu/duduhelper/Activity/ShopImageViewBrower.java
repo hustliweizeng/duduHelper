@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.BigBandActivity.ShopProductAddActivity;
+import com.dudu.duduhelper.Activity.DiscountCardActivity.ShopDiscoutAddActivity;
 import com.dudu.duduhelper.Activity.MyInfoActivity.ShopInfoEditActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
@@ -83,12 +84,6 @@ public class ShopImageViewBrower extends BaseActivity
 			@Override
 			public void onClick(View v) {
 				shopImageAdapter.delectSelectImageList();
-				//请求网络删除相应图片imagelist剩下的数据提交即可
-				//利用回调方法通知主页修改数据
-				if (delListener !=null){
-					delListener.Ondel();
-					LogUtil.d("del","删除回调");
-				}
 			}
 		});
 		delectLinearView = (LinearLayout) this.findViewById(R.id.delectLinearView);
@@ -188,6 +183,8 @@ public class ShopImageViewBrower extends BaseActivity
 			initHeadView("红包相册", true, false, 0);
 		}else if (sourceType == 5){
 			initHeadView("店铺相册",true,false,0);
+		}else if (sourceType ==10){
+			initHeadView("优惠券相册",true,false,0);
 		}
 	}
 
@@ -298,6 +295,9 @@ public class ShopImageViewBrower extends BaseActivity
 		//从大牌抢购传递的
 		if (sourceType ==1){
 			intent = new Intent(context,ShopProductAddActivity.class);
+		}
+		if(sourceType ==10){
+			intent = new Intent(context, ShopDiscoutAddActivity.class);
 		}
 		//传递数据
 		intent.putExtra("pics", (Serializable) uplodImgs);

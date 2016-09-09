@@ -301,32 +301,8 @@ public class ShopProductAddActivity extends BaseActivity
 		//选择配送方式
 		RadioGroup rg_shop_product_add = (RadioGroup) findViewById(R.id.rg_shop_product_add);
 		ed_explain = (EditText) findViewById(R.id.ed_explain);
-		final RadioButton rb1_shop_product_add = (RadioButton) findViewById(R.id.rb1_shop_product_add);
-		final RadioButton rb2_shop_product_add = (RadioButton) findViewById(R.id.rb2_shop_product_add);
 		//动态显示图片的数量
 		tv_photo_num_shop_product = (TextView) findViewById(R.id.tv_photo_num_shop_product);
-		//初始化选中状态
-		rb1_shop_product_add.setChecked(true);
-		rb1_shop_product_add.setTextColor(getResources().getColor(R.color.text_red_color));
-		//设置按钮监听事件，应该是把事件加入到消息队列中了
-		rg_shop_product_add.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-				//获取选中状态
-				if (checkedId == R.id.rb1_shop_product_add){
-					//动态改变文字颜色
-					rb1_shop_product_add.setTextColor(getResources().getColor(R.color.text_red_color));
-					rb2_shop_product_add.setTextColor(getResources().getColor(R.color.text_color_light));
-
-				}else if(checkedId == R.id.rb2_shop_product_add){
-					rb2_shop_product_add.setTextColor(getResources().getColor(R.color.text_red_color));
-					rb1_shop_product_add.setTextColor(getResources().getColor(R.color.text_color_light));
-
-				}
-			}
-		});
-
-
 		shopImageView.setOnClickListener(new OnClickListener() 
 		{
 			@Override
@@ -471,10 +447,6 @@ public class ShopProductAddActivity extends BaseActivity
 					subThreadCount++;
 				}
 			}
-			
-			
-			
-			
 		}
 	}
 	

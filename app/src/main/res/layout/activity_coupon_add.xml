@@ -5,7 +5,7 @@
     android:background="@color/bg_color"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.dudu.duduhelper.ShopProductAddActivity" >
+    tools:context="com.dudu.duduhelper.Activity.DiscountCardActivity.CouponAddActivity" >
 
     <include
         android:id="@id/head"

@@ -446,6 +446,7 @@
             android:name=".Activity.MessageCentreActivity.MessageCenterListActivity"
             android:label="@string/title_activity_message_center_list" >
         </activity>
+        <activity android:name=".Activity.DiscountCardActivity.ShopDiscoutAddActivity"/>
         <activity
             android:name=".Activity.ShopImageViewBrower"
             android:label="@string/title_activity_shop_image_view_brower" >

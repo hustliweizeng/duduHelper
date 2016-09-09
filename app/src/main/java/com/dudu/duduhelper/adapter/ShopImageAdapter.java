@@ -99,7 +99,6 @@ public class ShopImageAdapter extends BaseAdapter
 	//显示图片通过UIL加载
 	public View getView(final int position, View convertView, ViewGroup parent) 
 	{
-		// TODO Auto-generated method stub
 		//加载图片显示item
 		convertView = LayoutInflater.from(context).inflate(R.layout.shop_imagebrower_item, null);
 		ImageView imagephoto = (ImageView) convertView.findViewById(R.id.imagephoto);
@@ -114,11 +113,14 @@ public class ShopImageAdapter extends BaseAdapter
 				{
 					//获取被选中的位置
 					listDelect.add(Integer.valueOf(position));
+					LogUtil.d("checkbox+",position+"");
 				}
 				else
 				{
 					//移除当前条目
 					listDelect.remove(Integer.valueOf(position));
+					LogUtil.d("checkbox",position+"");
+
 				}
 			}
 		});
