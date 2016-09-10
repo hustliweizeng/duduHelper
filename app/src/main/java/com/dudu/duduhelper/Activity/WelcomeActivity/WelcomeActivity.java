@@ -144,8 +144,8 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
      */  
     private void initPoint() {  
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout);  
-  
-        points = new ImageView[4];  
+        //定义小圆点数量
+        points = new ImageView[3];
   
         // 循环取得小点图片  
         for (int i = 0; i < 4; i++) {  

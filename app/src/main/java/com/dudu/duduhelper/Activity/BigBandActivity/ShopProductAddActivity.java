@@ -371,9 +371,11 @@ public class ShopProductAddActivity extends BaseActivity
 				
 			Intent intent = new Intent(ShopProductAddActivity.this,ShopImageViewBrower.class);
 			//把网络数据传输过去
-				listSource = new ArrayList<String>();
-			for (String img:imgs){
-				listSource.add(img);
+			listSource = new ArrayList<String>();
+			if(imgs!=null){
+				for (String img:imgs){
+					listSource.add(img);
+				}
 			}
 			intent.putStringArrayListExtra("imageList", listSource);
 			intent.putExtra("type",1);

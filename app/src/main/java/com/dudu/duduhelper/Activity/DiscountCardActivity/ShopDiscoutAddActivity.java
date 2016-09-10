@@ -297,8 +297,10 @@ public class ShopDiscoutAddActivity extends BaseActivity
 			Intent intent = new Intent(context,ShopImageViewBrower.class);
 			//把网络数据传输过去
 			listSource = new ArrayList<String>();
-			for (String img:imgs){
-				listSource.add(img);
+			if(imgs!=null){
+				for (String img:imgs){
+					listSource.add(img);
+				}
 			}
 			intent.putStringArrayListExtra("imageList", listSource);
 			intent.putExtra("type",10);

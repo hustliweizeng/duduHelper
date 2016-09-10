@@ -327,16 +327,18 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	              //来自按钮2的请求，作相应业务处理
 	              {
 					  //省份列表
-					  provienceCode = data.getLongExtra("province",0)+"";
-	            	  provienceTextView.setText();
+					  ProvinceListBean.DataBean proinceData = (ProvinceListBean.DataBean) data.getSerializableExtra("province");
+					  provienceCode = proinceData.getCode();
+	            	  provienceTextView.setText(proinceData.getName());
 	            	  userBankCityTextView.setText(null);
 	              }
 	              break;
 	              case 3:
 	              //来自按钮3的请求，作相应业务处理
 	              {
-	            	  cityCode = data.getLongExtra("city",0)+"";
-	            	  userBankCityTextView.setText(((CityClistBean.DataBean)data.getSerializableExtra("city")).getName());
+					  CityClistBean.DataBean cityData = (CityClistBean.DataBean) data.getSerializableExtra("city");
+	            	  cityCode = cityData.getCode();
+	            	  userBankCityTextView.setText(cityData.getName());
 	              }
 	              break;
 	           }
