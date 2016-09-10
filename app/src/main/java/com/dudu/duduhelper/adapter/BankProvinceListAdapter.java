@@ -54,7 +54,6 @@ public class BankProvinceListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		convertView = LayoutInflater.from(context).inflate(R.layout.activity_product_window_select_item, null);
 		TextView textView=(TextView) convertView.findViewById(R.id.selectTypeTextView);
 		textView.setText(list.get(position).getName());

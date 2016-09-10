@@ -47,9 +47,13 @@ public class UserBankSelectActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_bank_select);
+		provinceListAdapter = new BankProvinceListAdapter(context);
+		cityListAdapter = new BankCityListAdapter(context);
 
 		String title = null;
 		cityListAdapter = new BankCityListAdapter(this);
+		//初始化其他信息
+		initView();
 		//根据不同来源初始化数据
 		if(getIntent().getStringExtra("action").equals("province"))
 		{
@@ -63,8 +67,7 @@ public class UserBankSelectActivity extends BaseActivity
 			initCity();
 		}
 		initHeadView(title, true, false, 0);
-		//初始化其他信息
-		initView();
+
 	}
 
 	//初始化城市列表
@@ -82,6 +85,7 @@ public class UserBankSelectActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
+				LogUtil.d("city",arg2);
 				try {
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
@@ -89,7 +93,7 @@ public class UserBankSelectActivity extends BaseActivity
 						//数据请求成功
 						CityClistBean city = new Gson().fromJson(arg2,CityClistBean.class);
 						cityListAdapter.addAll(city.getData(),"");
-						cityListAdapter.notifyDataSetChanged();
+						cuserbankListView.setAdapter(cityListAdapter);
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -116,6 +120,7 @@ public class UserBankSelectActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
+				LogUtil.d("province",arg2);
 				try {
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
@@ -123,7 +128,7 @@ public class UserBankSelectActivity extends BaseActivity
 						//数据请求成功
 						ProvinceListBean province = new Gson().fromJson(arg2, ProvinceListBean.class);
 						provinceListAdapter.addAll(province.getData(),"");
-						provinceListAdapter.notifyDataSetChanged();
+						cuserbankListView.setAdapter(provinceListAdapter);
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -171,7 +176,7 @@ public class UserBankSelectActivity extends BaseActivity
 				 }
 				 if(getIntent().getStringExtra("action").equals("city"))
 				 {
-					 intent.putExtra("city", cityListAdapter.getItemId(position));
+					 intent.putExtra("city", (CityClistBean.DataBean)cityListAdapter.getItem(position));
 				 }
                  setResult(RESULT_OK, intent);  
                  finish();  
