@@ -32,7 +32,6 @@ public class OrderSelectorAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-
 	public OrderSelectorAdapter(Context context)
 	{
 		this.context=context;
@@ -56,10 +55,7 @@ public class OrderSelectorAdapter extends BaseAdapter {
 	@SuppressLint("ResourceAsColor") @Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		if (convertView == null){
-
-			convertView = LayoutInflater.from(context).inflate(R.layout.activity_product_window_select_item, null);
-		}
+		convertView = LayoutInflater.from(context).inflate(R.layout.activity_product_window_select_item, null);
 		TextView textView=(TextView) convertView.findViewById(R.id.selectTypeTextView);
 		textView.setText(list.get(position).name);
 		//设置选中条目的颜色

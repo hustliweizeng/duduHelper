@@ -97,6 +97,10 @@ public class ProductAdapter extends BaseAdapter
     }
     public void addAll(List<BigBandBuy.DataBean> list,boolean isAllSelect)
     {
+	    //非空判断
+	    if (list==null){
+		    return;
+	    }
 
     	this.list.addAll(this.list.size(), list);
 		this.isAllSelect = isAllSelect;

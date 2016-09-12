@@ -248,6 +248,10 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         tv_opentime_shop_info.setText(info.getOpen_time());
         ed_address_shop_info.setText(info.getAddress());
         ed_des_shop_info.setText(info.getDescription());
+        //初始化商圈id和行业id
+        circle_id = Integer.parseInt(info.getArea());
+        category_id = Integer.parseInt(info.getCategory());
+        
     }
 
     @Override

@@ -14,8 +14,10 @@ import android.widget.Toast;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -25,6 +27,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginBindPhoneActivity extends BaseActivity 
 {
@@ -32,7 +36,6 @@ public class LoginBindPhoneActivity extends BaseActivity
 	private EditText messageCodeEditText;
 	private Button btnGetmess;
 	private Button SubmitPhonebutton;
-	private TimeCount time;
 	private String userphone;
 
 	@Override
@@ -40,237 +43,143 @@ public class LoginBindPhoneActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login_bind_phone);
-		time = new TimeCount(60000, 1000);//构造CountDownTimer对象
 		initHeadView("绑定手机号", true, false, 0);
 		initView();
 	}
 
-	private void initView() 
-	{
-		// TODO Auto-generated method stub
-		userPhoneEditText=(EditText) this.findViewById(R.id.userPhoneEditText);
-		messageCodeEditText=(EditText) this.findViewById(R.id.messageCodeEditText);
-		btnGetmess=(Button)this.findViewById(R.id.btnGetmess);
-		SubmitPhonebutton=(Button)this.findViewById(R.id.SubmitPhonebutton);
-		btnGetmess.setOnClickListener(new OnClickListener() 
-		{
-			
+	private void initView() {
+		userPhoneEditText = (EditText) this.findViewById(R.id.userPhoneEditText);
+		messageCodeEditText = (EditText) this.findViewById(R.id.messageCodeEditText);
+		btnGetmess = (Button) this.findViewById(R.id.btnGetmess);
+		SubmitPhonebutton = (Button) this.findViewById(R.id.SubmitPhonebutton);
+		//发送验证码
+		btnGetmess.setOnClickListener(new OnClickListener() {
+
 			@Override
-			public void onClick(View v) 
-			{
-				
-				// TODO Auto-generated method stub
-				if(TextUtils.isEmpty(userPhoneEditText.getText().toString().trim()))
-				{
-					Toast.makeText(LoginBindPhoneActivity.this, "请输入手机号",Toast.LENGTH_SHORT).show();
+			public void onClick(View v) {
+
+				if (TextUtils.isEmpty(userPhoneEditText.getText().toString().trim())) {
+					Toast.makeText(LoginBindPhoneActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				if(userPhoneEditText.getText().toString().trim().length()!=11)
-				{
-					Toast.makeText(LoginBindPhoneActivity.this, "请输入正确的手机号",Toast.LENGTH_SHORT).show();
+				if (userPhoneEditText.getText().toString().trim().length() != 11) {
+					Toast.makeText(LoginBindPhoneActivity.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				userphone=userPhoneEditText.getText().toString().trim();
-				getMessage();
+				userphone = userPhoneEditText.getText().toString().trim();
+				sendMsg();
 			}
 		});
-		
-		SubmitPhonebutton.setOnClickListener(new OnClickListener() 
-		{
-			
+		//提交请求
+		SubmitPhonebutton.setOnClickListener(new OnClickListener() {
+
 			@Override
-			public void onClick(View v) 
-			{
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(TextUtils.isEmpty(userPhoneEditText.getText().toString().trim()))
-				{
-					Toast.makeText(LoginBindPhoneActivity.this, "请输入手机号",Toast.LENGTH_SHORT).show();
+				if (TextUtils.isEmpty(userPhoneEditText.getText().toString().trim())) {
+					Toast.makeText(LoginBindPhoneActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				if(userPhoneEditText.getText().toString().trim().length()!=11)
-				{
-					Toast.makeText(LoginBindPhoneActivity.this, "请输入正确的手机号",Toast.LENGTH_SHORT).show();
+				if (userPhoneEditText.getText().toString().trim().length() != 11) {
+					Toast.makeText(LoginBindPhoneActivity.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				if(TextUtils.isEmpty(messageCodeEditText.getText().toString().trim()))
-				{
-					Toast.makeText(LoginBindPhoneActivity.this, "请输入验证码",Toast.LENGTH_SHORT).show();
+				if (TextUtils.isEmpty(messageCodeEditText.getText().toString().trim())) {
+					Toast.makeText(LoginBindPhoneActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				if(!userPhoneEditText.getText().toString().trim().equals(userphone))
-				{
-					Toast.makeText(LoginBindPhoneActivity.this, "请保持手机号一致",Toast.LENGTH_SHORT).show();
+				if (!userPhoneEditText.getText().toString().trim().equals(userphone)) {
+					Toast.makeText(LoginBindPhoneActivity.this, "请保持手机号一致", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				ColorDialog.showRoundProcessDialog(LoginBindPhoneActivity.this,R.layout.loading_process_dialog_color);
+				ColorDialog.showRoundProcessDialog(LoginBindPhoneActivity.this, R.layout.loading_process_dialog_color);
 				RequestParams params = new RequestParams();
 				params.add("token", share.getString("token", ""));
-				params.add("mobile", userPhoneEditText.getText().toString().trim());
-				params.add("code", messageCodeEditText.getText().toString().trim());
-				params.add("version", ConstantParamPhone.VERSION);
-				params.setContentEncoding("UTF-8");
-				AsyncHttpClient client = new AsyncHttpClient();
-				//保存cookie，自动保存到了shareprefercece  
-		        PersistentCookieStore myCookieStore = new PersistentCookieStore(LoginBindPhoneActivity.this);    
-		        client.setCookieStore(myCookieStore); 
-		        client.get(ConstantParamPhone.IP+ConstantParamPhone.BIND_PHONE, params,new TextHttpResponseHandler(){
+				HttpUtils.getConnection(context,params, ConstantParamPhone.BIND_PHONE, "post", new TextHttpResponseHandler() {
 
 					@Override
-					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-					{
+					public void onFailure(int arg0, Header[] arg1, String arg2, Throwable arg3) {
 						Toast.makeText(LoginBindPhoneActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
 					}
+
 					@Override
-					public void onSuccess(int arg0, Header[] arg1, String arg2) 
-					{
-						//获取短信发送状态
-						ResponsBean responsBean=new Gson().fromJson(arg2, ResponsBean.class);
-						if(responsBean.getStatus().equals("-1006"))
-						{
-							//Toast.makeText(ProductListActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-							//Toast.makeText(getActivity(), "出错啦！", Toast.LENGTH_SHORT).show();
-							MyDialog.showDialog(LoginBindPhoneActivity.this, "该账号已在其他手机登录，是否重新登录", true, true, "取消", "确定",new OnClickListener() {
-								
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
-									MyDialog.cancel();
-								}
-							}, new OnClickListener() {
-								
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
-									Intent intent=new Intent(LoginBindPhoneActivity.this,LoginActivity.class);
-									startActivity(intent);
-								}
-							});
-						}
-						if(responsBean.getStatus().equals("-1103"))
-						{
-							Toast.makeText(LoginBindPhoneActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-							return;
-						}
-						if(responsBean.getStatus().equals("-1101"))
-						{
-							Toast.makeText(LoginBindPhoneActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-							return;
-						}
-						if(responsBean.getStatus().equals("-1102"))
-						{
-							Toast.makeText(LoginBindPhoneActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-							return;
-						}
-						if(responsBean.getStatus().equals("-1104"))
-						{
-							Toast.makeText(LoginBindPhoneActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-							return;
-						}
-						if(responsBean.getStatus().equals("-1105"))
-						{
-							Toast.makeText(LoginBindPhoneActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-							return;
-						}
-						if(responsBean.getStatus().equals("1"))
-						{
-							Toast.makeText(LoginBindPhoneActivity.this, "绑定成功啦", Toast.LENGTH_LONG).show();
-							//保存用户信息
-							SharedPreferences.Editor edit = share.edit(); //编辑文件 
-							edit.putString("mobile", userphone);
-					    	edit.commit();//保存数据信息 
-					    	Intent intent=new Intent(LoginBindPhoneActivity.this,MainActivity.class);
-							startActivity(intent);
-							finish();
-						}
-						else
-						{
-							Toast.makeText(LoginBindPhoneActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-							return;
+					public void onSuccess(int arg0, Header[] arg1, String arg2) {
+						try {
+							JSONObject object = new JSONObject(arg2);
+							String code =  object.getString("code");
+							if ("SUCCESS".equalsIgnoreCase(code)){
+								//数据请求成功
+								Toast.makeText(context,"手机绑定成功",Toast.LENGTH_SHORT).show();
+								startActivity(new Intent(context,MainActivity.class));
+							}else {
+								//数据请求失败
+								String msg = object.getString("msg");
+								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
 						}
 					}
-					@Override
-					public void onFinish() 
-					{
-						// TODO Auto-generated method stub
-						ColorDialog.dissmissProcessDialog();
-					}
+
 				});
-				
 			}
 		});
 	}
-	private void getMessage() 
-	{
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
+	//发送验证码
+	private void sendMsg() {
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("mobile", userPhoneEditText.getText().toString().trim());
-		params.add("type", "bind");
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(LoginBindPhoneActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.post(ConstantParamPhone.IP+ConstantParamPhone.SEND_SMS, params,new TextHttpResponseHandler(){
+		params.put("mobile",sp.getString("mobile",""));
+		params.put("type","bind");
+		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "get", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						showResidueSeconds();
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	/**
+	 * 显示剩余秒数
+	 */
+	private void showResidueSeconds() {
+		//显示倒计时按钮
+		new CountDownTimer(60*1000,1000){
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-			{
-				Toast.makeText(LoginBindPhoneActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
+			public void onTick(long lastTime) {
+				//倒计时执行的方法
+				btnGetmess.setClickable(false);
+				btnGetmess.setFocusable(false);
+				btnGetmess.setText(lastTime/1000+"秒后重发");
+				btnGetmess.setTextColor(getResources().getColor(R.color.text_hint_color));
+				btnGetmess.setBackgroundResource(R.drawable.btn_bg_hint);
+				LogUtil.d("lasttime","剩余时间:"+lastTime/1000);
 			}
+
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-			{
-				//获取短信发送状态
-				ResponsBean responsBean=new Gson().fromJson(arg2, ResponsBean.class);
-				if(responsBean.getStatus().equals("-1103"))
-				{
-					Toast.makeText(LoginBindPhoneActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("-3000"))
-				{
-					Toast.makeText(LoginBindPhoneActivity.this, responsBean.getInfo(), Toast.LENGTH_LONG).show();
-					return;
-				}
-				if(responsBean.getStatus().equals("1"))
-				{
-					time.start();
-				}
-				//开始计时
+			public void onFinish() {
+				btnGetmess.setClickable(true);
+				btnGetmess.setFocusable(true);
+				btnGetmess.setText("重新获取");
 			}
-			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-			}
-		});
+		}.start();
 	}
-	class TimeCount extends CountDownTimer 
-	{
-		public TimeCount(long millisInFuture, long countDownInterval) 
-		{
-		    super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
-		}
-		@Override
-		public void onFinish() 
-		{
-			//计时完毕时触发
-			btnGetmess.setTextColor(btnGetmess.getResources().getColor(R.color.text_color_red));
-			btnGetmess.setText("获取验证码");
-			btnGetmess.setClickable(true);
-			btnGetmess.setPressed(false);
-		}
-		@Override
-		public void onTick(long millisUntilFinished)
-		{//计时过程显示
-			btnGetmess.setTextColor(btnGetmess.getResources().getColor(R.color.title_color));
-			btnGetmess.setClickable(false);
-			btnGetmess.setPressed(true);
-			btnGetmess.setText(millisUntilFinished /1000+"秒");
-		}
-	}
+
 
 }

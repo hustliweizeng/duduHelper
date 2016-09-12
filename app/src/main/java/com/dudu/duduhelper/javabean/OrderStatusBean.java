@@ -52,8 +52,8 @@ public class OrderStatusBean {
         status8.id = -1;
         status8.name = "已过期";
         SelectorBeanStatus status9 = new SelectorBeanStatus();
-        status8.id = -2;
-        status8.name = "已退款";
+        status9.id = -2;
+        status9.name = "已退款";
         List<SelectorBean> list = new ArrayList<>();
         list.add(status1);
         list.add(status2);
@@ -94,8 +94,8 @@ public class OrderStatusBean {
         source6.id = 10;
         source6.name = "扫码支付";
         SelectorBeanSource source7 = new SelectorBeanSource();
-        source6.id = 11;
-        source6.name = "周边活动";
+        source7.id = 11;
+        source7.name = "周边活动";
 
         ArrayList<SelectorBean> list = new ArrayList<>();
         list.add(source1);

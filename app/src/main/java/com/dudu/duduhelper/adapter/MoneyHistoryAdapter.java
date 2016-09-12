@@ -106,8 +106,8 @@ public class MoneyHistoryAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public CashHistoryBean.DataBean.OrderBean getItem(int i) {
+        return orders.get(i);
     }
 
     public static class ViewHolder {

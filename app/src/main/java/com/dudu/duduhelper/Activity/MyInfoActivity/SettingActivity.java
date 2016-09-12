@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Activity.WelcomeActivity.ForgetPwdCertifyMobileActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.CleanAppCache;
@@ -76,7 +77,7 @@ public class SettingActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				// TODO Auto-generated method stub
-				Intent intent=new Intent(SettingActivity.this,BindPhoneActivity.class);
+				Intent intent=new Intent(SettingActivity.this,ForgetPwdCertifyMobileActivity.class);
 				startActivity(intent);
 			}
 		});

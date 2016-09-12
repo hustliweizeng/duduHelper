@@ -111,7 +111,7 @@
             android:label="@string/title_activity_setting" >
         </activity>
         <activity
-            android:name=".Activity.MyInfoActivity.BindPhoneActivity"
+            android:name=".Activity.WelcomeActivity.ForgetPwdCertifyMobileActivity"
             android:label="@string/title_activity_bind_phone" >
         </activity>
         <activity

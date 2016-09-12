@@ -172,12 +172,10 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	 */
 	private void requestRedbagStatus() {
 		//弹对话框
-		//ColorDialog.showRoundProcessDialog(getActivity(),R.layout.loading_process_dialog_color);
+		ColorDialog.showRoundProcessDialog(getActivity(),R.layout.loading_process_dialog_color);
 		String url = ConstantParamPhone.GET_REDBAG_LIST;
 		RequestParams parmas = new RequestParams();
 		//请求参数设置
-		String token = getActivity().getSharedPreferences("userconig", Context.MODE_PRIVATE).getString("umeng_token","");
-		parmas.put("token",token);
 		parmas.put("page",1);
 		parmas.put("sort_list","getmore,getless,moremoney,lessmoney");
 		parmas.put("status_list","all,ended,releasing");
@@ -192,7 +190,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			public void onSuccess(int i, Header[] headers, String s) {
 				//设置有无红包的状态,解析处理json数据
 				Log.d("redbag",s);
-				ColorDialog.dissmissProcessDialog();
+				
 				//默认设置没有红包
 
 				IsRedbagEmpty =  true;
@@ -204,6 +202,12 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 
 				}
 
+			}
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}

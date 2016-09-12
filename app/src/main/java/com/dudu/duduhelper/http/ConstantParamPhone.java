@@ -134,6 +134,7 @@ public class ConstantParamPhone
     public static final String  GET_CATEGPRY_INFO = "/api/app/shop/category";//获取行业分类信息
     public static final String  GET_SHOPCIRCLE_INFO = "/api/app/shop/area";//获取商圈信息
     public static final String  SAVE_SHOP_INFO = "/api/app/shop/info";//保存店铺信息
+    public static final String  GET_SHOP_WXPIC ="/api/app/shop/cashier";//获取店铺二维码
 
     //大牌抢购
     public static final String GET_BIG_BAND_LIST = "/api/app/panic/listinfo";//大牌抢购列表

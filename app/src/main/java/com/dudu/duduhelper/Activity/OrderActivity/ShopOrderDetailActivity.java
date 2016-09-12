@@ -2,6 +2,9 @@ package com.dudu.duduhelper.Activity.OrderActivity;
 
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.http.Header;
@@ -16,7 +19,10 @@ import com.dudu.duduhelper.adapter.OrderDetailAdapter;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.CashHistoryBean;
 import com.dudu.duduhelper.javabean.OrderDetailBean;
+import com.dudu.duduhelper.javabean.OrderStatusBean;
+import com.dudu.duduhelper.javabean.SelectorBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -194,9 +200,17 @@ public class ShopOrderDetailActivity extends BaseActivity
 		//订单号
 		orderNumTextView.setText(orderData.getId());
 		//订单来源
-		orderSourceTextView.setText(orderData.getFrom());
+		List<SelectorBean> source = new OrderStatusBean().getAllOrderSource();
+		for (SelectorBean bean :source){
+			if (bean.id ==Integer.parseInt(orderData.getFrom())){
+				orderSourceTextView.setText(bean.name);
+			}
+		}
+		
 		//下单时间
-		orderPayTypeTextView.setText(orderData.getTime());
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String tempTime  =format.format(new Date(Long.parseLong(orderData.getTime())));
+		orderPayTypeTextView.setText(tempTime);
 		//联系人
 		orderContrectTextView.setText(orderData.getName());
 		//电话

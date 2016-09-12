@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.MainActivity;
-import com.dudu.duduhelper.Activity.MyInfoActivity.BindPhoneActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
@@ -47,6 +46,8 @@ public class LoginActivity extends BaseActivity
 	private ImageView userDelectIconBtn;
 	private ImageView mimaDelectIconBtn;
 	private String methord=ConstantParamPhone.USER_LOGIN;
+	private TextView findPasswordTextView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -81,15 +82,21 @@ public class LoginActivity extends BaseActivity
 		
 		userDelectIconBtn=(ImageView) this.findViewById(R.id.userDelectIconBtn);
 		mimaDelectIconBtn=(ImageView) this.findViewById(R.id.mimaDelectIconBtn);
-		userDelectIconBtn.setOnClickListener(new OnClickListener()
-		{
+		//忘记密码
+		findPasswordTextView = (TextView) findViewById(R.id.findPasswordTextView);
+		findPasswordTextView.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
-				   
-			    username.setText("");
+			public void onClick(View v) {
+				//进入忘记密码页面
+				startActivity(new Intent(context,ForgetPwdCertifyMobileActivity.class));
 			}
 		});
+		userDelectIconBtn.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						username.setText("");
+					}
+				});
 		mimaDelectIconBtn.setOnClickListener(new OnClickListener()
 		{
 			@Override
@@ -242,7 +249,7 @@ public class LoginActivity extends BaseActivity
 							//判断手机绑定没有
 							if (TextUtils.isEmpty(loginBean.getUser().getMobile())){
 								Toast.makeText(context,"当前账号未绑定，请先绑定手机号",Toast.LENGTH_LONG).show();
-								startActivity(new Intent(context,BindPhoneActivity.class));
+								startActivity(new Intent(context,LoginBindPhoneActivity.class));
 								finish();
 							}
 							//对bean的数据做非空判断

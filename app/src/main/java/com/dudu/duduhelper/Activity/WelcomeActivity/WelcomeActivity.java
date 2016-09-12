@@ -21,7 +21,6 @@ import com.dudu.duduhelper.adapter.FragmentAdapter;
 import com.dudu.duduhelper.adapter.ViewPagerAdapter;
 import com.dudu.duduhelper.fragment.GuideFragment1;
 import com.dudu.duduhelper.fragment.GuideFragment2;
-import com.dudu.duduhelper.fragment.GuideFragment3;
 import com.dudu.duduhelper.fragment.GuideFragment4;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -124,7 +123,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
   		FragmentViewlists.add(new GuideFragment4());
   		fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(),FragmentViewlists,null,null);
   		viewPager.setAdapter(fragmentAdapter);
-  		viewPager.setOffscreenPageLimit(4);
+  		viewPager.setOffscreenPageLimit(3);
     	
     }
   
@@ -143,12 +142,13 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
      * 初始化底部小点 
      */  
     private void initPoint() {  
+	    //线性布局定义小圆点
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout);  
         //定义小圆点数量
         points = new ImageView[3];
   
         // 循环取得小点图片  
-        for (int i = 0; i < 4; i++) {  
+        for (int i = 0; i < 3; i++) {  
             // 得到一个LinearLayout下面的每一个子元素  
             points[i] = (ImageView) linearLayout.getChildAt(i);  
             // 默认都设为灰色  
@@ -207,7 +207,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
      */  
     private void setCurView(int position) {  
         // 排除异常情况  
-        if (position < 0 || position >= 4) {  
+        if (position < 0 || position > 3) {  
             return;  
         }  
         viewPager.setCurrentItem(position);  
@@ -240,10 +240,9 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		HttpUtils.getConnection(context, params, url, "POST", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				Toast.makeText(context,"登陆超时，请重新登陆",Toast.LENGTH_LONG).show();
-
+				Toast.makeText(context,"网络故障，请重试",Toast.LENGTH_LONG).show();
+				startActivity(new Intent(context,LoginActivity.class));
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
                 try {
@@ -252,6 +251,13 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
                     if ("SUCCESS".equalsIgnoreCase(code)){
                         //数据请求成功
                         InfoBean infoBean = new Gson().fromJson(s, InfoBean.class);
+	                    //判断有没有绑定手机
+	                    if (TextUtils.isEmpty(infoBean.getUser().getMobile())){
+		                    Toast.makeText(context,"您还没有绑定手机号!",Toast.LENGTH_SHORT).show();
+		                    startActivity(new Intent(context,LoginBindPhoneActivity.class));
+		                    finish();
+	                    };
+	                    
                         //保存用户信息
                         //1.通过sp保存用户信息
                         SharedPreferences.Editor edit = sp.edit();

@@ -205,9 +205,10 @@ public class shopProductListActivity extends BaseActivity
 			{
 				//隐藏对话框
 				ColorDialog.dissmissProcessDialog();
-				loading_progressBar.setVisibility(View.GONE);
 				//隐藏swipe的进度条
 				swipe_product_list.setRefreshing(false);
+				//隐藏脚布局
+				footView.setVisibility(View.GONE);
 			}
 		});
 

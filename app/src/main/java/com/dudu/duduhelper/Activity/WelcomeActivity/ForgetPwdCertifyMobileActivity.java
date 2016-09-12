@@ -1,4 +1,4 @@
-package com.dudu.duduhelper.Activity.MyInfoActivity;
+package com.dudu.duduhelper.Activity.WelcomeActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.fragment.NewOrderFragment;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.loopj.android.http.RequestParams;
@@ -25,7 +26,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BindPhoneActivity extends BaseActivity implements OnClickListener {
+public class ForgetPwdCertifyMobileActivity extends BaseActivity implements OnClickListener {
 
     private TextView bindPhoneText;
     private Button btnGetmess;
@@ -69,7 +70,7 @@ public class BindPhoneActivity extends BaseActivity implements OnClickListener {
                 }
                 RequestParams params = new RequestParams();
                 params.put("mobile",sp.getString("mobile",""));
-                params.put("type","bind");
+                params.put("type","password");
                 HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "get", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
@@ -105,36 +106,11 @@ public class BindPhoneActivity extends BaseActivity implements OnClickListener {
                     Toast.makeText(context,"手机号码不能为空",Toast.LENGTH_SHORT).show();
                     break;
                 }
-                RequestParams params1 = new RequestParams();
-                params1.put("code",messageCodeEditText.getText().toString().trim());
-                params1.put("mobile",bindPhoneText.getText().toString().trim());
-                HttpUtils.getConnection(context, params1, ConstantParamPhone.BIND_PHONE, "post", new TextHttpResponseHandler() {
-                    @Override
-                    public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-                        Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
-                    }
-                    @Override
-                    public void onSuccess(int i, Header[] headers, String s) {
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            String code =  object.getString("code");
-                            if ("SUCCESS".equalsIgnoreCase(code)){
-                                //数据请求成功,重新登陆
-                                Toast.makeText(context,"手机绑定成功，请重新登陆",Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(context,LoginActivity.class));
-                                finish();
-                            }else {
-                                //数据请求失败
-                                String msg = object.getString("msg");
-                                Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                
-
+                //进入设置密码页面
+                Intent intent = new Intent(context,ForgetPasswordActivity.class);
+                intent.putExtra("code",messageCodeEditText.getText().toString().trim());
+                intent.putExtra("mobile",bindPhoneText.getText().toString().trim());
+                startActivity(intent);
                 break;
         }
     }
