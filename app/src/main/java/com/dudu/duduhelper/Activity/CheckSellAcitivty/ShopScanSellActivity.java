@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+/**
+ * 优惠券核销页面
+ */
 public class ShopScanSellActivity extends BaseActivity 
 {
 	private ConfirmView confirmView;

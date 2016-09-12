@@ -102,6 +102,8 @@
             android:name=".Activity.CheckSellAcitivty.MemberSellActivity"
             android:label="@string/title_activity_member_sell" >
         </activity>
+        <activity android:name=".Activity.CheckSellAcitivty.CheckSaleHistoryActivity"/>
+        <activity android:name=".Activity.CheckSellAcitivty.CheckSaleDetailActivity"/>
         <activity
             android:name=".Activity.OrderActivity.ShopOrderDetailActivity"
             android:label="@string/title_activity_order_detail" >

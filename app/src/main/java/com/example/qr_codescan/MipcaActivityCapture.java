@@ -20,6 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Activity.CashHistoryActivity.ShopMoneyRecordListActivity;
+import com.dudu.duduhelper.Activity.CheckSellAcitivty.CheckSaleDetailActivity;
+import com.dudu.duduhelper.Activity.CheckSellAcitivty.CheckSaleHistoryActivity;
 import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopDiscountScanSucessActivity;
 import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetCashCodeActivity;
 import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
@@ -88,7 +91,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		}
 		else
 		{
-			initHeadView("核销", true, true, R.drawable.icon_bangzhutouming);
+			initHeadView("核销", true, true, R.drawable.icon_historical);
 		}
 		// ViewUtil.addTopView(getApplicationContext(), this,
 		// R.string.scan_card);
@@ -151,7 +154,17 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 			btnIconImg.setImageResource(R.drawable.icon_tiaoxingma);
 		}
 	}
-	
+
+	@Override
+	public void RightButtonClick() {
+		super.RightButtonClick();
+		if(action.equals("income")){
+			startActivity(new Intent(context, ShopMoneyRecordListActivity.class));
+		}else {
+			//进入核销历史
+			startActivity(new Intent(context, CheckSaleHistoryActivity.class));
+		}
+	}
 
 	@Override
 	public void onResume() {
@@ -216,6 +229,11 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 				intent = new Intent(MipcaActivityCapture.this,ShopDiscountScanSucessActivity.class);
 				intent.putExtra("price", price);
 				intent.putExtra("id",orderId);
+				intent.putExtra("result", resultString);
+				
+			}else {
+			//进入核销结果页面
+				intent = new Intent(context, CheckSaleDetailActivity.class);
 				intent.putExtra("result", resultString);
 			}
 

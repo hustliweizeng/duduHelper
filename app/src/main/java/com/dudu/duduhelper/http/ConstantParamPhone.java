@@ -152,7 +152,10 @@ public class ConstantParamPhone
    //解绑手机
     public static final String UNBIND_PHONE ="/api/app/user/unbindphone";//解绑手机
     public static final String BIND_PHONE = "/api/app/user/bindphone";//绑定手机
-
+   //核销
+   public static final String  GET_CHECK_TICKET= "/api/app/ticket/";//查询券码
+   public static final String  VERTIFY_TICKET="/api/app/ticket/";//核销券码
+   public static final String  GET_VERTTIFY_HISTROY = "/api/app/ticket";//核销记录
 
 
 

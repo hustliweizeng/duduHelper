@@ -58,4 +58,7 @@
     <color name="bg_grey">#F5F5F5</color>
     <color name="text_msg_content">#999999</color>
     <color name="text_msg_title">#333333</color>
+    <color name="text_remind">#3ed6bc</color>
+    <color name="erro_status">#F88052</color>
+
 </resources>

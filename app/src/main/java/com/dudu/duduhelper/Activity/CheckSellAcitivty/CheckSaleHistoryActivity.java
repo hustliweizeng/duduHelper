@@ -1,12 +1,10 @@
-package com.dudu.duduhelper.Activity.CashHistoryActivity;
+package com.dudu.duduhelper.Activity.CheckSellAcitivty;
 
 import android.app.ActionBar;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -24,17 +22,15 @@ import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.squareup.picasso.Downloader;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ShopMoneyRecordListActivity extends BaseActivity {
+public class CheckSaleHistoryActivity extends BaseActivity {
 	//编辑按钮
 	private Button editButton;
 	private PopupWindow popupWindow;
@@ -58,8 +54,8 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 		format = new SimpleDateFormat("yyyy-MM-dd");
 		downDate1 = format.format(new Date());
 		downDate1 = "";
-		LogUtil.d("收银流水", downDate1);
-		initHeadView("收银流水", true, false, 0);
+		LogUtil.d("核销记录", downDate1);
+		initHeadView("核销记录", true, false, 0);
 		initView();
 		getData(); 
 
@@ -85,7 +81,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 	 * 下拉弹出
 	 */
 	private void getDataPopWindow() {
-		LayoutInflater layoutInflater = (LayoutInflater) ShopMoneyRecordListActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+		LayoutInflater layoutInflater = (LayoutInflater) CheckSaleHistoryActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.shop_data_popwindow, null);
 
 		if (popupWindow == null) {
@@ -131,11 +127,10 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 		RequestParams param = new RequestParams();
 		param.add("date", downDate1);
 		param.add("lastid", "0");
-		HttpUtils.getConnection(context, param, ConstantParamPhone.GET_CASH_HISTORY, "GET", new TextHttpResponseHandler() {
+		HttpUtils.getConnection(context, param, ConstantParamPhone.GET_VERTTIFY_HISTROY, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
 				LogUtil.d("list", s);

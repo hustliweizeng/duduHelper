@@ -38,11 +38,18 @@ public class MoneyHistoryAdapter extends BaseAdapter {
     }
 
     public void addAll(List<CashHistoryBean.DataBean> list) {
-        this.list = list;
+        if (list!=null){
+            this.list = list;
+        }else {
+            Toast.makeText(context,"当前没有要显示的数据",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public int getCount() {
+        if (list ==null ||list.size() ==0){
+            return 0;
+        }
         positions = new int[list.size()];
         positions[0] = 0;
         if (list!=null && list.size()!=0){

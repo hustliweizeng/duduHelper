@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Activity.CheckSellAcitivty.CheckSaleDetailActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.CheckSellAcitivty.ShopScanSellActivity;
 import com.dudu.duduhelper.Activity.CashHistoryActivity.ShopMoneyRecordListActivity;
@@ -181,7 +182,7 @@ public class ShopGetInComeCashActivity extends BaseActivity
 						Toast.makeText(ShopGetInComeCashActivity.this, "请输入用户的核销编号", Toast.LENGTH_SHORT).show();
 						return;
 					}
-					Intent intent = new Intent(ShopGetInComeCashActivity.this,ShopScanSellActivity.class);
+					Intent intent = new Intent(context,CheckSaleDetailActivity.class);
 					intent.putExtra("result",getcashmoneyedit.getText());
 					startActivity(intent);
 					finish();
