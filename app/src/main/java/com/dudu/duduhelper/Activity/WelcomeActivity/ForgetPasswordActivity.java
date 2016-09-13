@@ -49,11 +49,12 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 
 
 	private void initData() {
+		//数据传递之前 已经做了非空验证
 		String code = getIntent().getStringExtra("code");
-		String mobile = getIntent().getStringExtra("mobile");
+		
 		RequestParams params = new RequestParams();
 		params.put("code", code);
-		params.put("mobile", mobile);
+		params.put("password", ed_create_password_first.getText().toString().trim());
 		HttpUtils.getConnection(context, params, ConstantParamPhone.BIND_PHONE, "post", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
@@ -74,6 +75,9 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 						//数据请求失败
 						String msg = object.getString("msg");
 						Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+						//结束当前页面到第一个页面
+						startActivity(new Intent(context,ForgetPasswordActivity.class));
+						finish();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -88,7 +92,6 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 			case R.id.bt_submit_pwd:
 				submit();
 				initData();
-
 				break;
 		}
 	}

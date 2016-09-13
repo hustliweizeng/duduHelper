@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.R;
@@ -78,13 +79,10 @@ public class ShopPasswordEditActivity extends BaseActivity
 		else
 		{
 			bindPhoneText.setText("请先绑定手机号");
-			//绑定手机号页面
-			bindPhoneText.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					startActivity(new Intent(context,ShopRebindPhoneSteponeActivity.class));
-				}
-			});
+			//跳转到绑定手机页面
+			DuduHelperApplication application = (DuduHelperApplication)getApplication();
+			application.exit();
+			startActivity(new Intent(context, LoginBindPhoneActivity.class));
 		}
 		passWordEdit = (EditText) this.findViewById(R.id.passWordEdit);
 		showPasswordImageBtn = (ImageView) this.findViewById(R.id.showPasswordImageBtn);

@@ -112,6 +112,7 @@
             android:name=".Activity.MyInfoActivity.SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
+        <activity android:name=".Activity.WelcomeActivity.ForgetPasswordActivity"/>
         <activity
             android:name=".Activity.WelcomeActivity.ForgetPwdCertifyMobileActivity"
             android:label="@string/title_activity_bind_phone" >
@@ -119,10 +120,6 @@
         <activity
             android:name=".Activity.MyInfoActivity.ShopRebindPhoneSteponeActivity"
             android:label="@string/title_activity_rebind_phone_stepone" >
-        </activity>
-        <activity
-            android:name=".Activity.MyInfoActivity.ShopRebindPhoneSteptwoActivity"
-            android:label="@string/title_activity_rebind_phone_steptwo" >
         </activity>
         <activity
             android:name=".Activity.MyInfoActivity.GetCashActivity"

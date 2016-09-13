@@ -33,6 +33,7 @@ public class ForgetPwdCertifyMobileActivity extends BaseActivity implements OnCl
     private EditText messageCodeEditText;
     private Button submitPhoneBtn;
     private ImageView clear_bind_phone;
+    private String mobileNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +65,13 @@ public class ForgetPwdCertifyMobileActivity extends BaseActivity implements OnCl
                 break;
             case R.id.btnGetmess:
                 //验证码按钮
-                if (TextUtils.isEmpty(bindPhoneText.getText().toString().trim())){
+                mobileNum = bindPhoneText.getText().toString().trim();
+                if (TextUtils.isEmpty(mobileNum)){
                     Toast.makeText(context,"手机号码不能为空",Toast.LENGTH_SHORT).show();
                     break;
                 }
                 RequestParams params = new RequestParams();
-                params.put("mobile",sp.getString("mobile",""));
+                params.put("mobile", mobileNum);
                 params.put("type","password");
                 HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "get", new TextHttpResponseHandler() {
                     @Override
@@ -106,26 +108,20 @@ public class ForgetPwdCertifyMobileActivity extends BaseActivity implements OnCl
                     Toast.makeText(context,"手机号码不能为空",Toast.LENGTH_SHORT).show();
                     break;
                 }
+                if (!mobileNum.equals(bindPhoneText.getText().toString().trim())){
+                    Toast.makeText(context,"手机号已更改，请输入原来手机号",Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 //进入设置密码页面
                 Intent intent = new Intent(context,ForgetPasswordActivity.class);
                 intent.putExtra("code",messageCodeEditText.getText().toString().trim());
-                intent.putExtra("mobile",bindPhoneText.getText().toString().trim());
+                intent.putExtra("mobile",mobileNum);
                 startActivity(intent);
                 break;
         }
     }
 
-    private void submit() {
-        // validate
-        String messageCodeEditTextString = messageCodeEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(messageCodeEditTextString)) {
-            Toast.makeText(this, "输入验证码", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-
-
-    }
     /**
      * 显示剩余秒数
      */

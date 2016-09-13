@@ -12,6 +12,7 @@
         layout="@layout/activity_head" />
 
     <RelativeLayout
+        android:id="@+id/rl_mobile_num"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#fff"

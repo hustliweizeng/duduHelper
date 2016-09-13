@@ -1,5 +1,6 @@
 package com.dudu.duduhelper.Activity.MyInfoActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -7,9 +8,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
@@ -30,8 +34,6 @@ public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 	private EditText messageCodeEditText;
 	private TextView phoneNumText;
 	private boolean isSubmit;
-	private boolean isUnbind = true;
-	private String type;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -53,7 +55,13 @@ public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 		}
 		else
 		{
+			//一般在登陆的时候判断是否绑定手机，如果进入到了个人中心页面，说明肯定已经绑定过了
+			//或者是重新绑定时，已经解绑但是还没有绑定上，会出现这种问题,比如当前页面已经解绑，但是进入下个绑定
+			//页面没有绑定成功时，会返回到当前页面
 			phoneNumText.setText("请先绑定手机号");
+			DuduHelperApplication application = (DuduHelperApplication)getApplication();
+			application.exit();
+			startActivity(new Intent(context, LoginActivity.class));
 		}
 		messageCodeEditText=(EditText) this.findViewById(R.id.messageCodeEditText);
 		getPermessionbutton=(Button) this.findViewById(R.id.getPermessionbutton);
@@ -61,24 +69,15 @@ public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 		//获取验证码
 		btnGetmess.setOnClickListener(new OnClickListener() 
 		{
-			
 			@Override
 			public void onClick(View v) 
 			{
-				//如果是解绑手机
-				if (isUnbind){
-					type = "unbind";
-					getMessage(ConstantParamPhone.GET_SMS_CONFIRM,"get");
-				}else {
-					type = "bind";
-					getMessage(ConstantParamPhone.GET_SMS_CONFIRM,"GET");
-				}
+				getMessage(ConstantParamPhone.GET_SMS_CONFIRM,"get");
 			}
 		});
 		//下一步按钮，请求网络确认验证码
 		getPermessionbutton.setOnClickListener(new OnClickListener() 
 		{
-			
 			@Override
 			public void onClick(View v) 
 			{
@@ -88,15 +87,9 @@ public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 					Toast.makeText(ShopRebindPhoneSteponeActivity.this,"请输入验证码", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				else
-				{
-					//请求网络解绑手机、
-					getMessage(ConstantParamPhone.UNBIND_PHONE,"POST");
-				}
-				//如果是点击了绑定提交按钮
-				if (isSubmit){
-					getMessage(ConstantParamPhone.BIND_PHONE,"post");
-				}
+				
+				//提交服务器解绑
+				getMessage(ConstantParamPhone.UNBIND_PHONE,"POST");
 			}
 		});
 	}
@@ -106,17 +99,11 @@ public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 		
 		//获取短信验证
 		if (method.equalsIgnoreCase("get")){
-			params.put("type", type);
+			params.put("type", "unbind");
 			params.put("mobile",sp.getString("mobile", ""));
 		}else {
 			//解绑手机
-			if (url.equalsIgnoreCase(ConstantParamPhone.UNBIND_PHONE)){
-				params.put("code",messageCodeEditText.getText().toString().trim());
-			}else {
-				//绑定手机
-				params.put("code",messageCodeEditText.getText().toString().trim());
-				params.put("mobile",sp.getString("mobile", ""));
-			}
+			params.put("code",messageCodeEditText.getText().toString().trim());
 		}
 		HttpUtils.getConnection(context,params,url, method,new TextHttpResponseHandler(){
 			@Override
@@ -134,20 +121,11 @@ public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 						if(method.equalsIgnoreCase("get")){
 							//如果是get请求方式，开始计时
 							showResidueSeconds();
-						}
-						//如果解绑短信验证成功
-						if (url.equals(ConstantParamPhone.UNBIND_PHONE)){
-							//当前页面刷新UI
-							phoneNumText.setHint("请输入要绑定的手机号");
-							btnGetmess.setText("提交");
-							//设置当前页面状态为提交
-							isSubmit = true;
-						}
-						//如果请求是绑定手机
-						if (url.equalsIgnoreCase(ConstantParamPhone.BIND_PHONE)){
-							Toast.makeText(context,"绑定成功,请重新登陆",Toast.LENGTH_SHORT).show();
-							DuduHelperApplication application = (DuduHelperApplication)getApplication();
-							application.exit();
+							return;
+						}else {
+							Toast.makeText(context,"原手机已解绑，重新输入新手机号",Toast.LENGTH_LONG).show();
+							startActivity(new Intent(context,LoginBindPhoneActivity.class));
+							finish();
 						}
 					}else {
 						//数据请求失败

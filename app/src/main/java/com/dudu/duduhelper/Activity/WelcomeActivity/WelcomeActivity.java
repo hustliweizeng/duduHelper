@@ -104,9 +104,9 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			// 是一次启动
 	        initView();  
 	        // 初始化数据  
-	        initData();  
+	        initData();
+			sp.edit().putBoolean("firstrun", false).commit();
 		}
-		sp.edit().putBoolean("firstrun", false).commit();
 	}
 	
 	/** 
@@ -232,9 +232,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 	 */
 	private void requetConnetion()
 	{
-		// TODO Auto-generated method stub
 		RequestParams params = new RequestParams();
-		AsyncHttpClient client = new AsyncHttpClient();
 		//请求网络连接之前，设置保存cookie，
 		url = ConstantParamPhone.GET_USER_INFO;
 		HttpUtils.getConnection(context, params, url, "POST", new TextHttpResponseHandler() {
@@ -256,6 +254,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		                    Toast.makeText(context,"您还没有绑定手机号!",Toast.LENGTH_SHORT).show();
 		                    startActivity(new Intent(context,LoginBindPhoneActivity.class));
 		                    finish();
+		                    return;
 	                    };
 	                    
                         //保存用户信息
@@ -282,6 +281,9 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
                         //数据请求失败
                         String msg = object.getString("msg");
                         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+	                    //跳转到登陆页面
+	                    startActivity(new Intent(context,LoginActivity.class));
+	                    finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

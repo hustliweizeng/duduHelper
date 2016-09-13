@@ -94,7 +94,8 @@ public class LoginBindPhoneActivity extends BaseActivity
 				}
 				ColorDialog.showRoundProcessDialog(LoginBindPhoneActivity.this, R.layout.loading_process_dialog_color);
 				RequestParams params = new RequestParams();
-				params.add("token", share.getString("token", ""));
+				params.add("code", messageCodeEditText.getText().toString().trim());
+				params.add("mobile",userPhoneEditText.getText().toString().trim());
 				HttpUtils.getConnection(context,params, ConstantParamPhone.BIND_PHONE, "post", new TextHttpResponseHandler() {
 
 					@Override
@@ -110,7 +111,8 @@ public class LoginBindPhoneActivity extends BaseActivity
 							if ("SUCCESS".equalsIgnoreCase(code)){
 								//数据请求成功
 								Toast.makeText(context,"手机绑定成功",Toast.LENGTH_SHORT).show();
-								startActivity(new Intent(context,MainActivity.class));
+								startActivity(new Intent(context,LoginActivity.class));
+								finish();
 							}else {
 								//数据请求失败
 								String msg = object.getString("msg");
@@ -128,7 +130,7 @@ public class LoginBindPhoneActivity extends BaseActivity
 	//发送验证码
 	private void sendMsg() {
 		RequestParams params = new RequestParams();
-		params.put("mobile",sp.getString("mobile",""));
+		params.put("mobile",userphone);
 		params.put("type","bind");
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "get", new TextHttpResponseHandler() {
 			@Override

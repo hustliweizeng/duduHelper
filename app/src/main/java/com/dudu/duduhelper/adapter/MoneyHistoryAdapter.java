@@ -28,9 +28,7 @@ public class MoneyHistoryAdapter extends BaseAdapter {
     //所有的集合列表
     public List<CashHistoryBean.DataBean.OrderBean> orders = new ArrayList<>();
     Context context;
-    private int[] positions;
-    //默认开始的组id为第一组
-    private int groudid = 0;
+    private String date ="";
 
     public MoneyHistoryAdapter(Context context) {
         this.context = context;
@@ -49,23 +47,13 @@ public class MoneyHistoryAdapter extends BaseAdapter {
     public int getCount() {
         if (list ==null ||list.size() ==0){
             return 0;
-        }
-        positions = new int[list.size()];
-        positions[0] = 0;
-        if (list!=null && list.size()!=0){
+        }else {
             int count = 0;
             for (int i = 0; i< list.size(); i++){
                 count += list.get(i).getOrder().size();
-                //记录二级目录的位置
-                if (i < list.size()-1){
-                    positions[i+1] = count;
-                }
                 orders.addAll(list.get(i).getOrder());
             }
             return  count;
-        }else {
-            //Toast.makeText(context,"当前没有要显示的数据",Toast.LENGTH_SHORT).show();
-            return 0;
         }
     }
 
@@ -84,19 +72,18 @@ public class MoneyHistoryAdapter extends BaseAdapter {
         }
         holder = (ViewHolder) convertView.getTag();
         
-        //设置数据,根据日期动态显示列表头
-        //1.第三层的第一个条目显示日期
-        //如果是这个组的第一条，那么显示日期出来
-        //设置第一个条目if
-        for (int i :positions){
-            if (position == i){
-                holder.tv_date_item_money_history.setVisibility(View.VISIBLE);
-                holder.tv_date_item_money_history.setText(orders.get(position).getId().substring(0,4)+"-"
-                        +orders.get(position).getId().substring(4,6)+"-"+orders.get(position).getId().substring(6,8));
-            }else {
-                holder.tv_date_item_money_history.setVisibility(View.GONE);
-
-            }
+        //如果当前时间戳没有被显示过，那么显示出来，否则隐藏
+        //1.获取当前条目的日期
+        String tempDate  = orders.get(position).getId().substring(0,4)+"-"
+                +orders.get(position).getId().substring(4,6)+"-"+orders.get(position).getId().substring(6,8);
+        //2.当前日期和上个条目的日期做对比，如果重复则不显示
+        if (tempDate.equalsIgnoreCase(date)){
+            holder.tv_date_item_money_history.setVisibility(View.GONE);
+        //3.如果日期和上个条目日期不一致，那么重置该日期并显示出来    
+        }else {
+            date = tempDate;
+            holder.tv_date_item_money_history.setText(date);
+            holder.tv_date_item_money_history.setVisibility(View.VISIBLE);
         }
         
         //2.设置其他内容（positoin是绝对位置，但是这里需要在集合中的相对位置）=转换为相对位置

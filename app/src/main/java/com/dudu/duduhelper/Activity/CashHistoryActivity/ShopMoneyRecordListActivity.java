@@ -62,10 +62,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 		initHeadView("收银流水", true, false, 0);
 		initView();
 		getData(); 
-
 	}
-
-
 	private void initView() {
 		tv_msg = (TextView) findViewById(R.id.tv_msg);
 		editButton = (Button) this.findViewById(R.id.selectTextClickButton);
@@ -78,7 +75,6 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 			}
 		});
 		lv_checckmoneyhisory = (ListView) findViewById(R.id.lv_checckmoneyhisory);
-
 	}
 
 	/**

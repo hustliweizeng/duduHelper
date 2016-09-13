@@ -154,6 +154,7 @@
             android:gravity="right"
             android:paddingRight="16dp"
             android:paddingTop="12dp"
+            android:visibility="gone"
             android:text="我是店员>"
             android:textColor="@color/text_color"
             android:textSize="16sp" />
