@@ -126,6 +126,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 		ColorDialog.showRoundProcessDialog(context, R.layout.loading_process_dialog_color);
 		RequestParams param = new RequestParams();
 		param.add("date", downDate1);
+		LogUtil.d("selcetDATA",downDate1);
 		param.add("lastid", "0");
 		HttpUtils.getConnection(context, param, ConstantParamPhone.GET_CASH_HISTORY, "GET", new TextHttpResponseHandler() {
 			@Override
@@ -141,6 +142,8 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 					if ("SUCCESS".equalsIgnoreCase(code)) {
 						//数据请求成功
 						CashHistoryBean historyBean = new Gson().fromJson(s, CashHistoryBean.class);
+						//插入数据之前，清空之前的adapter的集合，否则数据会重复
+						adapter.list.clear();
 						adapter.addAll(historyBean.getData());
 						tv_msg.setVisibility(View.GONE);
 					} else {

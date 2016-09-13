@@ -281,8 +281,8 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		ll_startTime_shop_product=(LinearLayout) this.findViewById(R.id.ll_startTime_shop_product);
 		tv_startTime_shop_product=(TextView) this.findViewById(R.id.tv_startTime_shop_product);
 		//结束时间
-		ll_endTime_shop_product = (LinearLayout) this.findViewById(R.id.ll_startTime_shop_product);
-		tv_endTime_shop_product =(TextView) this.findViewById(R.id.tv_startTime_shop_product);
+		ll_endTime_shop_product = (LinearLayout) this.findViewById(R.id.ll_endTime_shop_product);
+		tv_endTime_shop_product =(TextView) this.findViewById(R.id.tv_endTime_shop_product);
 		
 		
 		productDetailLine=(LinearLayout) this.findViewById(R.id.productDetailLine);

@@ -88,7 +88,8 @@
             android:name="com.example.qr_codescan.MipcaActivityCapture"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:launchMode="singleTask">
         </activity>
         <activity
             android:name=".Activity.CheckSellAcitivty.CashSellScanSucessActivity"
@@ -131,6 +132,7 @@
         </activity>
         <activity
             android:name=".Activity.BigBandActivity.ShopProductAddActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_product_add" >
         </activity>
         <activity
@@ -423,6 +425,7 @@
         </activity>
         <activity
             android:name=".Activity.MyInfoActivity.ShopInfoEditActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_shop_info_edit" >
         </activity>
         <activity
@@ -445,7 +448,8 @@
             android:name=".Activity.MessageCentreActivity.MessageCenterListActivity"
             android:label="@string/title_activity_message_center_list" >
         </activity>
-        <activity android:name=".Activity.DiscountCardActivity.ShopDiscoutAddActivity"/>
+        <activity android:name=".Activity.DiscountCardActivity.ShopDiscoutAddActivity"
+                  android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.ShopImageViewBrower"
             android:label="@string/title_activity_shop_image_view_brower" >

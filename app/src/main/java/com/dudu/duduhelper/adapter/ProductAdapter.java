@@ -396,12 +396,12 @@ public class ProductAdapter extends BaseAdapter
 			if(list.get(position).getStatus().equals("0"))
 			{
 				viewHolder.productAction.setText("未上架");
-				viewHolder.downButton.setImageResource(R.drawable.icon_shangjia);
+				viewHolder.downButton.setImageResource(R.drawable.icon_xiajia);
 			}
 			if(list.get(position).getStatus().equals("1"))
 			{
 				viewHolder.productAction.setText("已上架");
-				viewHolder.downButton.setImageResource(R.drawable.icon_xiajia);
+				viewHolder.downButton.setImageResource(R.drawable.icon_shangjia);
 
 			}
 			//商品图片

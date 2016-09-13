@@ -28,7 +28,7 @@ public class MoneyHistoryAdapter extends BaseAdapter {
     //所有的集合列表
     public List<CashHistoryBean.DataBean.OrderBean> orders = new ArrayList<>();
     Context context;
-    private String date ="";
+    List<String> dates = new ArrayList<>();
 
     public MoneyHistoryAdapter(Context context) {
         this.context = context;
@@ -41,6 +41,9 @@ public class MoneyHistoryAdapter extends BaseAdapter {
         }else {
             Toast.makeText(context,"当前没有要显示的数据",Toast.LENGTH_SHORT).show();
         }
+        //重置日期
+        dates.clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -69,23 +72,33 @@ public class MoneyHistoryAdapter extends BaseAdapter {
             holder.tv_time_money_history = (TextView) convertView.findViewById(R.id.tv_time_money_history);
             holder.tv_price_item_money_hishory = (TextView) convertView.findViewById(R.id.tv_price_item_money_hishory);
             convertView.setTag(holder);
+            LogUtil.d("item","新建了");
+
+        }{
+            holder = (ViewHolder) convertView.getTag();
+            LogUtil.d("item","复用了");
         }
-        holder = (ViewHolder) convertView.getTag();
         
         //如果当前时间戳没有被显示过，那么显示出来，否则隐藏
         //1.获取当前条目的日期
         String tempDate  = orders.get(position).getId().substring(0,4)+"-"
                 +orders.get(position).getId().substring(4,6)+"-"+orders.get(position).getId().substring(6,8);
         //2.当前日期和上个条目的日期做对比，如果重复则不显示
-        if (tempDate.equalsIgnoreCase(date)){
+        if (dates.contains(tempDate)){
+            holder.tv_date_item_money_history.setText(tempDate);
             holder.tv_date_item_money_history.setVisibility(View.GONE);
-        //3.如果日期和上个条目日期不一致，那么重置该日期并显示出来    
+            //3.如果日期和上个条目日期不一致，那么重置该日期并显示出来    
         }else {
-            date = tempDate;
-            holder.tv_date_item_money_history.setText(date);
+            //如果集合中不包括该日期，加进去
+            dates.add(tempDate);
+            holder.tv_date_item_money_history.setText(tempDate);
             holder.tv_date_item_money_history.setVisibility(View.VISIBLE);
         }
-        
+        if (position ==0){
+            holder.tv_date_item_money_history.setText(tempDate);
+            holder.tv_date_item_money_history.setVisibility(View.VISIBLE);
+        }
+
         //2.设置其他内容（positoin是绝对位置，但是这里需要在集合中的相对位置）=转换为相对位置
         holder.tv_subject_money_history.setText(orders.get(position).getSubject());
         holder.tv_body_money_history.setText("-"+orders.get(position).getBody());

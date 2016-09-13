@@ -58,7 +58,7 @@ public class ShopCouponDetailActivity extends BaseActivity
 		ImageAware imageAware = new ImageViewAware(couponImage, false);
 		imageLoader.displayImage(coupon.getThumbnail(), imageAware);
 		couponName.setText(coupon.getName());
-		couponTime.setText(coupon.getUpshelf() + "\n" + coupon.getDownshelf());
+		couponTime.setText("开始时间:"+coupon.getUpshelf() + "\n" + "结束时间:"+coupon.getDownshelf());
 		couponSold.setText(coupon.getSaled_count());
 		couponVerify.setText(coupon.getValidation_count());
 

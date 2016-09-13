@@ -120,7 +120,6 @@ public class shopProductListActivity extends BaseActivity
 		category=getIntent().getStringExtra("category");
 		
 		//全屏显示的对话框进度条
-		//ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 
@@ -153,6 +152,7 @@ public class shopProductListActivity extends BaseActivity
 	//请求不同的接口url
 	private void initData(String url)
 	{
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		//loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
 		productListView.setAdapter(productAdapter);
@@ -189,6 +189,7 @@ public class shopProductListActivity extends BaseActivity
 						if (category.equals("discount")){
 							bigBandBuy = new Gson().fromJson(arg2,BigBandBuy.class);
 						}
+						
 						productAdapter.addAll(bigBandBuy.getData(),isAllChoice);
 
 					}else {
@@ -374,7 +375,6 @@ public class shopProductListActivity extends BaseActivity
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				ColorDialog.showRoundProcessDialog(shopProductListActivity.this,R.layout.loading_process_dialog_color);
 				if(isDisCount)
 				{
 					initData(ConstantParamPhone.GET_COUPON_LIST);
@@ -706,7 +706,6 @@ public class shopProductListActivity extends BaseActivity
 				}
 
 				productAdapter=new ProductAdapter(context,isMulChoice,isDisCount,isHongbao);
-				ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 				reffinish = false;
 				switch (order){
 					
@@ -740,7 +739,8 @@ public class shopProductListActivity extends BaseActivity
 				}
 				LogUtil.d("select","upproduct="+upProduct+";status="+productStatus);
 				//重新加载，设置筛选条件
-				initData(ConstantParamPhone.GET_BIG_BAND_LIST);
+				//刷新数据之前，先清空
+				productAdapter.list.clear();
 				if(isDisCount)
 				{
 					initData(ConstantParamPhone.GET_COUPON_LIST);
@@ -782,7 +782,6 @@ public class shopProductListActivity extends BaseActivity
 		productAdapter.clear();
 		//loadMoreView.setVisibility(View.GONE);
 		reffinish=false;
-		//ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		if(isDisCount)
 		{
 			initData(ConstantParamPhone.GET_DISCOUNT_LIST);
@@ -829,9 +828,11 @@ public class shopProductListActivity extends BaseActivity
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
-
+						//清空数据,再去重新加载
+						productAdapter.list.clear();
 						//再次请求数据
 						if (category.equals("discount")){
+							
 							initData(ConstantParamPhone.GET_DISCOUNT_LIST);
 						}
 						if (category.equals("bigband")){

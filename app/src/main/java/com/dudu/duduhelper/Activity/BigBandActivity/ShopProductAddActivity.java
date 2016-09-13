@@ -44,11 +44,13 @@ import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.SwitchView;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -134,11 +136,16 @@ public class ShopProductAddActivity extends BaseActivity
 		productKuCunNumEditText.setText(data.getStock());
 		ed_explain.setText(data.getExplain());
 		productDetaliTextView.setText(data.getExplain());
+		LogUtil.d("timereule",data.getRule());
+		
 		//设置开始结束时间
 		if (!TextUtils.isEmpty(data.getRule())){
+			
 			try {
-				String begin = new JSONObject(data.getRule()).getString("begin");
-				String end = new JSONObject(data.getRule()).getString("end");
+				JSONArray array = new JSONArray(data.getRule());
+				JSONObject time = array.getJSONObject(0);
+				String begin = time.getString("begin");
+				String end = time.getString("end");
 				LogUtil.d("time","begin="+begin+"end="+end);
 				if (category.equals("discount")){
 					tv_startTime_shop_product.setText(data.getUpshelf());
@@ -149,6 +156,7 @@ public class ShopProductAddActivity extends BaseActivity
 					tv_endTime_shop_product.setText(end);
 				}
 			}catch (Exception e){
+				LogUtil.d("Jsonerro",e.toString());
 			}
 		}
 		
@@ -355,8 +363,8 @@ public class ShopProductAddActivity extends BaseActivity
 		ll_startTime_shop_product=(LinearLayout) this.findViewById(R.id.ll_startTime_shop_product);
 		tv_startTime_shop_product=(TextView) this.findViewById(R.id.tv_startTime_shop_product);
 		//结束时间
-		ll_endTime_shop_product = (LinearLayout) this.findViewById(R.id.ll_startTime_shop_product);
-		tv_endTime_shop_product =(TextView) this.findViewById(R.id.tv_startTime_shop_product);
+		ll_endTime_shop_product = (LinearLayout) this.findViewById(R.id.ll_endTime_shop_product);
+		tv_endTime_shop_product =(TextView) this.findViewById(R.id.tv_endTime_shop_product);
 		
 		
 		productDetailLine=(LinearLayout) this.findViewById(R.id.productDetailLine);
