@@ -233,7 +233,7 @@
         </activity>
        
         <activity
-            android:name=".Activity.ShopSearchBlueToothActivity"
+            android:name=".Activity.PrinterActivity.ShopSearchBlueToothActivity"
             android:label="@string/title_activity_search_blue_tooth" >
         </activity>
         <activity

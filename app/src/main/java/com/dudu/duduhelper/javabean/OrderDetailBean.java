@@ -1,5 +1,9 @@
 package com.dudu.duduhelper.javabean;
 
+import com.dudu.duduhelper.bean.OrderGoods;
+
+import java.util.List;
+
 /**
  * @author
  * @version 1.0
@@ -52,7 +56,7 @@ public class OrderDetailBean {
         private String name;
         private String mobile;
         private String address;
-        private Object goods;
+        private List<OrderGoods> goods;
 
         public String getId() {
             return id;
@@ -190,11 +194,11 @@ public class OrderDetailBean {
             this.address = address;
         }
 
-        public Object getGoods() {
+        public List<OrderGoods> getGoods() {
             return goods;
         }
 
-        public void setGoods(Object goods) {
+        public void setGoods(List<OrderGoods> goods) {
             this.goods = goods;
         }
     }

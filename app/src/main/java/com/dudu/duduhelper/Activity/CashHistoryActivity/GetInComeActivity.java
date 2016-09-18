@@ -10,7 +10,7 @@ import org.apache.http.Header;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.Activity.ShopSearchBlueToothActivity;
+import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.GetCashDetailBean;
 import com.dudu.duduhelper.bean.SelectScanOrderBean;

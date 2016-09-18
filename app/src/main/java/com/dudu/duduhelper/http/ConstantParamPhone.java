@@ -122,6 +122,7 @@ public class ConstantParamPhone
    public static final String  GET_ORDER_LIST = "/api/app/order";//获取订单列表
     public static final String SEARCH_ORDER = "/api/app/order/search";//搜索订单
     public static final String GET_ORDER_DETAIL = "/api/app/order/";//订单详情
+    public static final String CHANGE_ORDER_STATUS ="/api/app/order/changestatus";//改变状态
 
 
     //获取省份

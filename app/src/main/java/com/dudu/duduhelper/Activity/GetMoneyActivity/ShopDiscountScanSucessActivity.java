@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.MainActivity;
-import com.dudu.duduhelper.Activity.ShopSearchBlueToothActivity;
+import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;

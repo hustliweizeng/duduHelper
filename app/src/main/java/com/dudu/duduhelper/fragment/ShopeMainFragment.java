@@ -1,6 +1,5 @@
 package com.dudu.duduhelper.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,12 +20,11 @@ import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderActivity;
 import com.dudu.duduhelper.Activity.RedBagActivity.CreateRedBagActivity;
 import com.dudu.duduhelper.Activity.ShopManageActivity.ShopListManagerActivity;
-import com.dudu.duduhelper.Activity.ShopSearchBlueToothActivity;
+import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountDataActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
-import com.dudu.duduhelper.widget.ColorDialog;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -172,7 +170,6 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	 */
 	private void requestRedbagStatus() {
 		//弹对话框
-		ColorDialog.showRoundProcessDialog(getActivity(),R.layout.loading_process_dialog_color);
 		String url = ConstantParamPhone.GET_REDBAG_LIST;
 		RequestParams parmas = new RequestParams();
 		//请求参数设置
@@ -192,23 +189,15 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 				Log.d("redbag",s);
 				
 				//默认设置没有红包
-
 				IsRedbagEmpty =  true;
 				if (IsRedbagEmpty){
 					startActivity(new Intent(getActivity(),CreateRedBagActivity.class));
-
 				}else {
 					startActivity(new Intent(getActivity(),shopProductListActivity.class));
-
 				}
 
 			}
 
-			@Override
-			public void onFinish() {
-				super.onFinish();
-				ColorDialog.dissmissProcessDialog();
-			}
 		});
 	}
 

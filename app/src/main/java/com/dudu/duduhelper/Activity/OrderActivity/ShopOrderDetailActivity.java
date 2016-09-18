@@ -6,26 +6,30 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.Vector;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.Activity.ShopSearchBlueToothActivity;
+import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderDetailAdapter;
+import com.dudu.duduhelper.bean.OrderGoods;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
-import com.dudu.duduhelper.javabean.CashHistoryBean;
 import com.dudu.duduhelper.javabean.OrderDetailBean;
 import com.dudu.duduhelper.javabean.OrderStatusBean;
 import com.dudu.duduhelper.javabean.SelectorBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
+import com.gprinter.command.EscCommand;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
@@ -49,6 +53,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.gprinter.command.EscCommand.ENABLE;
 
 public class ShopOrderDetailActivity extends BaseActivity 
 {
@@ -168,10 +173,12 @@ public class ShopOrderDetailActivity extends BaseActivity
 			case 2 :
 				content = "已支付";
 				color = R.color.text_green_color;
+				
 				break;
 			case 3 :
 				content = "已完成";
 				color = R.color.text_gray_color;
+				
 				break;
 			case 4 :
 				content = "待发货";
@@ -205,6 +212,15 @@ public class ShopOrderDetailActivity extends BaseActivity
 			if (bean.id ==Integer.parseInt(orderData.getFrom())){
 				orderSourceTextView.setText(bean.name);
 			}
+		}
+		/*//设置核销按钮
+		if (content.equals("已支付")&& orderSourceTextView.getText().equals("优惠券")){
+			enterButton.setVisibility(View.VISIBLE);	
+		}*/
+		if (content.equals("已支付") &&orderSourceTextView.getText().equals("大牌抢购")){
+			//设置核销按钮可见
+			enterButton.setVisibility(View.VISIBLE);
+			noButton.setVisibility(View.VISIBLE);
 		}
 		
 		//下单时间
@@ -267,19 +283,17 @@ public class ShopOrderDetailActivity extends BaseActivity
 		orderContrectTextView=(TextView) this.findViewById(R.id.orderContrectTextView);
 		orderPhoneTextView=(TextView) this.findViewById(R.id.orderPhoneTextView);
 		totalPriceTextView=(TextView) this.findViewById(R.id.totalPriceTextView);
+		//核销按钮
 		enterButton.setOnClickListener(new OnClickListener() 
 		{
-			
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				MyDialog.showDialog(ShopOrderDetailActivity.this, "  确认要核销订单号为"+orderNumTextView.getText().toString()+"的订单吗？",true, true, "取消", "确认核销", new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) 
 					{
-						// TODO Auto-generated method stub
 						MyDialog.cancel();
 					}
 				}, new OnClickListener() {
@@ -287,41 +301,31 @@ public class ShopOrderDetailActivity extends BaseActivity
 					@Override
 					public void onClick(View v) 
 					{
-						// TODO Auto-generated method stub
 						changeStatus("3");
 					}
 				});
 			}
-
 			
 		});
+		//取消按钮
 		noButton.setOnClickListener(new OnClickListener() 
 		{
 			
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				changeStatus("0");
 			}
 		});
 	}
+	//核销订单
 	private void changeStatus(String status) 
 	{
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
 		ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("no",no);
-		params.add("status",status);
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopOrderDetailActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.post(ConstantParamPhone.IP+ConstantParamPhone.EDIT_ORDER_STATUS, params,new TextHttpResponseHandler()
+		params.put("id",orderData.getId());
+		params.put("status",status);
+        HttpUtils.getConnection(context,params,ConstantParamPhone.CHANGE_ORDER_STATUS, "post",new TextHttpResponseHandler()
 		{
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -347,7 +351,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.dissmissProcessDialog();
 				Intent intent=new Intent();  
                 setResult(RESULT_OK, intent);  
@@ -358,12 +361,12 @@ public class ShopOrderDetailActivity extends BaseActivity
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == 1) 
 		{
 			if (resultCode == RESULT_OK) 
 			{
+				//显示打印按钮？
 				
 			} 
 			else if (resultCode == RESULT_CANCELED) 
@@ -373,13 +376,15 @@ public class ShopOrderDetailActivity extends BaseActivity
 			}
 		}
 	}
+	//广播接收者
 	private BroadcastReceiver receiver=new BroadcastReceiver() 
 	{
 		@Override
 		public void onReceive(Context context, Intent intent) 
 		{
-			// TODO Auto-generated method stub
+			//根据不同的action做出响应
 			String action = intent.getAction(); 
+			//蓝牙开启状态
 			if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action))
 			{
 				if (bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON)
@@ -393,6 +398,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 					ColorDialog.dissmissProcessDialog();
 				}
 			}
+			//绑定状态改变
 			if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action))
 			{
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);  
@@ -416,7 +422,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 	//发送打印
 	private void sendPrint() 
 	{
-		/*if (this.isConnection) 
+		if (this.isConnection) 
 		{    
             System.out.println("开始打印！！");    
             try 
@@ -429,14 +435,14 @@ public class ShopOrderDetailActivity extends BaseActivity
                 esc.addPrintAndLineFeed();
                 esc.addSelectKanjiMode();
                 //esc.addSelectJustification(JUSTIFICATION.LEFT);//设置打印左对齐
-                esc.addSelectJustification(JUSTIFICATION.CENTER);//设置打印居中
-                esc.addSelectPrintModes(FONT.FONTA, ENABLE.OFF, ENABLE.ON, ENABLE.OFF, ENABLE.OFF);//设置为倍高倍宽
+                esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);//设置打印居中
+                esc.addSelectPrintModes(EscCommand.FONT.FONTA, ENABLE.OFF, ENABLE.ON, ENABLE.OFF, ENABLE.OFF);//设置为倍高倍宽
                 esc.addText("欢迎光临\n");   //  打印文字
                 esc.addText(share.getString("shopname", "本店铺")+"\n\n");
-                esc.addSelectPrintModes(FONT.FONTA, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF);//设置为倍高倍宽
+                esc.addSelectPrintModes(EscCommand.FONT.FONTA, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF);//设置为倍高倍宽
                 //esc.addSetCharcterSize(WIDTH_ZOOM.MUL_3, HEIGHT_ZOOM.MUL_3);//设置字符尺寸
-                esc.addSelectJustification(JUSTIFICATION.LEFT);//设置打印左对齐
-                esc.addText("时间：        "+Util.DataConVert2(orderDetailBean.getData().getTime())+"\n");   //  打印文字    
+                esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);//设置打印左对齐
+                esc.addText("时间：        "+ Util.DataConVert2(orderDetailBean.getData().getTime())+"\n");   //  打印文字    
                 esc.addText("订单号：      "+orderDetailBean.getData().getId()+"\n");   //  打印文字
                 esc.addText("--------------------------------\n");   //  打印文字
                 esc.addText("名称");   //  打印文字
@@ -446,7 +452,8 @@ public class ShopOrderDetailActivity extends BaseActivity
                 //设置距左边绝对位置
                 esc.addSetAbsolutePrintPosition((short) 310);
                 esc.addText("金额\n");
-                for (OrderGoods good : orderDetailBean.getData().getGoods()) 
+	            //打印商品详情
+                for (OrderGoods good : orderData.getGoods()) 
                 {
                 	if(good.getName().length()>8)
                 	{
@@ -478,7 +485,7 @@ public class ShopOrderDetailActivity extends BaseActivity
                 esc.addSetAbsolutePrintPosition((short) 300);
                 esc.addText(orderDetailBean.getData().getFee()+"\n\n");   //  打印文字
                 
-                esc.addSelectJustification(JUSTIFICATION.CENTER);//设置打印居中
+                esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);//设置打印居中
                 esc.addTurnEmphasizedModeOnOrOff(ENABLE.OFF);
                 //打印图片
 //                Bitmap b1 = BitmapFactory.decodeResource(getResources(),R.drawable.qcoerd);
@@ -514,7 +521,7 @@ public class ShopOrderDetailActivity extends BaseActivity
             Toast.makeText(ShopOrderDetailActivity.this, "设备未连接，请重新连接！", Toast.LENGTH_SHORT).show();   
             enterButton.setClickable(true);
             enterButton.setPressed(false);
-        }    */
+        }    
 	}
 	private void getConnect()
 	{
@@ -544,7 +551,7 @@ public class ShopOrderDetailActivity extends BaseActivity
     @Override
     protected void onDestroy() 
     {
-    	// TODO Auto-generated method stub
+    	//关闭蓝牙的输出流
     	super.onDestroy();
     	try
     	{
@@ -558,6 +565,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 		}
         
     }
+	//打开蓝牙，打印信息
     public void OpenBlueTooth()
     {
     	bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();

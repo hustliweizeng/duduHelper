@@ -1,4 +1,4 @@
-package com.dudu.duduhelper.Activity;
+package com.dudu.duduhelper.Activity.PrinterActivity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -249,19 +249,22 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				
 			}
 		});
+		//设备列表
 		devicesList=(ListView) this.findViewById(R.id.devicesList);
 		deviceAdapter=new DeviceAdapter(this);
 		devicesList.setAdapter(deviceAdapter);
+		//配对设备
 		devicesList.setOnItemClickListener(new OnItemClickListener() 
 		{
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
 			{
-				// TODO Auto-generated method stub
+				//取消搜索
 				bluetoothAdapter.cancelDiscovery();
 				try 
 				{
+					//利用反射调用方法
 					device=bluetoothAdapter.getRemoteDevice(deviceAdapter.getItem(position).getAddress());
 					Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
 					createBondMethod.invoke(device);   
@@ -270,7 +273,6 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				} 
 				catch (Exception e) 
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					Toast.makeText(ShopSearchBlueToothActivity.this, "配对失败!!", Toast.LENGTH_SHORT).show(); 
 				}  
@@ -279,7 +281,6 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 	}
 	private void initFilter() 
 	{
-		// TODO Auto-generated method stub
 		// 设置广播信息过滤      
 		IntentFilter intentFilter = new IntentFilter();     
 		intentFilter.addAction(BluetoothDevice.ACTION_FOUND);//设备已经发现
@@ -288,7 +289,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 	    intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);//结束搜索    
 		intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);//开关状态
 		// 注册广播接收器，接收并处理搜索结果      
-		registerReceiver(receiver, intentFilter);     
+		registerReceiver(receiver, intentFilter);
 	}
 	private BroadcastReceiver receiver=new BroadcastReceiver() 
 	{
@@ -338,6 +339,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
                     //绑定过的设备    
                 	//deviceAdapter.addItem(device);
                 	Toast.makeText(ShopSearchBlueToothActivity.this,"配对成功", Toast.LENGTH_SHORT).show();
+	                //查找绑定过的设备
                 	SharedPreferences sharePrint= getSharedPreferences("printinfo", MODE_PRIVATE);
                 	SharedPreferences.Editor edit = sharePrint.edit(); 
                 	edit.putString("blueAddress",devicesAddress);
