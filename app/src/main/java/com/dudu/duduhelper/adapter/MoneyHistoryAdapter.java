@@ -16,6 +16,7 @@ import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.CashHistoryBean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,7 +29,9 @@ public class MoneyHistoryAdapter extends BaseAdapter {
     //所有的集合列表
     public List<CashHistoryBean.DataBean.OrderBean> orders = new ArrayList<>();
     Context context;
-    List<String> dates = new ArrayList<>();
+    HashMap<Integer,String> dates = new HashMap<>();
+    private int count;
+    private int countTitle =0;
 
     public MoneyHistoryAdapter(Context context) {
         this.context = context;
@@ -74,30 +77,33 @@ public class MoneyHistoryAdapter extends BaseAdapter {
             convertView.setTag(holder);
             LogUtil.d("item","新建了");
 
-        }{
+        }else {
             holder = (ViewHolder) convertView.getTag();
             LogUtil.d("item","复用了");
         }
-        
+        LogUtil.d("position",position+"");
         //如果当前时间戳没有被显示过，那么显示出来，否则隐藏
         //1.获取当前条目的日期
         String tempDate  = orders.get(position).getId().substring(0,4)+"-"
                 +orders.get(position).getId().substring(4,6)+"-"+orders.get(position).getId().substring(6,8);
-        //2.当前日期和上个条目的日期做对比，如果重复则不显示
-        if (dates.contains(tempDate)){
-            holder.tv_date_item_money_history.setText(tempDate);
-            holder.tv_date_item_money_history.setVisibility(View.GONE);
-            //3.如果日期和上个条目日期不一致，那么重置该日期并显示出来    
+        //2.判断集合中是否有当前日期
+        if (dates.containsValue(tempDate)){
+            //位置不符合
+            if(!dates.containsKey(position)){
+                holder.tv_date_item_money_history.setText(tempDate);
+                holder.tv_date_item_money_history.setVisibility(View.GONE);
+            }else {
+                //位置和名称都符合时显示出来
+                holder.tv_date_item_money_history.setText(tempDate);
+                holder.tv_date_item_money_history.setVisibility(View.VISIBLE);
+            }
         }else {
-            //如果集合中不包括该日期，加进去
-            dates.add(tempDate);
+            //如果集合中不包含当前日期，那么把位置和日期都存进去
+            dates.put(position,tempDate);
             holder.tv_date_item_money_history.setText(tempDate);
             holder.tv_date_item_money_history.setVisibility(View.VISIBLE);
         }
-        if (position ==0){
-            holder.tv_date_item_money_history.setText(tempDate);
-            holder.tv_date_item_money_history.setVisibility(View.VISIBLE);
-        }
+        
 
         //2.设置其他内容（positoin是绝对位置，但是这里需要在集合中的相对位置）=转换为相对位置
         holder.tv_subject_money_history.setText(orders.get(position).getSubject());
