@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.BankListAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -72,6 +73,7 @@ public class ShopBankListActivity extends BaseActivity
 	private EditText getCodeedit;
 	private EditText getcashmoneyedit;
 	private BankCardListBean bean1;
+	private Button loginbutton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -262,7 +264,9 @@ public class ShopBankListActivity extends BaseActivity
 		//验证码
 		getCodeedit = (EditText) view.findViewById(R.id.getCodeedit);
 		//提现的金额
-		getcashmoneyedit = (EditText) findViewById(R.id.getcashmoneyedit);
+		getcashmoneyedit = (EditText) view.findViewById(R.id.getcashmoneyedit);
+		//确认提现按钮
+		loginbutton = (Button) view.findViewById(R.id.loginbutton);
 		btnGetmess = (Button) view.findViewById(R.id.btnGetmess);
 		//设置获取验证码的监听
 		btnGetmess.setOnClickListener(new OnClickListener() {
@@ -280,49 +284,41 @@ public class ShopBankListActivity extends BaseActivity
 
 					@Override
 					public void onSuccess(int i, Header[] headers, String s) {
-						JSONObject object = new JSONObject();
-						try {
-							String code =  object.getString("code");
-							if ("SUCCESS".equalsIgnoreCase(code)){
-								showResidueSeconds();
-
-							}else {
-								String msg = object.getString("msg");
-								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
+						showResidueSeconds();
 					}
 				});
 			}
 		});
 		//确认提现按钮
-		Button loginbutton = (Button) view.findViewById(R.id.loginbutton);
 		loginbutton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				if (TextUtils.isEmpty(getCodeedit.getText().toString()) ||TextUtils.isEmpty(getcashmoneyedit.getText().toString())){
+					Toast.makeText(context,"信息填写不完整",Toast.LENGTH_SHORT).show();
+					return;
+				}
 				RequestParams params = new RequestParams();
 				params.add("bank_card_id",bankCardNo);
 				params.add("money", getcashmoneyedit.getText().toString().trim());
 				params.add("code",getCodeedit.getText().toString().trim());
-				HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "post", new TextHttpResponseHandler() {
+				HttpUtils.getConnection(context, params, ConstantParamPhone.CREATE_GET_MONEY, "post", new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 						Toast.makeText(context,"服务器错误，请稍后再试",Toast.LENGTH_LONG).show();
 						//请求网络数据
-						showResidueSeconds();
 					}
 
 					@Override
 					public void onSuccess(int i, Header[] headers, String s) {
 						try {
-							String code = new JSONObject(s).getString("code");
-							if ("SUCCESS".equalsIgnoreCase(code)){
+							String info = new JSONObject(s).getString("code");
+							if ("SUCCESS".equalsIgnoreCase(info)){
 								//显示倒计时
-								showResidueSeconds();
 								Toast.makeText(context,"提现成功",Toast.LENGTH_LONG).show();
 								finish();
+							}else {
+								Toast.makeText(context,new JSONObject(s).getString("msg"),Toast.LENGTH_SHORT).show();
+								return;
 							}
 
 						}catch (Exception ex){
