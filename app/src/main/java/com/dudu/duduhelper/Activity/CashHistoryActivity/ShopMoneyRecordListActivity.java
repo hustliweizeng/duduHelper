@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
@@ -131,6 +132,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 		HttpUtils.getConnection(context, param, ConstantParamPhone.GET_CASH_HISTORY, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
 
 			@Override
@@ -143,14 +145,16 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 						//数据请求成功
 						CashHistoryBean historyBean = new Gson().fromJson(s, CashHistoryBean.class);
 						//插入数据之前，清空之前的adapter的集合，否则数据会重复
-						adapter.list.clear();
+						adapter.orders.clear();
 						adapter.addAll(historyBean.getData());
 						tv_msg.setVisibility(View.GONE);
 					} else {
 						//数据请求失败
 						String msg = object.getString("msg");
 						tv_msg.setVisibility(View.VISIBLE);
-						//Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						//清空数据
+						adapter.orders.clear();
+						adapter.notifyDataSetChanged();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

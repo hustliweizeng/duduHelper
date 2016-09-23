@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class MoneyHistoryAdapter extends BaseAdapter {
 
-    //统计带标题的位置
+    //传递过来未处理的数据
     public List<CashHistoryBean.DataBean> list = new ArrayList<>();
     //所有的集合列表
     public List<CashHistoryBean.DataBean.OrderBean> orders = new ArrayList<>();

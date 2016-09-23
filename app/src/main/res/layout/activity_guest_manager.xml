@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/head_color"
+              android:fitsSystemWindows="true"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/new_guest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="18dp"
+                android:textColor="@color/bg_white_color"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="今日新增客户"
+                android:layout_marginTop="6dp"
+                android:textSize="16dp"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/total_guest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="22"
+                android:textColor="@color/bg_white_color"
+                android:textSize="18dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="总客户"
+                android:textSize="16dp"
+                android:layout_marginTop="6dp"
+                />
+
+        </LinearLayout>
+        
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_guest_magager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/user_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_grey"
+            >
+            
+        </android.support.v7.widget.RecyclerView>
+        
+        
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <Button
+    android:id="@+id/send_message_guest_manage"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:text="发送会员通知"
+    android:textSize="20dp"
+    android:textColor="@color/bg_white_color"
+    android:gravity="center"
+    android:padding="13dp"
+    android:background="@color/btn_color"
+    />
+
+
+</LinearLayout>

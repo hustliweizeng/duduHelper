@@ -95,10 +95,15 @@
             android:name=".Activity.CheckSellAcitivty.CashSellScanSucessActivity"
             android:label="@string/title_activity_cash_sell_scan_sucess" >
         </activity>
+        <activity android:name=".Activity.GuestManageActivity.CreateActivityMsg"/>
+        <activity android:name=".Activity.GuestManageActivity.CreateRedbagmsgActivity"/>
+        <activity android:name=".Activity.GuestManageActivity.StoreMoneyActivity"/>
         <activity
             android:name=".Activity.CheckSellAcitivty.CashSellScanFailActivity"
             android:label="@string/title_activity_cash_sell_scan_fail" >
         </activity>
+        <activity android:name=".Activity.GuestManageActivity.SendMessageActivity"/>
+        <activity android:name=".Activity.GuestManageActivity.GuestMangageActivity"/>
         <activity
             android:name=".Activity.CheckSellAcitivty.MemberSellActivity"
             android:label="@string/title_activity_member_sell" >

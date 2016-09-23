@@ -17,6 +17,7 @@ import com.dudu.duduhelper.Activity.BigBandActivity.shopProductListActivity;
 import com.dudu.duduhelper.Activity.CashHistoryActivity.ShopMoneyRecordListActivity;
 import com.dudu.duduhelper.Activity.EmployeeManageActivity.ShopMemberListActivity;
 import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
+import com.dudu.duduhelper.Activity.GuestManageActivity.GuestMangageActivity;
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderActivity;
 import com.dudu.duduhelper.Activity.RedBagActivity.CreateRedBagActivity;
 import com.dudu.duduhelper.Activity.ShopManageActivity.ShopListManagerActivity;
@@ -48,6 +49,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	private LinearLayout moneyRecordLinButton;
 	//红包列表状态
 	boolean IsRedbagEmpty = false;
+	private LinearLayout guest_manager;
 
 	@Override
 	@Nullable
@@ -90,6 +92,9 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		memberBtn.setOnClickListener(this);
 		moneyRecordLinButton = (LinearLayout) MainFragmentView.findViewById(R.id.moneyRecordLinButton);
 		moneyRecordLinButton.setOnClickListener(this);
+		guest_manager = (LinearLayout) MainFragmentView.findViewById(R.id.guest_manager);
+		guest_manager.setOnClickListener(this);
+		
 	}
 	
 	@Override
@@ -159,6 +164,10 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			case R.id.moneyRecordLinButton:
 				intent=new Intent(getActivity(),ShopMoneyRecordListActivity.class);
 			    break;
+			case R.id.guest_manager:
+				//客户管理
+				intent = new Intent(getActivity(), GuestMangageActivity.class);
+				break;
 			default:
 				break;
 		}

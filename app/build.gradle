@@ -18,7 +18,11 @@ android {
     }
 
 }
-
+android {
+    lintOptions {
+        disable "ResourceType"
+    }
+}
 dependencies {
     compile 'com.jakewharton:butterknife:8.3.0'
     apt 'com.jakewharton:butterknife-compiler:8.3.0'
@@ -38,4 +42,15 @@ dependencies {
     compile files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
     compile files('libs/wire-runtime-1.7.0.jar')
     compile files('libs/badgeview.jar')
+    compile 'com.android.support:recyclerview-v7:22.0.0'
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }

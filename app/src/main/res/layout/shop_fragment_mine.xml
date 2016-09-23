@@ -36,7 +36,7 @@
                     android:id="@+id/mineImageHead"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/icon_head" />
+                     />
 
                 <TextView
                     android:id="@+id/mineText"

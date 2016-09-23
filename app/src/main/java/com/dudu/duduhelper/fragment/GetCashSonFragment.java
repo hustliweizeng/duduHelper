@@ -56,12 +56,7 @@ public class GetCashSonFragment extends Fragment
     private int page=1;
     private int lastItemIndex;
 	//获取加载数据类型
-	public GetCashSonFragment(){}
-	public GetCashSonFragment(String type) 
-	{
-		this.type=type;
-		
-	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) 
 	{

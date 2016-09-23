@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:padding="16dp"
+                android:background="@color/bg_white_color"
+                android:layout_height="match_parent">
+    
+    <ImageView
+        android:id="@+id/iv_item_guest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/icon_redbag"
+        />
+    <TextView
+        android:id="@+id/tv_title_item_guest"
+        android:layout_toRightOf="@+id/iv_item_guest"
+        android:layout_marginLeft="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="昆明老司机"
+        android:textSize="16dp"
+        android:textColor="@color/text_black_color"
+        />
+    <LinearLayout
+        android:layout_below="@+id/tv_title_item_guest"
+        android:layout_toRightOf="@+id/iv_item_guest"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="6dp"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="共消费 "/>
+        <TextView
+            android:id="@+id/tv_totalprice_item_guest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/btn_color"
+            android:textSize="14dp"
+            android:text=" 58.00 |"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text=" 到店"/>
+        <TextView
+            android:id="@+id/tv_count_item_guest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/btn_yellow"
+            android:textSize="14dp"
+            android:text=" 8 "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="次"/>
+        
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_date_item_guest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textSize="14dp"
+        android:text="2016.9.20"
+        />
+    
+    
+    
+    
+
+</RelativeLayout>

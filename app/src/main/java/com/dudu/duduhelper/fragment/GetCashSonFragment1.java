@@ -55,13 +55,6 @@ public class GetCashSonFragment1 extends Fragment
     private Button reloadButton;
     private int page=1;
     private int lastItemIndex;
-	//获取加载数据类型
-	public GetCashSonFragment1(String type) 
-	{
-		// TODO Auto-generated constructor stub
-		this.type=type;
-		
-	}
 	@Override
 	public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) 
 	{

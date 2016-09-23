@@ -436,7 +436,14 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         params.put("category",category_id);
         params.put("area",circle_id);
         params.put("open_time",open_time);
-
+        
+        
+        //本地数据保存
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("shopName",title);
+        edit.putString("mobie",mobile);
+        edit.putString("shopLogo",uploadPicPath);
+        edit.commit();
         HttpUtils.getConnection(context, params, ConstantParamPhone.SAVE_SHOP_INFO, "POST", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {

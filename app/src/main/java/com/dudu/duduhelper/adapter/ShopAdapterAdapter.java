@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.GetHongBaoHistDataBean;
+import com.dudu.duduhelper.javabean.ShopListBean;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ public class ShopAdapterAdapter extends BaseAdapter
 {
 	private Context context;
     private ViewHolder viewHolder;
-    List<GetHongBaoHistDataBean> list=new ArrayList<GetHongBaoHistDataBean>();
+    List<ShopListBean.DataBean> list=new ArrayList<>();
     public ShopAdapterAdapter(Context context)
 	{
 		// TODO Auto-generated constructor stub
@@ -35,14 +36,14 @@ public class ShopAdapterAdapter extends BaseAdapter
     	list.clear();
     	notifyDataSetChanged();
     }
-    public void addAll(List<GetHongBaoHistDataBean> list)
+    public void addAll(List<ShopListBean.DataBean> list)
     {
     	this.list.addAll(this.list.size(), list);
     	notifyDataSetChanged();
     }
 
 	@Override
-	public GetHongBaoHistDataBean getItem(int arg0) 
+	public ShopListBean.DataBean getItem(int arg0) 
 	{
 		// TODO Auto-generated method stub
 		return list.get(arg0);
@@ -63,69 +64,19 @@ public class ShopAdapterAdapter extends BaseAdapter
 		{
 			viewHolder = new ViewHolder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.shop_manager_item, null);
-//			viewHolder.moneyText=(TextView) convertView.findViewById(R.id.moneyText);
-//			viewHolder.titleText=(TextView) convertView.findViewById(R.id.titleText);
-//			viewHolder.getNameText=(TextView) convertView.findViewById(R.id.getNameText);
+			viewHolder.shopimage = (ImageView) convertView.findViewById(R.id.shopimage);
+			viewHolder.shopnametext = (TextView) convertView.findViewById(R.id.shopeNameTextView);
+			viewHolder.shoplocationtext = (TextView) convertView.findViewById(R.id.shoplocationtext);
 			convertView.setTag(viewHolder);
 		}
 		else
 		{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+		//设置数据
 		if(list.size()!=0)
 		{
-//			if((System.currentTimeMillis()-Long.parseLong(list.get(position).getExpire_time())*1000)>0)
-//			{
-//				viewHolder.moneyIcon.setTextColor(viewHolder.moneyIcon.getResources().getColor(R.color.text_color_light));
-//				viewHolder.moneyAction.setTextColor(viewHolder.moneyAction.getResources().getColor(R.color.text_color_light));
-//				viewHolder.moneyText.setTextColor(viewHolder.moneyText.getResources().getColor(R.color.text_color_light));
-//				viewHolder.moneyAction.setText("已过期");
-//				if(!TextUtils.isEmpty(list.get(position).getExpire_time()))
-//				{
-//					viewHolder.getDataText.setText("过期时间:"+Util.DataConVertMint(list.get(position).getExpire_time()));
-//				}
-//			}
-//			else 
-//			{
-//				if(list.get(position).getUsed().equals("0"))
-//				{
-//					viewHolder.moneyIcon.setTextColor(viewHolder.moneyIcon.getResources().getColor(R.color.text_color_red));
-//					viewHolder.moneyAction.setTextColor(viewHolder.moneyAction.getResources().getColor(R.color.text_color_red));
-//					viewHolder.moneyText.setTextColor(viewHolder.moneyText.getResources().getColor(R.color.text_color_red));
-//					viewHolder.moneyAction.setText("未使用");
-//					if(!TextUtils.isEmpty(list.get(position).getExpire_time()))
-//					{
-//						viewHolder.getDataText.setText("过期时间:"+Util.DataConVertMint(list.get(position).getExpire_time()));
-//					}
-//				}
-//				else
-//				{
-//					viewHolder.moneyIcon.setTextColor(viewHolder.moneyIcon.getResources().getColor(R.color.text_color));
-//					viewHolder.moneyAction.setTextColor(viewHolder.moneyAction.getResources().getColor(R.color.text_color));
-//					viewHolder.moneyText.setTextColor(viewHolder.moneyText.getResources().getColor(R.color.text_color));
-//					viewHolder.moneyAction.setText("已使用");
-//					if(!TextUtils.isEmpty(list.get(position).getUsed_time()))
-//					{
-//						viewHolder.getDataText.setText("使用时间:"+Util.DataConVertMint(list.get(position).getUsed_time()));
-//					}
-//				}
-//			}
-////			else if(list.get(position).getUsed().equals("1"))
-////			{
-////				
-////			}
-//			if(!TextUtils.isEmpty(list.get(position).getMoney()))
-//			{
-//				viewHolder.moneyText.setText(list.get(position).getMoney());
-//			}
-//			if(!TextUtils.isEmpty(list.get(position).getTitle()))
-//			{
-//				viewHolder.titleText.setText(list.get(position).getTitle());
-//			}
-//			if(!TextUtils.isEmpty(list.get(position).getNickname()))
-//			{
-//				viewHolder.getNameText.setText("领取人:"+list.get(position).getNickname());
-//			}
+			
 		}
 		return convertView;
 	}

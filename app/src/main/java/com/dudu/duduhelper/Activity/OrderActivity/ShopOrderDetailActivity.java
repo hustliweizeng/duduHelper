@@ -85,6 +85,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 	private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private OrderDetailBean.DataBean orderData;
 	private String id;
+	private TextView order_create_time;
 
 
 	@Override
@@ -158,7 +159,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 		}
 
 		//设置店名
-		orderNameTextView.setText(orderData.getBody());
+		orderNameTextView.setText(orderData.getSubject());
 		int color = 0;
 		String content =null;
 		switch (Integer.parseInt(orderData.getStatus())){
@@ -222,11 +223,8 @@ public class ShopOrderDetailActivity extends BaseActivity
 			enterButton.setVisibility(View.VISIBLE);
 			noButton.setVisibility(View.VISIBLE);
 		}
-		
 		//下单时间
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String tempTime  =format.format(new Date(Long.parseLong(orderData.getTime())));
-		orderPayTypeTextView.setText(tempTime);
+		order_create_time.setText(Util.DataConVertMint(orderData.getTime()));
 		//联系人
 		orderContrectTextView.setText(orderData.getName());
 		//电话
@@ -234,9 +232,10 @@ public class ShopOrderDetailActivity extends BaseActivity
 		//订单金额
 		orderFeeTextView.setText(orderData.getFee());
 		//折扣金额
-		orderdiscountTextView.setText(orderData.getDiscount_activity_fee());
+		orderdiscountTextView.setText(orderData.getDiscount_shop_fee());
 		//总额
-		orderdiscountTextView.setText(orderData.getTotal_fee());
+		totalPriceTextView.setText(orderData.getTotal_fee());
+		
 	}
 
 	public void setListViewHeightBasedOnChildren(ListView listView) {   
@@ -278,11 +277,12 @@ public class ShopOrderDetailActivity extends BaseActivity
 		orderNumTextView=(TextView) this.findViewById(R.id.orderNumTextView);
 		orderSourceTextView=(TextView) this.findViewById(R.id.orderSourceTextView);
 		orderActionTextView=(TextView) this.findViewById(R.id.orderActionTextView);
-		orderPayTypeTextView=(TextView) this.findViewById(R.id.orderPayTypeTextView);
 		orderNameTextView=(TextView) this.findViewById(R.id.orderNameTextView);
 		orderContrectTextView=(TextView) this.findViewById(R.id.orderContrectTextView);
 		orderPhoneTextView=(TextView) this.findViewById(R.id.orderPhoneTextView);
 		totalPriceTextView=(TextView) this.findViewById(R.id.totalPriceTextView);
+		order_create_time = (TextView) findViewById(R.id.order_create_time);
+		
 		//核销按钮
 		enterButton.setOnClickListener(new OnClickListener() 
 		{

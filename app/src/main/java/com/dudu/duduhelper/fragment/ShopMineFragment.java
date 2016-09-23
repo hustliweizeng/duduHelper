@@ -17,18 +17,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Activity.MyInfoActivity.ShopBankListActivity;
 import com.dudu.duduhelper.Activity.MyInfoActivity.ShopSettingActivity;
 import com.dudu.duduhelper.Activity.MyInfoActivity.WebPageActivity;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.InfoBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.widget.OverScrollView;
 import com.dudu.duduhelper.widget.OverScrollView.OverScrollTinyListener;
 import com.dudu.duduhelper.wxapi.WXEntryActivity;
+import com.google.gson.Gson;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
@@ -38,6 +45,10 @@ import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class ShopMineFragment extends Fragment {
@@ -50,6 +61,7 @@ public class ShopMineFragment extends Fragment {
     private String methord;
     private RelativeLayout getCashButtonRel;
     private SharedPreferences sp;
+    private ImageView mineImageHead;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,6 +91,10 @@ public class ShopMineFragment extends Fragment {
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("MineFragment");
+        //返回页面时，重新加载数据
+        LogUtil.d("info","reload");
+        //重新显示logo
+        ImageLoader.getInstance().displayImage(sp.getString("shopLogo",""),mineImageHead);
     }
 
     //初始化页面显示
@@ -100,10 +116,10 @@ public class ShopMineFragment extends Fragment {
         final TextView earnMoneyTextView = (TextView) MineFragmentView.findViewById(R.id.earnMoneyTextView);
         final TextView getCashMoneyTextView = (TextView) MineFragmentView.findViewById(R.id.getCashMoneyTextView);
         final TextView mineText = (TextView) MineFragmentView.findViewById(R.id.mineText);
-        final ImageView mineImageHead = (ImageView) MineFragmentView.findViewById(R.id.mineImageHead);
+        mineImageHead = (ImageView) MineFragmentView.findViewById(R.id.mineImageHead);
         final  TextView shopePhoneTextView = (TextView) MineFragmentView.findViewById(R.id.shopePhoneTextView);
         //初始化图片
-        ImageLoader.getInstance().displayImage(sp.getString("shopLogo",""),mineImageHead);
+        ImageLoader.getInstance().displayImage(sp.getString("shopLogo",""), mineImageHead);
         //滚动条
         final OverScrollView mineScrollview = (OverScrollView) MineFragmentView.findViewById(R.id.mineScrollview);
         //银行卡页面
@@ -271,4 +287,5 @@ public class ShopMineFragment extends Fragment {
             }
         }
     }
+   
 }

@@ -58,12 +58,6 @@ public class GetCashSonFragment2 extends Fragment
 	public GetCashSonFragment2(){
 		
 	}
-	//获取加载数据类型
-	public GetCashSonFragment2(String type) 
-	{
-		this.type=type;
-		
-	}
 	@Override
 	public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) 
 	{

@@ -66,9 +66,20 @@ public class GetCashFragment extends Fragment
 		orderSeliderTabs=(PagerSlidingTabStrip) GetCashFragmentView.findViewById(R.id.orderSeliderTabs);
 		OrderViewPager=(ViewPager) GetCashFragmentView.findViewById(R.id.OrderViewPager);
 		FragmentViewlists=new ArrayList<Fragment>();
-		GetCashSonFragment allFragment=new GetCashSonFragment("0");
-		GetCashSonFragment1 payFragment=new GetCashSonFragment1("2");
-		GetCashSonFragment2 noPayFragment=new GetCashSonFragment2("1");
+		GetCashSonFragment allFragment=new GetCashSonFragment();
+		Bundle bundle1 = new Bundle();
+		bundle1.putString("type","0");
+		allFragment.setArguments(bundle1);
+		
+		GetCashSonFragment1 payFragment=new GetCashSonFragment1();
+		Bundle bundle2 = new Bundle();
+		bundle2.putString("type","2");
+		allFragment.setArguments(bundle2);
+		
+		GetCashSonFragment2 noPayFragment=new GetCashSonFragment2();
+		Bundle bundle3 = new Bundle();
+		bundle1.putString("type","1");
+		allFragment.setArguments(bundle3);
 		//GetCashSonFragment closeFragment=new GetCashSonFragment("3");
 		FragmentViewlists.add(allFragment);
 		FragmentViewlists.add(payFragment);

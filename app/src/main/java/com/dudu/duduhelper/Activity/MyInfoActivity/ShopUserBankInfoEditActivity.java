@@ -29,6 +29,8 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 public class ShopUserBankInfoEditActivity extends BaseActivity 
 {
 	private LinearLayout kaihuBanklin;
@@ -45,6 +47,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	private EditText userBankSonNameEditText;
 	private Button btnGetmess;
 	private EditText messageCodeEditText;
+	private String url;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -101,11 +104,23 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 		params.add("name",userBankNameEditText.getText().toString().trim());
 		params.add("bank_key",userBankNameTextView.getText().toString().trim());
 		params.add("card_number",userBankNumEditText.getText().toString().trim());
-		params.add("province_id",provienceTextView.getText().toString().trim());
-		params.add("city_id",userBankCityTextView.getText().toString().trim());
+		params.add("province_id",provienceCode);
+		params.add("city_id",cityCode);
 		params.add("bank_name",userBankSonNameEditText.getText().toString().trim());
 		params.add("code",messageCodeEditText.getText().toString().trim());
-		HttpUtils.getConnection(context,params,ConstantParamPhone.CHANGE_BANKCARD_INFO, "POST",new TextHttpResponseHandler(){
+		//判断是新增还是编辑，根据传递过来的intent数据判断
+		BankCardListBean.DataBean data = (BankCardListBean.DataBean) getIntent().getSerializableExtra("info");
+		if (data!=null){
+			url = ConstantParamPhone.CHANGE_BANKCARD_INFO+data.getId();
+			LogUtil.d("change","改变");
+		}else {
+			url = ConstantParamPhone.ADD_BANKCARD;
+			LogUtil.d("add","新增");
+
+		}
+
+
+		HttpUtils.getConnection(context,params, url, "POST",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -130,6 +145,12 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 					LogUtil.d("json","json解析异常");
 				}
 
+			}
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}
@@ -328,7 +349,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	              {
 					  //省份列表
 					  ProvinceListBean.DataBean proinceData = (ProvinceListBean.DataBean) data.getSerializableExtra("province");
-					  provienceCode = proinceData.getCode();
+					  provienceCode = proinceData.getId();
 	            	  provienceTextView.setText(proinceData.getName());
 	            	  userBankCityTextView.setText(null);
 	              }
@@ -337,7 +358,7 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 	              //来自按钮3的请求，作相应业务处理
 	              {
 					  CityClistBean.DataBean cityData = (CityClistBean.DataBean) data.getSerializableExtra("city");
-	            	  cityCode = cityData.getCode();
+	            	  cityCode = cityData.getId();
 	            	  userBankCityTextView.setText(cityData.getName());
 	              }
 	              break;

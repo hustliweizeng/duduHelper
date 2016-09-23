@@ -303,7 +303,9 @@
 
                 </RelativeLayout>
             </LinearLayout>
-
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="86dp">
             <EditText
                 android:id="@+id/ed_des_shop_info"
                 android:layout_width="match_parent"
@@ -320,6 +322,7 @@
                 android:scrollbars="vertical"
                 android:textColorHint="@color/text_hint_color"
                 android:textSize="14dp" />
+            </ScrollView>
 
             <LinearLayout
                 android:layout_width="match_parent"

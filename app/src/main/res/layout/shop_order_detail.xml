@@ -183,7 +183,7 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/orderPayTypeTextView"
+                android:id="@+id/order_create_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -311,17 +311,8 @@
                 android:layout_toLeftOf="@+id/totalPriceTextView"
                 android:text="合计:"
                 android:textColor="@color/text_bg_color"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/totalPriceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:text="32"
-                android:textColor="@color/text_red_color"
-                android:textSize="18sp" />
+                android:textSize="18dp"
+                android:id="@+id/textView2"/>
 
             <TextView
                 android:id="@+id/orderdiscountTextView"
@@ -334,6 +325,20 @@
                 android:text="50"
                 android:textColor="@color/text_bg_color"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/totalPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="14dp"
+                android:text="32"
+                android:textColor="@color/text_red_color"
+                android:textSize="18sp"
+                android:layout_alignBaseline="@+id/textView2"
+                android:layout_alignBottom="@+id/textView2"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="14dp"/>
         </RelativeLayout>
 
         <LinearLayout

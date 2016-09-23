@@ -90,7 +90,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:text="请选择商品分类"
+                        android:hint="请选择商品分类"
                         android:textColor="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -230,9 +230,10 @@
                         android:layout_height="match_parent"
                         android:layout_marginRight="16dp"
                         android:layout_weight="1"
+                        android:inputType="numberDecimal"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:text="请输入限制购买的数量"
+                        android:hint="请输入限制购买的数量"
                         android:textColor="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -268,7 +269,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:text="请选择商品上架时间"
+                        android:hint="请选择商品上架时间"
                         android:textColor="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -302,7 +303,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:text="请选择商品下架时间"
+                        android:hint="请选择商品下架时间"
                         android:textColor="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>

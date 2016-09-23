@@ -103,7 +103,7 @@ public class ConstantParamPhone
     //银行卡相关接口
     public static final String  GET_BANKCARD_LIST = "/api/app/bank";//获取银行卡信息列表
     public static final String  ADD_BANKCARD = "/api/app/bank";//添加银行卡信息
-    public static final String  CHANGE_BANKCARD_INFO = "/api/app/bank";//修改银行卡信息
+    public static final String  CHANGE_BANKCARD_INFO = "/api/app/bank/";//修改银行卡信息
     public static final String  DEL_BANKCARD = "/api/app/bank/";//删除银行卡信息
 
    //收银相关
@@ -157,6 +157,12 @@ public class ConstantParamPhone
    public static final String  GET_CHECK_TICKET= "/api/app/ticket/";//查询券码
    public static final String  VERTIFY_TICKET="/api/app/ticket/";//核销券码
    public static final String  GET_VERTTIFY_HISTROY = "/api/app/ticket";//核销记录
+    
+    //获取门店信息
+    public static final String GET_SHOP_LIST ="/api/app/branch_shop";//店铺列表
+    public static final String ADD_SHOP ="/api/app/branch_shop";//添加店铺
+    public static final String GET_SHOP_DETAIL ="/api/app/branch_shop/{id}";//获取门店详情
+    public static final String EDIT_SHOP_DETAIL ="/api/app/branch_shop/{id}";//修改店铺详情
 
 
 

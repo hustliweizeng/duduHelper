@@ -35,6 +35,7 @@ public class SystemBarTintManager {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
                 Class c = Class.forName("android.os.SystemProperties");
+                @SuppressWarnings("ResourceType")
                 Method m = c.getDeclaredMethod("get", String.class);
                 m.setAccessible(true);
                 sNavBarOverride = (String) m.invoke(null, "qemu.hw.mainkeys");

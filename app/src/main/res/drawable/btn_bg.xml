@@ -4,20 +4,20 @@
         <shape android:shape="rectangle">
             <solid android:color="#1abc9c" />
             <corners 
-                android:bottomLeftRadius="1.2dp" 
-                android:bottomRightRadius="1.2dp" 
-                android:topLeftRadius="1.2dp" 
-                android:topRightRadius="1.2dp" />
+                android:bottomLeftRadius="2dp" 
+                android:bottomRightRadius="2dp" 
+                android:topLeftRadius="2dp" 
+                android:topRightRadius="2dp" />
         </shape>
     </item>
     <item android:state_pressed="true">
 	   <shape android:shape="rectangle">
 	       <solid android:color="@color/btn_select_color" />
 	       <corners 
-	           android:bottomLeftRadius="1.2dp" 
-	           android:bottomRightRadius="1.2dp" 
-	           android:topLeftRadius="1.2dp" 
-	           android:topRightRadius="1.2dp" />
+	           android:bottomLeftRadius="2dp" 
+	           android:bottomRightRadius="2dp" 
+	           android:topLeftRadius="2dp" 
+	           android:topRightRadius="2dp" />
 	   </shape>
     </item>
 </selector>

@@ -113,6 +113,7 @@
                         android:layout_marginLeft="17dp"
                         android:layout_weight="3"
                         android:text="商品原价"
+                        android:inputType="number"
                         android:textColor="@color/text_color_dark"
                         android:textSize="16sp" />
 
@@ -232,7 +233,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:text="请输入限制购买的数量"
+                        android:hint="请输入限制购买的数量"
                         android:textColor="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -268,7 +269,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:text="请选择商品下架时间"
+                        android:hint="请选择商品上架时间"
                         android:textColor="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -302,7 +303,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="right|center_vertical"
-                        android:text="请选择商品下架时间"
+                        android:hint="请选择商品下架时间"
                         android:textColor="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -449,7 +450,7 @@
                     android:id="@+id/tv_photo_num_shop_product"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="相册共10张照片"
+                    android:text="相册共0张照片"
                     android:layout_marginLeft="22dp"
                     android:textColor="@color/text_color_light"
                     android:layout_centerVertical="true"

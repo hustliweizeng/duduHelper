@@ -89,7 +89,7 @@
                 android:id="@+id/mine_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="我的"
+                android:text="店铺"
                 android:textColor="@color/head_color"
                 android:textSize="13sp" />
         </LinearLayout>

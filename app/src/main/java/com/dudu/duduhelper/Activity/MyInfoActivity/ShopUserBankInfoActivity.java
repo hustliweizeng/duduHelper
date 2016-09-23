@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -171,7 +172,6 @@ public class ShopUserBankInfoActivity extends BaseActivity
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 						Toast.makeText(context,"网络异常，请稍后再试",Toast.LENGTH_LONG).show();
 					}
-
 					@Override
 					public void onSuccess(int i, Header[] headers, String s) {
 						//显示倒计时
@@ -199,11 +199,10 @@ public class ShopUserBankInfoActivity extends BaseActivity
 				client.setCookieStore(myCookieStore);
 				RequestParams params = new RequestParams();
 				params.put("code",code);
-				client.delete( ConstantParamPhone.DEL_BANKCARD+comeinData.getId(), params, new TextHttpResponseHandler() {
+				client.delete(context,ConstantParamPhone.DEL_BANKCARD+comeinData.getId(),null, params, new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 						Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
-						//LogUtil.d("FAIL",s);
 					}
 					@Override
 					public void onSuccess(int i, Header[] headers, String s) {
