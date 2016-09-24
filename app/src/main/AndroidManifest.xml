@@ -84,6 +84,7 @@
             android:label="@string/title_activity_cash_sell" >
         </activity>
         <activity android:name=".Activity.RedBagActivity.EditRedbag1Activity"/>
+        <activity android:name=".Activity.GuestManageActivity.GuestSelectActivity"/>
         <activity
             android:name="com.example.qr_codescan.MipcaActivityCapture"
             android:configChanges="orientation|keyboardHidden"
@@ -91,6 +92,8 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask">
         </activity>
+        <activity android:name=".Activity.GuestManageActivity.NewActivityMsgActivity"/>
+        <activity android:name=".Activity.GuestManageActivity.NewRedbagMsgActivity"/>
         <activity
             android:name=".Activity.CheckSellAcitivty.CashSellScanSucessActivity"
             android:label="@string/title_activity_cash_sell_scan_sucess" >

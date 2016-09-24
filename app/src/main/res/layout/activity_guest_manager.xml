@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10"
-                android:textSize="18dp"
+                android:textSize="20dp"
                 android:textColor="@color/bg_white_color"
                 />
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="22"
                 android:textColor="@color/bg_white_color"
-                android:textSize="18dp"
+                android:textSize="20dp"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
     android:textColor="@color/bg_white_color"
     android:gravity="center"
     android:padding="13dp"
-    android:background="@color/btn_color"
+    android:background="@drawable/btn_bg"
     />
 
 

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+                android:background="@color/bg_white_color"
+                android:layout_height="match_parent">
+    
+    
+   
+    <RelativeLayout
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="match_parent"
+        android:paddingTop="16dp"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:id="@+id/iv_ischeck"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/select_empty"
+            />
+    <ImageView
+        android:layout_toRightOf="@id/iv_ischeck"
+        android:layout_marginLeft="16dp"
+        android:id="@+id/iv_item_guest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/icon_redbag"
+        />
+    <TextView
+        android:id="@+id/tv_title_item_guest"
+        android:layout_toRightOf="@+id/iv_item_guest"
+        android:layout_marginLeft="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="昆明老司机"
+        android:textSize="16dp"
+        android:textColor="@color/text_black_color"
+        />
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_below="@+id/tv_title_item_guest"
+        android:layout_toRightOf="@+id/iv_item_guest"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="6dp"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_gray_color"
+            android:text="共消费 "/>
+        <TextView
+            android:id="@+id/tv_totalprice_item_guest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/btn_color"
+            android:textSize="14dp"
+            android:text=" 58.00 |"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_gray_color"
+            android:text=" 到店"/>
+        <TextView
+            android:id="@+id/tv_count_item_guest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/btn_yellow"
+            android:textSize="14dp"
+            android:text=" 8 "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_gray_color"
+            android:text="次"/>
+        
+    </LinearLayout>
+        <View
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/text_hint_color"/>
+    <TextView
+        android:id="@+id/tv_date_item_guest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textSize="14dp"
+        android:text="2016.9.20"
+        android:textColor="@color/text_gray_color"
+        />
+        
+
+    </RelativeLayout>
+    
+
+</LinearLayout>

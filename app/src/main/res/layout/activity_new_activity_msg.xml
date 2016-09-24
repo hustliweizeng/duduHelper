@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:fitsSystemWindows="true"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include
+        layout="@layout/activity_head"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/bg_color"
+        >
+        <LinearLayout
+            android:id="@+id/ll_choose_guest"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/bg_white_color"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="通知客户"
+                android:textSize="16dp"
+                android:textColor="@color/text_dark_color"
+                android:id="@+id/textView3"/>
+
+            <TextView
+                android:id="@+id/tv_guest_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50人"
+                android:textSize="16dp"
+                android:textColor="@color/text_dark_color"
+                />
+            <ImageView
+                android:id="@+id/iv_select_guest"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_arrow"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="16dp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/bg_white_color"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="活动标题"
+                android:textSize="16dp"
+                android:textColor="@color/text_dark_color"
+                />
+            <EditText
+                android:id="@+id/ed_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="请编辑标题"
+                android:textSize="16dp"
+                android:background="@null"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/text_dark_color"
+                />
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="活动描述"
+            android:textColor="@color/text_dark_color"
+            android:textSize="16dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            />
+        <EditText
+            android:id="@+id/ed_content"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="top"
+            android:background="@drawable/edit_null"
+            />
+        <Button
+            android:id="@+id/submitbtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_bg"
+            android:text="提交"
+            android:textSize="18dp"
+            android:textColor="@color/bg_white_color"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            />
+        
+        
+        </LinearLayout>
+
+</LinearLayout>

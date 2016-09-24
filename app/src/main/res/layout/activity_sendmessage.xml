@@ -68,135 +68,156 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>
-   <RelativeLayout
-       android:id="@+id/activity_msg"
-       android:padding="16dp"
-       android:background="@color/bg_white_color"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
-       <ImageView
-           android:id="@+id/iv_activity"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:src="@drawable/icon_activity"
-           />
-       <TextView
-           android:id="@+id/tv_title1"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="活动通知"
-           android:textSize="18dp"
-           android:textColor="@color/text_black_color"
-           android:layout_toRightOf="@id/iv_activity"
-           android:layout_marginLeft="8dp"
-           
-           />
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="想让客户及时了解信息"
-           android:textSize="14dp"
-           android:layout_toRightOf="@id/iv_activity"
-           android:layout_marginTop="6dp"
-           android:layout_marginLeft="8dp"
-           android:layout_below="@id/tv_title1"
-
-           />
-       <LinearLayout
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignParentRight="true"
-           android:orientation="horizontal">
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="剩余"
-               />
-           <TextView
-               android:id="@+id/tv_count_activity"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textColor="@color/btn_color"
-               android:text="1"
-               />
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="次"
-               />
-           <ImageView
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:src="@drawable/icon_arrow"/>
-           
-           
-       </LinearLayout>
-       
-       
-   </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/redbage_msg"
-        android:padding="16dp"
-        android:background="@color/bg_white_color"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/iv_redbag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_redbag"
-            />
-        <TextView
-            android:id="@+id/tv_title3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="活动通知"
-            android:textSize="18dp"
-            android:textColor="@color/text_black_color"
-            android:layout_toRightOf="@id/iv_redbag"
-            android:layout_marginLeft="8dp"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="想让客户及时了解信息"
-            android:textSize="14dp"
-            android:layout_toRightOf="@id/iv_redbag"
-            android:layout_marginTop="6dp"
-            android:layout_marginLeft="8dp"
-            android:layout_below="@id/tv_title3"
-
-            />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="剩余"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/btn_color"
-                android:text="1"
-                />
-            <TextView
-                android:id="@+id/tv_count_redbag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="次"
-                />
+        android:layout_height="wrap_content"
+        android:background="@color/bg_white_color"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/activity_msg"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/icon_arrow"/>
-        </LinearLayout>
+                android:id="@+id/iv_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_activity"
+                />
+            <TextView
+                android:id="@+id/tv_title1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="活动通知"
+                android:textSize="18dp"
+                android:textColor="@color/text_black_color"
+                android:layout_toRightOf="@id/iv_activity"
+                android:layout_marginLeft="8dp"
 
-    </RelativeLayout>
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="想让客户及时了解信息"
+                android:textSize="14dp"
+                android:layout_toRightOf="@id/iv_activity"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/text_gray_color"
+                android:layout_marginLeft="8dp"
+                android:layout_below="@id/tv_title1"
+
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="剩余"
+                    android:textColor="@color/text_gray_color"
+                    />
+                <TextView
+                    android:id="@+id/tv_count_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/btn_color"
+                    android:text="1"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="次"
+                    android:textColor="@color/text_gray_color"
+                    />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_arrow"/>
+
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="16dp"
+            android:background="@color/text_hint_color"/>
+
+        <RelativeLayout
+            android:id="@+id/redbage_msg"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_redbag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_redbag"
+                />
+            <TextView
+                android:id="@+id/tv_title3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="红包通知"
+                android:textSize="18dp"
+                android:textColor="@color/text_black_color"
+                android:layout_toRightOf="@id/iv_redbag"
+                android:layout_marginLeft="8dp"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="想让客户及时了解信息"
+                android:textColor="@color/text_gray_color"
+                android:textSize="14dp"
+                android:layout_toRightOf="@id/iv_redbag"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="8dp"
+                android:layout_below="@id/tv_title3"
+
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="剩余"
+                    android:textColor="@color/text_gray_color"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/btn_color"
+                    android:text="1"
+                    />
+                <TextView
+                    android:id="@+id/tv_count_redbag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="次"
+                    android:textColor="@color/text_gray_color"
+                    />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_arrow"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+        
+        
+    </LinearLayout>
+   
     <LinearLayout
         android:padding="16dp"
         android:layout_width="match_parent"

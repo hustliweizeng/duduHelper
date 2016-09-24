@@ -1,13 +1,16 @@
 package com.dudu.duduhelper.Activity.GuestManageActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.adapter.RedbagMsgListAdapter;
+import com.dudu.duduhelper.adapter.ActivityMsGListAdapter;
 
 /**
  * @author
@@ -15,36 +18,48 @@ import com.dudu.duduhelper.adapter.RedbagMsgListAdapter;
  * @date 2016/9/23
  */
 
-public class CreateActivityMsg extends BaseActivity {
-	private TextView tv_send_num;
-	private TextView tv_create_money;
-	private RecyclerView recycleview_msg;
-	private SwipeRefreshLayout refresh_msg;
+public class CreateActivityMsg extends BaseActivity implements View.OnClickListener {
+	private RecyclerView recycleview_list;
+	private SwipeRefreshLayout swiperefresh;
+	private Button submitbtn;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		setContentView(R.layout.activity_create_redbag_msg);
-		initHeadView("活动通知",true,false,0);
+		setContentView(R.layout.activity_create_activity_msg);
 		initView();
+		initHeadView("活动通知",true,false,0);
 		initData();
+
 	}
 
 	private void initData() {
-		recycleview_msg.setAdapter(new RedbagMsgListAdapter(context));
+		recycleview_list.setLayoutManager(new LinearLayoutManager(this));
+		recycleview_list.setAdapter(new ActivityMsGListAdapter(context));
+		swiperefresh.setRefreshing(false);
+		
 	}
 
 	private void initView() {
-		tv_send_num = (TextView) findViewById(R.id.tv_send_num);
-		tv_create_money = (TextView) findViewById(R.id.tv_create_money);
-		recycleview_msg = (RecyclerView) findViewById(R.id.recycleview_msg);
-		refresh_msg = (SwipeRefreshLayout) findViewById(R.id.refresh_msg);
-		refresh_msg.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+		recycleview_list = (RecyclerView) findViewById(R.id.recycleview_list);
+		swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+		submitbtn = (Button) findViewById(R.id.submitbtn);
+		submitbtn.setOnClickListener(this);
+		swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
 				initData();
-				refresh_msg.setRefreshing(false);
 			}
 		});
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.submitbtn:
+				startActivity(new Intent(context,NewActivityMsgActivity.class));
+
+				break;
+		}
 	}
 }

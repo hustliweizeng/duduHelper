@@ -34,7 +34,7 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public int getItemCount() {
-		return 2;
+		return 10;
 	}
 	
 	class MyViewHolder extends RecyclerView.ViewHolder{
