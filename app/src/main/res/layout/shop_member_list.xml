@@ -22,7 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@null"
-            android:layoutAnimation="@anim/list_controller"
             android:scrollbarSize="4dp"
             android:scrollbarThumbVertical="@color/text_color"
             android:scrollbarTrackVertical="@color/text_color_yellow" />

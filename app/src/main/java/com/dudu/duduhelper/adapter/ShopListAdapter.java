@@ -74,58 +74,7 @@ public class ShopListAdapter extends BaseAdapter
 		}
 		if(list.size()!=0)
 		{
-//			if((System.currentTimeMillis()-Long.parseLong(list.get(position).getExpire_time())*1000)>0)
-//			{
-//				viewHolder.moneyIcon.setTextColor(viewHolder.moneyIcon.getResources().getColor(R.color.text_color_light));
-//				viewHolder.moneyAction.setTextColor(viewHolder.moneyAction.getResources().getColor(R.color.text_color_light));
-//				viewHolder.moneyText.setTextColor(viewHolder.moneyText.getResources().getColor(R.color.text_color_light));
-//				viewHolder.moneyAction.setText("已过期");
-//				if(!TextUtils.isEmpty(list.get(position).getExpire_time()))
-//				{
-//					viewHolder.getDataText.setText("过期时间:"+Util.DataConVertMint(list.get(position).getExpire_time()));
-//				}
-//			}
-//			else 
-//			{
-//				if(list.get(position).getUsed().equals("0"))
-//				{
-//					viewHolder.moneyIcon.setTextColor(viewHolder.moneyIcon.getResources().getColor(R.color.text_color_red));
-//					viewHolder.moneyAction.setTextColor(viewHolder.moneyAction.getResources().getColor(R.color.text_color_red));
-//					viewHolder.moneyText.setTextColor(viewHolder.moneyText.getResources().getColor(R.color.text_color_red));
-//					viewHolder.moneyAction.setText("未使用");
-//					if(!TextUtils.isEmpty(list.get(position).getExpire_time()))
-//					{
-//						viewHolder.getDataText.setText("过期时间:"+Util.DataConVertMint(list.get(position).getExpire_time()));
-//					}
-//				}
-//				else
-//				{
-//					viewHolder.moneyIcon.setTextColor(viewHolder.moneyIcon.getResources().getColor(R.color.text_color));
-//					viewHolder.moneyAction.setTextColor(viewHolder.moneyAction.getResources().getColor(R.color.text_color));
-//					viewHolder.moneyText.setTextColor(viewHolder.moneyText.getResources().getColor(R.color.text_color));
-//					viewHolder.moneyAction.setText("已使用");
-//					if(!TextUtils.isEmpty(list.get(position).getUsed_time()))
-//					{
-//						viewHolder.getDataText.setText("使用时间:"+Util.DataConVertMint(list.get(position).getUsed_time()));
-//					}
-//				}
-//			}
-////			else if(list.get(position).getUsed().equals("1"))
-////			{
-////				
-////			}
-//			if(!TextUtils.isEmpty(list.get(position).getMoney()))
-//			{
-//				viewHolder.moneyText.setText(list.get(position).getMoney());
-//			}
-//			if(!TextUtils.isEmpty(list.get(position).getTitle()))
-//			{
-//				viewHolder.titleText.setText(list.get(position).getTitle());
-//			}
-//			if(!TextUtils.isEmpty(list.get(position).getNickname()))
-//			{
-//				viewHolder.getNameText.setText("领取人:"+list.get(position).getNickname());
-//			}
+//			
 		}
 		return convertView;
 	}

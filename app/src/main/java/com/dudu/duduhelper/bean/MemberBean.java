@@ -1,8 +1,9 @@
 package com.dudu.duduhelper.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MemberBean 
+public class MemberBean implements Serializable
 {
 	private String status;
 	private String info;

@@ -66,7 +66,6 @@ public class ConstantParamPhone
     
     public static final String GET_COUPON_RECORD_LIST="/coupon/record/list";//coupon/record/list 获取优惠券领取记录
     public static final String GET_COUPON_RECORD_INFO="/coupon/record/info";
-    public static final String GET_MEMBER_LIST="/saler/list";
     public static final String ADD_MEMBER="/saler/add";
     public static final String EDIT_MEMBER="/saler/edit";
     public static final String COUPON_RECORD_SEARCH="/coupon/record/search";
@@ -163,6 +162,14 @@ public class ConstantParamPhone
     public static final String ADD_SHOP ="/api/app/branch_shop";//添加店铺
     public static final String GET_SHOP_DETAIL ="/api/app/branch_shop/";//获取门店详情
     public static final String EDIT_SHOP_DETAIL ="/api/app/branch_shop/";//修改店铺详情
+    
+    //店员列表
+    public static final String GET_SHOP_USER ="/api/app/shop_user";//店员列表
+    public static final String GET_USER_DETAIL = "/api/app/shop_user/";//店员详情
+    public static final String ADD_USER ="/api/app/shop_user";//添加店员
+    public static final String EDIT_USER ="/api/app/shop_user/";//编辑店员
+    public static final String DEL_USER ="/api/app/shop_user/";//删除店员
+    public static final String GET_SHOPABLE ="/api/app/shop_user/shops";//获取可选店铺
 
 
 

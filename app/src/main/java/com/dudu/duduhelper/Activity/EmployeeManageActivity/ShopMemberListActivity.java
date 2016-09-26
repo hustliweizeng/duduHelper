@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
@@ -22,6 +23,7 @@ import com.dudu.duduhelper.adapter.MemberAdapter;
 import com.dudu.duduhelper.bean.MemberBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.ShopUserBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -29,6 +31,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ShopMemberListActivity extends BaseActivity {
     private SwipeRefreshLayout memberListswipeLayout;
@@ -104,24 +108,16 @@ public class ShopMemberListActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // TODO Auto-generated method stub
                 Intent intent = new Intent(ShopMemberListActivity.this, ShopMemberAddActivity.class);
-                intent.putExtra("account", memberAdapter.getItem(position));
+                intent.putExtra("detail", memberAdapter.getItem(position));
                 startActivityForResult(intent, 1);
             }
         });
     }
 
     private void initData() {
-        // TODO Auto-generated method stub
         loading_progressBar.setVisibility(View.VISIBLE);
         loading_text.setText("加载中...");
-        RequestParams params = new RequestParams();
-        params.add("token", this.share.getString("token", ""));
-        params.add("version", ConstantParamPhone.VERSION);
-        params.setContentEncoding("UTF-8");
-        /**
-         * 每次请求创建网络连接，这样比较消耗内容，应该用线程池好点
-         */
-      HttpUtils.getConnection(context,params, ConstantParamPhone.GET_MEMBER_LIST,"post" , new TextHttpResponseHandler() {
+      HttpUtils.getConnection(context,null, ConstantParamPhone.GET_SHOP_USER,"get" , new TextHttpResponseHandler() {
 
             @Override
             public void onFailure(int arg0, Header[] arg1, String arg2, Throwable arg3) {
@@ -130,36 +126,22 @@ public class ShopMemberListActivity extends BaseActivity {
 
             @Override
             public void onSuccess(int arg0, Header[] arg1, String arg2) {
-                MemberBean getCouponSellBean = new Gson().fromJson(arg2, MemberBean.class);
-                if (!getCouponSellBean.getStatus().equals("1")) {
-                    MyDialog.showDialog(ShopMemberListActivity.this, "该账号已在其他手机登录，是否重新登录", false, true, "取消", "确定", new OnClickListener() {
+                try {
+                    JSONObject object = new JSONObject(arg2);
+                    String code =  object.getString("code");
+                    if ("SUCCESS".equalsIgnoreCase(code)){
+                        //数据请求成功
+                        ShopUserBean bean = new Gson().fromJson(arg2, ShopUserBean.class);
+                        if (bean.getData()!=null)
+                        memberAdapter.addAll(bean.getData());
 
-                        @Override
-                        public void onClick(View v) {
-                            // TODO Auto-generated method stub
-                            MyDialog.cancel();
-                        }
-                    }, new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            // TODO Auto-generated method stub
-                            Intent intent = new Intent(ShopMemberListActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                } else {
-                    if (getCouponSellBean.getData() != null && getCouponSellBean.getData().size() != 0) {
-                        memberAdapter.addAll(getCouponSellBean.getData());
-                        reloadButton.setVisibility(View.GONE);
-                        loading_progressBar.setVisibility(View.GONE);
-                        loading_text.setText("加载完啦！");
-
-                    } else {
-                        loading_progressBar.setVisibility(View.GONE);
-                        loading_text.setText("啥也没有！");
-                        reloadButton.setVisibility(View.VISIBLE);
+                    }else {
+                        //数据请求失败
+                        String msg = object.getString("msg");
+                        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 

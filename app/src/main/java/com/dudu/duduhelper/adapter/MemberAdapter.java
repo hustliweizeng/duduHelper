@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.dudu.duduhelper.Activity.EmployeeManageActivity.ShopMemberListActivity;
 import com.dudu.duduhelper.R;
@@ -12,6 +14,7 @@ import com.dudu.duduhelper.bean.MemberBean;
 import com.dudu.duduhelper.bean.MemberDataBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.javabean.ShopUserBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -36,7 +39,7 @@ public class MemberAdapter extends BaseAdapter
 {
 	private Context context;
     private ViewHolder viewHolder;
-    List<MemberDataBean> list=new ArrayList<MemberDataBean>();
+    List<ShopUserBean.DataBean> list=new ArrayList<ShopUserBean.DataBean>();
     //private OnClick listener=null;
     
     public MemberAdapter(Context context)
@@ -55,14 +58,14 @@ public class MemberAdapter extends BaseAdapter
     	list.clear();
     	notifyDataSetChanged();
     }
-    public void addAll(List<MemberDataBean> list)
+    public void addAll(List<ShopUserBean.DataBean> list)
     {
     	this.list.addAll(this.list.size(), list);
     	notifyDataSetChanged();
     }
 
 	@Override
-	public MemberDataBean getItem(int arg0) 
+	public ShopUserBean.DataBean getItem(int arg0) 
 	{
 		// TODO Auto-generated method stub
 		return list.get(arg0);
@@ -96,17 +99,17 @@ public class MemberAdapter extends BaseAdapter
 		}
 		if(list.size()!=0)
 		{
-			if(!TextUtils.isEmpty(list.get(position).getUsername()))
+			if(!TextUtils.isEmpty(list.get(position).getName()))
 			{
-				viewHolder.membercount.setText("账号："+list.get(position).getUsername());
+				viewHolder.membercount.setText("账号："+list.get(position).getName());
 			}
-			if(!TextUtils.isEmpty(list.get(position).getNickname()))
+			if(!TextUtils.isEmpty(list.get(position).getShop_name()))
 			{
-				viewHolder.membername.setText("姓名："+list.get(position).getNickname());
+				viewHolder.membername.setText("姓名："+list.get(position).getShop_name());
 			}
 			if(!TextUtils.isEmpty(list.get(position).getId()))
 			{
-				viewHolder.listener.setIdAndPostion(list.get(position).getId(),position);
+				viewHolder.listener.setIdAndPostion(list.get(position).getId(),list.get(position));
 			}
 		}
 		return convertView;
@@ -118,15 +121,14 @@ public class MemberAdapter extends BaseAdapter
 		ImageButton delectButton;
         OnClick listener;
 	}
+	//删除按钮的点击事件
 	private class OnClick implements OnClickListener
 	{
 		private String id;
-		private int postion;
-		
-
-		public void setIdAndPostion(String id,int postion) {
+		private ShopUserBean.DataBean item;
+		public void setIdAndPostion(String id,ShopUserBean.DataBean item) {
 			this.id = id;
-			this.postion=postion;
+			this.item = item;
 		}
 
 		@Override
@@ -139,16 +141,11 @@ public class MemberAdapter extends BaseAdapter
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
-					RequestParams params = new RequestParams();
-					params.add("token", ((ShopMemberListActivity)context).share.getString("token", ""));
-					params.add("id",id);
-					params.add("version", ConstantParamPhone.VERSION);
-					params.setContentEncoding("UTF-8");
 					AsyncHttpClient client = new AsyncHttpClient();
 					//保存cookie，自动保存到了shareprefercece  
 			        PersistentCookieStore myCookieStore = new PersistentCookieStore(context);    
 			        client.setCookieStore(myCookieStore); 
-			        client.post(ConstantParamPhone.IP+ConstantParamPhone.MEMBER_DELECT, params,new TextHttpResponseHandler()
+			        client.delete(ConstantParamPhone.BASE_URL+ConstantParamPhone.DEL_USER+id, null,new TextHttpResponseHandler()
 					{
 
 						@Override
@@ -159,23 +156,31 @@ public class MemberAdapter extends BaseAdapter
 						@Override
 						public void onSuccess(int arg0, Header[] arg1, String arg2) 
 						{
-							MemberBean responsBean=new Gson().fromJson(arg2,MemberBean.class);
-							if(!responsBean.getStatus().equals("1"))
-							{
-								Toast.makeText(context, "出错啦！", Toast.LENGTH_LONG).show();
+
+							try {
+								JSONObject object = new JSONObject(arg2);
+								String code =  object.getString("code");
+								if ("SUCCESS".equalsIgnoreCase(code)){
+									//数据请求成功
+									MyDialog.cancel();
+									//集合中删除该数据
+									list.remove(item);
+									notifyDataSetChanged();
+
+								}else {
+									//数据请求失败
+									String msg = object.getString("msg");
+									Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
 							}
-							else
-							{
-								Toast.makeText(context, "删除成功啦！", Toast.LENGTH_LONG).show();
-							}
-							MyDialog.cancel();
 						}
 						@Override
 						public void onFinish() 
 						{
 							// TODO Auto-generated method stub
 							ColorDialog.dissmissProcessDialog();
-							list.remove(postion);
 							notifyDataSetChanged();
 						}
 					});

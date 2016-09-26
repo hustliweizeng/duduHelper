@@ -1,15 +1,27 @@
 package com.dudu.duduhelper.Activity.EmployeeManageActivity;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.adapter.ShopCategoryAdapter;
+import com.dudu.duduhelper.adapter.ShopListSelectAdapter;
 import com.dudu.duduhelper.bean.MemberDataBean;
 import com.dudu.duduhelper.bean.MemberDetailBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.ShopCategoryBean;
+import com.dudu.duduhelper.javabean.ShopCricleBean;
+import com.dudu.duduhelper.javabean.ShopListBean;
+import com.dudu.duduhelper.javabean.ShopUserBean;
+import com.dudu.duduhelper.javabean.ShopUserDetaiBean;
 import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyAlertDailog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.dudu.duduhelper.widget.PopWindowList;
 import com.dudu.duduhelper.widget.PopWindowList.OnItemClickLinster;
@@ -29,6 +41,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class ShopMemberAddActivity extends BaseActivity 
 {
 	private EditText membername;
@@ -36,27 +50,29 @@ public class ShopMemberAddActivity extends BaseActivity
 	private EditText memberpassword;
 	private Button editMemberbutton;
 	private String title="";
-	private MemberDataBean memberDataBean;
-	private String methord="";
+	private ShopUserBean.DataBean memberDataBean;
 	private TextView memberShopTextView;
+	private String url;
+	private String shop_id;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_activity_member_add);
-		memberDataBean=(MemberDataBean) getIntent().getSerializableExtra("account");
+		memberDataBean=(ShopUserBean.DataBean) getIntent().getSerializableExtra("detail");
 		initView();
+		
 		if(memberDataBean!=null)
 		{
-			methord=ConstantParamPhone.EDIT_MEMBER;;
 			title="修改店员账号";
+			url = ConstantParamPhone.GET_USER_DETAIL+memberDataBean.getId();
 			initData();
 		}
 		else
 		{
-			methord=ConstantParamPhone.ADD_MEMBER;
 			title="添加店员账号";
+			url = ConstantParamPhone.ADD_USER;
 		}
 		initHeadView(title, true, false, 0);
 	}
@@ -74,7 +90,6 @@ public class ShopMemberAddActivity extends BaseActivity
 			{
 				//弹出店铺列表
 				showShopListPopWindow();
-				
 			}
 
 		});
@@ -95,20 +110,8 @@ public class ShopMemberAddActivity extends BaseActivity
 	}
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
-
 		ColorDialog.showRoundProcessDialog(ShopMemberAddActivity.this,R.layout.loading_process_dialog_color);
-		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		//params.add("category",category);
-		params.add("id",memberDataBean.getId());
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopMemberAddActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.get(ConstantParamPhone.IP+ConstantParamPhone.MEMBER_DETAIL, params,new TextHttpResponseHandler(){
+        HttpUtils.getConnection(context,null,url, "get",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -118,53 +121,34 @@ public class ShopMemberAddActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				MemberDetailBean productDetailBean=new Gson().fromJson(arg2,MemberDetailBean.class);
-				if(productDetailBean.getStatus().equals("-1006"))
-				{
-					//Toast.makeText(ProductListActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-					//Toast.makeText(getActivity(), "出错啦！", Toast.LENGTH_SHORT).show();
-					MyDialog.showDialog(ShopMemberAddActivity.this, "该账号已在其他手机登录，是否重新登录", true, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(ShopMemberAddActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				if(!productDetailBean.getStatus().equals("1"))
-				{
-					Toast.makeText(ShopMemberAddActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-				}
-				else
-				{
-					if(productDetailBean.getData()!=null)
-					{
-						if(!TextUtils.isEmpty(productDetailBean.getData().getNickname()))
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						ShopUserDetaiBean detail = new Gson().fromJson(arg2, ShopUserDetaiBean.class);
+						ShopUserDetaiBean.DataBean dataBean = detail.getData();
+						if(dataBean!=null)
 						{
-							membername.setText(productDetailBean.getData().getNickname());
+							if(!TextUtils.isEmpty(dataBean.getNickname()))
+							{
+								membername.setText(dataBean.getNickname());
+							}
+							if(!TextUtils.isEmpty(dataBean.getName()))
+							{
+								membercount.setText(dataBean.getName());
+							}
+							//密码马赛克
+							memberpassword.setText("****");
+							memberShopTextView.setText(dataBean.getShop_name());
 						}
-						if(!TextUtils.isEmpty(productDetailBean.getData().getUsername()))
-						{
-							membercount.setText(productDetailBean.getData().getUsername());
-						}
-						if(!TextUtils.isEmpty(productDetailBean.getData().getPassword()))
-						{
-							memberpassword.setText(productDetailBean.getData().getPassword());
-						}
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 					}
-					else
-					{
-						Toast.makeText(ShopMemberAddActivity.this, "暂无数据！", Toast.LENGTH_SHORT).show();
-					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
 			@Override
@@ -175,6 +159,7 @@ public class ShopMemberAddActivity extends BaseActivity
 			}
 		});
 	}
+	//修改数据
 	private void upDateData() 
 	{
 		// TODO Auto-generated method stub
@@ -195,22 +180,24 @@ public class ShopMemberAddActivity extends BaseActivity
 		}
 		ColorDialog.showRoundProcessDialog(ShopMemberAddActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
+		//如果是修改界面
 		if(memberDataBean!=null)
 		{
-			params.add("id",memberDataBean.getId());
+			//如果修改了所属店铺
+			if (shop_id!=null){
+				params.add("shop_id",shop_id);
+			}else {
+				//没修改还用之前数据
+				params.add("shop_id",memberDataBean.getId());
+			}
+			//新增页面
+		}else {
+			params.add("name",membername.getText().toString());
+			params.add("shop_id",shop_id);
 		}
-		params.add("username",membercount.getText().toString().trim());
-		params.add("password",memberpassword.getText().toString().trim());
+		params.add("plaintextPassword",memberpassword.getText().toString().trim());
 		params.add("nickname",membername.getText().toString().trim());
-		params.add("version", ConstantParamPhone.VERSION);
-		//params.add("description",productDetaliTextView.getText().toString().trim());
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopMemberAddActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.post(ConstantParamPhone.IP+methord, params,new TextHttpResponseHandler(){
+        HttpUtils.getConnection(context,params,url, "post",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -220,17 +207,20 @@ public class ShopMemberAddActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				ResponsBean responsBean=new Gson().fromJson(arg2,ResponsBean.class);
-				if(!responsBean.getStatus().equals("1"))
-				{
-					Toast.makeText(ShopMemberAddActivity.this, responsBean.getInfo(), Toast.LENGTH_SHORT).show();
-				}
-				else
-				{
-					Toast.makeText(ShopMemberAddActivity.this, "操作成功啦", Toast.LENGTH_SHORT).show();
-					Intent intent=new Intent();  
-	                setResult(RESULT_OK, intent);  
-	                finish();
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						Toast.makeText(context,"修改成功",Toast.LENGTH_SHORT).show();
+						finish();
+						//数据请求成功
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
 			@Override
@@ -242,20 +232,54 @@ public class ShopMemberAddActivity extends BaseActivity
 		});
 	}
 	
-	//创建店铺列表弹窗
+	//店铺列表弹窗
 	private void showShopListPopWindow() 
 	{
-		//今天该写店铺选择弹框列表啦
-		final PopWindowList popListVindow = new PopWindowList(ShopMemberAddActivity.this);
-		popListVindow.setOnItemClickLinster(new OnItemClickLinster() 
-		{
+		//请求网络数据获取店铺信息
+		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SHOP_LIST, "GET", new TextHttpResponseHandler() {
 			@Override
-			public void onClick(String shopName) 
-			{
-				memberShopTextView.setText(shopName);
-				popListVindow.dismiss();
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context, "网络异常，稍后再试", Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code = object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)) {
+						//数据请求成功
+						ShopListBean data = new Gson().fromJson(s, ShopListBean.class);
+						showCategorySelctor(data.getData(), "选择店铺");
+					} else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
 		});
+		
+	}
+				//显示行业选择框
+	private void showCategorySelctor(final List<ShopListBean.DataBean> category, final String title) {
+		ShopListSelectAdapter adapter = new ShopListSelectAdapter(context,R.layout.item_circle_select);
+		adapter.addAll(category);
+		LogUtil.d("adapter",adapter.getCount()+"");
+		MyAlertDailog.show(context,title,adapter );
+		//通过接口回调，确认选择的条目，并展示出来
+		MyAlertDailog.setOnItemClickListentner(new MyAlertDailog.OnItemClickListentner() {
+			@Override
+			public void Onclick(int poistion) {
+				//设置选中店铺
+				memberShopTextView.setText(category.get(poistion).getName());
+				//设置选中的行业id
+				shop_id = Integer.parseInt(category.get(poistion).getId())+"";
+			}
+		});
+
 	}
 	
 }
