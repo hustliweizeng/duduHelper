@@ -5,12 +5,12 @@
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.dudu.duduhelper.ShopAddActivity" >
+    tools:context="com.dudu.duduhelper.Activity.ShopManageActivity.ShopAddActivity" >
 
     <include
         android:id="@+id/head"
         layout="@layout/activity_head" />
-
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,6 +34,8 @@
                 android:textSize="16sp" />
 
             <EditText
+                android:gravity="right"
+                android:id="@+id/ed_title_shop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -68,9 +70,11 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_class_shop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="6dp"
+                android:gravity="right"
                 android:layout_toLeftOf="@+id/icon_arr2"
                 android:hint="请选择您的行业分类"
                 android:textColor="@color/text_middledark_color"
@@ -108,16 +112,6 @@
                 android:textColor="@color/text_dark_color"
                 android:textSize="16sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="6dp"
-                android:layout_toLeftOf="@+id/icon_arr3"
-                android:hint="请选择您所在的商圈"
-                android:textColor="@color/text_middledark_color"
-                android:textColorHint="@color/text_hint_color"
-                android:textSize="14sp" />
-
             <ImageView
                 android:id="@+id/icon_arr3"
                 android:layout_width="20dp"
@@ -125,6 +119,19 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="14dp"
                 android:src="@drawable/icon_arrow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="请选择您所在的商圈"
+                android:gravity="right"
+                android:textColor="@color/text_middledark_color"
+                android:textColorHint="@color/text_hint_color"
+                android:textSize="14sp"
+                android:layout_alignTop="@+id/icon_arr3"
+                android:layout_toLeftOf="@+id/icon_arr3"
+                android:layout_toStartOf="@+id/icon_arr3"
+                android:id="@+id/tv_circle_shop"/>
         </RelativeLayout>
 
         <View
@@ -142,7 +149,7 @@
             android:gravity="center_vertical" >
 
             <TextView
-                android:id="@+id/phoneNumText"
+               
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="17dp"
@@ -151,11 +158,14 @@
                 android:textSize="16sp" />
 
             <EditText
+                android:id="@+id/phoneNumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="16dp"
                 android:background="@null"
+                android:inputType="numberDecimal"
+                android:gravity="right"
                 android:hint="请输入您的联系电话"
                 android:textColor="@color/text_middledark_color"
                 android:textColorHint="@color/text_hint_color"
@@ -184,23 +194,19 @@
                 android:textColor="@color/text_dark_color"
                 android:textSize="16sp" />
 
-            <TextView
+            <EditText
+                android:id="@+id/ed_location_shop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="6dp"
-                android:layout_toLeftOf="@+id/icon_arr5"
-                android:hint="请选择您的地址"
-                android:textColor="@color/text_middledark_color"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:hint="请输入您的地址"
+                android:gravity="right"
+                android:background="@null"
                 android:textColorHint="@color/text_hint_color"
                 android:textSize="14sp" />
 
-            <ImageView
-                android:id="@+id/icon_arr5"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="14dp"
-                android:src="@drawable/icon_arrow" />
+            
         </RelativeLayout>
 
         <View
@@ -226,12 +232,14 @@
                 android:textSize="16sp" />
 
             <EditText
+                android:id="@+id/ed_discription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="16dp"
                 android:background="@null"
                 android:hint="来段自述吧"
+                android:gravity="right"
                 android:textColor="@color/text_middledark_color"
                 android:textColorHint="@color/text_hint_color"
                 android:textSize="14sp" />
@@ -287,16 +295,17 @@
                 android:src="@drawable/icon_head" />
 
             <TextView
+                android:id="@+id/tv_img_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
-                android:text="相册共10张"
+                android:text="相册共0张"
                 android:textSize="16sp" />
         </LinearLayout>
 
         <Button
-            android:id="@+id/loginbutton"
+            android:id="@+id/submitbtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="16dp"

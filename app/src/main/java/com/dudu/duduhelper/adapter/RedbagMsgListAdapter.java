@@ -39,9 +39,27 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 	
 	class MyViewHolder extends RecyclerView.ViewHolder{
 
-		public MyViewHolder(View itemView) {
+		public MyViewHolder(final View itemView) {
 			super(itemView);
+			itemView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(mListener!=null){
+						mListener.onItemClick(itemView,getLayoutPosition());
+					}
+				}
+			});
 		}
+	}
+	
+	GuestListCheckAdapter.OnItemClickListner mListener;
+	//为adapter编写条目点击事件
+	public interface OnItemClickListner{
+		public void onItemClick(View view ,int position);
+	}
+	//回调方法
+	public void setOnItemClickListner(GuestListCheckAdapter.OnItemClickListner listner){
+		mListener = listner;
 	}
 	
 }

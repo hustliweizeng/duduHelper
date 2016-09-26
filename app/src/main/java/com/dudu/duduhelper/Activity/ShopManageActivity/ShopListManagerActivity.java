@@ -41,14 +41,8 @@ public class ShopListManagerActivity extends BaseActivity
 	private ListView lv_shop_list;
 	private SwipeRefreshLayout refresh_shop_list;
 	//判断数据是否加载完成
-    private boolean reffinish=false;
-    private View footView;
-    private ProgressBar loading_progressBar;
-    private TextView loading_text;
-    private Button reloadButton;
-    private int page=1;
-    private int lastItemIndex;
     private ShopAdapterAdapter adapter;
+	private ShopListBean data;
 
 
 	@Override
@@ -65,34 +59,19 @@ public class ShopListManagerActivity extends BaseActivity
 	public void RightButtonClick() 
 	{
 		Intent intent = new Intent(ShopListManagerActivity.this,ShopAddActivity.class);
+		intent.putExtra("source","add");
 		startActivity(intent);
 	}
 	
 	@SuppressLint("ResourceAsColor") 
 	private void initView() 
 	{
-		//listview添加脚布局
-		footView = LayoutInflater.from(this).inflate(R.layout.activity_listview_foot, null);
-		loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
-		loading_text=(TextView) footView.findViewById(R.id.loading_text);
-
-		//点击重试按钮
-		reloadButton=(Button) this.findViewById(R.id.reloadButton);
-		reloadButton.setOnClickListener(new OnClickListener()
-		{
-			
-			@Override
-			public void onClick(View v)
-			{
-				ColorDialog.showRoundProcessDialog(ShopListManagerActivity.this,R.layout.loading_process_dialog_color);
-				initData();
-			}
-		});
+		
+		
 		//listview设置
 		adapter=new ShopAdapterAdapter(this);
 		lv_shop_list=(ListView) this.findViewById(R.id.lv_shop_list);
 		lv_shop_list.setAdapter(adapter);
-		lv_shop_list.addFooterView(footView,null,false);
 		//设置下拉更新，上啦加载
 		refresh_shop_list = (SwipeRefreshLayout)this.findViewById(R.id.refresh_shop_list);
 		refresh_shop_list.setColorSchemeResources(R.color.text_color);
@@ -105,39 +84,11 @@ public class ShopListManagerActivity extends BaseActivity
 			public void onRefresh() 
 			{
 				//下拉刷新的时候更新数据
-				page=1;
 				adapter.clear();
 				initData();
 			}
 		});
-		//listview的滚动监听
-		lv_shop_list.setOnScrollListener(new OnScrollListener() 
-		{
-			@Override
-			//如果滚动到最后一行，请求网络加载数据
-			public void onScrollStateChanged(AbsListView view, int scrollState)
-			{
-				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE&&lastItemIndex == adapter.getCount()) // productAdapter.getCount()记录的是数据的长度
-				{  
-					//请求第二页的数据
-					page++;
-					//设置刷新方式
-					if(!reffinish)
-					{
-						initData();
-					}
-					//把条目定位到最后一个
-					lv_shop_list.setSelection(lastItemIndex-1);
-                }
-			}
-			
-			@Override
-			//滚动中的监听，设置最后一个条目
-			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) //totalItemCount记录的是整个listView的长度
-			{
-				lastItemIndex = firstVisibleItem + visibleItemCount -1;
-			}
-		});
+		
 		//条目点击监听
 		lv_shop_list.setOnItemClickListener(new OnItemClickListener() 
 		{
@@ -146,18 +97,16 @@ public class ShopListManagerActivity extends BaseActivity
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
 			{
 				Intent intent = new Intent(ShopListManagerActivity.this,ShopAddActivity.class);
-				//intent.putExtra("hongbao", adapter.getItem(position));
-				intent.putExtra("source","mendian");
+				intent.putExtra("shopId", data.getData().get(position).getId());
+				intent.putExtra("source","detail");
 				startActivity(intent);
 			}
 		});
 	}
+	
 	//获取数据
 	private void initData() 
 	{
-		//显示view
-		loading_progressBar.setVisibility(View.VISIBLE);
-		loading_text.setText("加载中...");
 		HttpUtils.getConnection(context,null,ConstantParamPhone.GET_SHOP_LIST, "GET",new TextHttpResponseHandler()
 		{
 
@@ -174,16 +123,14 @@ public class ShopListManagerActivity extends BaseActivity
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
-						ShopListBean data = new Gson().fromJson(arg2, ShopListBean.class);
+						data = new Gson().fromJson(arg2, ShopListBean.class);
+						//防止多次加入数据，先清空原有数据
+						adapter.clear();
 						adapter.addAll(data.getData());
-						
-
-
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
 						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-						reloadButton.setVisibility(View.VISIBLE);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -197,5 +144,11 @@ public class ShopListManagerActivity extends BaseActivity
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
+	}
+	//页面返回后，重新加载数据
+	@Override
+	public void onResume() {
+		super.onResume();
+		initData();
 	}
 }

@@ -70,7 +70,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 	
 	private EditText productYuanPriceEditText;
 	
-	private EditText productNowPriceEditText;
+	private EditText productNowPriceEditText; 
 	
 	private EditText productKuCunNumEditText;
 	

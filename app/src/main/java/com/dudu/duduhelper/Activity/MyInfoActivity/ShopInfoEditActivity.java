@@ -500,6 +500,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                     uplodImgs = (ArrayList<String>) data.getSerializableExtra("pics");
                     picsPath = new String[uplodImgs.size()];
                     //后台上传本地的图片
+                    ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
                     for(String s:uplodImgs){
                         if (!s.startsWith("http")){
                             //这边是子线程上传，所以不会立即完成
@@ -609,7 +610,11 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 }
             }
 
-
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                ColorDialog.dissmissProcessDialog();
+            }
         });
 
     }

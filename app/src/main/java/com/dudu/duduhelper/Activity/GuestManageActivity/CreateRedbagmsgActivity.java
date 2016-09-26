@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.adapter.GuestListCheckAdapter;
 import com.dudu.duduhelper.adapter.RedbagMsgListAdapter;
 
 /**
@@ -25,19 +26,28 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 	private RecyclerView recycleview_msg;
 	private SwipeRefreshLayout refresh_msg;
 	private Button submitbtn;
+	private RedbagMsgListAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_create_redbag_msg);
 		initHeadView("红包通知",true,false,0);
+		adapter = new RedbagMsgListAdapter(context);
 		initView();
 		initData();
 	}
 
 	private void initData() {
 		recycleview_msg.setLayoutManager(new LinearLayoutManager(this));
-		recycleview_msg.setAdapter(new RedbagMsgListAdapter(context));
+		recycleview_msg.setAdapter(adapter);
+		adapter.setOnItemClickListner(new GuestListCheckAdapter.OnItemClickListner() {
+			@Override
+			public void onItemClick(View view, int position) {
+				startActivity(new Intent(context,RedbagMsgDetail.class));
+			}
+		});
+		
 	}
 
 	private void initView() {

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.bean.GetHongBaoHistDataBean;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.ShopListBean;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -63,28 +65,34 @@ public class ShopAdapterAdapter extends BaseAdapter
 		if(convertView == null)
 		{
 			viewHolder = new ViewHolder();
-			convertView = LayoutInflater.from(context).inflate(R.layout.shop_manager_item, null);
+			convertView = View.inflate(context,R.layout.shop_manager_item, null);
 			viewHolder.shopimage = (ImageView) convertView.findViewById(R.id.shopimage);
-			viewHolder.shopnametext = (TextView) convertView.findViewById(R.id.shopeNameTextView);
-			viewHolder.shoplocationtext = (TextView) convertView.findViewById(R.id.shoplocationtext);
+			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
+			viewHolder.address = (TextView) convertView.findViewById(R.id.shoplocationtext);
 			convertView.setTag(viewHolder);
 		}
 		else
 		{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+		
+		
 		//设置数据
-		if(list.size()!=0)
-		{
-			
+		ShopListBean.DataBean dataBean = list.get(position);
+		LogUtil.d("daa",dataBean.getName());
+		viewHolder.address.setText(dataBean.getAddress());
+		viewHolder.name.setText(dataBean.getName());
+		if (dataBean.getImages()!=null && dataBean.getImages().length>0){
+			//显示图片之前检查大小
+			ImageLoader.getInstance().displayImage(dataBean.getImages()[0],viewHolder.shopimage);
 		}
 		return convertView;
 	}
 	private class ViewHolder
 	{
 		private ImageView shopimage;
-		private TextView shopnametext;
-		private TextView shoplocationtext;
+		private TextView address;
+		private TextView name;
 		
 	}
 }

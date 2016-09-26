@@ -85,6 +85,7 @@
         </activity>
         <activity android:name=".Activity.RedBagActivity.EditRedbag1Activity"/>
         <activity android:name=".Activity.GuestManageActivity.GuestSelectActivity"/>
+        <activity android:name=".Activity.GuestManageActivity.RedbagMsgDetail"/>
         <activity
             android:name="com.example.qr_codescan.MipcaActivityCapture"
             android:configChanges="orientation|keyboardHidden"

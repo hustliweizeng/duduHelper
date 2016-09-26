@@ -42,9 +42,10 @@ public class MyAlertDailog {
         lv_alertdailog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int poistion, long id) {
-
-                listentner.Onclick(poistion);
-                dailog.cancel();
+                if (listentner!=null){
+                    listentner.Onclick(poistion);
+                    dailog.cancel();
+                }
             }
         });
         //关闭按钮

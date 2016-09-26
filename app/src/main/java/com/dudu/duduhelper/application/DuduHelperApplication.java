@@ -11,6 +11,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.umeng.analytics.MobclickAgent;
@@ -86,6 +87,7 @@ public class DuduHelperApplication extends Application
 				.cacheInMemory(true).considerExifParams(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.displayer(new FadeInBitmapDisplayer(100))
+				//图片缩放设置
 				.build();
 		//默认配置
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
@@ -94,7 +96,6 @@ public class DuduHelperApplication extends Application
 				.discCacheFileNameGenerator(new Md5FileNameGenerator())
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
 				.writeDebugLogs()
-
 				.defaultDisplayImageOptions(options)
 				.build();
 

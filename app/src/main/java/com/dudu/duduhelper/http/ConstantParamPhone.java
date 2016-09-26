@@ -161,8 +161,8 @@ public class ConstantParamPhone
     //获取门店信息
     public static final String GET_SHOP_LIST ="/api/app/branch_shop";//店铺列表
     public static final String ADD_SHOP ="/api/app/branch_shop";//添加店铺
-    public static final String GET_SHOP_DETAIL ="/api/app/branch_shop/{id}";//获取门店详情
-    public static final String EDIT_SHOP_DETAIL ="/api/app/branch_shop/{id}";//修改店铺详情
+    public static final String GET_SHOP_DETAIL ="/api/app/branch_shop/";//获取门店详情
+    public static final String EDIT_SHOP_DETAIL ="/api/app/branch_shop/";//修改店铺详情
 
 
 
