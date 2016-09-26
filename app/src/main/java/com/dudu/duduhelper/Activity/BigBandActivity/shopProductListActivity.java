@@ -166,7 +166,8 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 			{
-				Toast.makeText(shopProductListActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
+				Toast.makeText(shopProductListActivity.this, "网络不给力呀"+arg2, Toast.LENGTH_LONG).show();
+				LogUtil.d("fail",arg3.toString()+"==="+arg2);
 				reloadButton.setVisibility(View.VISIBLE);
 			}
 			@Override
@@ -189,7 +190,7 @@ public class shopProductListActivity extends BaseActivity
 						if (category.equals("discount")){
 							bigBandBuy = new Gson().fromJson(arg2,BigBandBuy.class);
 						}
-						
+						reloadButton.setVisibility(View.GONE);
 						productAdapter.addAll(bigBandBuy.getData(),isAllChoice);
 
 					}else {
@@ -377,7 +378,7 @@ public class shopProductListActivity extends BaseActivity
 				// TODO Auto-generated method stub
 				if(isDisCount)
 				{
-					initData(ConstantParamPhone.GET_COUPON_LIST);
+					initData(ConstantParamPhone.GET_DISCOUNT_LIST);
 				}
 				else
 				{
@@ -493,7 +494,7 @@ public class shopProductListActivity extends BaseActivity
 			}
 
 		});
-		//弹出第一项
+		//左侧筛选
 		orderTypeRel.setOnClickListener(new OnClickListener()
 		{
 
@@ -644,7 +645,7 @@ public class shopProductListActivity extends BaseActivity
 		RedBagStatus redBagStatus = new RedBagStatus();
 		ProductStatus products = new ProductStatus();
 
-		//左侧筛选
+		//左侧筛选，设置列表数据
 		if(action.equals("order"))
 		{
 			orderSelectorAdapter =new OrderSelectorAdapter(this);
@@ -655,7 +656,7 @@ public class shopProductListActivity extends BaseActivity
 			}
 			else
 			{
-				//产品列表
+				//产品列表和优惠券列表
 				selectList.addAll(products.getProductORderBy());
 			}
 			//把数据集合添加到适配器中
@@ -674,11 +675,15 @@ public class shopProductListActivity extends BaseActivity
 			}
 			else
 			{
+				//产品列表和优惠券列表
 				selectList.addAll(products.getProductStatus());
 			}
 			orderSelectorAdapter.addAll(selectList,productAction.getText().toString());
 			productSelectList.setAdapter(orderSelectorAdapter);
 		}
+		
+		
+		
 		//筛选条目点击事件
 		productSelectList.setOnItemClickListener(new OnItemClickListener()
 		{
@@ -686,8 +691,8 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id)
 			{
+				//左侧筛选事件
 				if(action.equals("order"))
-					//左侧筛选
 				{
 					//获取被选中条目的信息-左侧
 					order= selectList.get(position).id+"";
@@ -743,7 +748,8 @@ public class shopProductListActivity extends BaseActivity
 				productAdapter.list.clear();
 				if(isDisCount)
 				{
-					initData(ConstantParamPhone.GET_COUPON_LIST);
+					LogUtil.d("discou","upproduct="+upProduct+";status="+productStatus);
+					initData(ConstantParamPhone.GET_DISCOUNT_LIST);
 				}
 				else
 				{
@@ -753,7 +759,6 @@ public class shopProductListActivity extends BaseActivity
 					}
 					else
 					{
-						//条目点击之后，重新刷新数据，目前接口不完善，筛选功能未实现
 						initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 					}
 				}

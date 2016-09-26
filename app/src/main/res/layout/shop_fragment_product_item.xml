@@ -29,6 +29,7 @@
             android:layout_width="92dp"
             android:layout_height="72dp"
             android:layout_marginLeft="14dp"
+            android:scaleType="fitXY"
             android:layout_marginRight="10dp"
             android:layout_marginTop="17dp"
             android:layout_toRightOf="@+id/productCheckImg"
@@ -41,6 +42,7 @@
             android:layout_marginTop="16dp"
             android:layout_toRightOf="@+id/productImage"
             android:text="开口松子218gx2袋原味坚"
+            android:lines="1"
             android:textColor="@color/text_color_gray"
             android:textSize="16sp" />
 

@@ -136,7 +136,19 @@
                 android:background="@color/line_color_gray" />
         </RelativeLayout>
     </LinearLayout>
-
+        <Button
+            android:layout_marginTop="16dp"
+            android:id="@+id/reloadButton"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_white_bg"
+            android:text="点击重试"
+            android:textColor="@color/text_color_gray"
+            android:textSize="16dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
+        
+   
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_product_list"
@@ -144,6 +156,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical" >
+        
 
             <ListView
                 android:id="@+id/productListView"
@@ -156,18 +169,8 @@
                 android:scrollbarThumbVertical="@color/text_color"
                 android:scrollbarTrackVertical="@color/text_color_yellow" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <Button
-        android:id="@+id/reloadButton"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/btn_white_bg"
-        android:text="点击重试"
-        android:textColor="@color/text_color_gray"
-        android:textSize="16dp"
-        android:visibility="gone" />
+    
+   
 
     <LinearLayout
         android:id="@+id/editProductLine"

@@ -107,9 +107,9 @@ public class ShopListManagerActivity extends BaseActivity
 	//获取数据
 	private void initData() 
 	{
+		refresh_shop_list.setRefreshing(true);
 		HttpUtils.getConnection(context,null,ConstantParamPhone.GET_SHOP_LIST, "GET",new TextHttpResponseHandler()
 		{
-
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
 			{
@@ -141,7 +141,6 @@ public class ShopListManagerActivity extends BaseActivity
 			{
 				// TODO Auto-generated method stub
 				refresh_shop_list.setRefreshing(false);
-				ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}
