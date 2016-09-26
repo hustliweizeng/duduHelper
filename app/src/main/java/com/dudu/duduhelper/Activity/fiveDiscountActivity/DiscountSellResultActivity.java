@@ -1,6 +1,8 @@
 package com.dudu.duduhelper.Activity.fiveDiscountActivity;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
@@ -10,6 +12,7 @@ import com.dudu.duduhelper.bean.DiscountBean;
 import com.dudu.duduhelper.bean.DiscountDataBean;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -131,18 +134,9 @@ public class DiscountSellResultActivity extends BaseActivity
 	
 	private void submitData() 
 	{
-		// TODO Auto-generated method stub
 		ColorDialog.showRoundProcessDialog(DiscountSellResultActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("no", dataBean.getCode());
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(DiscountSellResultActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.post(ConstantParamPhone.IP+ConstantParamPhone.USE_SELL_DISCOUNT, params,new TextHttpResponseHandler()
+        HttpUtils.getConnection(context,params,ConstantParamPhone.USE_CARD, "PSOT",new TextHttpResponseHandler()
         {
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -152,56 +146,21 @@ public class DiscountSellResultActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				DiscountBean discountBean=new Gson().fromJson(arg2, DiscountBean.class);
-				if(discountBean.getStatus().equals("-1006"))
-				{
-					MyDialog.showDialog(DiscountSellResultActivity.this, "该账号已在其他手机登录，是否重新登录", true, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(DiscountSellResultActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-				}
-				else
-				{
-					if(discountBean.getStatus().equals("-1"))
-					{
-						MyDialog.showDialog(DiscountSellResultActivity.this, discountBean.getInfo().split(" ")[1], false, true, "", "确定", null,new OnClickListener()
-						{
-							@Override
-							public void onClick(View v) 
-							{
-								// TODO Auto-generated method stub
-								MyDialog.cancel();
-								DiscountSellResultActivity.this.finish();
-							}
-						});
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						Toast.makeText(DiscountSellResultActivity.this, "使用成功", Toast.LENGTH_LONG).show();
+						finish();
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 					}
-					else
-					{
-						MyDialog.showDialog(DiscountSellResultActivity.this, "核销成功啦", false, true, "", "确定", null,new OnClickListener() 
-						{
-							@Override
-							public void onClick(View v) 
-							{
-								// TODO Auto-generated method stub
-								MyDialog.cancel();
-								DiscountSellResultActivity.this.finish();
-							}
-						});
-					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-					
 			}
 			@Override
 			public void onFinish() 

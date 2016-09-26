@@ -203,18 +203,19 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 		lineView=this.findViewById(R.id.lineView);
 		scanbutton=(Button) this.findViewById(R.id.scanbutton);
 		bindDevicesTextView=(TextView) this.findViewById(R.id.bindDevicesTextView);
 		SharedPreferences sharePrint= getSharedPreferences("printinfo", MODE_PRIVATE);
+		//查找已配对的设备
 		if(!TextUtils.isEmpty(sharePrint.getString("blueName", "")))
 		{
 			bindDevicesTextView.setVisibility(View.VISIBLE);
 			lineView.setVisibility(View.VISIBLE);
 			bindDevicesTextView.setText("已配对设备："+sharePrint.getString("blueName", ""));
 		}
+		//搜索按钮
 		scanbutton.setOnClickListener(new OnClickListener() 
 		{
 			
@@ -294,10 +295,12 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 	private BroadcastReceiver receiver=new BroadcastReceiver() 
 	{
 		@Override
+		//接收到广播信息
 		public void onReceive(Context context, Intent intent) 
 		{
 			// TODO Auto-generated method stub
 			String action = intent.getAction(); 
+			//蓝牙打开
 			if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action))
 			{
 				if (bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON)
@@ -313,6 +316,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				}
 				ColorDialog.dissmissProcessDialog();
 			}
+			//搜索
 			if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
 			{
 				Toast.makeText(ShopSearchBlueToothActivity.this,"开始搜索", Toast.LENGTH_SHORT).show();
@@ -321,7 +325,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				startAnima();
 				startcircularAnima();
 			}
-		
+			//发现设备
 			if (BluetoothDevice.ACTION_FOUND.equals(action)) 
 			{    
 				//获取查找到的蓝牙设备    

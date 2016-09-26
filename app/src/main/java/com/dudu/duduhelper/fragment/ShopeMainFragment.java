@@ -23,6 +23,7 @@ import com.dudu.duduhelper.Activity.RedBagActivity.CreateRedBagActivity;
 import com.dudu.duduhelper.Activity.ShopManageActivity.ShopListManagerActivity;
 import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountDataActivity;
+import com.dudu.duduhelper.Activity.fiveDiscountActivity.DiscountSellActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -117,7 +118,6 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 				intent=new Intent(getActivity(),MipcaActivityCapture.class);
 				intent.putExtra("action", "hexiao");
 				break;
-
 			case R.id.getCountBtn:
 				//统计
 				intent = new Intent(getActivity(), ShopAccountDataActivity.class);
@@ -149,7 +149,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			    return;
 			case R.id.wuzheBtn:
 				//五折验证
-				intent=new Intent(getActivity(),ShopGetInComeCashActivity.class);
+				intent=new Intent(getActivity(),DiscountSellActivity.class);
 				intent.putExtra("action", "wuzhe");
 			    break;
 			case R.id.memberBtn:

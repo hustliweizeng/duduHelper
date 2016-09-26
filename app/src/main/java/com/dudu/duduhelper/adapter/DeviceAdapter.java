@@ -31,40 +31,28 @@ public class DeviceAdapter extends BaseAdapter
 	@Override
 	public int getCount() 
 	{
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 
 	@Override
 	public BluetoothDevice getItem(int position) {
-		// TODO Auto-generated method stub
 		return list.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
-		// TODO Auto-generated method stub
 		convertView = LayoutInflater.from(context).inflate(R.layout.activity_divices_item, null);
 		textView=(TextView) convertView.findViewById(R.id.textView1);
-//		if(list.get(position).getBondState() == BluetoothDevice.BOND_BONDED)
-//		{
-//			textView.setText(list.get(position).getName()+"已配对");
-//		}
-//		else
-//		{
-			textView.setText(list.get(position).getName());
-		//}
+		textView.setText(list.get(position).getName());
 		return convertView;
 	}
 	public void clear() {
-		// TODO Auto-generated method stub
 		list.clear();
 		notifyDataSetChanged();
 	}

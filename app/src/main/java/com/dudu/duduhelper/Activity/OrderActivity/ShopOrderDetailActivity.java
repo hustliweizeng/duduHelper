@@ -86,6 +86,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 	private OrderDetailBean.DataBean orderData;
 	private String id;
 	private TextView order_create_time;
+	private Button btn_print;
 
 
 	@Override
@@ -179,7 +180,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 			case 3 :
 				content = "已完成";
 				color = R.color.text_gray_color;
-				
+				btn_print.setVisibility(View.VISIBLE);
 				break;
 			case 4 :
 				content = "待发货";
@@ -200,6 +201,9 @@ public class ShopOrderDetailActivity extends BaseActivity
 			case -2 :
 				content = "已退款";
 				break;
+			default:
+				//其他状态时，不可打印
+				btn_print.setVisibility(View.GONE);
 		}
 		//设置状态
 		orderActionTextView.setText(content);
@@ -282,6 +286,14 @@ public class ShopOrderDetailActivity extends BaseActivity
 		orderPhoneTextView=(TextView) this.findViewById(R.id.orderPhoneTextView);
 		totalPriceTextView=(TextView) this.findViewById(R.id.totalPriceTextView);
 		order_create_time = (TextView) findViewById(R.id.order_create_time);
+		btn_print = (Button) findViewById(R.id.btn_print);
+		btn_print.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				OpenBlueTooth();
+			}
+		});
 		
 		//核销按钮
 		enterButton.setOnClickListener(new OnClickListener() 
@@ -366,7 +378,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 		{
 			if (resultCode == RESULT_OK) 
 			{
-				//显示打印按钮？
+				//蓝牙已经开启
 				
 			} 
 			else if (resultCode == RESULT_CANCELED) 
@@ -419,7 +431,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 			}
 		}
 	};
-	//发送打印
+	//发送打印信息
 	private void sendPrint() 
 	{
 		if (this.isConnection) 
@@ -438,7 +450,7 @@ public class ShopOrderDetailActivity extends BaseActivity
                 esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);//设置打印居中
                 esc.addSelectPrintModes(EscCommand.FONT.FONTA, ENABLE.OFF, ENABLE.ON, ENABLE.OFF, ENABLE.OFF);//设置为倍高倍宽
                 esc.addText("欢迎光临\n");   //  打印文字
-                esc.addText(share.getString("shopname", "本店铺")+"\n\n");
+                esc.addText(sp.getString("shopname", "本店铺")+"\n\n");
                 esc.addSelectPrintModes(EscCommand.FONT.FONTA, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF);//设置为倍高倍宽
                 //esc.addSetCharcterSize(WIDTH_ZOOM.MUL_3, HEIGHT_ZOOM.MUL_3);//设置字符尺寸
                 esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);//设置打印左对齐
@@ -568,13 +580,15 @@ public class ShopOrderDetailActivity extends BaseActivity
 	//打开蓝牙，打印信息
     public void OpenBlueTooth()
     {
+	    
     	bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
+	    //不支持蓝牙
 		if(bluetoothAdapter==null)
 		{
 			Toast.makeText(ShopOrderDetailActivity.this,"该设备不支持蓝牙", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		
+		//支持蓝牙未开启
 		else if(!bluetoothAdapter.isEnabled())//isEnabled enable是激活,开启蓝牙
 		{
 			//开启
@@ -583,16 +597,21 @@ public class ShopOrderDetailActivity extends BaseActivity
 			// 设置蓝牙可见性，最多300秒      
 			intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3000);     
 			startActivityForResult(intent, 1); 
+			LogUtil.d("unacitive","unacitive");
 		}
+		//蓝牙已开启
 		else
 		{
+			LogUtil.d("acitive","acitive");
 			SharedPreferences sharePrint= getSharedPreferences("printinfo", MODE_PRIVATE);
+			//判断是否绑定过
 			if(!TextUtils.isEmpty(sharePrint.getString("blueAddress", "")))
 			{
-				enterButton.setClickable(false);
-				enterButton.setPressed(true);
-				
+				btn_print.setClickable(false);
+				btn_print.setPressed(true);
+				//根据名称获取蓝牙地址
 				device=bluetoothAdapter.getRemoteDevice(sharePrint.getString("blueAddress", ""));
+				//没有绑定
 				if(device.getBondState() == BluetoothDevice.BOND_NONE)
 				{
 					try 
@@ -611,11 +630,13 @@ public class ShopOrderDetailActivity extends BaseActivity
 				}
 				else
 				{
+					//绑定了
 					getConnect();
 				}
 			}
 			else
 			{
+				//第一次连接
 				Intent intent=new Intent(ShopOrderDetailActivity.this,ShopSearchBlueToothActivity.class);
 				startActivity(intent);
 			}

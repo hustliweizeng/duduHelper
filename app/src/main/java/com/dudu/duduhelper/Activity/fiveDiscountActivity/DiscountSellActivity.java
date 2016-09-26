@@ -15,6 +15,7 @@ import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.DiscountBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
@@ -24,6 +25,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DiscountSellActivity extends BaseActivity 
 {
@@ -53,19 +56,6 @@ public class DiscountSellActivity extends BaseActivity
 		{
 			discountFirstNumTextView.setText(getIntent().getStringExtra("first"));
 		}
-//		sellHistoryBtn=(Button) this.findViewById(R.id.selectTextClickButton);
-//		sellHistoryBtn.setText("验证记录");
-//		sellHistoryBtn.setVisibility(View.VISIBLE);
-//		sellHistoryBtn.setOnClickListener(new OnClickListener() 
-//		{
-//			
-//			@Override
-//			public void onClick(View arg0) 
-//			{
-//				// TODO Auto-generated method stub
-//			    Toast.makeText(DiscountSellActivity.this, "哈哈哈", Toast.LENGTH_SHORT).show();
-//			}
-//		});
 		discountSellbutton.setOnClickListener(new OnClickListener() 
 		{
 			
@@ -79,12 +69,6 @@ public class DiscountSellActivity extends BaseActivity
 					Toast.makeText(DiscountSellActivity.this, "请输入卡号后八位数字", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				if(TextUtils.isEmpty(discountFirstNumTextView.getText().toString()))
-				{
-					Toast.makeText(DiscountSellActivity.this, "请获取卡号前缀", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				
 				initData();
 
 			}
@@ -92,18 +76,10 @@ public class DiscountSellActivity extends BaseActivity
 	}
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
 		ColorDialog.showRoundProcessDialog(DiscountSellActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("no", (discountFirstNumTextView.getText().toString().trim()+discountNumEditText.getText().toString().trim()));
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(DiscountSellActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.post(ConstantParamPhone.IP+ConstantParamPhone.GET_SELL_DISCOUNT, params,new TextHttpResponseHandler(){
+		params.add("code", discountNumEditText.getText().toString().trim());
+        HttpUtils.getConnection(context,params,ConstantParamPhone.VERTIFY_CARD, "post",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -113,45 +89,26 @@ public class DiscountSellActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
-				DiscountBean discountBean=new Gson().fromJson(arg2, DiscountBean.class);
-				if(discountBean.getStatus().equals("-1006"))
-				{
-					MyDialog.showDialog(DiscountSellActivity.this, "该账号已在其他手机登录，是否重新登录", true, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(DiscountSellActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						Toast.makeText(context,"验证成功",Toast.LENGTH_SHORT).show();
+						startActivity(new Intent(context,DiscountSellActivity.class));
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-				if(discountBean.getStatus().equals("0"))
-				{
-					Intent intent=new Intent(DiscountSellActivity.this,DiscountSellResultActivity.class);
-					intent.putExtra("status", 0);
-					intent.putExtra("data", discountBean.getData());
-					startActivity(intent);		
-				}
-				if(discountBean.getStatus().equals("-1"))
-				{
-					Intent intent=new Intent(DiscountSellActivity.this,DiscountSellResultActivity.class);
-					intent.putExtra("status", -1);
-					intent.putExtra("info",discountBean.getInfo());
-					startActivity(intent);
-				}			
 			}
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
