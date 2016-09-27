@@ -32,6 +32,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ShopeMainFragment extends Fragment implements OnClickListener
 {
@@ -49,7 +51,6 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	private LinearLayout shopmanagerBtn;
 	private LinearLayout moneyRecordLinButton;
 	//红包列表状态
-	boolean IsRedbagEmpty = false;
 	private LinearLayout guest_manager;
 
 	@Override
@@ -180,13 +181,8 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	private void requestRedbagStatus() {
 		//弹对话框
 		String url = ConstantParamPhone.GET_REDBAG_LIST;
-		RequestParams parmas = new RequestParams();
-		//请求参数设置
-		parmas.put("page",1);
-		parmas.put("sort_list","getmore,getless,moremoney,lessmoney");
-		parmas.put("status_list","all,ended,releasing");
 		//请求结果处理
-		HttpUtils.getConnection(getActivity(), parmas, url, "POST", new TextHttpResponseHandler() {
+		HttpUtils.getConnection(getActivity(), null, url, "get", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_LONG).show();
@@ -196,14 +192,28 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			public void onSuccess(int i, Header[] headers, String s) {
 				//设置有无红包的状态,解析处理json数据
 				Log.d("redbag",s);
-				
-				//默认设置没有红包
-				IsRedbagEmpty =  true;
-				if (IsRedbagEmpty){
-					startActivity(new Intent(getActivity(),CreateRedBagActivity.class));
-				}else {
-					startActivity(new Intent(getActivity(),shopProductListActivity.class));
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						/*new Gson
+						if (IsRedbagEmpty){
+							startActivity(new Intent(getActivity(),CreateRedBagActivity.class));
+						}else {
+							startActivity(new Intent(getActivity(),shopProductListActivity.class));
+						}*/
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
+				//默认设置没有红包
+				
 
 			}
 

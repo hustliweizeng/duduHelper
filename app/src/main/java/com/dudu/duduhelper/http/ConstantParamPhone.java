@@ -87,10 +87,16 @@ public class ConstantParamPhone
     public static final String SUCCESS = "SUCCESS";
     public static final String FAIL = "FAIL";
 
-
+    //红包
     public static final String USER_LOGIN = "/api/app/user/login";//用户登录接口
-    public static final String GET_REDBAG_LIST = "/rpList";//获取红包列表
-    public static final String ADD_REDBAG = "/addRp";//添加红包
+    public static final String GET_REDBAG_LIST = "/api/app/red_packet";//获取红包列表
+    public static final String GET_REDBAG_DETAIL ="/api/app/red_packet/";//获取红包详情
+    public static final String EDIT_REDBAG ="/api/app/red_packet/";//编辑红包
+    public static final String ADD_REDBAG = "/api/app/red_packet";//添加红包
+    public static final String DEL_REDBAG ="/api/app/red_packet/";//删除红包
+ 
+ 
+ 
     public static final String UPLOAD_PIC = "/api/app/tool/uploadpic";//上传图片
     public static final String GET_USER_INFO = "/api/app/user/info";//获取用户信息
     public static final String  GET_SMS_CONFIRM = "/api/app/tool/sms"; //短信验证

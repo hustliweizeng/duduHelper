@@ -30,6 +30,9 @@ import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
 import com.gprinter.command.EscCommand;
+import com.gprinter.command.GpCom;
+import com.gprinter.io.GpDevice;
+import com.gprinter.service.GpPrintService;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
@@ -39,12 +42,18 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -117,7 +126,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 	{
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		if (TextUtils.isEmpty(id)){
-			Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		RequestParams params = new RequestParams();
@@ -135,6 +143,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						LogUtil.d("detail",s);
 						orderData  = new Gson().fromJson(s,OrderDetailBean.class).getData();
+						
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -379,6 +388,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 			if (resultCode == RESULT_OK) 
 			{
 				//蓝牙已经开启
+				Toast.makeText(context,"蓝牙已开启",Toast.LENGTH_SHORT).show();
 				
 			} 
 			else if (resultCode == RESULT_CANCELED) 
@@ -389,6 +399,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 		}
 	}
 	//广播接收者
+	//绑定广播过滤器--开关状态和设备绑定，发生其他状态的广播时由另外一个接收者负责处理
 	private BroadcastReceiver receiver=new BroadcastReceiver() 
 	{
 		@Override
@@ -418,8 +429,10 @@ public class ShopOrderDetailActivity extends BaseActivity
                 {    
                     //绑定过的设备    
                 	Toast.makeText(ShopOrderDetailActivity.this,"配对成功", Toast.LENGTH_SHORT).show();
-                	enterButton.setClickable(true);
-                	enterButton.setPressed(false);
+                	/*enterButton.setClickable(true);
+                	enterButton.setPressed(false);*/
+	                //开始打印
+	                sendPrint();
                 } 
                 if (device.getBondState() == BluetoothDevice.BOND_NONE)  
                 {    
@@ -440,8 +453,6 @@ public class ShopOrderDetailActivity extends BaseActivity
             try 
             { 
                 EscCommand esc = new EscCommand();
-                //esc.addPrintAndFeedLines((byte) 3);
-                //esc.addSelectCodePage(EscCommand.CODEPAGE.UYGUR);
                 //设置汉子无效
                 //esc.addCancelKanjiMode();
                 esc.addPrintAndLineFeed();
@@ -454,8 +465,8 @@ public class ShopOrderDetailActivity extends BaseActivity
                 esc.addSelectPrintModes(EscCommand.FONT.FONTA, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF);//设置为倍高倍宽
                 //esc.addSetCharcterSize(WIDTH_ZOOM.MUL_3, HEIGHT_ZOOM.MUL_3);//设置字符尺寸
                 esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);//设置打印左对齐
-                esc.addText("时间：        "+ Util.DataConVert2(orderDetailBean.getData().getTime())+"\n");   //  打印文字    
-                esc.addText("订单号：      "+orderDetailBean.getData().getId()+"\n");   //  打印文字
+                esc.addText("时间：        "+ Util.DataConVert2(orderData.getTime())+"\n");   //  打印文字    
+                esc.addText("订单号：      "+orderData.getId()+"\n");   //  打印文字
                 esc.addText("--------------------------------\n");   //  打印文字
                 esc.addText("名称");   //  打印文字
                 //设置距左边绝对位置
@@ -484,39 +495,41 @@ public class ShopOrderDetailActivity extends BaseActivity
                 
                 esc.addText("\n\n商家优惠");   //  打印文字
                 esc.addSetAbsolutePrintPosition((short) 300);
-                esc.addText(orderDetailBean.getData().getDiscount_shop_fee()+"\n");
+                esc.addText(orderData.getDiscount_shop_fee()+"\n");
                 
                 esc.addText("红包减免");
                 esc.addSetAbsolutePrintPosition((short) 300);
-                esc.addText(orderDetailBean.getData().getDiscount_activity_fee()+"\n");
+                esc.addText(orderData.getDiscount_activity_fee()+"\n");
                 
                 esc.addText("--------------------------------\n");   //  打印文字
                 
                 esc.addTurnEmphasizedModeOnOrOff(ENABLE.ON);//设置加粗
                 esc.addText("实收金额");
                 esc.addSetAbsolutePrintPosition((short) 300);
-                esc.addText(orderDetailBean.getData().getFee()+"\n\n");   //  打印文字
+                esc.addText(orderData.getFee()+"\n\n");   //  打印文字
                 
                 esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);//设置打印居中
                 esc.addTurnEmphasizedModeOnOrOff(ENABLE.OFF);
-                //打印图片
-//                Bitmap b1 = BitmapFactory.decodeResource(getResources(),R.drawable.qcoerd);
-//                esc.addRastBitImage(b1, 200, 0);   //打印图片
-//              
-//                //设置二维码内容
-//                esc.addStoreQRCodeData("复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码复杂二维码");
-//                //设置二维码尺寸
-//                esc.addSelectSizeOfModuleForQRCode((byte)6);
-//                esc.addPrintQRCode();
-//                esc.addText("\n使用微信扫描该二维码即可完成本次支付\n\n");
-                
                 esc.addText("\n"+share.getString("getagentname", "")+"竭诚为您服务\n\n"); 
                 esc.addText("*******************************\n\n\n\n\n\n\n");
-                Vector<Byte> datas = esc.getCommand(); //发送数据
+
+	            
+
+
+
+
+	            Vector<Byte> datas = esc.getCommand(); //发送数据
                 Byte[] Bytes = datas.toArray(new Byte[datas.size()]);
                 byte[] bytes = ArrayUtils.toPrimitive(Bytes);
-                outputStream.write(bytes, 0, bytes.length);    
+
+		            //输出流
+	            outputStream = bluetoothSocket.getOutputStream();
+	            outputStream.write(bytes, 0, bytes.length);    
                 outputStream.flush();  
+	            
+	            
+	            
+	            
                 Toast.makeText(ShopOrderDetailActivity.this, "打印成功！", Toast.LENGTH_LONG).show();
                 enterButton.setClickable(true);
                 enterButton.setPressed(false);
@@ -524,6 +537,7 @@ public class ShopOrderDetailActivity extends BaseActivity
             catch (Exception e)
             {    
                 Toast.makeText(ShopOrderDetailActivity.this, "打印失败！", Toast.LENGTH_LONG).show();  
+	            LogUtil.d("erro",e.toString());
                 enterButton.setClickable(true);
                 enterButton.setPressed(false);
             }    
@@ -535,19 +549,23 @@ public class ShopOrderDetailActivity extends BaseActivity
             enterButton.setPressed(false);
         }    
 	}
+	//绑定之后获取连接
 	private void getConnect()
 	{
 		if (!this.isConnection) 
 		{    
             try
             {
-                bluetoothSocket = this.device.createRfcommSocketToServiceRecord(uuid);    
-                bluetoothSocket.connect();    
-                outputStream = bluetoothSocket.getOutputStream();    
+	            //客户端对象
+                bluetoothSocket = this.device.createRfcommSocketToServiceRecord(uuid);   
+	            //连接设备
+                bluetoothSocket.connect();  
+	            
                 this.isConnection = true;    
                 if (this.bluetoothAdapter.isDiscovering()) 
                 {    
                 	//取消搜索
+	                bluetoothAdapter.cancelDiscovery();
                 }    
             } 
             catch (Exception e) 
@@ -580,7 +598,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 	//打开蓝牙，打印信息
     public void OpenBlueTooth()
     {
-	    
+	    //获取蓝牙适配器
     	bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 	    //不支持蓝牙
 		if(bluetoothAdapter==null)
@@ -593,6 +611,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 		{
 			//开启
 			ColorDialog.showRoundProcessDialog(ShopOrderDetailActivity.this,R.layout.loading_process_dialog_color);
+			//打开蓝牙并提示用户
 			Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);     
 			// 设置蓝牙可见性，最多300秒      
 			intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3000);     
@@ -611,12 +630,13 @@ public class ShopOrderDetailActivity extends BaseActivity
 				btn_print.setPressed(true);
 				//根据名称获取蓝牙地址
 				device=bluetoothAdapter.getRemoteDevice(sharePrint.getString("blueAddress", ""));
-				//没有绑定
+				//未绑定
 				if(device.getBondState() == BluetoothDevice.BOND_NONE)
 				{
 					try 
 					{
 						Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
+						//通过反射绑定该设备
 						createBondMethod.invoke(device);
 					}
 					catch (Exception e) 
@@ -636,10 +656,15 @@ public class ShopOrderDetailActivity extends BaseActivity
 			}
 			else
 			{
-				//第一次连接
+				//第一次连接，进入到搜索绑定页面
 				Intent intent=new Intent(ShopOrderDetailActivity.this,ShopSearchBlueToothActivity.class);
 				startActivity(intent);
 			}
 		}
     }
+	
+	
+	
+	
+	
 }
