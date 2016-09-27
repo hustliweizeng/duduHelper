@@ -94,7 +94,7 @@ public class ShopProductDetailActivity extends BaseActivity
 			JSONObject time = array.getJSONObject(0);
 			String begin = time.getString("begin");
 			String end = time.getString("end");
-			productinfoTime.setText("开始时间:+"+begin+"\n"+"结束时间:"+end);
+			productinfoTime.setText("开始时间:"+begin+"\n"+"结束时间:"+end);
 		}catch (Exception e){
 			System.out.print(e);
 		}

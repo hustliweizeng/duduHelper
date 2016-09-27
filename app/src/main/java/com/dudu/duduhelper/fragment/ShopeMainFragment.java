@@ -20,6 +20,7 @@ import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
 import com.dudu.duduhelper.Activity.GuestManageActivity.GuestMangageActivity;
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderActivity;
 import com.dudu.duduhelper.Activity.RedBagActivity.CreateRedBagActivity;
+import com.dudu.duduhelper.Activity.RedBagActivity.RedBagList;
 import com.dudu.duduhelper.Activity.ShopManageActivity.ShopListManagerActivity;
 import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountDataActivity;
@@ -27,13 +28,17 @@ import com.dudu.duduhelper.Activity.fiveDiscountActivity.DiscountSellActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.RedBagListBean;
 import com.example.qr_codescan.MipcaActivityCapture;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class ShopeMainFragment extends Fragment implements OnClickListener
 {
@@ -197,12 +202,16 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
-						/*new Gson
-						if (IsRedbagEmpty){
-							startActivity(new Intent(getActivity(),CreateRedBagActivity.class));
+						RedBagListBean redBagListBean = new Gson().fromJson(s, RedBagListBean.class);
+						List<RedBagListBean.DataBean> data = redBagListBean.getData();
+						if (data!=null && data.size()>0){
+							Intent intent = new Intent(getActivity(),RedBagList.class);
+							intent.putExtra("data",redBagListBean);
+							startActivity(intent);
+							
 						}else {
-							startActivity(new Intent(getActivity(),shopProductListActivity.class));
-						}*/
+							startActivity(new Intent(getActivity(),CreateRedBagActivity.class));
+						}
 
 					}else {
 						//数据请求失败

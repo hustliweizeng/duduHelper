@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.widget.SystemBarTintManager;
 import com.umeng.message.PushAgent;
@@ -117,14 +119,18 @@ public class EditRedbag1Activity extends Activity implements View.OnClickListene
 			case R.id.btn_create_redbag1:
 				//传递参数到下一页
 				String title = ed_edit_redbag_title.getText().toString().trim();
-
-				if (!TextUtils.isEmpty(title)){
-					Intent intent = new Intent(this,EditRedbag2Activity.class);
-					intent.putExtra("title",title);
-					startActivity(intent);
-				}else{
-					Toast.makeText(this,"请输入红包名称",Toast.LENGTH_SHORT).show();
+				String startTime = startTimeTextView.getText().toString().trim();
+				String endTime = finishTimeTextView.getText().toString().trim();
+				if (TextUtils.isEmpty(title) ||TextUtils.isEmpty(startTime) ||TextUtils.isEmpty(endTime)){
+					Toast.makeText(this,"输入不完整",Toast.LENGTH_SHORT).show();
+					return;
 				}
+
+				Intent intent = new Intent(this,EditRedbag2Activity.class);
+				intent.putExtra("starTime",startTime);
+				intent.putExtra("endTime",endTime);
+				intent.putExtra("title",title);
+				startActivity(intent);
 
 				break;
 			case R.id.backButton:

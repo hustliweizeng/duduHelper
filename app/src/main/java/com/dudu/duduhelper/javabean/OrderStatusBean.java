@@ -27,6 +27,9 @@ public class OrderStatusBean {
             */
     //返回订单状态列表
     public   List<SelectorBean>  getAllOrderStatus(){
+        SelectorBeanStatus status0 = new SelectorBeanStatus();
+        status0.id = 0;
+        status0.name = "全部状态";
         SelectorBeanStatus status1 = new SelectorBeanStatus();
         status1.id = 1;
         status1.name = "待支付";
@@ -55,6 +58,7 @@ public class OrderStatusBean {
         status9.id = -2;
         status9.name = "已退款";
         List<SelectorBean> list = new ArrayList<>();
+        list.add(status0);
         list.add(status1);
         list.add(status2);
         list.add(status3);
@@ -75,6 +79,9 @@ public class OrderStatusBean {
             "10": "扫码支付",
             "11": "周边活动"*/
     public   List<SelectorBean>  getAllOrderSource(){
+        SelectorBeanSource source0 = new SelectorBeanSource();
+        source0.id = 0;
+        source0.name = "全部来源";
         SelectorBeanSource source1 = new SelectorBeanSource();
         source1.id = 1;
         source1.name = "大牌抢购";
@@ -98,6 +105,7 @@ public class OrderStatusBean {
         source7.name = "周边活动";
 
         ArrayList<SelectorBean> list = new ArrayList<>();
+        list.add(source0);
         list.add(source1);
         list.add(source2);
         list.add(source3);

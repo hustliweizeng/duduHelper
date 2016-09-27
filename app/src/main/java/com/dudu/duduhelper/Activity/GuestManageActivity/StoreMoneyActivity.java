@@ -28,6 +28,8 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 	private EditText ed_num;
 	private TextView tv_price;
 	private Button btn_subimit;
+	//默认选择红包
+	private boolean isRedbag = true;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -52,6 +54,15 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 		switch (v.getId()) {
 			case R.id.btn_subimit:
 				submit();
+			case R.id.redbage_check	:
+				redbage_check.setTextColor(getResources().getColor(R.color.text_green_color));
+				activity_check.setTextColor(getResources().getColor(R.color.text_dark_color));
+				isRedbag = true;
+				break;
+			case R.id.activity_check:
+				redbage_check.setTextColor(getResources().getColor(R.color.text_dark_color));
+				activity_check.setTextColor(getResources().getColor(R.color.text_green_color));
+				isRedbag =false;
 				break;
 		}
 	}

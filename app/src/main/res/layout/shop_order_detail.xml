@@ -347,6 +347,7 @@
             android:orientation="vertical"
             android:background="@color/bg_color" >
             <Button
+                android:layout_marginTop="40dp"
                 android:id="@+id/btn_print"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

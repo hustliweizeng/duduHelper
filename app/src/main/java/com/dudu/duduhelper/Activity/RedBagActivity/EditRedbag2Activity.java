@@ -36,6 +36,10 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		setContentView(R.layout.activity_edit_redbag2);
 		initview();
 
+		String title = getIntent().getStringExtra("title");
+		String startTime = getIntent().getStringExtra("starTime");
+		String endTime = getIntent().getStringExtra("endTime");
+
 	}
 
 	private void initview() {
@@ -54,8 +58,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 	}
 
 	public void init(){
-		//在所有界面统计app启动次数
-		PushAgent.getInstance(this).onAppStart();
 		//每个activity界面设置为沉浸式状态栏，android 4.4以上才支持
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
 		{

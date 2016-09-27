@@ -62,8 +62,7 @@
             >
             <TextView
                 android:layout_marginLeft="16dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="活动标题"
                 android:textSize="16dp"
@@ -71,7 +70,9 @@
                 />
             <EditText
                 android:id="@+id/ed_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="right"
                 android:layout_height="wrap_content"
                 android:hint="请编辑标题"
                 android:textSize="16dp"
@@ -101,7 +102,7 @@
             android:id="@+id/submitbtn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/btn_bg"
             android:text="提交"
             android:textSize="18dp"

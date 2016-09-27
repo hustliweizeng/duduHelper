@@ -85,7 +85,7 @@
     android:id="@+id/send_message_guest_manage"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:text="发送会员通知"
+    android:text="发送客户通知"
     android:textSize="20dp"
     android:textColor="@color/bg_white_color"
     android:gravity="center"

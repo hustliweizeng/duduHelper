@@ -41,7 +41,7 @@
         android:gravity="center"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_dark_color"
+        android:textColor="@color/text_green_color"
         android:text="红包"/>
         <View
             android:layout_width="1dp"
@@ -83,6 +83,7 @@
             />
 
         <EditText
+            android:inputType="number"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:background="@drawable/edite_white"

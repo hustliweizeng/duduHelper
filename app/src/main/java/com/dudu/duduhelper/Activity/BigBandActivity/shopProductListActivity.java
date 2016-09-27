@@ -352,6 +352,7 @@ public class shopProductListActivity extends BaseActivity
 				}
 				if(isDisCount)
 				{
+					groupid = productAdapter.selectid.get(0);
 					AllMethod(groupid,ConstantParamPhone.DEL_DISECOUNT);
 				}
 				else
@@ -628,8 +629,6 @@ public class shopProductListActivity extends BaseActivity
 		//getActivity().getWindow().setAttributes(params);
 		//这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
 		popupWindow.setBackgroundDrawable(new BitmapDrawable());
-		int screenWidth=shopProductListActivity.this.getWindowManager().getDefaultDisplay().getWidth();
-		int popWidth=popupWindow.getWidth();
 		popupWindow.showAsDropDown(selectLine);
 		ImageView closeImageButton = (ImageView) view.findViewById(R.id.closeImageButton);
 		closeImageButton.setOnClickListener(new OnClickListener() {
@@ -819,6 +818,7 @@ public class shopProductListActivity extends BaseActivity
 		//ColorDialog.showRoundProcessDialog(shopProductListActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("id",ids);
+		LogUtil.d("del",ids);
 		HttpUtils.getConnection(context,params,url, "post",new TextHttpResponseHandler(){
 
 			@Override

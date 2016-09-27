@@ -36,6 +36,7 @@
     </RelativeLayout>
 
     <EditText
+        android:layout_marginTop="16dp"
         android:id="@+id/ed_edit_redbag_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -144,7 +145,7 @@
         </LinearLayout>
         <Button
             android:id="@+id/btn_create_redbag1"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_below="@id/ll_edit_redbag"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"

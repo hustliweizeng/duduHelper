@@ -40,6 +40,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -119,7 +120,13 @@ public class ShopOrderDetailActivity extends BaseActivity
 		intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);//开关状态
 		intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);//设备开始绑定
 		// 注册广播接收器，接收并处理搜索结果      
-		registerReceiver(receiver, intentFilter);     
+		registerReceiver(receiver, intentFilter);
+
+
+		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+		registerReceiver(receiver, filter);
+		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+		registerReceiver(receiver, filter);
 	}
 
 	private void initData() 
@@ -421,13 +428,28 @@ public class ShopOrderDetailActivity extends BaseActivity
 					ColorDialog.dissmissProcessDialog();
 				}
 			}
+			//找到设备  
+			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+				BluetoothDevice device = intent
+						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+
+					Log.v("", "find device:" + device.getName()
+							+ device.getAddress());
+				}
+			}
 			//绑定状态改变
 			if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action))
 			{
+				LogUtil.d("device","change");
+
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);  
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) 
-                {    
-                    //绑定过的设备    
+                {
+	                LogUtil.d("device","bond");
+
+	                //绑定过的设备    
                 	Toast.makeText(ShopOrderDetailActivity.this,"配对成功", Toast.LENGTH_SHORT).show();
                 	/*enterButton.setClickable(true);
                 	enterButton.setPressed(false);*/
@@ -435,13 +457,38 @@ public class ShopOrderDetailActivity extends BaseActivity
 	                sendPrint();
                 } 
                 if (device.getBondState() == BluetoothDevice.BOND_NONE)  
-                {    
-                    //未绑定的设备
+                {
+	                LogUtil.d("device","unbond");
+
+	                //未绑定的设备
                 	Toast.makeText(ShopOrderDetailActivity.this,"配对失败", Toast.LENGTH_SHORT).show();
                 	enterButton.setClickable(true);
                 	enterButton.setPressed(false);
                 }    
 			}
+
+
+			//找到设备  
+			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+				LogUtil.d("device","found");
+				BluetoothDevice device = intent
+						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+
+					Log.v("", "find device:" + device.getName()
+							+ device.getAddress());
+				}
+				
+				
+				
+			}
+			//搜索完成  
+			else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
+					.equals(action)) {
+				Toast.makeText(context,"没有发现设备",Toast.LENGTH_SHORT).show();
+			}
+
 		}
 	};
 	//发送打印信息
@@ -607,7 +654,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 			return;
 		}
 		//支持蓝牙未开启
-		else if(!bluetoothAdapter.isEnabled())//isEnabled enable是激活,开启蓝牙
+		 if(!bluetoothAdapter.isEnabled())//isEnabled enable是激活,开启蓝牙
 		{
 			//开启
 			ColorDialog.showRoundProcessDialog(ShopOrderDetailActivity.this,R.layout.loading_process_dialog_color);
@@ -615,7 +662,9 @@ public class ShopOrderDetailActivity extends BaseActivity
 			Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);     
 			// 设置蓝牙可见性，最多300秒      
 			intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3000);     
-			startActivityForResult(intent, 1); 
+			startActivityForResult(intent, 1);
+			//开始搜索
+			bluetoothAdapter.startDiscovery();
 			LogUtil.d("unacitive","unacitive");
 		}
 		//蓝牙已开启
@@ -633,6 +682,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 				//未绑定
 				if(device.getBondState() == BluetoothDevice.BOND_NONE)
 				{
+					LogUtil.d("bind","no");
 					try 
 					{
 						Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
@@ -647,9 +697,12 @@ public class ShopOrderDetailActivity extends BaseActivity
 						enterButton.setClickable(true);
 						enterButton.setPressed(false);
 					}  
+					
 				}
 				else
 				{
+					LogUtil.d("bind","yes");
+
 					//绑定了
 					getConnect();
 				}

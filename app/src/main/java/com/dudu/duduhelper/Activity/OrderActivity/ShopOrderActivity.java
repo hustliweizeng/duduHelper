@@ -139,10 +139,12 @@ public class ShopOrderActivity extends BaseActivity
 		}
 		//订单筛选需要3个条件
 		if (statuss != -100 ){
+			if (statuss!=0)
 			params.add("status",statuss+"");
 		}
 		//初始值不参与请求
 		if (source !=-100){
+			if(source!=0)
 			params.add("moduleid",source+"");
 		}
 		//params.add("ispay", isNew+"");

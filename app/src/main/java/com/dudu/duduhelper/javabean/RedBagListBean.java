@@ -1,5 +1,6 @@
 package com.dudu.duduhelper.javabean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * @date 2016/9/27
  */
 
-public class RedBagListBean {
+public class RedBagListBean implements  Serializable{
 
 
 	private String code;
@@ -39,7 +40,7 @@ public class RedBagListBean {
 		this.data = data;
 	}
 
-	public static class DataBean {
+	public static class DataBean implements Serializable{
 		private String id;
 		private String title;
 		private String num;

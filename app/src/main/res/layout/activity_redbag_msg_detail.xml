@@ -66,7 +66,7 @@
                 android:textSize="16dp"
                 />
             
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint=" 支付满25元以上可使用"
@@ -92,7 +92,7 @@
                 android:textSize="16dp"
                 />
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint=" 15天内使用"
