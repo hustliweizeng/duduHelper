@@ -360,8 +360,11 @@
                 android:paddingLeft="17dp"
                 android:textColor="@color/text_color_dark"
                 android:textSize="16dp" />
-
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="86dp">
             <EditText
+                android:id="@+id/ed_info"
                 android:layout_width="match_parent"
                 android:layout_height="86dp"
                 android:background="@color/bg_white_color"
@@ -375,6 +378,7 @@
                 android:scrollbars="vertical"
                 android:textColorHint="@color/text_hint_color"
                 android:textSize="14dp" />
+            </ScrollView>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -63,7 +63,6 @@ import java.util.Locale;
 
 public class ShopProductAddActivity extends BaseActivity 
 {
-	private String id;
 	private String category;
 	
 	private EditText productNameEditText;
@@ -121,10 +120,12 @@ public class ShopProductAddActivity extends BaseActivity
 			Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
 		}
 	};
+	private BigBandBuy.DataBean data;
+
 	private void initData()
 	{
 		//接收传递过来的数据(说明进入编辑页面，否则是进入新增商品页面)
-		BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
+		data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
 		if (data ==null){
 			return;
 		}
@@ -136,7 +137,7 @@ public class ShopProductAddActivity extends BaseActivity
 		productKuCunNumEditText.setText(data.getStock());
 		ed_explain.setText(data.getExplain());
 		productDetaliTextView.setText(data.getExplain());
-		LogUtil.d("timereule",data.getRule());
+		LogUtil.d("timereule", data.getRule());
 		
 		//设置开始结束时间
 		if (!TextUtils.isEmpty(data.getRule())){
@@ -165,14 +166,14 @@ public class ShopProductAddActivity extends BaseActivity
 			if (data.getPics()!=null & data.getPics().length >0){
 				imgs = data.getPics();
 				imageLoader.displayImage(data.getPics()[0],productImageView);
-				tv_photo_num_shop_product.setText("相册有"+data.getPics().length+"张图片");
+				tv_photo_num_shop_product.setText("相册有"+ data.getPics().length+"张图片");
 			}
 		}else {
 			//设置图片
-			if (data.getShow_img()!=null &&data.getShow_img().length>0){
+			if (data.getShow_img()!=null && data.getShow_img().length>0){
 				imgs = data.getShow_img();
 				imageLoader.displayImage(data.getShow_img()[0],productImageView);
-				tv_photo_num_shop_product.setText("相册有"+data.getShow_img().length+"张图片");
+				tv_photo_num_shop_product.setText("相册有"+ data.getShow_img().length+"张图片");
 			}
 		}
 	}
@@ -222,7 +223,7 @@ public class ShopProductAddActivity extends BaseActivity
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品库存",Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
+		/*if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
 		{
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品上架时间",Toast.LENGTH_SHORT).show();
 			return;
@@ -231,7 +232,7 @@ public class ShopProductAddActivity extends BaseActivity
 		{
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品下架时间",Toast.LENGTH_SHORT).show();
 			return;
-		}
+		}*/
 		if(TextUtils.isEmpty(productDetaliTextView.getText().toString().trim()))
 		{
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品描述",Toast.LENGTH_SHORT).show();
@@ -248,13 +249,17 @@ public class ShopProductAddActivity extends BaseActivity
 			dataBean.setStock(productKuCunNumEditText.getText().toString().trim());
 			dataBean.setExplain(productDetaliTextView.getText().toString().trim());
 			dataBean.setPics(picsPath);
+			dataBean.setAmount(productSoldTextView.getText().toString().trim());
+			dataBean.setRule(data.getRule());
+			dataBean.setShow_img(picsPath);
 		}else {
 			dataBean.setName(productNameEditText.getText().toString().trim());
 			dataBean.setCurrent_price(productNowPriceEditText.getText().toString().trim());
 			dataBean.setPrice(productYuanPriceEditText.getText().toString().trim());
 			dataBean.setStock(productKuCunNumEditText.getText().toString().trim());
 			dataBean.setExplain(productDetaliTextView.getText().toString().trim());
-			dataBean.setAmount(productNameEditText.getText().toString().trim());
+			dataBean.setAmount(productSoldTextView.getText().toString().trim());
+			dataBean.setRule(data.getRule());
 			//设置组图
 			dataBean.setShow_img(picsPath);
 			
@@ -262,15 +267,17 @@ public class ShopProductAddActivity extends BaseActivity
 		ColorDialog.showRoundProcessDialog(ShopProductAddActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.put("op","save");
-		params.add("id",id);
+		params.add("id",data.getId());
 		//把数据封装成bean
 		String panic_data=  new Gson().toJson(dataBean);
+		LogUtil.d("data",panic_data);
 		params.put("panic_data",panic_data);
         HttpUtils.getConnection(context,params,ConstantParamPhone.GET_BIG_BAND_DETAIL, "post",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
 			{
+				LogUtil.d("FIX",arg2);
 				Toast.makeText(ShopProductAddActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
 			}
 			@Override
@@ -408,13 +415,13 @@ public class ShopProductAddActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				//弹出时间对话框
-				showDataDialog(tv_startTime_shop_product);
+				//showDataDialog(tv_startTime_shop_product);
 			}
 		});
 		ll_endTime_shop_product.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showDataDialog(tv_endTime_shop_product);
+				//showDataDialog(tv_endTime_shop_product);
 			}
 		});
 		

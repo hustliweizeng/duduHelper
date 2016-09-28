@@ -430,8 +430,12 @@ public class ShopOrderDetailActivity extends BaseActivity
 			}
 			//找到设备  
 			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+				LogUtil.d("device","found");
+
 				BluetoothDevice device = intent
 						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				LogUtil.d("device",device.getName());
+
 
 				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
 

@@ -116,6 +116,8 @@ public class ShopDiscoutAddActivity extends BaseActivity
 			Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
 		}
 	};
+	private BigBandBuy.DataBean data;
+	private EditText ed_info;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -131,13 +133,11 @@ public class ShopDiscoutAddActivity extends BaseActivity
 
 	private void initData() 
 	{
-		BigBandBuy.DataBean data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
-		if (data.getPics()!=null &&data.getPics().length>0 ){
+		data = (BigBandBuy.DataBean) getIntent().getSerializableExtra("productinfo");
+		if (data.getPics()!=null && data.getPics().length>0 ){
 			imgs = data.getPics();
 			tv_photo_num_shop_product.setText("相册有"+imgs.length+"张图片");
 			imageLoader.displayImage(data.getPics()[0],productImageView);
-		}else {
-			
 		}
 		
 		//设置页面信息
@@ -148,7 +148,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		productKuCunNumEditText.setText(data.getStock());
 		tv_startTime_shop_product.setText(data.getUpshelf());
 		tv_endTime_shop_product.setText(data.getDownshelf());
-		productDetaliTextView.setText(data.getExplain());
+		ed_info.setText(data.getExplain());
 		
 	}
 					
@@ -176,7 +176,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品库存",Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
+		/*if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
 		{
 			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品上架时间",Toast.LENGTH_SHORT).show();
 			return;
@@ -185,33 +185,44 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		{
 			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品下架时间",Toast.LENGTH_SHORT).show();
 			return;
-		}
-		if(TextUtils.isEmpty(productDetaliTextView.getText().toString().trim()))
+		}*/
+		if(TextUtils.isEmpty(ed_info.getText().toString().trim()))
 		{
 			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品描述",Toast.LENGTH_SHORT).show();
 			return;
 		}
-		DiscountDeatailBean.Data dataBean = new DiscountDeatailBean.Data();
+		DiscountDeatailBean.DataBean dataBean = new DiscountDeatailBean.DataBean();
 		//封装数据
 		dataBean.setName(productNameEditText.getText().toString().trim());
 		dataBean.setCurrent_price(productNowPriceEditText.getText().toString().trim());
 		dataBean.setPrice(productYuanPriceEditText.getText().toString().trim());
 		dataBean.setStock(productKuCunNumEditText.getText().toString().trim());
-		dataBean.setExplain(productDetaliTextView.getText().toString().trim());
+		dataBean.setExplain(ed_info.getText().toString().trim());
+		dataBean.setAmount(productSoldTextView.getText().toString().trim());
+		//dataBean.setDownshelf(data.getDownshelf());
+		//dataBean.setUpshelf(data.getUpshelf());
 		dataBean.setPics(picsPath);
+
+
+
+		
 		
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.put("op","save");
-		params.add("id",id);
+		params.add("id",data.getId());
 		//把数据封装成bean
 		String panic_data=  new Gson().toJson(dataBean);
-		params.put("panic_data",panic_data);
-		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_BIG_BAND_DETAIL, "post",new TextHttpResponseHandler(){
+		params.put("coupon_data",panic_data);
+		LogUtil.d("FIX",panic_data);
+		LogUtil.d("FIX",data.getId());
+		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_DISCOUT_DETAIL, "post",new TextHttpResponseHandler(){
 
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 			{
+				LogUtil.d("FIX",arg2);
+
 				Toast.makeText(context, "网络不给力呀", Toast.LENGTH_SHORT).show();
 			}
 			@Override
@@ -286,7 +297,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		
 		
 		productDetailLine=(LinearLayout) this.findViewById(R.id.productDetailLine);
-		productDetaliTextView=(TextView) this.findViewById(R.id.productDetaliTextView);
+		ed_info = (EditText) this.findViewById(R.id.ed_info);
 		//选择图片上传
 		productImageView.setOnClickListener(new OnClickListener() 
 		{
@@ -325,13 +336,13 @@ public class ShopDiscoutAddActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				//弹出时间对话框
-			showDataDialog(tv_startTime_shop_product);
+			//showDataDialog(tv_startTime_shop_product);
 			}
 		});
 		ll_endTime_shop_product.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			showDataDialog(tv_endTime_shop_product);
+			//showDataDialog(tv_endTime_shop_product);
 			}
 		});
 		

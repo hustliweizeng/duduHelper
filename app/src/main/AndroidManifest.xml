@@ -243,6 +243,7 @@
             android:name=".Activity.GetMoneyActivity.ShopGetInComeCashActivity"
             android:label="@string/title_activity_get_in_come_cash" >
         </activity>
+        <activity android:name=".Activity.RedBagActivity.RedBagList"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
