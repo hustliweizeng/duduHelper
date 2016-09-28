@@ -17,10 +17,19 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.SystemBarTintManager;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by lwz on 2016/8/19.
@@ -30,7 +39,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 	private LinearLayout ll_content_edit_redab2;
 	private LinearLayout ll_condition_edit_redbag2;
 	//红包使用条件的默认加入位置
-	private int position = 8;
+	private int position = 7;
 	private ImageButton backButton;
 	private LinearLayout relayout_mytitle;
 	private EditText ed_total;
@@ -38,9 +47,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 	private EditText ed_high;
 	private EditText ed_num;
 	private ImageView iv_add_edit_redbag2;
-	private EditText ed_up_price;
-	private EditText ed_low_price;
-	private ImageView iv_del;
 	private ImageView iv_plus;
 	private LinearLayout ll_plus;
 	private Button btn_create_redbag2_submit;
@@ -69,7 +75,8 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		ImageView iv_add_edit_redbag2 = (ImageView) findViewById(R.id.iv_add_edit_redbag2);
 		//添加条目设置点击事件
 		iv_add_edit_redbag2.setOnClickListener(this);
-
+		//首次创建时，默认添加一个条件
+		createConditon();
 		backButton.setOnClickListener(this);
 
 
@@ -110,6 +117,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			case R.id.btn_create_redbag2_submit:
 				//请求网络
 				String url = ConstantParamPhone.BASE_URL + ConstantParamPhone.ADD_REDBAG;
+				submit();
 				break;
 			//添加红包使用条件
 			case R.id.iv_add_edit_redbag2:
@@ -131,15 +139,35 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 				break;
 		}
 	}
-
+	//1创建集合管理红包条件
+	HashMap<Integer,LinearLayout> conditions = new HashMap<>();
+	int itemId  =0;
 	private void createConditon() {
-		//载入红包条件的布局
-		//1创建集合管理红包条件
-		LinkedList<LinearLayout> conditions = new LinkedList<>();
-		LinearLayout item_condition_edit_redbag = (LinearLayout) View.inflate(this, R.layout.item_condition_edit_redbag, null);
-		ll_content_edit_redab2.addView(item_condition_edit_redbag, position);
-		//再添加的话，位置会变动
+		//每次载入红包条件的布局
+		LinearLayout ll_limit = (LinearLayout) View.inflate(this, R.layout.item_condition_edit_redbag, null);
+		ImageView iv_del_item = (ImageView) ll_limit.findViewById(R.id.iv_del_item);
+		//给每个条目绑定一个key
+		iv_del_item.setTag(itemId);
+		iv_del_item.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//获取最外层的父对象
+				int itemId = (int) v.getTag();
+				//Toast.makeText(EditRedbag2Activity.this,"点击了"+itemId,Toast.LENGTH_SHORT).show();
+				//删除指定位置的view
+				ll_content_edit_redab2.removeView(conditions.get(itemId));
+				//删除指定的item对象
+				conditions.remove(itemId);
+				//记录position最新位置
+				position--;
+			}
+		});
+		//把当前对象保存到集合中
+		conditions.put(itemId,ll_limit);
+		ll_content_edit_redab2.addView(ll_limit, position);
+		//每次添加以后，位置会变动
 		position++;
+		itemId++;
 		Log.d("condition", "创建了条件" + position);
 
 
@@ -153,9 +181,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		ed_high = (EditText) findViewById(R.id.ed_high);
 		ed_num = (EditText) findViewById(R.id.ed_num);
 		iv_add_edit_redbag2 = (ImageView) findViewById(R.id.iv_add_edit_redbag2);
-		ed_up_price = (EditText) findViewById(R.id.ed_up_price);
-		ed_low_price = (EditText) findViewById(R.id.ed_low_price);
-		iv_del = (ImageView) findViewById(R.id.iv_del);
 		iv_plus = (ImageView) findViewById(R.id.iv_plus);
 		ll_plus = (LinearLayout) findViewById(R.id.ll_plus);
 		btn_create_redbag2_submit = (Button) findViewById(R.id.btn_create_redbag2_submit);
@@ -193,19 +218,42 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			return;
 		}
 
-		String price = ed_up_price.getText().toString().trim();
-		if (TextUtils.isEmpty(price)) {
-			Toast.makeText(this, "price不能为空", Toast.LENGTH_SHORT).show();
-			return;
-		}
 
 		/*String ed_low_price = ed_low_price.getText().toString().trim();
 		if (TextUtils.isEmpty(price)) {
 			Toast.makeText(this, "price不能为空", Toast.LENGTH_SHORT).show();
 			return;
 		}*/
+		//ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
+		//在condition中维护了一组集合条件
+		Set<Map.Entry<Integer, LinearLayout>> items = conditions.entrySet();
+		//转换为迭代器
+		Iterator iter = items.iterator();
+		while (iter.hasNext()) {
+			Map.Entry entry = (Map.Entry) iter.next();
+			LinearLayout val = (LinearLayout) entry.getValue();
+			EditText ed_high = (EditText) val.findViewById(R.id.ed_high);
+			EditText ed_low = (EditText) val.findViewById(R.id.ed_low);
+			String s1 = ed_high.getText().toString().trim();
+			String s2 = ed_low.getText().toString().trim();
+			if (TextUtils.isEmpty(s1) &&TextUtils.isEmpty(s2)){
+				Toast.makeText(this,"限制条件填写不完整",Toast.LENGTH_SHORT).show();
+				return;
+			}
+			limits.add(new RedbagLimit(s1,s2));
+		}
+		final String s = new Gson().toJson(limits);
+		LogUtil.d("limit",s);
 
 
-
+	}
+	List<RedbagLimit> limits = new ArrayList<>();
+	class RedbagLimit{
+		String price ;
+		String useable;
+		RedbagLimit(String price ,String useable){
+			this.price = price;
+			this.useable = useable;
+		}
 	}
 }
