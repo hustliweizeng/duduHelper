@@ -1,5 +1,6 @@
 package com.dudu.duduhelper.javabean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * @date 2016/9/27
  */
 
-public class RedbagDetailBean {
+public class RedbagDetailBean implements Serializable {
 
 
 	private DataBean data;
@@ -43,15 +44,20 @@ public class RedbagDetailBean {
 		private String id;
 		private String title;
 		private String num;
-		private String used_num;
 		private String total;
 		private String logo;
 		private String lower_money;
 		private String upper_money;
 		private String life;
 		private String image;
-		private LimitBean limit;
+		private String time_start;
+		private String time_end;
+		private String send_num;
+		private String used_num;
+		private String send_money;
+		private String used_money;
 		private List<String> range;
+		private List<LimitBean> limit;
 
 		public String getId() {
 			return id;
@@ -75,14 +81,6 @@ public class RedbagDetailBean {
 
 		public void setNum(String num) {
 			this.num = num;
-		}
-
-		public String getUsed_num() {
-			return used_num;
-		}
-
-		public void setUsed_num(String used_num) {
-			this.used_num = used_num;
 		}
 
 		public String getTotal() {
@@ -133,12 +131,52 @@ public class RedbagDetailBean {
 			this.image = image;
 		}
 
-		public LimitBean getLimit() {
-			return limit;
+		public String getTime_start() {
+			return time_start;
 		}
 
-		public void setLimit(LimitBean limit) {
-			this.limit = limit;
+		public void setTime_start(String time_start) {
+			this.time_start = time_start;
+		}
+
+		public String getTime_end() {
+			return time_end;
+		}
+
+		public void setTime_end(String time_end) {
+			this.time_end = time_end;
+		}
+
+		public String getSend_num() {
+			return send_num;
+		}
+
+		public void setSend_num(String send_num) {
+			this.send_num = send_num;
+		}
+
+		public String getUsed_num() {
+			return used_num;
+		}
+
+		public void setUsed_num(String used_num) {
+			this.used_num = used_num;
+		}
+
+		public String getSend_money() {
+			return send_money;
+		}
+
+		public void setSend_money(String send_money) {
+			this.send_money = send_money;
+		}
+
+		public String getUsed_money() {
+			return used_money;
+		}
+
+		public void setUsed_money(String used_money) {
+			this.used_money = used_money;
 		}
 
 		public List<String> getRange() {
@@ -149,16 +187,32 @@ public class RedbagDetailBean {
 			this.range = range;
 		}
 
+		public List<LimitBean> getLimit() {
+			return limit;
+		}
+
+		public void setLimit(List<LimitBean> limit) {
+			this.limit = limit;
+		}
+
 		public static class LimitBean {
-			private String key;
-			private String value;
-			public LimitBean getLimitBean() {
-				return new LimitBean();
+			private String price;
+			private String useale;
+
+			public String getPrice() {
+				return price;
 			}
 
-			public void setLimitBean(String key,String value) {
-				this.key = key;
-				this.value = value;
+			public void setPrice(String price) {
+				this.price = price;
+			}
+
+			public String getUseale() {
+				return useale;
+			}
+
+			public void setUseale(String useale) {
+				this.useale = useale;
 			}
 		}
 	}

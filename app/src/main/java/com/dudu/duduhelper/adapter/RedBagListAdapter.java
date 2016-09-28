@@ -8,9 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.RedBagListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +25,7 @@ public class RedBagListAdapter extends BaseAdapter {
 
 
 	private final Context context;
-	private List<RedBagListBean.DataBean> list;
+	private List<RedBagListBean.DataBean> list  = new ArrayList<>();
 
 	public  RedBagListAdapter(Context context) {
 		this.context = context;
@@ -31,11 +33,13 @@ public class RedBagListAdapter extends BaseAdapter {
 
 
 	public void AddAll(List<RedBagListBean.DataBean> list) {
-		if (list != null & list.size() > 0)
+		if (list != null & list.size() > 0){
 			this.list = list;
+			LogUtil.d("","data="+list.size());
+		}
 	}
 	public void clear(){
-		list =null;
+		list =new ArrayList<>();
 	}
 
 	@Override
@@ -56,27 +60,26 @@ public class RedBagListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
-
 		if (convertView == null){
 			convertView = View.inflate(context, R.layout.item_redbag_list, null);
 			holder = new ViewHolder(convertView);
 			convertView.setTag(holder);
-			
-
 		}else{
 			holder = (ViewHolder) convertView.getTag();
 
 		}
 		RedBagListBean.DataBean data = list.get(position);
-		if(data.getLogo()!=null)
-		ImageLoader.getInstance().displayImage(data.getLogo(),holder.iv_logo);
+		if(data.getLogo()!=null &&data.getLogo().startsWith("http")){
+
+			ImageLoader.getInstance().displayImage(data.getLogo(),holder.iv_logo);
+		}
 		holder.tv_sold.setText(data.getUsed_num());
 		holder.tv_name.setText(data.getTitle());
 		holder.tv_price.setText(data.getTotal());
 		holder.tv_status.setText(data.getNum());
 		
 
-		return null;
+		return convertView;
 	}
 
 	public static class ViewHolder {

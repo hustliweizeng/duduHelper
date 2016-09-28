@@ -1,13 +1,20 @@
 package com.dudu.duduhelper.Activity.RedBagActivity;
 
+import com.dudu.duduhelper.Activity.GuestManageActivity.RedbagMsgDetail;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.bean.HongbaoListBean;
 import com.dudu.duduhelper.bean.SubmitHongbaoBean;
 import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.RedbagDetailBean;
 import com.dudu.duduhelper.widget.WheelIndicatorItem;
 import com.dudu.duduhelper.widget.WheelIndicatorView;
 import com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView;
+import com.google.gson.Gson;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -21,6 +28,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ShopHongBaoDetailActivity extends BaseActivity 
 {
@@ -33,12 +45,13 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 	private RiseNumberTextView getHongbaoText;
 	private RiseNumberTextView useHongbaoText;
 	private Button editHongbaoBtn;
-	private HongbaoListBean hongbaoBean;
+	private RedbagDetailBean.DataBean hongbaoBean;
 	private TextView hongbaoStartTimeTextView;
 	private ImageView hongbaoImage;
 	private TextView hongbaoName;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions options;
+	private RedbagDetailBean data;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -51,16 +64,15 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 	@Override
 	public void RightButtonClick() 
 	{
-		// TODO Auto-generated method stub
+		// 红包领取历史记录
 		super.RightButtonClick();
 		Intent intent = new Intent(ShopHongBaoDetailActivity.this,ShopHongbaoHistoryListActivity.class);
-		intent.putExtra("hongbaoId", hongbaoBean.getId());
+		intent.putExtra("data", data);
 		startActivity(intent);
 	}
 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		options = new DisplayImageOptions.Builder()
 		.showImageOnLoading(R.drawable.icon_head)
 		.showImageForEmptyUri(R.drawable.icon_head)
@@ -73,8 +85,6 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 		hongbaoName=(TextView) this.findViewById(R.id.hongbaoName);
 		hongbaoImage=(ImageView) this.findViewById(R.id.hongbaoImage);
 		
-		hongbaoBean=(HongbaoListBean) getIntent().getSerializableExtra("hongbao");
-		
 		hongbaoStartTimeTextView=(TextView) this.findViewById(R.id.hongbaoStartTimeTextView);
 		wheelIndicatorView = (WheelIndicatorView) findViewById(R.id.wheel_indicator_view);
 		wheelIndicatorView2 = (WheelIndicatorView) findViewById(R.id.wheel_indicator_view2);
@@ -85,14 +95,14 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 		getHongbaoText=(RiseNumberTextView) this.findViewById(R.id.getHongbaoText);
 		useHongbaoText=(RiseNumberTextView) this.findViewById(R.id.useHongbaoText);
 		editHongbaoBtn=(Button) this.findViewById(R.id.editHongbaoBtn);
+		//进入红包编辑页面
 		editHongbaoBtn.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				Intent intent=new Intent(ShopHongBaoDetailActivity.this,ShopHongBaoAddActivity.class);
-				intent.putExtra("hongbao", hongbaoBean);
+				//intent.putExtra("hongbao", );
 				startActivityForResult(intent, 1);
 			}
 		});
@@ -100,84 +110,84 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 	
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
-		
-		
-		hongbaoName.setText(hongbaoBean.getTitle());
-		hongbaoStartTimeTextView.setText(Util.DataConVertMint(hongbaoBean.getTime_start())+" — "+Util.DataConVertMint(hongbaoBean.getTime_end()));
-		imageLoader.displayImage(hongbaoBean.getLogo(),hongbaoImage, options);
-		//设置圆圈填充百分比
-        //float dailyKmsTarget = 4.0f; // 4.0Km is the user target, for example
-        //float totalKmsDone = 3.0f; // User has done 3 Km
-        //int percentageOfExerciseDone = (int) (totalKmsDone/dailyKmsTarget * 100); //
-        //wheelIndicatorView.setFilledPercent(percentageOfExerciseDone);
-		
-		wheelIndicatorView.setItemsLineWidth(Util.dip2px(this, 2));
-        //设置使用金额
-        WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat(hongbaoBean.getUsed_money())/Float.parseFloat(hongbaoBean.getTotal()), Color.parseColor("#ff5400"),Util.dip2px(this, 6));
-        //设置领取金额
-        WheelIndicatorItem walkingActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat(hongbaoBean.getSend_money())/Float.parseFloat(hongbaoBean.getTotal()), Color.parseColor("#3dd6bc"),Util.dip2px(this, 4));
-        wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem);
-        wheelIndicatorView.addWheelIndicatorItem(walkingActivityIndicatorItem);
-        //Or you can add it as
-        //wheelIndicatorView.setWheelIndicatorItems(Arrays.asList(runningActivityIndicatorItem,walkingActivityIndicatorItem,bikeActivityIndicatorItem));
-        wheelIndicatorView.startItemsAnimation(); 
-        
-        
-        //设置红包金额
-        wheelIndicatorView2.setItemsLineWidth(Util.dip2px(this, 2));
-        //设置红包使用数
-        WheelIndicatorItem hongbaoGetIndicatorItem = new WheelIndicatorItem(Float.parseFloat(hongbaoBean.getUsed_num())/Float.parseFloat(hongbaoBean.getNum()), Color.parseColor("#ff5400"),Util.dip2px(this, 6));
-        //设置红包领取数
-        WheelIndicatorItem hongbaoUseIndicatorItem = new WheelIndicatorItem(Float.parseFloat(hongbaoBean.getSend_num())/Float.parseFloat(hongbaoBean.getNum()), Color.parseColor("#3dd6bc"),Util.dip2px(this, 4));
-        wheelIndicatorView2.addWheelIndicatorItem(hongbaoGetIndicatorItem);
-        wheelIndicatorView2.addWheelIndicatorItem(hongbaoUseIndicatorItem);
-        //Or you can add it as
-        //wheelIndicatorView.setWheelIndicatorItems(Arrays.asList(runningActivityIndicatorItem,walkingActivityIndicatorItem,bikeActivityIndicatorItem));
-        wheelIndicatorView2.startItemsAnimation(); // Animate!
-        
-        //设置数据  
- 		sendMoneyText.withNumber(Float.parseFloat(hongbaoBean.getTotal()));  
- 		getMoneyText.withNumber(Float.parseFloat(hongbaoBean.getSend_money()));  
- 		useMoneyText.withNumber(Float.parseFloat(hongbaoBean.getUsed_money())); 
- 		
- 		totalHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getNum()));  
- 		getHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getSend_num()));  
- 		useHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getUsed_num()));
- 		
-        //设置动画播放时间  
- 		sendMoneyText.setDuration(1200);  
- 		getMoneyText.setDuration(1200);  
- 		useMoneyText.setDuration(1200);  
- 		totalHongbaoText.setDuration(1200);  
- 		getHongbaoText.setDuration(1200);  
- 		useHongbaoText.setDuration(1200); 
- 		
-         //开始播放动画  
- 		sendMoneyText.start();  
- 		getMoneyText.start();  
- 		useMoneyText.start();  
- 		totalHongbaoText.start();  
- 		getHongbaoText.start();  
- 		useHongbaoText.start();  
-	}
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
-		//requestCode判断来源是哪个activity resultCode判断来源是activity的哪一个方法
-		if (requestCode == 1 && resultCode == RESULT_OK) 
-		{
-			SubmitHongbaoBean submitHongbaoBean=(SubmitHongbaoBean) data.getSerializableExtra("hongbaobean");
-			hongbaoBean.setTitle(submitHongbaoBean.getTitle());
-			hongbaoBean.setTotal(submitHongbaoBean.getTotal());
-			hongbaoBean.setNum(submitHongbaoBean.getNum());
-			hongbaoBean.setLower_money(submitHongbaoBean.getLower_money());
-			hongbaoBean.setUpper_money(submitHongbaoBean.getUpper_money());
-			hongbaoBean.setTime_start(submitHongbaoBean.getTime_start());
-			hongbaoBean.setTime_end(submitHongbaoBean.getTime_end());
-			hongbaoBean.setLife(submitHongbaoBean.getLife());
-			hongbaoBean.setLimit(submitHongbaoBean.getLimit());
-			initData();
-		}
+		String id = getIntent().getStringExtra("id");
+		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_REDBAG_DETAIL + id, "get", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					LogUtil.d("suc",s);
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						data = new Gson().fromJson(s, RedbagDetailBean.class);
+						hongbaoBean= data.getData();
+						if (hongbaoBean == null)
+							return;
+
+						//设置数据
+						hongbaoName.setText(hongbaoBean.getTitle());
+						hongbaoStartTimeTextView.setText(hongbaoBean.getTime_start()+" — "+hongbaoBean.getTime_end());
+						imageLoader.displayImage(hongbaoBean.getLogo(),hongbaoImage, options);
+						wheelIndicatorView.setItemsLineWidth(Util.dip2px(context, 2));
+						//设置使用金额
+						WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem
+								(Float.parseFloat(hongbaoBean.getUsed_money())/Float.parseFloat(hongbaoBean.getSend_money()), Color.parseColor("#ff5400"),Util.dip2px(context, 6));
+						//设置领取金额
+						WheelIndicatorItem walkingActivityIndicatorItem = new WheelIndicatorItem
+								(Float.parseFloat(hongbaoBean.getSend_money())/Float.parseFloat(hongbaoBean.getTotal()), Color.parseColor("#3dd6bc"),Util.dip2px(context, 4));
+						wheelIndicatorView2.addWheelIndicatorItem(bikeActivityIndicatorItem);
+						wheelIndicatorView2.addWheelIndicatorItem(walkingActivityIndicatorItem);
+						wheelIndicatorView.startItemsAnimation();
+
+						//设置红包金额
+						wheelIndicatorView2.setItemsLineWidth(Util.dip2px(context, 2));
+						//设置红包使用数
+						WheelIndicatorItem hongbaoGetIndicatorItem = new WheelIndicatorItem
+								(Float.parseFloat(hongbaoBean.getUsed_num())/Float.parseFloat(hongbaoBean.getSend_num()), Color.parseColor("#ff5400"),Util.dip2px(context, 6));
+						//设置红包领取数
+						WheelIndicatorItem hongbaoUseIndicatorItem = new WheelIndicatorItem
+								(Float.parseFloat(hongbaoBean.getSend_num())/Float.parseFloat(hongbaoBean.getNum()), Color.parseColor("#3dd6bc"),Util.dip2px(context, 4));
+						wheelIndicatorView2.addWheelIndicatorItem(hongbaoGetIndicatorItem);
+						wheelIndicatorView2.addWheelIndicatorItem(hongbaoUseIndicatorItem);
+						wheelIndicatorView2.startItemsAnimation(); // Animate!
+						//设置数据  
+						sendMoneyText.withNumber(Float.parseFloat(hongbaoBean.getSend_money()));  
+						useMoneyText.withNumber(Float.parseFloat(hongbaoBean.getUsed_money()));
+						
+						totalHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getTotal()));
+						getHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getNum()));
+						useHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getUsed_num()));
+
+						//设置动画播放时间  
+						sendMoneyText.setDuration(1200);
+						getMoneyText.setDuration(1200);
+						useMoneyText.setDuration(1200);
+						totalHongbaoText.setDuration(1200);
+						getHongbaoText.setDuration(1200);
+						useHongbaoText.setDuration(1200);
+
+						//开始播放动画  
+						sendMoneyText.start();
+						getMoneyText.start();
+						useMoneyText.start();
+						totalHongbaoText.start();
+						getHongbaoText.start();
+						useHongbaoText.start();
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

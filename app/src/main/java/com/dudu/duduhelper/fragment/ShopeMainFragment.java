@@ -205,10 +205,12 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 						RedBagListBean redBagListBean = new Gson().fromJson(s, RedBagListBean.class);
 						List<RedBagListBean.DataBean> data = redBagListBean.getData();
 						if (data!=null && data.size()>0){
-							Intent intent = new Intent(getActivity(),RedBagList.class);
+							/*Intent intent = new Intent(getActivity(),RedBagList.class);
 							intent.putExtra("data",redBagListBean);
-							startActivity(intent);
-							
+							startActivity(intent);*/
+							startActivity(new Intent(getActivity(),CreateRedBagActivity.class));
+
+
 						}else {
 							startActivity(new Intent(getActivity(),CreateRedBagActivity.class));
 						}

@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.apache.http.Header;
 import org.fireking.app.imagelib.entity.ImageBean;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
@@ -23,6 +25,8 @@ import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.bean.SubmitHongbaoBean;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.RedbagDetailBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.OverScrollView;
 import com.google.gson.Gson;
@@ -78,7 +82,7 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 
 	private OverScrollView mineScrollview;
 
-	private HongbaoListBean hongbaoBean;
+	private RedbagDetailBean.DataBean hongbaoBean;
 
 	private Button saveProductbutton;
 	private ImageView productImageView;
@@ -99,21 +103,9 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		setContentView(R.layout.shop_activity_hong_bao_add);
 		initHeadView("修改商品", true, false, 0);
 		DuduHelperApplication.getInstance().addActivity(this);
-		// 商品id；
-		id = getIntent().getStringExtra("id");
-		// 商品分类category；
-		category = getIntent().getStringExtra("category");
-		sendShaiShaiAdapter = new SendShaiShaiAdapter(this);
 		initView();
-		if ((HongbaoListBean) getIntent().getSerializableExtra("hongbao") != null) 
-		{
-			hongbaoBean = (HongbaoListBean) getIntent().getSerializableExtra("hongbao");
-			initData();
-		} 
-		else 
-		{
-			isAdd = true;
-		}
+		initData();
+		
 	}
 
 	private void initView() 
@@ -142,18 +134,13 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		animation.setDuration(4000); // 设置持续时间2秒
 		animation.setAnimationListener(new AnimationListener() 
 		{
-
 			@Override
 			public void onAnimationStart(Animation animation)
 			{
-				// TODO Auto-generated method stub
-
 			}
 			@Override
 			public void onAnimationRepeat(Animation animation)
 			{
-				// TODO Auto-generated method stub
-
 			}
 			@Override
 			public void onAnimationEnd(Animation animation) 
@@ -209,36 +196,13 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (isAdd) {
-					SubmitProduct(ConstantParamPhone.ADD_HONGBAO);
-				} else {
-					SubmitProduct(ConstantParamPhone.EDIT_HONGBAO);
-				}
+					SubmitProduct();
 			}
 		});
 
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 0x123 && resultCode == RESULT_OK) {
-			// imagesList=(List<ImageBean>) data.getSerializableExtra("images");
-			// sendShaiShaiAdapter.addAll(imagesList);
-			sendShaiShaiAdapter.addAll((List<ImageBean>) data
-					.getSerializableExtra("images"));
-		} else if (requestCode == 0x456 && resultCode == RESULT_OK) {
-			Intent intent = data;
-			imagesList = (List<ImageBean>) intent
-					.getSerializableExtra("M_LIST");
-			System.out.println("返回的数据量:" + imagesList.size());
-			for (ImageBean m : imagesList) {
-				System.out.println(m.path);
-			}
-			sendShaiShaiAdapter.clear();
-			sendShaiShaiAdapter.addAll(imagesList);
-		}
-
-	}
+	
 
 	// 选择日期,调用系统主题
 	@SuppressLint("InlinedApi")
@@ -297,16 +261,16 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 	}
 
 	private void initData() {
-		// TODO Auto-generated method stub
+
+		RedbagDetailBean bean  = (RedbagDetailBean) getIntent().getSerializableExtra("data");
+		hongbaoBean = bean.getData();
 		hongbaoNameEditText.setText(hongbaoBean.getTitle());
 		hongbaoPrice.setText(hongbaoBean.getTotal());
 		hongbaonum.setText(hongbaoBean.getNum());
 		hongbaoDownPrice.setText(hongbaoBean.getLower_money());
 		hongbaoUpPrice.setText(hongbaoBean.getUpper_money());
-		hongbaoStartTimeTextView.setText(Util.DataConVertMint(hongbaoBean
-				.getTime_start()));
-		hongbaoEndTimeTextView.setText(Util.DataConVertMint(hongbaoBean
-				.getTime_end()));
+		hongbaoStartTimeTextView.setText((hongbaoBean.getTime_start()));
+		hongbaoEndTimeTextView.setText(Util.DataConVertMint(hongbaoBean.getTime_end()));
 		hongbaodaynumEditText.setText(hongbaoBean.getLife());
 		if (Integer.parseInt(hongbaoBean.getSend_num()) > 0) {
 			hongbaoPrice.setTextColor(this.getResources().getColor(
@@ -332,31 +296,10 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 					R.color.text_color_light));
 		}
 
-		// 后期如果多张图片需要写循环啦
-		sendShaiShaiAdapter.clear();
-		ImageBean imageBean = new ImageBean(hongbaoBean.getLogo());
-		sendShaiShaiAdapter.add(imageBean);
-
-		Gson gson = new Gson();
-		// json字符串转换成Map对象
-		hongbaoAdapter.clear();
-		Map<String, String> limits = gson.fromJson(hongbaoBean.getLimit(),
-				new TypeToken<Map<String, String>>() {
-				}.getType());
-		for (java.util.Map.Entry<String, String> entry : limits.entrySet()) {
-			String key = entry.getKey();
-			String value = entry.getValue();
-			System.out.println("key:" + key + "," + value);
-			HongbaoAddBean hongbao = new HongbaoAddBean();
-			hongbao.setTotalMoney(key);
-			hongbao.setDiscountMoney(value);
-			hongbaoAdapter.addHongbao(hongbao);
-		}
-		setListViewHeightBasedOnChildren(hongbaoAddList);
+		
 	}
 
-	private void SubmitProduct(String methord) {
-		// TODO Auto-generated method stub
+	private void SubmitProduct() {
 
 		if (TextUtils.isEmpty(hongbaoNameEditText.getText().toString().trim())) {
 			Toast.makeText(ShopHongBaoAddActivity.this, "请输入红包名称",
@@ -401,127 +344,65 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 					Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (hongbaoBean != null) {
-			if (Integer.parseInt(hongbaoBean.getSend_num()) <= 0) {
-				Double upTotal = Double.parseDouble(hongbaoUpPrice.getText()
-						.toString().trim())
-						* Double.parseDouble(hongbaonum.getText().toString()
-								.trim());
-				Double downTotal = Double.parseDouble(hongbaoDownPrice
-						.getText().toString().trim())
-						* Double.parseDouble(hongbaonum.getText().toString()
-								.trim());
-				if (Double
-						.parseDouble(hongbaoPrice.getText().toString().trim()) > upTotal) {
-					Toast.makeText(ShopHongBaoAddActivity.this,
-							"红包上线不符合要求，请重新输入", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				if (Double
-						.parseDouble(hongbaoPrice.getText().toString().trim()) < downTotal) {
-					Toast.makeText(ShopHongBaoAddActivity.this,
-							"红包下限不符合要求，请重新输入", Toast.LENGTH_SHORT).show();
-					return;
-				}
-			}
-		} else {
-			Double upTotal = Double.parseDouble(hongbaoUpPrice.getText()
-					.toString().trim())
-					* Double.parseDouble(hongbaonum.getText().toString().trim());
-			Double downTotal = Double.parseDouble(hongbaoDownPrice.getText()
-					.toString().trim())
-					* Double.parseDouble(hongbaonum.getText().toString().trim());
-			if (Double.parseDouble(hongbaoPrice.getText().toString().trim()) > upTotal) {
-				Toast.makeText(ShopHongBaoAddActivity.this, "红包上线不符合要求，请重新输入",
-						Toast.LENGTH_SHORT).show();
-				return;
-			}
-			if (Double.parseDouble(hongbaoPrice.getText().toString().trim()) < downTotal) {
-				Toast.makeText(ShopHongBaoAddActivity.this, "红包下限不符合要求，请重新输入",
-						Toast.LENGTH_SHORT).show();
-				return;
-			}
-		}
-
-		final SubmitHongbaoBean submitHongbaoBean = new SubmitHongbaoBean();
-		if (!isAdd) {
-			submitHongbaoBean.setId(hongbaoBean.getId());
-		}
-		submitHongbaoBean.setTitle(hongbaoNameEditText.getText().toString()
-				.trim());
-		submitHongbaoBean.setTotal(hongbaoPrice.getText().toString().trim());
-		submitHongbaoBean.setNum(hongbaonum.getText().toString().trim());
-		submitHongbaoBean.setTime_start(Util.date2TimeStamp(
-				hongbaoStartTimeTextView.getText().toString().trim(),
-				"yyyy-MM-dd HH:mm:ss"));
-		submitHongbaoBean.setTime_end(Util.date2TimeStamp(
-				hongbaoEndTimeTextView.getText().toString().trim(),
-				"yyyy-MM-dd HH:mm:ss"));
-		submitHongbaoBean.setLife(hongbaodaynumEditText.getText().toString()
-				.trim());
-		Map<String, String> limits = new HashMap<String, String>();
-		for (HongbaoAddBean hongbao : hongbaoAdapter.getList()) {
-			limits.put(hongbao.getTotalMoney(), hongbao.getDiscountMoney());
-		}
-		Gson gson = new Gson();
-		String jsonStr = gson.toJson(limits);
-		submitHongbaoBean.setLimit(jsonStr);
-		submitHongbaoBean.setLower_money(hongbaoDownPrice.getText().toString()
-				.trim());
-		submitHongbaoBean.setUpper_money(hongbaoUpPrice.getText().toString()
-				.trim());
-		String data = gson.toJson(submitHongbaoBean);
-
-		ColorDialog.showRoundProcessDialog(ShopHongBaoAddActivity.this,
-				R.layout.loading_process_dialog_color);
+	
+/*
+		"title" => "required"
+		"num" => "required"
+		"total" => "required"
+		"lower_money" => "required"
+		"upper_money" => "required"
+		"time_range" => "required"
+		"single_limit" => "required"
+		"life" => "required"
+		"range" => "required"
+		"logo" => "required"
+		"image" => "required"
+		"rules" => "required"
+		"limit" => "required"*/
 		RequestParams params = new RequestParams();
-		params.add("token", share.getString("token", ""));
-		params.add("data", data);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		// 保存cookie，自动保存到了shareprefercece
-		PersistentCookieStore myCookieStore = new PersistentCookieStore(
-				ShopHongBaoAddActivity.this);
-		client.setCookieStore(myCookieStore);
-		client.post(ConstantParamPhone.IP + methord, params,
-				new TextHttpResponseHandler() {
+		params.add("title",hongbaoNameEditText.getText().toString());
+		params.add("num",hongbaonum.getText().toString());
+		params.add("total",hongbaoPrice.getText().toString());
+		params.add("lower_money",hongbaoUpPrice.getText().toString());
+		params.add("upper_money",hongbaoUpPrice.getText().toString());
+		params.add("time_range",hongbaodaynumEditText.getText().toString());
+		/*params.add("single_limit",);
+		params.add("life",);
+		params.add("range",);
+		params.add("life",);
+		params.add("logo",);
+		params.add("image",);
+		params.add("rules",);
+		params.add("limit",);*/
 
-					@Override
-					public void onFailure(int arg0, Header[] arg1, String arg2,
-							Throwable arg3) {
-						Toast.makeText(ShopHongBaoAddActivity.this, "网络不给力呀",
-								Toast.LENGTH_SHORT).show();
+		HttpUtils.getConnection(context, params, ConstantParamPhone.EDIT_REDBAG + hongbaoBean.getId(), "post", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						finish();
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 					}
-
-					@Override
-					public void onSuccess(int arg0, Header[] arg1, String arg2) {
-						ResponsBean responsBean = new Gson().fromJson(arg2,
-								ResponsBean.class);
-						if (!responsBean.getStatus().equals("0")) {
-							Toast.makeText(ShopHongBaoAddActivity.this,
-									responsBean.getInfo(), Toast.LENGTH_SHORT)
-									.show();
-						} else {
-							Toast.makeText(ShopHongBaoAddActivity.this,
-									"操作成功啦", Toast.LENGTH_SHORT).show();
-							if (isAdd) {
-								ShopHongBaoAddActivity.this.finish();
-							} else {
-								Intent data = new Intent();
-								data.putExtra("hongbaobean", submitHongbaoBean);
-								setResult(RESULT_OK, data);
-								ShopHongBaoAddActivity.this.finish();
-							}
-
-						}
-					}
-
-					@Override
-					public void onFinish() {
-						// TODO Auto-generated method stub
-						ColorDialog.dissmissProcessDialog();
-					}
-				});
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		
+		
 	}
 
 	public void setListViewHeightBasedOnChildren(ListView listView) {
