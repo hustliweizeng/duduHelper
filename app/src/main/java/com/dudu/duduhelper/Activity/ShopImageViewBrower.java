@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Activity.BigBandActivity.ShopProductAddActivity;
 import com.dudu.duduhelper.Activity.DiscountCardActivity.ShopDiscoutAddActivity;
 import com.dudu.duduhelper.Activity.MyInfoActivity.ShopInfoEditActivity;
+import com.dudu.duduhelper.Activity.RedBagActivity.EditRedbag2Activity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
@@ -185,6 +186,8 @@ public class ShopImageViewBrower extends BaseActivity
 			initHeadView("店铺相册",true,false,0);
 		}else if (sourceType ==10){
 			initHeadView("优惠券相册",true,false,0);
+		}else if(sourceType == 8){
+			initHeadView("红包相册",true,false,0);
 		}
 	}
 
@@ -288,16 +291,21 @@ public class ShopImageViewBrower extends BaseActivity
 		ArrayList<String> uplodImgs = shopImageAdapter.getImageList();
 		//设置返回的数据
 		Intent intent =null;
-		//从店铺详情传递的
 		if (sourceType == 5){
+			//相册
 			intent = new Intent(context,ShopInfoEditActivity.class);
 		}
-		//从大牌抢购传递的
 		if (sourceType ==1){
+			//大牌抢购添加
 			intent = new Intent(context,ShopProductAddActivity.class);
 		}
 		if(sourceType ==10){
+			//优惠券添加
 			intent = new Intent(context, ShopDiscoutAddActivity.class);
+		}
+		if (sourceType == 8){
+			//从红包详情
+			intent = new Intent(context, EditRedbag2Activity.class);
 		}
 		//传递数据
 		intent.putExtra("pics", (Serializable) uplodImgs);

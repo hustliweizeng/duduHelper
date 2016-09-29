@@ -83,6 +83,7 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    android:inputType="numberDecimal"
                     android:id="@+id/ed_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -139,6 +140,7 @@
                         android:background="@drawable/edit_bg_white"
                         android:gravity="center"
                         android:hint="最低"
+                        android:inputType="numberDecimal"
                         android:textColor="@color/text_dark_color"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
@@ -159,6 +161,8 @@
                         android:layout_centerVertical="true"
                         android:background="@drawable/edit_bg_white"
                         android:gravity="center"
+                        android:inputType="numberDecimal"
+
                         android:hint="最高"
                         android:textColor="@color/text_dark_color"
                         android:textColorHint="@color/text_hint_color"
@@ -200,6 +204,7 @@
 
                 <EditText
                     android:id="@+id/ed_num"
+                    android:inputType="numberDecimal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -373,16 +378,19 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="商家头像"
+                        android:gravity="center_vertical"
                         android:textSize="16dp"
                         android:layout_marginLeft="16dp"
                         android:textColor="@color/text_dark_color"
                         />
                     <ImageView
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/iv_logo"
                         android:layout_marginRight="16dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:padding="5dp"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/icon_up_arr"
@@ -409,11 +417,15 @@
                         android:textColor="@color/text_dark_color"
                         />
                     <EditText
+                        android:id="@+id/ed_life"
                         android:layout_width="50dp"
                         android:layout_marginRight="16dp"
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:hint="30天"
+                        android:inputType="numberDecimal"
+
+                        android:gravity="right"
                         android:textSize="16dp"
                         android:layout_alignParentRight="true"
                         />
@@ -446,6 +458,7 @@
                     android:gravity="center_vertical"
                     android:background="@color/bg_white_color">
                 <EditText
+                    android:id="@+id/ed_rule"
                     android:layout_width="match_parent"
                     android:layout_height="74dp"
                     android:layout_marginLeft="16dp"
@@ -458,31 +471,40 @@
                 
                 </RelativeLayout>
                 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="75dp"
                     android:layout_margin="16dp"
                     android:background="@drawable/btn_add_photo"
                     android:clickable="true"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:padding="16dp"
         
                     >
-        
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_photo" />
-        
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="添加图片"
+                        android:text="编辑图片"
+                        android:textColor="@color/bg_white_color"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
                         android:textSize="16sp" />
-        
-        
-                </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_pic"
+                        android:layout_width="160dp"
+                        android:layout_height="80dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/icon_redbag_edit"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"/>
+
+
+                </RelativeLayout>
             </LinearLayout>
 
             <Button
@@ -493,7 +515,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/btn_create_redbag"
                 android:text="提交"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="16dp"
                 android:textColor="@color/text_color_grey1"
                 android:textSize="16sp" />
 

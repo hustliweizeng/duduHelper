@@ -70,7 +70,6 @@ public class EditRedbag1Activity extends Activity implements View.OnClickListene
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				showDataDialog(startTimeTextView);
 			}
 		});
@@ -79,7 +78,6 @@ public class EditRedbag1Activity extends Activity implements View.OnClickListene
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				showDataDialog(finishTimeTextView);
 			}
 		});
@@ -125,7 +123,6 @@ public class EditRedbag1Activity extends Activity implements View.OnClickListene
 					Toast.makeText(this,"输入不完整",Toast.LENGTH_SHORT).show();
 					return;
 				}
-
 				Intent intent = new Intent(this,EditRedbag2Activity.class);
 				intent.putExtra("starTime",startTime);
 				intent.putExtra("endTime",endTime);
@@ -136,9 +133,6 @@ public class EditRedbag1Activity extends Activity implements View.OnClickListene
 			case R.id.backButton:
 				finish();
 				break;
-
-
-
 		}
 	}
 	//选择日期,调用系统主题

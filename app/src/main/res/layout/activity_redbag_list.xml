@@ -171,7 +171,18 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-
+    <Button
+        android:id="@+id/btn_new_redbag"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/btn_larg_bg"
+        android:layout_width="match_parent"
+        android:text="新建红包"
+        android:textSize="18dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/bg_white_color"
+        android:layout_height="50dp"/>
     <LinearLayout
         android:id="@+id/ll_check"
         android:layout_width="match_parent"

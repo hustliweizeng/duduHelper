@@ -143,15 +143,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 				intent.putExtra("category", "discount");
 			    break;
 			case R.id.hongbaoBtn:
-				//进入红包页面
-				//intent=new Intent(getActivity(),shopProductListActivity.class);
-				/**
-				 * 进入之前请求服务器数据，判断是否有红包，根据状态进入不同页面
-				 * 异步加载，弹出进度条
-				 */
-				requestRedbagStatus();
-				//intent = new Intent(getActivity(), CreateRedBagActivity.class);
-				//intent.putExtra("category", "hongbao");
+				startActivity(new Intent(getActivity(),RedBagList.class));
 			    return;
 			case R.id.wuzheBtn:
 				//五折验证
@@ -180,55 +172,5 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		startActivity(intent);
 	}
 
-	/**
-	 * 请求红包状态
-	 */
-	private void requestRedbagStatus() {
-		//弹对话框
-		String url = ConstantParamPhone.GET_REDBAG_LIST;
-		//请求结果处理
-		HttpUtils.getConnection(getActivity(), null, url, "get", new TextHttpResponseHandler() {
-			@Override
-			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_LONG).show();
-			}
-
-			@Override
-			public void onSuccess(int i, Header[] headers, String s) {
-				//设置有无红包的状态,解析处理json数据
-				Log.d("redbag",s);
-				try {
-					JSONObject object = new JSONObject(s);
-					String code =  object.getString("code");
-					if ("SUCCESS".equalsIgnoreCase(code)){
-						//数据请求成功
-						RedBagListBean redBagListBean = new Gson().fromJson(s, RedBagListBean.class);
-						List<RedBagListBean.DataBean> data = redBagListBean.getData();
-						if (data!=null && data.size()>0){
-							/*Intent intent = new Intent(getActivity(),RedBagList.class);
-							intent.putExtra("data",redBagListBean);
-							startActivity(intent);*/
-							startActivity(new Intent(getActivity(),CreateRedBagActivity.class));
-
-
-						}else {
-							startActivity(new Intent(getActivity(),CreateRedBagActivity.class));
-						}
-
-					}else {
-						//数据请求失败
-						String msg = object.getString("msg");
-						Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				//默认设置没有红包
-				
-
-			}
-
-		});
-	}
 
 }

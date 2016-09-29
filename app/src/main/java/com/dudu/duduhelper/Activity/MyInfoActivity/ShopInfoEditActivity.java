@@ -265,8 +265,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 requstHttpConnection();
                 break;
             case R.id.rl_logo_shop_info:
-                //进入下个页面
-                //打开系统相册
+                //设置logo
                 Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("image/jpeg");

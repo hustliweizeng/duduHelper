@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.BigBandActivity.shopProductListActivity;
 import com.dudu.duduhelper.BaseActivity;
@@ -23,7 +25,15 @@ import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.RedBagCheckAdapter;
 import com.dudu.duduhelper.adapter.RedBagListAdapter;
 import com.dudu.duduhelper.adapter.RedbagMsgListAdapter;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.RedBagListBean;
+import com.google.gson.Gson;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +59,7 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 	private RedBagListAdapter adapter;
 	private RedBagCheckAdapter<String> arrayAdapter1;
 	private RedBagListBean list;
+	private Button btn_new_redbag;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -57,19 +68,10 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 		adapter = new RedBagListAdapter(context);
 		initHeadView("商家红包",true,false,0);
 		initView();
-		initData();
+		requestRedbagStatus();
 	}
 
-	private void initData() {
-		list = (RedBagListBean) getIntent().getSerializableExtra("data");
-		if (list.getData()!=null && list.getData().size()>0){
-			//每次刷新数据之前清空数据
-			adapter.clear();
-			adapter.AddAll(list.getData());
-			adapter.notifyDataSetChanged();
-			swipe_product_list.setRefreshing(false);
-		}
-	}
+	
 
 	private void initView() {
 		tv_source = (TextView) findViewById(R.id.tv_source);
@@ -83,7 +85,8 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 		selectLine = (LinearLayout) this.findViewById(R.id.selectLine);
 		iv_source = (ImageView) findViewById(R.id.iv_source);
 		iv_status = (ImageView) findViewById(R.id.iv_status);
-		
+		btn_new_redbag = (Button) findViewById(R.id.btn_new_redbag);
+		btn_new_redbag.setOnClickListener(this);
 		tv_source.setOnClickListener(this);
 		tv_status.setOnClickListener(this);
 		reloadButton.setOnClickListener(this);
@@ -92,7 +95,7 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 			@Override
 			public void onRefresh() {
 				swipe_product_list.setRefreshing(true);
-				initData();
+				requestRedbagStatus();
 			}
 		});
 		lv_redbag.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,6 +108,54 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 			}
 		});
 
+	}
+
+	/**
+	 * 请求红包状态
+	 */
+	private void requestRedbagStatus() {
+		
+		//弹对话框
+		String url = ConstantParamPhone.GET_REDBAG_LIST;
+		//请求结果处理
+		HttpUtils.getConnection(context, null, url, "get", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context, "网络不给力呀", Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				//设置有无红包的状态,解析处理json数据
+				Log.d("redbag",s);
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						list= new Gson().fromJson(s, RedBagListBean.class);
+						if (list.getData()!=null && list.getData().size()>0){
+							//每次刷新数据之前清空数据
+							adapter.clear();
+							adapter.AddAll(list.getData());
+							adapter.notifyDataSetChanged();
+							swipe_product_list.setRefreshing(false);
+						}
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				//默认设置没有红包
+
+
+			}
+
+		});
 	}
 
 	@Override
@@ -126,6 +177,9 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 				tv_status.setTextColor(getResources().getColor(R.color.text_green_color));
 				iv_status.setImageResource(R.drawable.icon_jiantou_shang);
 				showPopwindow("right");
+				break;
+			case R.id.btn_new_redbag:
+				startActivity(new Intent(context,CreateRedBagActivity.class));
 				break;
 		}
 	}
@@ -176,7 +230,7 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 				tv_status.setText((arrayAdapter1.getItem(position)));
 			}
 			popupWindow.dismiss();
-			initData();
+			requestRedbagStatus();
 			}
 		});
 		popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener()
