@@ -66,91 +66,8 @@ public class ShopAccountDataActivity extends BaseActivity
 		String month =String.valueOf(c.get(Calendar.MONTH)+1);
 		String day = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
 		String data=year+"-"+month+"-"+day;
-		initData("",data);	
 	}
-	//加载数据
-	private void initData(String stardata,String finishdata) 
-	{
-		// TODO Auto-generated method stub
-		ColorDialog.showRoundProcessDialog(ShopAccountDataActivity.this,R.layout.loading_process_dialog_color);
-		RequestParams params = new RequestParams();
-		params.add("token",share.getString("token", ""));
-		params.add("start", stardata);
-		params.add("end", finishdata);
-		params.add("version", ConstantParamPhone.VERSION);
-		params.setContentEncoding("UTF-8");
-		AsyncHttpClient client = new AsyncHttpClient();
-		//保存cookie，自动保存到了shareprefercece  
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(ShopAccountDataActivity.this);    
-        client.setCookieStore(myCookieStore); 
-        client.get(ConstantParamPhone.IP+ConstantParamPhone.ACCOUNT_DATA, params,new TextHttpResponseHandler(){
-
-			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-			{
-				Toast.makeText(ShopAccountDataActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
-			}
-			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-			{
-				AccountBean accountBean=new Gson().fromJson(arg2,AccountBean.class);
-				if(accountBean.getStatus().equals("-1006"))
-				{
-					MyDialog.showDialog(ShopAccountDataActivity.this, "该账号已在其他手机登录，是否重新登录", false, true, "取消", "确定",new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							MyDialog.cancel();
-						}
-					}, new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent intent=new Intent(ShopAccountDataActivity.this,LoginActivity.class);
-							startActivity(intent);
-						}
-					});
-					return;
-				}
-				if(!accountBean.getStatus().equals("1"))
-				{
-					Toast.makeText(ShopAccountDataActivity.this, "出错啦", Toast.LENGTH_LONG).show();
-				}
-				else
-				{
-					if(!TextUtils.isEmpty(accountBean.getData().getTrade()))
-					{
-						allFeeTextView.setText("¥"+accountBean.getData().getTrade());
-					}
-					
-					if(!TextUtils.isEmpty("¥"+accountBean.getData().getIncome()))
-					{
-						allIncomeTextView.setText(accountBean.getData().getIncome());
-					}
-					if(!TextUtils.isEmpty(accountBean.getData().getVisiter()))
-					{
-						fangkeNumText.setText(accountBean.getData().getVisiter());
-					}
-					if(!TextUtils.isEmpty(accountBean.getData().getBuyer()))
-					{
-						buyerNumText.setText(accountBean.getData().getBuyer());
-					}
-					if(!TextUtils.isEmpty(accountBean.getData().getOrder()))
-					{
-						orderNumText.setText(accountBean.getData().getOrder());
-					}
-				}
-			}
-			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-				ColorDialog.dissmissProcessDialog();
-			}
-		});
-	}
+	
 	private void initView() 
 	{
 		waveView = (WaveView) findViewById(R.id.wave);
@@ -175,27 +92,16 @@ public class ShopAccountDataActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
-//				if(TextUtils.isEmpty(startTimeTextView.getText().toString().trim()))
-//				{
-//					Toast.makeText(ShopAccountDataActivity.this, "请选择统计起始日期", Toast.LENGTH_SHORT).show();
-//					return;
-//				}
-//				if(TextUtils.isEmpty(finishTimeTextView.getText().toString().trim()))
-//				{
-//					Toast.makeText(ShopAccountDataActivity.this, "请选择统计结束日期", Toast.LENGTH_SHORT).show();
-//					return;
-//				}
-//				if(!Util.compareDate(startTimeTextView.getText().toString().trim(), finishTimeTextView.getText().toString().trim()))
-//				{
-//					Toast.makeText(ShopAccountDataActivity.this, "起始日期不能大于结束日期", Toast.LENGTH_SHORT).show();
-//					return;
-//				}
-//				fangkeNumText.setTextColor(fangkeNumText.getResources().getColor(R.color.text_color));
-//				buyerNumText.setTextColor(fangkeNumText.getResources().getColor(R.color.text_color));
-//				orderNumText.setTextColor(fangkeNumText.getResources().getColor(R.color.text_color));
-//				initData(startTimeTextView.getText().toString().trim(),finishTimeTextView.getText().toString().trim());
 				Intent intent = new Intent(ShopAccountDataActivity.this,ShopAccountWatchActivity.class);
+				String start = startTimeTextView.getText().toString().trim();
+				String end = finishTimeTextView.getText().toString().trim();
+
+				if (TextUtils.isEmpty(start) ||TextUtils.isEmpty(end)){
+					Toast.makeText(context,"请选择开始和结束日期",Toast.LENGTH_SHORT).show();
+					return;
+				}
+				intent.putExtra("start",start);
+				intent.putExtra("end",end);
 				startActivity(intent);
 			}
 		});
@@ -205,7 +111,6 @@ public class ShopAccountDataActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				showDataDialog(startTimeTextView);
 			}
 		});
@@ -214,10 +119,16 @@ public class ShopAccountDataActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				showDataDialog(finishTimeTextView);
 			}
 		});
+		//设置统计数据
+		fangkeNumText.setText(sp.getString("totalVistor",""));
+		buyerNumText.setText(sp.getString("totalBuyer","'"));
+		orderNumText.setText(sp.getString("totalOrder",""));
+		allIncomeTextView.setText(sp.getString("totalIncome",""));
+		allFeeTextView.setText(sp.getString("totalTrade",""));
+		
 	}
 	//选择日期,调用系统主题
     @SuppressLint("InlinedApi") 
@@ -243,6 +154,7 @@ public class ShopAccountDataActivity extends BaseActivity
     @Override
 	public void onPause() {
         super.onPause();
+	    //波浪效果
         mWaveHelper.cancel();
     }
 

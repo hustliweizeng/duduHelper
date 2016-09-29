@@ -65,10 +65,10 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 	public void RightButtonClick() 
 	{
 		// 红包领取历史记录
-		super.RightButtonClick();
+		/*super.RightButtonClick();
 		Intent intent = new Intent(ShopHongBaoDetailActivity.this,ShopHongbaoHistoryListActivity.class);
 		intent.putExtra("data", data);
-		startActivity(intent);
+		startActivity(intent);*/
 	}
 
 	private void initView() 
@@ -102,7 +102,7 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				Intent intent=new Intent(ShopHongBaoDetailActivity.this,ShopHongBaoAddActivity.class);
-				//intent.putExtra("hongbao", );
+				intent.putExtra("data",data);
 				startActivityForResult(intent, 1);
 			}
 		});
@@ -132,7 +132,7 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 
 						//设置数据
 						hongbaoName.setText(hongbaoBean.getTitle());
-						hongbaoStartTimeTextView.setText(hongbaoBean.getTime_start()+" — "+hongbaoBean.getTime_end());
+						hongbaoStartTimeTextView.setText(hongbaoBean.getTime_start()+" \n"+hongbaoBean.getTime_end());
 						imageLoader.displayImage(hongbaoBean.getLogo(),hongbaoImage, options);
 						wheelIndicatorView.setItemsLineWidth(Util.dip2px(context, 2));
 						//设置使用金额
@@ -157,11 +157,13 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 						wheelIndicatorView2.addWheelIndicatorItem(hongbaoUseIndicatorItem);
 						wheelIndicatorView2.startItemsAnimation(); // Animate!
 						//设置数据  
-						sendMoneyText.withNumber(Float.parseFloat(hongbaoBean.getSend_money()));  
+						sendMoneyText.withNumber(Float.parseFloat(hongbaoBean.getTotal()));
+						getMoneyText.withNumber(Float.parseFloat(hongbaoBean.getSend_money()));
 						useMoneyText.withNumber(Float.parseFloat(hongbaoBean.getUsed_money()));
 						
-						totalHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getTotal()));
-						getHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getNum()));
+						
+						totalHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getNum()));
+						getHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getSend_num()));
 						useHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getUsed_num()));
 
 						//设置动画播放时间  

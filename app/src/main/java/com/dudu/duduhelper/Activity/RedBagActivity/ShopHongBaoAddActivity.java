@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.http.Header;
 import org.fireking.app.imagelib.entity.ImageBean;
@@ -15,14 +17,8 @@ import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.adapter.HongbaoAdapter;
-import com.dudu.duduhelper.adapter.HongbaoAdapter.OnDelectHongBaoItemListener;
 import com.dudu.duduhelper.adapter.SendShaiShaiAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.HongbaoAddBean;
-import com.dudu.duduhelper.bean.HongbaoListBean;
-import com.dudu.duduhelper.bean.ResponsBean;
-import com.dudu.duduhelper.bean.SubmitHongbaoBean;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -46,6 +42,7 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -88,7 +85,6 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 	private ImageView productImageView;
 	private LinearLayout referchHead;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
-	private HongbaoAdapter hongbaoAdapter;
 	// 用来拼接日期和时间，最终用来显示的
 	private StringBuilder datastr = new StringBuilder("");
 	private int flag = 0;
@@ -96,6 +92,9 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 	private boolean isAdd = false;
 	private List<ImageBean> imagesList = new ArrayList<ImageBean>();
 	private TextView textToumingView;
+	private LinearLayout ll_view;
+	private int position = 0;
+	private EditText ed_rules;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,13 +109,9 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		textToumingView = (TextView) this.findViewById(R.id.textToumingView);
 		productImageView = (ImageView) this.findViewById(R.id.productImageView);
 		saveProductbutton = (Button) this.findViewById(R.id.saveProductbutton);
-		hongbaoAddList = (ListView) this.findViewById(R.id.hongbaoAddList);
-		hongbaoAdapter = new HongbaoAdapter(this);
-		hongbaoAddList.setAdapter(hongbaoAdapter);
 		hongbaoNameEditText = (EditText) this.findViewById(R.id.hongbaoNameEditText);
 		hongbaoPrice = (EditText) this.findViewById(R.id.hongbaoPrice);
 		hongbaonum = (EditText) this.findViewById(R.id.hongbaonum);
@@ -130,6 +125,8 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		addListLine = (LinearLayout) this.findViewById(R.id.addListLine);
 		mineScrollview = (OverScrollView) this.findViewById(R.id.mineScrollview);
 		textToumingView = (TextView) this.findViewById(R.id.textToumingView);
+		ed_rules = (EditText) findViewById(R.id.ed_rules);
+		ll_view = (LinearLayout) findViewById(R.id.ll_view);
 		AlphaAnimation animation = new AlphaAnimation((float) 1, (float) 0);
 		animation.setDuration(4000); // 设置持续时间2秒
 		animation.setAnimationListener(new AnimationListener() 
@@ -150,33 +147,17 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 			}
 		});
 		textToumingView.startAnimation(animation);
-		/**
-		 * 设置回掉函数更新listView的高度
-		 */
-		hongbaoAdapter
-				.setOnDelectHongBaoItemListener(new OnDelectHongBaoItemListener() {
-					@Override
-					public void onItemDelect() {
-						// TODO Auto-generated method stub
-						setListViewHeightBasedOnChildren(hongbaoAddList);
-					}
-				});
+		
 		addListLine.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				HongbaoAddBean hongbao = new HongbaoAddBean();
-				hongbao.setTotalMoney("");
-				hongbao.setDiscountMoney("");
-				hongbaoAdapter.addHongbao(hongbao);
-				setListViewHeightBasedOnChildren(hongbaoAddList);
+				createConditon("","");
 			}
 		});
 
 		hongbaostarTimeLin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				// 弹出时间对话框
 				showDataDialog(hongbaoStartTimeTextView);
 			}
@@ -270,32 +251,18 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		hongbaoDownPrice.setText(hongbaoBean.getLower_money());
 		hongbaoUpPrice.setText(hongbaoBean.getUpper_money());
 		hongbaoStartTimeTextView.setText((hongbaoBean.getTime_start()));
-		hongbaoEndTimeTextView.setText(Util.DataConVertMint(hongbaoBean.getTime_end()));
+		hongbaoEndTimeTextView.setText(hongbaoBean.getTime_end());
 		hongbaodaynumEditText.setText(hongbaoBean.getLife());
-		if (Integer.parseInt(hongbaoBean.getSend_num()) > 0) {
-			hongbaoPrice.setTextColor(this.getResources().getColor(
-					R.color.text_color_light));
-			hongbaonum.setTextColor(this.getResources().getColor(
-					R.color.text_color_light));
-			hongbaoDownPrice.setTextColor(this.getResources().getColor(
-					R.color.text_color_light));
-			hongbaoUpPrice.setTextColor(this.getResources().getColor(
-					R.color.text_color_light));
-			hongbaoStartTimeTextView.setTextColor(this.getResources().getColor(
-					R.color.text_color_light));
-			hongbaodaynumEditText.setTextColor(this.getResources().getColor(
-					R.color.text_color_light));
-			hongbaoPrice.setEnabled(false);
-			hongbaonum.setEnabled(false);
-			hongbaoDownPrice.setEnabled(false);
-			hongbaoUpPrice.setEnabled(false);
-			hongbaoStartTimeTextView.setEnabled(false);
-			hongbaodaynumEditText.setEnabled(false);
-			hongbaostarTimeLin.setEnabled(false);
-			hongbaoStartTimeTextView.setTextColor(this.getResources().getColor(
-					R.color.text_color_light));
+		//获取限制条件
+		List<RedbagDetailBean.DataBean.LimitBean> limits = hongbaoBean.getLimit();
+		if (limits!=null &&limits.size()>0){
+			for (RedbagDetailBean.DataBean.LimitBean limitBean:limits)
+			createConditon(limitBean.getPrice(),limitBean.getUsable());
 		}
-
+		//设置图片
+		if (hongbaoBean.getImage()!=null){
+			ImageLoader.getInstance().displayImage(hongbaoBean.getImage(),productImageView);
+		}
 		
 	}
 
@@ -345,36 +312,34 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 			return;
 		}
 	
-/*
-		"title" => "required"
-		"num" => "required"
-		"total" => "required"
-		"lower_money" => "required"
-		"upper_money" => "required"
-		"time_range" => "required"
-		"single_limit" => "required"
-		"life" => "required"
-		"range" => "required"
-		"logo" => "required"
-		"image" => "required"
-		"rules" => "required"
-		"limit" => "required"*/
+		
 		RequestParams params = new RequestParams();
 		params.add("title",hongbaoNameEditText.getText().toString());
-		params.add("num",hongbaonum.getText().toString());
-		params.add("total",hongbaoPrice.getText().toString());
-		params.add("lower_money",hongbaoUpPrice.getText().toString());
-		params.add("upper_money",hongbaoUpPrice.getText().toString());
-		params.add("time_range",hongbaodaynumEditText.getText().toString());
-		/*params.add("single_limit",);
-		params.add("life",);
-		params.add("range",);
-		params.add("life",);
-		params.add("logo",);
-		params.add("image",);
-		params.add("rules",);
-		params.add("limit",);*/
-
+		params.put("time_start",hongbaoStartTimeTextView.getText().toString());
+		params.put("time_end",hongbaoEndTimeTextView.getText().toString());
+		params.put("num",hongbaonum.getText().toString().trim());
+		params.put("total",hongbaoPrice.getText().toString().trim());
+		params.put("lower_money",hongbaoDownPrice.getText().toString().trim());
+		params.put("upper_money",hongbaoUpPrice.getText().toString().trim());
+		params.put("life",hongbaodaynumEditText.getText().toString().trim());
+		params.put("rules",ed_rules.getText().toString().trim());
+		params.put("range[]","1");
+		params.put("logo",sp.getString("shopLogo",""));
+		params.put("image","232");
+		//在condition中维护了一组集合条件
+		Set<Map.Entry<Integer, LinearLayout>> items = conditions.entrySet();
+		//转换为迭代器
+		Iterator iter = items.iterator();
+		while (iter.hasNext()) {
+			Map.Entry entry = (Map.Entry) iter.next();
+			LinearLayout val = (LinearLayout) entry.getValue();
+			EditText ed_high = (EditText) val.findViewById(R.id.ed_high);
+			EditText ed_low = (EditText) val.findViewById(R.id.ed_low);
+			params.put("limit[price][" + Integer.parseInt(ed_high.getText().toString().trim()) + "]", Integer.parseInt(ed_high.getText().toString().trim()));
+			params.put("limit[usable][" + Integer.parseInt(ed_low.getText().toString().trim()) + "]", Integer.parseInt(ed_low.getText().toString().trim()));
+		}
+		
+		
 		HttpUtils.getConnection(context, params, ConstantParamPhone.EDIT_REDBAG + hongbaoBean.getId(), "post", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
@@ -405,29 +370,40 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		
 	}
 
-	public void setListViewHeightBasedOnChildren(ListView listView) {
-		// 获取ListView对应的Adapter
-		HongbaoAdapter hongbaoAdapter = (HongbaoAdapter) listView.getAdapter();
-		if (hongbaoAdapter == null) {
-			return;
-		}
-
-		int totalHeight = 0;
-		for (int i = 0, len = hongbaoAdapter.getCount(); i < len; i++) {
-			// listAdapter.getCount()返回数据项的数目
-			View listItem = hongbaoAdapter.getView(i, null, listView);
-			// 计算子项View 的宽高
-			listItem.measure(0, 0);
-			// 统计所有子项的总高度
-			totalHeight += listItem.getMeasuredHeight();
-		}
-
-		ViewGroup.LayoutParams params = listView.getLayoutParams();
-		params.height = totalHeight
-				+ (listView.getDividerHeight() * (hongbaoAdapter.getCount() - 1));
-		// listView.getDividerHeight()获取子项间分隔符占用的高度
-		// params.height最后得到整个ListView完整显示需要的高度
-		listView.setLayoutParams(params);
+	//1创建集合管理红包条件
+	HashMap<Integer,LinearLayout> conditions = new HashMap<>();
+	int itemId  =0;
+	private void createConditon(String high,String low) {
+		//每次载入红包条件的布局
+		LinearLayout ll_limit = (LinearLayout) View.inflate(this, R.layout.item_condition_edit_redbag, null);
+		ImageView iv_del_item = (ImageView) ll_limit.findViewById(R.id.iv_del_item);
+		EditText ed_high = (EditText) ll_limit.findViewById(R.id.ed_high);
+		EditText ed_low = (EditText) ll_limit.findViewById(R.id.ed_low);
+		ed_high.setText(high);
+		ed_low.setText(low);
+		//给每个条目绑定一个key
+		iv_del_item.setTag(itemId);
+		iv_del_item.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//获取最外层的父对象
+				int itemId = (int) v.getTag();
+				//Toast.makeText(EditRedbag2Activity.this,"点击了"+itemId,Toast.LENGTH_SHORT).show();
+				//删除指定位置的view
+				ll_view.removeView(conditions.get(itemId));
+				//删除指定的item对象
+				conditions.remove(itemId);
+				//记录position最新位置
+				position--;
+			}
+		});
+		//把当前对象保存到集合中
+		conditions.put(itemId,ll_limit);
+		ll_view.addView(ll_limit, position);
+		//每次添加以后，位置会变动
+		position++;
+		itemId++;
+		Log.d("condition", "创建了条件" + position);
 	}
 
 }

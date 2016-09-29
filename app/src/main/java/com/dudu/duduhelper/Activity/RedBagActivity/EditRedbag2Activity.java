@@ -101,7 +101,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			Toast.makeText(EditRedbag2Activity.this, "上传完毕", Toast.LENGTH_SHORT).show();
 		}
 	};
-	private RedbagLimit limit;
 	private String imagepath;
 	private String uploadPicPath;
 	private SharedPreferences sp;
@@ -115,8 +114,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		sp = getSharedPreferences("userconig", Context.MODE_PRIVATE);
 		initView();
 		initview();
-
-		
 	}
 
 	private void initview() {
@@ -237,8 +234,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		position++;
 		itemId++;
 		Log.d("condition", "创建了条件" + position);
-
-
 	}
 
 	@Override
@@ -314,13 +309,13 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 
 		String low = ed_low.getText().toString().trim();
 		if (TextUtils.isEmpty(low)) {
-			Toast.makeText(this, "最低", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "请输入最低", Toast.LENGTH_SHORT).show();
 			return;
 		}
 
 		String high = ed_high.getText().toString().trim();
 		if (TextUtils.isEmpty(high)) {
-			Toast.makeText(this, "最高", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "请输入最高", Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -348,39 +343,21 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		params.put("upper_money",high);
 		params.put("life",ed_life);
 		params.put("logo",sp.getString("shopLogo",""));
-		params.put("rules",ed_rule);
+		params.put("rules",ed_rule.getText().toString().trim());
 		params.put("range[]","1");
-//		params.put("limit",res);
-
-
 
 		//在condition中维护了一组集合条件
 		Set<Map.Entry<Integer, LinearLayout>> items = conditions.entrySet();
 		//转换为迭代器
 		Iterator iter = items.iterator();
-//		int[] s1=new int[conditions.size()];
-//		int[] s2=new int[conditions.size()];
-		int count =0;
 		while (iter.hasNext()) {
 			Map.Entry entry = (Map.Entry) iter.next();
 			LinearLayout val = (LinearLayout) entry.getValue();
 			EditText ed_high = (EditText) val.findViewById(R.id.ed_high);
 			EditText ed_low = (EditText) val.findViewById(R.id.ed_low);
-
-//			s1[count] = Integer.parseInt(ed_high.getText().toString().trim());
-//			s2[count] = Integer.parseInt(ed_low.getText().toString().trim());
-
-			params.put("limit[price][" + count + "]", Integer.parseInt(ed_high.getText().toString().trim()));
-			params.put("limit[usable][" + count + "]", Integer.parseInt(ed_low.getText().toString().trim()));
-
-			count++;
+			params.put("limit[price][" + Integer.parseInt(ed_high.getText().toString().trim()) + "]", Integer.parseInt(ed_high.getText().toString().trim()));
+			params.put("limit[usable][" + Integer.parseInt(ed_low.getText().toString().trim()) + "]", Integer.parseInt(ed_low.getText().toString().trim()));
 		}
-//		limit = new RedbagLimit(s1,s2);
-//		String res = new Gson().toJson(limit);
-//		LogUtil.d("json",res);
-
-
-
 
 		if (uplodImgs!=null &&uplodImgs.size()>0){
 			params.put("image",uplodImgs.get(0));
@@ -388,7 +365,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		}else {
 			params.put("image","22");
 			LogUtil.d("ima","2");
-
 		}
 		HttpUtils.getConnection(this, params, ConstantParamPhone.ADD_REDBAG, "POST", new TextHttpResponseHandler() {
 			@Override
@@ -405,6 +381,8 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
 						Toast.makeText(EditRedbag2Activity.this,"成功",Toast.LENGTH_LONG).show();
+						finish();
+						startActivity(new Intent());
 
 
 					}else {
@@ -419,14 +397,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		});
 
 
-	}
-	class RedbagLimit{
-		int[] price ;
-		int[] usable;
-		RedbagLimit(int[] price ,int[] useable){
-			this.price = price;
-			this.usable = useable;
-		}
 	}
 	/**
 	 * imageUri 上传图片的本地uri地址

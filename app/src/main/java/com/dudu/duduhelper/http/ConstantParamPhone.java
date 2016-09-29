@@ -180,7 +180,8 @@ public class ConstantParamPhone
   //五折卡验证
    public static final String VERTIFY_CARD ="/api/app/half/valCode";//验证五折卡
    public static final String USE_CARD ="/api/app/half/useCard";//使用五折卡
-
+  //统计
+   public static final String GET_SUM = "/api/app/stat/date";//获取统计数据
 
 
 

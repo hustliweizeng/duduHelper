@@ -41,7 +41,7 @@
                     android:paddingLeft="16dp" >
 
                     <TextView
-                        android:id="@+id/startTimeTextView"
+                        android:id="@+id/tv_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="开始时间>"
+                        android:text="开始时间"
                         android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -73,6 +73,7 @@
                         android:orientation="vertical" >
 
                         <TextView
+                            android:id="@+id/tv_rangeday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="390天"
@@ -97,7 +98,7 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/finishTimeTextView"
+                        android:id="@+id/tv_end"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -111,10 +112,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_below="@+id/finishTimeTextView"
+                        android:layout_below="@id/tv_end"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="10dp"
-                        android:text="结束时间>"
+                        android:text="结束时间"
                         android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
                 </RelativeLayout>
@@ -148,6 +149,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_total_trade"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -162,6 +164,7 @@
                         android:background="#6a7c8f" />
 
                     <TextView
+                        android:id="@+id/tv_total_income"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
@@ -173,7 +176,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="总交易额"
+                        android:text="总收入"
                         android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -241,15 +244,6 @@
                     android:layout_weight="1" >
 
                     <TextView
-                        android:id="@+id/orderNumText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:text="123"
-                        android:textColor="@color/text_white_color"
-                        android:textSize="18sp" />
-
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/orderNumText"
@@ -258,6 +252,16 @@
                         android:text="总订单量"
                         android:textColor="@color/text_color_light"
                         android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/orderNumText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="123"
+                        android:textColor="@color/text_white_color"
+                        android:textSize="18sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -277,7 +281,6 @@
                     android:textColor="@color/text_color_gray"
                     android:textSize="16dp" />
             </RelativeLayout>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -287,6 +290,7 @@
                 android:paddingRight="16dp" >
 
                 <TextView
+                    android:id="@+id/tv_name_bigband"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="大牌抢购"
@@ -294,10 +298,75 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/orderNumTextView"
+                    android:id="@+id/tv_price_bigband"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:text="21655"
+                    android:textColor="@color/text_green_color"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="16dp"
+                android:background="@color/divider_line_color" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp" >
+
+                <TextView
+                    android:id="@+id/tv_name_dis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="优惠券"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_price_dis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="21655"
+                    android:textColor="@color/text_green_color"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="16dp"
+                android:background="@color/divider_line_color" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp" >
+
+                <TextView
+                    android:id="@+id/tv_name_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="其他"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_price_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="21655"
                     android:textColor="@color/text_green_color"
                     android:textSize="14sp" />
             </RelativeLayout>
@@ -309,59 +378,8 @@
                 android:layout_marginLeft="16dp"
                 android:background="@color/divider_line_color" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#fff"
-                android:gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="大牌抢购"
-                    android:textColor="@color/text_color_dark"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/text_green_color"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="16dp"
-                android:background="@color/divider_line_color" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#fff"
-                android:gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="大牌抢购"
-                    android:textColor="@color/text_color_dark"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/text_green_color"
-                    android:textSize="14sp" />
-            </RelativeLayout>
         </LinearLayout>
+        
     </com.dudu.duduhelper.widget.OverScrollView>
 
 </LinearLayout>

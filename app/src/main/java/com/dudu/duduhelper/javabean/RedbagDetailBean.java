@@ -11,7 +11,6 @@ import java.util.List;
 
 public class RedbagDetailBean implements Serializable {
 
-
 	private DataBean data;
 	private String code;
 	private String msg;
@@ -40,7 +39,7 @@ public class RedbagDetailBean implements Serializable {
 		this.msg = msg;
 	}
 
-	public static class DataBean {
+	public static class DataBean implements  Serializable{
 		private String id;
 		private String title;
 		private String num;
@@ -195,10 +194,9 @@ public class RedbagDetailBean implements Serializable {
 			this.limit = limit;
 		}
 
-		public static class LimitBean {
+		public static class LimitBean implements Serializable{
 			private String price;
-			private String useale;
-
+			private String usable;
 			public String getPrice() {
 				return price;
 			}
@@ -207,12 +205,12 @@ public class RedbagDetailBean implements Serializable {
 				this.price = price;
 			}
 
-			public String getUseale() {
-				return useale;
+			public String getUsable() {
+				return usable;
 			}
 
-			public void setUseale(String useale) {
-				this.useale = useale;
+			public void setUsable(String usable) {
+				this.usable = usable;
 			}
 		}
 	}

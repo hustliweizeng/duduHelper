@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ShopCouponDetailActivity extends BaseActivity 
+public class ShopCouponDetailActivity extends BaseActivity
 {
 	private Button editCouponButton;
 	//商品id
@@ -34,7 +34,7 @@ public class ShopCouponDetailActivity extends BaseActivity
 	private BigBandBuy.DataBean coupon;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_activity_coupon_detail);
@@ -42,9 +42,9 @@ public class ShopCouponDetailActivity extends BaseActivity
 		initView();
 		initData();
 	}
-	
+
 	@Override
-	public void RightButtonClick() 
+	public void RightButtonClick()
 	{
 		/*Intent intent=new Intent(ShopCouponDetailActivity.this,CouponSellHistoryActivity.class);
 		intent.putExtra("id", "");
@@ -62,8 +62,9 @@ public class ShopCouponDetailActivity extends BaseActivity
 		couponSold.setText(coupon.getSaled_count());
 		couponVerify.setText(coupon.getValidation_count());
 
-		//设置数据  
-		couponSold.withNumber(Float.parseFloat(coupon.getSold()));
+		//领取数量  
+		couponSold.withNumber(Float.parseFloat(coupon.getClicked_count()));
+		//核销数量
 		couponVerify.withNumber(Float.parseFloat(coupon.getValidation_count()));
 		leftNumText.withNumber(Float.parseFloat(String.valueOf(Integer.parseInt(coupon.getSold()) - Integer.parseInt(coupon.getValidation_count()))));
 
@@ -95,7 +96,7 @@ public class ShopCouponDetailActivity extends BaseActivity
 		});
 	}
 
-	private void initView() 
+	private void initView()
 	{
 		leftNumText=(RiseNumberTextView) this.findViewById(R.id.leftNumText);
 		couponImage=(ImageView) this.findViewById(R.id.couponImage);
@@ -105,6 +106,6 @@ public class ShopCouponDetailActivity extends BaseActivity
 		couponVerify=(RiseNumberTextView) this.findViewById(R.id.couponVerify);
 		wheelIndicatorTongjiNoXuxianView = (WheelIndicatorTongjiNoXuxianView) findViewById(R.id.wheel_indicator_view);
 		wheelIndicatorTongjiNoXuxianView.setItemsLineWidth(Util.dip2px(this, 2));
-		
+
 	}
 }

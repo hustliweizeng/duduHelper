@@ -272,7 +272,13 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
                         //4.存储总计状态
                         .putString("frozenMoney",infoBean.getTotalstat().getFreezemoney())
                         .putString("useableMoney",infoBean.getTotalstat().getUsablemoney())
-                        //在后台处理
+		                //访客信息
+		                 .putString("totalVistor",infoBean.getTotalstat().getVisitor())
+		                 .putString("totalBuyer",infoBean.getTotalstat().getBuyer())
+		                 .putString("totalOrder",infoBean.getTotalstat().getOrder())
+		                  .putString("totalIncome",infoBean.getTotalstat().getIncome()) 
+		                  .putString("totalTrade",infoBean.getTotalstat().getTrade())      
+		                  //在后台处理
                         .apply();
                         LogUtil.d("welcome",s);
                         startActivity(new Intent(context,MainActivity.class));

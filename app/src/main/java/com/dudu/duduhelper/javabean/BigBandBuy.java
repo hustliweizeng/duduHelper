@@ -53,6 +53,38 @@ public class BigBandBuy implements Serializable{
         private String explain;
         private String upshelf;
         private String downshelf;
+        private String clicked_count;
+        private String sold;
+        private String category_id;
+        private String[] pics;
+        private String agent_id;
+        private String expiry;
+        private String created_at;
+        private String updated_at;
+
+        public String getClicked_count() {
+            return clicked_count;
+        }
+
+        public void setClicked_count(String clicked_count) {
+            this.clicked_count = clicked_count;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
+        public String getUpdated_at() {
+            return updated_at;
+        }
+
+        public void setUpdated_at(String updated_at) {
+            this.updated_at = updated_at;
+        }
 
         public String getSold() {
             return sold;
@@ -94,12 +126,7 @@ public class BigBandBuy implements Serializable{
             this.expiry = expiry;
         }
 
-        private String sold;
-        private String category_id;
-        private String[] pics;
-        private String agent_id;
-        private String expiry;
-
+        
         public String getDownshelf() {
             return downshelf;
         }
