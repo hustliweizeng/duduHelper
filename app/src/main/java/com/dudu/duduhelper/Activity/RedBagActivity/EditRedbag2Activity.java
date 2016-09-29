@@ -330,25 +330,9 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			return;
 		}
 
-		//在condition中维护了一组集合条件
-		Set<Map.Entry<Integer, LinearLayout>> items = conditions.entrySet();
-		//转换为迭代器
-		Iterator iter = items.iterator();
-		int[] s1=new int[conditions.size()];
-		int[] s2=new int[conditions.size()];
-		int count =0;
-		while (iter.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			LinearLayout val = (LinearLayout) entry.getValue();
-			EditText ed_high = (EditText) val.findViewById(R.id.ed_high);
-			EditText ed_low = (EditText) val.findViewById(R.id.ed_low);
-			s1[count] = Integer.parseInt(ed_high.getText().toString().trim());
-			s2[count] = Integer.parseInt(ed_low.getText().toString().trim());
-			count++;
-		}
-		limit = new RedbagLimit(s1,s2);
-		String res = new Gson().toJson(limit);
-		LogUtil.d("json",res);
+
+
+
 		title = getIntent().getStringExtra("title");
 		startTime = getIntent().getStringExtra("starTime");
 		endTime = getIntent().getStringExtra("endTime");
@@ -366,7 +350,37 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		params.put("logo",sp.getString("shopLogo",""));
 		params.put("rules",ed_rule);
 		params.put("range[]","1");
-		params.put("limit",res);
+//		params.put("limit",res);
+
+
+
+		//在condition中维护了一组集合条件
+		Set<Map.Entry<Integer, LinearLayout>> items = conditions.entrySet();
+		//转换为迭代器
+		Iterator iter = items.iterator();
+//		int[] s1=new int[conditions.size()];
+//		int[] s2=new int[conditions.size()];
+		int count =0;
+		while (iter.hasNext()) {
+			Map.Entry entry = (Map.Entry) iter.next();
+			LinearLayout val = (LinearLayout) entry.getValue();
+			EditText ed_high = (EditText) val.findViewById(R.id.ed_high);
+			EditText ed_low = (EditText) val.findViewById(R.id.ed_low);
+
+//			s1[count] = Integer.parseInt(ed_high.getText().toString().trim());
+//			s2[count] = Integer.parseInt(ed_low.getText().toString().trim());
+
+			params.put("limit[price][" + count + "]", Integer.parseInt(ed_high.getText().toString().trim()));
+			params.put("limit[usable][" + count + "]", Integer.parseInt(ed_low.getText().toString().trim()));
+
+			count++;
+		}
+//		limit = new RedbagLimit(s1,s2);
+//		String res = new Gson().toJson(limit);
+//		LogUtil.d("json",res);
+
+
+
 
 		if (uplodImgs!=null &&uplodImgs.size()>0){
 			params.put("image",uplodImgs.get(0));
