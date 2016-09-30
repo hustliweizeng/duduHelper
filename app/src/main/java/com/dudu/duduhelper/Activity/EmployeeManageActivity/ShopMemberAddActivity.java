@@ -235,8 +235,8 @@ public class ShopMemberAddActivity extends BaseActivity
 	//店铺列表弹窗
 	private void showShopListPopWindow() 
 	{
-		//请求网络数据获取店铺信息
-		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SHOP_LIST, "GET", new TextHttpResponseHandler() {
+		//请求网络数据获取店铺信息/api/app/shop_user/shops
+		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SHOPABLE, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context, "网络异常，稍后再试", Toast.LENGTH_LONG).show();

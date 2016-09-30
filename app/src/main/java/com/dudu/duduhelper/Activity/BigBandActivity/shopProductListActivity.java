@@ -227,9 +227,11 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent=new Intent(shopProductListActivity.this,ShopProductAddActivity.class);
+				/*Intent intent=new Intent(shopProductListActivity.this,ShopProductAddActivity.class);
 				intent.putExtra("category", category);
-				startActivity(intent);
+				startActivity(intent);*/
+				Toast.makeText(context,"功能暂未开通，敬请期待",Toast.LENGTH_SHORT);
+				return;
 			}
 		});
 		//第二个筛选项

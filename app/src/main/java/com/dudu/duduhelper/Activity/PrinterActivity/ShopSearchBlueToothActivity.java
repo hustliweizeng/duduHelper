@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.DeviceAdapter;
 import com.dudu.duduhelper.widget.ColorDialog;
 
@@ -214,6 +215,9 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 			bindDevicesTextView.setVisibility(View.VISIBLE);
 			lineView.setVisibility(View.VISIBLE);
 			bindDevicesTextView.setText("已配对设备："+sharePrint.getString("blueName", ""));
+			LogUtil.d("bind",sharePrint.getString("blueName",""));
+		}else {
+			LogUtil.d("bind","没有已配对的");
 		}
 		//搜索按钮
 		scanbutton.setOnClickListener(new OnClickListener() 
@@ -222,7 +226,6 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
 				//开启搜索模式
 				bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 				if(bluetoothAdapter==null)
@@ -233,6 +236,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				
 				else if(!bluetoothAdapter.isEnabled())//isEnabled enable是激活
 				{
+					Toast.makeText(ShopSearchBlueToothActivity.this,"蓝牙已打开", Toast.LENGTH_SHORT).show();
 					//开启
 					ColorDialog.showRoundProcessDialog(ShopSearchBlueToothActivity.this,R.layout.loading_process_dialog_color);
 					Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);     
@@ -243,6 +247,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				// 寻找蓝牙设备，android会将查找到的设备以广播形式发出去
 				else
 				{
+					Toast.makeText(ShopSearchBlueToothActivity.this,"蓝牙未打开，开始搜索", Toast.LENGTH_SHORT).show();
 					deviceAdapter.clear();
 					bluetoothAdapter.startDiscovery(); 
 					time.start();
@@ -263,6 +268,8 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 			{
 				//取消搜索
 				bluetoothAdapter.cancelDiscovery();
+				//关闭动画
+				closeSearch();
 				try 
 				{
 					//利用反射调用方法
@@ -308,11 +315,12 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 					Toast.makeText(ShopSearchBlueToothActivity.this,"打开成功", Toast.LENGTH_SHORT).show();
 					deviceAdapter.clear();
 					bluetoothAdapter.startDiscovery(); 
+					//开始计时
 					time.start();
 				}
 				else
 				{
-					//Toast.makeText(SearchBlueToothActivity.this,"打开蓝牙失败", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ShopSearchBlueToothActivity.this,"打开蓝牙失败", Toast.LENGTH_SHORT).show();
 				}
 				ColorDialog.dissmissProcessDialog();
 			}
@@ -322,27 +330,38 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				Toast.makeText(ShopSearchBlueToothActivity.this,"开始搜索", Toast.LENGTH_SHORT).show();
 				
 				scanbutton.setVisibility(View.GONE);
+				//开始动画
 				startAnima();
 				startcircularAnima();
 			}
 			//发现设备
 			if (BluetoothDevice.ACTION_FOUND.equals(action)) 
-			{    
+			{
+
+				Toast.makeText(ShopSearchBlueToothActivity.this,"发现设备", Toast.LENGTH_SHORT).show();
 				//获取查找到的蓝牙设备    
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);  
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE); 
+				//如果没有配对过
                 if (!device.getAddress().equals(share.getString("blueAddress", ""))) 
                 {    
+	                //发现的设备插入列表
                 	deviceAdapter.addItem(device);
-                } 
+	                LogUtil.d("add",device.getAddress());
+                }
             }
+			
 			if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action))
 			{
+				//获取设备
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);  
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) 
-                {    
-                    //绑定过的设备    
-                	//deviceAdapter.addItem(device);
-                	Toast.makeText(ShopSearchBlueToothActivity.this,"配对成功", Toast.LENGTH_SHORT).show();
+                {
+	                LogUtil.d("bind",device.getName()+"已经绑定");
+
+	                //绑定过的设备    
+	                devicesAddress = device.getAddress();
+	                devicesName = device.getName();
+	                Toast.makeText(ShopSearchBlueToothActivity.this,"配对成功", Toast.LENGTH_SHORT).show();
 	                //查找绑定过的设备
                 	SharedPreferences sharePrint= getSharedPreferences("printinfo", MODE_PRIVATE);
                 	SharedPreferences.Editor edit = sharePrint.edit(); 
@@ -357,6 +376,11 @@ public class ShopSearchBlueToothActivity extends BaseActivity
                 	Toast.makeText(ShopSearchBlueToothActivity.this,"配对失败", Toast.LENGTH_SHORT).show();
                 }    
 			}
+			if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)){
+				Toast.makeText(context,"搜索结束",Toast.LENGTH_SHORT).show();
+				//关闭动画
+				closeSearch();
+			}
 		}
 	};
 	class TimeCount extends CountDownTimer 
@@ -368,6 +392,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 		@Override
 		public void onFinish() 
 		{
+			LogUtil.d("finish","finish");
 			//计时完毕时触发
 			scanbutton.setText("立即扫描");
 			bluetoothAdapter.cancelDiscovery();
@@ -377,16 +402,11 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 		@Override
 		public void onTick(long millisUntilFinished)
 		{ 
-			//计时过程显示
-//			scanbutton.setClickable(false);
-//			scanbutton.setPressed(true);
-//			scanbutton.setText("正在扫描，请稍后("+millisUntilFinished /1000+"秒)");
 		}
 	}
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == 1) 
 		{
@@ -401,6 +421,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 			}
 		}
 	}
+	//关闭动画
 	public void closeSearch()
 	{
 		handler.removeCallbacks(runnable);

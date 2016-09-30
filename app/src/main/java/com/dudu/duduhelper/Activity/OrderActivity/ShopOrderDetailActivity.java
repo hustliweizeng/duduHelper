@@ -13,8 +13,10 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.dudu.duduhelper.Activity.PrinterActivity.BlutoothUtils;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
+import com.dudu.duduhelper.GpService;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
@@ -111,6 +113,10 @@ public class ShopOrderDetailActivity extends BaseActivity
 		initFilter();
 		initView();
 		initData();
+		
+		//开启打印服务
+		/*startService();
+		connection();*/
 	}
 	private void initFilter() 
 	{
@@ -121,7 +127,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 		intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);//设备开始绑定
 		// 注册广播接收器，接收并处理搜索结果      
 		registerReceiver(receiver, intentFilter);
-
 
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(receiver, filter);
@@ -498,6 +503,23 @@ public class ShopOrderDetailActivity extends BaseActivity
 	//发送打印信息
 	private void sendPrint() 
 	{
+		getPrintStatus();
+		//获取打印模式
+		getMode();
+		//打印测试也
+		try {
+			int rel = mGpService.printeTestPage(mPrinterIndex); //
+			Log.i("ServiceConnection", "rel " + rel);
+			GpCom.ERROR_CODE r=GpCom.ERROR_CODE.values()[rel];
+			if(r != GpCom.ERROR_CODE.SUCCESS){
+				Toast.makeText(getApplicationContext(),GpCom.getErrorText(r),
+						Toast.LENGTH_SHORT).show();
+			}
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		/*
 		if (this.isConnection) 
 		{    
             System.out.println("开始打印！！");    
@@ -598,8 +620,48 @@ public class ShopOrderDetailActivity extends BaseActivity
             Toast.makeText(ShopOrderDetailActivity.this, "设备未连接，请重新连接！", Toast.LENGTH_SHORT).show();   
             enterButton.setClickable(true);
             enterButton.setPressed(false);
-        }    
+        }    */
 	}
+
+	private void getMode() {
+		try {
+			int type = mGpService.getPrinterCommandType(mPrinterIndex);
+			if (type == GpCom.ESC_COMMAND) {
+				Toast.makeText(getApplicationContext(), "打印机使用 ESC 命令",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getApplicationContext(), "打印机使用 TSC 命令",
+						Toast.LENGTH_SHORT).show();
+			}
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	private  int mPrinterIndex = 0;
+	private void getPrintStatus() {
+		try {
+			int status = mGpService.queryPrinterStatus(mPrinterIndex,500);
+			String str = new String();
+			if (status == GpCom.STATE_NO_ERR) {
+				str = "打印机正常";
+			} else if ((byte) (status & GpCom.STATE_OFFLINE) > 0) {
+				str = "打印机脱机";
+			} else if ((byte) (status & GpCom.STATE_PAPER_ERR) > 0) {
+				str = "打印机缺纸";
+			} else if ((byte) (status & GpCom.STATE_COVER_OPEN) > 0) {
+				str = "打印机开盖";
+			} else if ((byte) (status & GpCom.STATE_ERR_OCCURS) > 0) {
+				str = "打印机出错";
+			}
+			Toast.makeText(getApplicationContext(),
+					"打印机：" + '0' + " 状态：" + str, Toast.LENGTH_SHORT).show();
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
+		
+	}
+
 	//绑定之后获取连接
 	private void getConnect()
 	{
@@ -719,7 +781,34 @@ public class ShopOrderDetailActivity extends BaseActivity
 			}
 		}
     }
-	
+	private void startService() {
+		Intent i= new Intent(this, GpPrintService.class);
+		startService(i);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	private GpService mGpService = null;
+	private PrinterServiceConnection conn = null;
+	class PrinterServiceConnection implements ServiceConnection {
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			Log.i("ServiceConnection", "onServiceDisconnected() called");
+			mGpService = null;
+		}
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			mGpService =GpService.Stub.asInterface(service);
+		}
+	}
+	private void connection() {
+		conn = new PrinterServiceConnection();
+		//通过因示意图打开服务
+		Intent intent = new Intent("com.gprinter.aidl.GpPrintService");
+		bindService(intent, conn, Context.BIND_AUTO_CREATE); // bindService
+	}
 	
 	
 	
