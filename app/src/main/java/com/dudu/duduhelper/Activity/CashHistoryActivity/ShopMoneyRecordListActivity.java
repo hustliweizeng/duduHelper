@@ -146,6 +146,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 						CashHistoryBean historyBean = new Gson().fromJson(s, CashHistoryBean.class);
 						//插入数据之前，清空之前的adapter的集合，否则数据会重复
 						adapter.orders.clear();
+						adapter.notifyDataSetChanged();
 						adapter.addAll(historyBean.getData());
 						tv_msg.setVisibility(View.GONE);
 					} else {

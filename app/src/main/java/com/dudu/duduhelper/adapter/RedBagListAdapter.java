@@ -76,7 +76,9 @@ public class RedBagListAdapter extends BaseAdapter {
 		holder.tv_sold.setText(data.getUsed_num());
 		holder.tv_name.setText(data.getTitle());
 		holder.tv_price.setText(data.getTotal());
-		holder.tv_status.setText(data.getNum());
+		//设置红包状态
+		//holder.tv_status.setText(data.getNum());
+		
 		
 
 		return convertView;

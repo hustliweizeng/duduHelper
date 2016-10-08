@@ -43,6 +43,7 @@ public class MoneyHistoryAdapter extends BaseAdapter {
             this.list = list;
         }else {
             Toast.makeText(context,"当前没有要显示的数据",Toast.LENGTH_SHORT).show();
+            //
         }
         //重置日期
         dates.clear();

@@ -247,8 +247,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				//先清除之前搜索的结果
 				deviceAdapter.clear();
 				//隐藏已配对的设备
-				bindDevicesTextView.setVisibility(View.VISIBLE);
-				lineView.setVisibility(View.VISIBLE);
+				bindDevicesTextView.setText("搜素到的设备");
 				//开启搜索模式
 				bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 				if(bluetoothAdapter==null)
