@@ -2,6 +2,7 @@ package com.dudu.duduhelper.Activity.PrinterActivity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -35,6 +37,8 @@ import com.dudu.duduhelper.adapter.DeviceAdapter;
 import com.dudu.duduhelper.widget.ColorDialog;
 
 import java.lang.reflect.Method;
+import java.util.Set;
+import java.util.UUID;
 
 public class ShopSearchBlueToothActivity extends BaseActivity 
 {
@@ -68,6 +72,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 		setContentView(R.layout.shop_search_blue_tooth);
 		initHeadView("打印机", true, false, 0);
 		time = new TimeCount(30000, 1000);//构造CountDownTimer对象
+		deviceAdapter=new DeviceAdapter(this);
 		initFilter();
 		initView();
 		
@@ -210,7 +215,20 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 		bindDevicesTextView=(TextView) this.findViewById(R.id.bindDevicesTextView);
 		SharedPreferences sharePrint= getSharedPreferences("printinfo", MODE_PRIVATE);
 		//查找已配对的设备
-		if(!TextUtils.isEmpty(sharePrint.getString("blueName", "")))
+		Set<BluetoothDevice> bondedDevices = bluetoothAdapter.getBondedDevices();
+		
+		if (bondedDevices !=null && bondedDevices.size()>0){
+			bindDevicesTextView.setText("已配对设备");
+			bindDevicesTextView.setVisibility(View.VISIBLE);
+			lineView.setVisibility(View.VISIBLE);
+			for (BluetoothDevice device : bondedDevices){
+				//显示已配对列表
+				deviceAdapter.addItem(device);
+			}
+			LogUtil.d("bind",sharePrint.getString("blueName",""));
+			
+		}
+		/*if(!TextUtils.isEmpty(sharePrint.getString("blueName", "")))
 		{
 			bindDevicesTextView.setVisibility(View.VISIBLE);
 			lineView.setVisibility(View.VISIBLE);
@@ -218,7 +236,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 			LogUtil.d("bind",sharePrint.getString("blueName",""));
 		}else {
 			LogUtil.d("bind","没有已配对的");
-		}
+		}*/
 		//搜索按钮
 		scanbutton.setOnClickListener(new OnClickListener() 
 		{
@@ -226,6 +244,11 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
+				//先清除之前搜索的结果
+				deviceAdapter.clear();
+				//隐藏已配对的设备
+				bindDevicesTextView.setVisibility(View.VISIBLE);
+				lineView.setVisibility(View.VISIBLE);
 				//开启搜索模式
 				bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 				if(bluetoothAdapter==null)
@@ -247,7 +270,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				// 寻找蓝牙设备，android会将查找到的设备以广播形式发出去
 				else
 				{
-					Toast.makeText(ShopSearchBlueToothActivity.this,"蓝牙未打开，开始搜索", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ShopSearchBlueToothActivity.this,"开始搜索", Toast.LENGTH_SHORT).show();
 					deviceAdapter.clear();
 					bluetoothAdapter.startDiscovery(); 
 					time.start();
@@ -257,36 +280,58 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 		});
 		//设备列表
 		devicesList=(ListView) this.findViewById(R.id.devicesList);
-		deviceAdapter=new DeviceAdapter(this);
 		devicesList.setAdapter(deviceAdapter);
 		//配对设备
 		devicesList.setOnItemClickListener(new OnItemClickListener() 
 		{
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
 			{
 				//取消搜索
+				if (bluetoothAdapter.isDiscovering())
 				bluetoothAdapter.cancelDiscovery();
 				//关闭动画
 				closeSearch();
-				try 
-				{
-					//利用反射调用方法
-					device=bluetoothAdapter.getRemoteDevice(deviceAdapter.getItem(position).getAddress());
-					Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
-					createBondMethod.invoke(device);   
-					devicesAddress=deviceAdapter.getItem(position).getAddress();
-					devicesName=deviceAdapter.getItem(position).getName();
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-					Toast.makeText(ShopSearchBlueToothActivity.this, "配对失败!!", Toast.LENGTH_SHORT).show(); 
-				}  
+				device=bluetoothAdapter.getRemoteDevice(deviceAdapter.getItem(position).getAddress());
+				//如果当前设备没有绑定
+				if (device.getBondState() == BluetoothDevice.BOND_NONE){
+					LogUtil.d("bond","unbonde");
+
+					try
+					{
+						//利用反射调用方法
+						Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
+						createBondMethod.invoke(device);
+						//配对成功后设置数据
+						devicesAddress=deviceAdapter.getItem(position).getAddress();
+						devicesName=deviceAdapter.getItem(position).getName();
+						Toast.makeText(ShopSearchBlueToothActivity.this, "开始匹配!!", Toast.LENGTH_SHORT).show();
+
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+						Toast.makeText(ShopSearchBlueToothActivity.this, "配对失败!!", Toast.LENGTH_SHORT).show();
+					}
+
+				}else if(device.getBondState() == BluetoothDevice.BOND_BONDED){
+					//已经绑定了，就可以开始连接传输数据了
+					LogUtil.d("bond","bonde");
+					try {
+						BluetoothSocket btsocket = device.createRfcommSocketToServiceRecord(uuid);
+						Log.d("BlueToothTestActivity", "开始连接...");
+						btsocket.connect();
+
+					}catch (Exception e){
+						e.printStackTrace();
+
+					}
+				}
+				
 			}
 		});
 	}
+	private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private void initFilter() 
 	{
 		// 设置广播信息过滤      
@@ -341,13 +386,24 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				Toast.makeText(ShopSearchBlueToothActivity.this,"发现设备", Toast.LENGTH_SHORT).show();
 				//获取查找到的蓝牙设备    
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE); 
-				//如果没有配对过
-                if (!device.getAddress().equals(share.getString("blueAddress", ""))) 
+				//配对过
+				if (device.getBondState() == 12){
+					deviceAdapter.addItem(device);
+					LogUtil.d("contain",device.getAddress());
+
+
+				}else if(device.getBondState() == 10){
+					//没有配对过
+					deviceAdapter.addItem(device);
+					LogUtil.d("add",device.getAddress());
+
+				}
+               /* if (!device.getAddress().equals(share.getString("blueAddress", ""))) 
                 {    
 	                //发现的设备插入列表
                 	deviceAdapter.addItem(device);
 	                LogUtil.d("add",device.getAddress());
-                }
+                }*/
             }
 			
 			if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action))

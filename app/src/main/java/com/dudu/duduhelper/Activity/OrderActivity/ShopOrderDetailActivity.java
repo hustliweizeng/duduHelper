@@ -456,14 +456,14 @@ public class ShopOrderDetailActivity extends BaseActivity
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);  
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) 
                 {
-	                LogUtil.d("device","bond");
+	                LogUtil.d("device",device.getName()+"bond");
 
 	                //绑定过的设备    
                 	Toast.makeText(ShopOrderDetailActivity.this,"配对成功", Toast.LENGTH_SHORT).show();
                 	/*enterButton.setClickable(true);
                 	enterButton.setPressed(false);*/
-	                //开始打印
-	                sendPrint();
+	                //连接打印机
+	               getConnect();
                 } 
                 if (device.getBondState() == BluetoothDevice.BOND_NONE)  
                 {
@@ -503,7 +503,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 	//发送打印信息
 	private void sendPrint() 
 	{
-		getPrintStatus();
+		/*getPrintStatus();
 		//获取打印模式
 		getMode();
 		//打印测试也
@@ -518,8 +518,8 @@ public class ShopOrderDetailActivity extends BaseActivity
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-		/*
+		}*/
+		
 		if (this.isConnection) 
 		{    
             System.out.println("开始打印！！");    
@@ -534,12 +534,12 @@ public class ShopOrderDetailActivity extends BaseActivity
                 esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);//设置打印居中
                 esc.addSelectPrintModes(EscCommand.FONT.FONTA, ENABLE.OFF, ENABLE.ON, ENABLE.OFF, ENABLE.OFF);//设置为倍高倍宽
                 esc.addText("欢迎光临\n");   //  打印文字
-                esc.addText(sp.getString("shopname", "本店铺")+"\n\n");
+                esc.addText(sp.getString("shopName", "本店铺")+"\n\n");
                 esc.addSelectPrintModes(EscCommand.FONT.FONTA, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF, ENABLE.OFF);//设置为倍高倍宽
                 //esc.addSetCharcterSize(WIDTH_ZOOM.MUL_3, HEIGHT_ZOOM.MUL_3);//设置字符尺寸
                 esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);//设置打印左对齐
-                esc.addText("时间：        "+ Util.DataConVert2(orderData.getTime())+"\n");   //  打印文字    
-                esc.addText("订单号：      "+orderData.getId()+"\n");   //  打印文字
+                esc.addText("时间：   "+ Util.DataConVertMint(orderData.getTime())+"\n");   //  打印文字    
+                esc.addText("订单号：  "+orderData.getId()+"\n");   //  打印文字
                 esc.addText("--------------------------------\n");   //  打印文字
                 esc.addText("名称");   //  打印文字
                 //设置距左边绝对位置
@@ -549,22 +549,25 @@ public class ShopOrderDetailActivity extends BaseActivity
                 esc.addSetAbsolutePrintPosition((short) 310);
                 esc.addText("金额\n");
 	            //打印商品详情
-                for (OrderGoods good : orderData.getGoods()) 
-                {
-                	if(good.getName().length()>8)
-                	{
-                		esc.addText(good.getName().substring(0, 7)+"\n");
-                		esc.addText(good.getName().substring(7, good.getName().length()));
-                	}
-                	else
-                	{
-                		esc.addText(good.getName());
-                	}
-                	esc.addSetAbsolutePrintPosition((short) 210);
-                	esc.addText(good.getNum());
-                	esc.addSetAbsolutePrintPosition((short) 300);
-                	esc.addText(good.getFee()+"\n");
-				}
+	            if (orderData.getGoods()!=null && orderData.getGoods().size()>0){
+
+		            for (OrderGoods good : orderData.getGoods())
+		            {
+			            if(good.getName().length()>8)
+			            {
+				            esc.addText(good.getName().substring(0, 7)+"\n");
+				            esc.addText(good.getName().substring(7, good.getName().length()));
+			            }
+			            else
+			            {
+				            esc.addText(good.getName());
+			            }
+			            esc.addSetAbsolutePrintPosition((short) 210);
+			            esc.addText(good.getNum());
+			            esc.addSetAbsolutePrintPosition((short) 300);
+			            esc.addText(good.getFee()+"\n");
+		            }
+	            }
                 
                 esc.addText("\n\n商家优惠");   //  打印文字
                 esc.addSetAbsolutePrintPosition((short) 300);
@@ -601,8 +604,6 @@ public class ShopOrderDetailActivity extends BaseActivity
                 outputStream.flush();  
 	            
 	            
-	            
-	            
                 Toast.makeText(ShopOrderDetailActivity.this, "打印成功！", Toast.LENGTH_LONG).show();
                 enterButton.setClickable(true);
                 enterButton.setPressed(false);
@@ -620,47 +621,12 @@ public class ShopOrderDetailActivity extends BaseActivity
             Toast.makeText(ShopOrderDetailActivity.this, "设备未连接，请重新连接！", Toast.LENGTH_SHORT).show();   
             enterButton.setClickable(true);
             enterButton.setPressed(false);
-        }    */
+        }    
 	}
 
-	private void getMode() {
-		try {
-			int type = mGpService.getPrinterCommandType(mPrinterIndex);
-			if (type == GpCom.ESC_COMMAND) {
-				Toast.makeText(getApplicationContext(), "打印机使用 ESC 命令",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				Toast.makeText(getApplicationContext(), "打印机使用 TSC 命令",
-						Toast.LENGTH_SHORT).show();
-			}
-		} catch (RemoteException e1) {
-			e1.printStackTrace();
-		}
-	}
+	
 
-	private  int mPrinterIndex = 0;
-	private void getPrintStatus() {
-		try {
-			int status = mGpService.queryPrinterStatus(mPrinterIndex,500);
-			String str = new String();
-			if (status == GpCom.STATE_NO_ERR) {
-				str = "打印机正常";
-			} else if ((byte) (status & GpCom.STATE_OFFLINE) > 0) {
-				str = "打印机脱机";
-			} else if ((byte) (status & GpCom.STATE_PAPER_ERR) > 0) {
-				str = "打印机缺纸";
-			} else if ((byte) (status & GpCom.STATE_COVER_OPEN) > 0) {
-				str = "打印机开盖";
-			} else if ((byte) (status & GpCom.STATE_ERR_OCCURS) > 0) {
-				str = "打印机出错";
-			}
-			Toast.makeText(getApplicationContext(),
-					"打印机：" + '0' + " 状态：" + str, Toast.LENGTH_SHORT).show();
-		} catch (RemoteException e1) {
-			e1.printStackTrace();
-		}
-		
-	}
+	
 
 	//绑定之后获取连接
 	private void getConnect()
@@ -739,13 +705,25 @@ public class ShopOrderDetailActivity extends BaseActivity
 			LogUtil.d("acitive","acitive");
 			SharedPreferences sharePrint= getSharedPreferences("printinfo", MODE_PRIVATE);
 			//判断是否绑定过
-			if(!TextUtils.isEmpty(sharePrint.getString("blueAddress", "")))
+			//if(!TextUtils.isEmpty(sharePrint.getString("blueAddress", "")))
+			//判断已经绑定的设备
+			if (bluetoothAdapter.getBondedDevices()!=null &&bluetoothAdapter.getBondedDevices().size()>0)
 			{
 				btn_print.setClickable(false);
 				btn_print.setPressed(true);
 				//根据名称获取蓝牙地址
-				device=bluetoothAdapter.getRemoteDevice(sharePrint.getString("blueAddress", ""));
-				//未绑定
+				//device=bluetoothAdapter.getRemoteDevice(sharePrint.getString("blueAddress", ""));
+				for (BluetoothDevice item :bluetoothAdapter.getBondedDevices()){
+					if (item.getBondState() ==BluetoothDevice.BOND_BONDED ){
+						//当这个设备已经绑定时
+						device = item;
+						break;
+					}
+				}
+				LogUtil.d("bind",device.getName()+"yes");
+				getConnect();
+				
+				/*//未绑定
 				if(device.getBondState() == BluetoothDevice.BOND_NONE)
 				{
 					LogUtil.d("bind","no");
@@ -771,7 +749,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 
 					//绑定了
 					getConnect();
-				}
+				}*/
 			}
 			else
 			{
@@ -781,36 +759,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 			}
 		}
     }
-	private void startService() {
-		Intent i= new Intent(this, GpPrintService.class);
-		startService(i);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	private GpService mGpService = null;
-	private PrinterServiceConnection conn = null;
-	class PrinterServiceConnection implements ServiceConnection {
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			Log.i("ServiceConnection", "onServiceDisconnected() called");
-			mGpService = null;
-		}
-		@Override
-		public void onServiceConnected(ComponentName name, IBinder service) {
-			mGpService =GpService.Stub.asInterface(service);
-		}
-	}
-	private void connection() {
-		conn = new PrinterServiceConnection();
-		//通过因示意图打开服务
-		Intent intent = new Intent("com.gprinter.aidl.GpPrintService");
-		bindService(intent, conn, Context.BIND_AUTO_CREATE); // bindService
-	}
-	
-	
 	
 	
 }
