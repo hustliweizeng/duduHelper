@@ -5,7 +5,7 @@
     android:background="@color/title_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.dudu.duduhelper.LoginActivity" >
+    tools:context="com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity" >
 
     <RelativeLayout
         android:layout_width="match_parent"

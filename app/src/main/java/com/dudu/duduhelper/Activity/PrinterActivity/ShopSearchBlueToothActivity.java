@@ -247,6 +247,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				//先清除之前搜索的结果
 				deviceAdapter.clear();
 				//隐藏已配对的设备
+				LogUtil.d("ss","ddfs");
 				bindDevicesTextView.setText("搜素到的设备");
 				//开启搜索模式
 				bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
@@ -291,6 +292,8 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				bluetoothAdapter.cancelDiscovery();
 				//关闭动画
 				closeSearch();
+				//显示按钮
+				scanbutton.setVisibility(View.VISIBLE);
 				device=bluetoothAdapter.getRemoteDevice(deviceAdapter.getItem(position).getAddress());
 				//如果当前设备没有绑定
 				if (device.getBondState() == BluetoothDevice.BOND_NONE){
@@ -386,12 +389,12 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				//获取查找到的蓝牙设备    
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE); 
 				//配对过
-				if (device.getBondState() == 12){
+				if (device.getBondState() == BluetoothDevice.BOND_BONDED){
 					deviceAdapter.addItem(device);
 					LogUtil.d("contain",device.getAddress());
 
 
-				}else if(device.getBondState() == 10){
+				}else if(device.getBondState() == BluetoothDevice.BOND_NONE){
 					//没有配对过
 					deviceAdapter.addItem(device);
 					LogUtil.d("add",device.getAddress());
@@ -494,5 +497,6 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 		radartop.setVisibility(View.GONE);
 		radarbttom.setVisibility(View.GONE);
 		radarImageing.setVisibility(View.GONE);
+		
 	}
 }

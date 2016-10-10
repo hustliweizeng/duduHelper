@@ -44,6 +44,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -143,7 +144,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		//设置通知栏（状态栏）的颜色
 		tintManager.setStatusBarTintEnabled(true);
 		tintManager.setStatusBarTintResource(R.color.status_Bar_color_red);//通知栏所需颜色
-
 	}
 
 	//做版本兼容，
@@ -158,6 +158,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			winParams.flags &= ~bits;
 		}
 		win.setAttributes(winParams);
+		
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -14,10 +15,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.MyInfoActivity.ShopSettingActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.application.DuduHelperApplication.GetPushNot;
 import com.dudu.duduhelper.fragment.CopyOfOrderFragment;
@@ -83,6 +86,30 @@ public class MainActivity extends BaseActivity
             String FRAGMENTS_TAG = "android:support:fragments";
             savedInstanceState.remove(FRAGMENTS_TAG);
         }
+	}
+	long firtTime = 0;
+	boolean isFirst = true;
+	//返回按钮监听
+	@Override
+	public void onBackPressed() {
+		//如果是第一次点击
+		if (isFirst){
+			//记录第一次点击的时间
+			firtTime = System.currentTimeMillis();
+			isFirst = false;
+			LogUtil.d("time",firtTime+"'");
+			Toast.makeText(context,"再按一次退出",Toast.LENGTH_SHORT).show();
+			return;
+		}else {
+			//第二次点击
+			if (System.currentTimeMillis()-firtTime>1000){
+				DuduHelperApplication application = (DuduHelperApplication) getApplication();
+				application.exit();
+				LogUtil.d("time",System.currentTimeMillis()-firtTime+"'");
+				isFirst = true;
+			}
+		}
+		
 	}
 	//Activity被回收导致fragment的getActivity为null的解决办法
 	// 加载视图
@@ -239,13 +266,6 @@ public class MainActivity extends BaseActivity
 		super.RightButtonClick();
 		Intent intent=new Intent(this,ShopSettingActivity.class);
 		startActivity(intent);
-	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
-		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 }

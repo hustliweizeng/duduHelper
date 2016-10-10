@@ -96,7 +96,6 @@
         android:layout_height="wrap_content"
         android:divider="@color/line_color_gray"
         android:dividerHeight="1dp"
-        android:layoutAnimation="@anim/list_controller"
         android:scrollbars="none" >
     </ListView>
 
