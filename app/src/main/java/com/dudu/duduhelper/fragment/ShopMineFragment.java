@@ -185,7 +185,7 @@ public class ShopMineFragment extends Fragment {
             //初始化手机号码
             shopePhoneTextView.setText(sp.getString("mobile",""));
         }
-        //
+        //收款二维码页面
         qcodeImgRel.setOnClickListener(new OnClickListener() {
 
             @Override

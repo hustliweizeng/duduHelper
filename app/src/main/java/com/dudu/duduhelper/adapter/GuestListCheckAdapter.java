@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,18 @@ import java.util.List;
 public class GuestListCheckAdapter extends RecyclerView.Adapter {
 	Context mContext;
 	//选中的条目
-	private List<String> list = new ArrayList<>();
+	private ArrayList<CharSequence> list = new ArrayList<>();
 	//是否全选
 	private boolean isAll = false;
 
 	public GuestListCheckAdapter(Context context) {
 		mContext = context;
+	}
+	public ArrayList<CharSequence> getList(){
+		return list;
+	}
+	public void setList(ArrayList<CharSequence> list){
+		this.list = list;
 	}
 
 	@Override
@@ -42,18 +49,15 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 		
 		Myholder myholder = (Myholder)holder;
 		if (list.contains(position+"")){
+			LogUtil.d("che","yes");
 			myholder.iv_ischeck.setImageResource(R.drawable.select_check);
 		}else {
-			myholder.iv_ischeck.setImageResource(R.drawable.select_empty);
-		}
-		
-		
-		if (isAll){
-			myholder.iv_ischeck.setImageResource(R.drawable.select_check);
-		}else {
-			myholder.iv_ischeck.setImageResource(R.drawable.select_empty);
+			LogUtil.d("che","no");
 
+			myholder.iv_ischeck.setImageResource(R.drawable.select_empty);
 		}
+		
+		
 			
 	}
 
@@ -94,17 +98,21 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 			if(listener != null){
 				//事件回调
 				listener.onItemClick(v,getLayoutPosition());
+				String position = getLayoutPosition()+"";
 				//当该条目被点击后，设置图标状态
-				if (!isChekcked){
-					list.add(getLayoutPosition()+"");
+				if (!list.contains(position)){
+					list.add(position);
+					LogUtil.d("ischeck","add");
 				}else {
-					list.remove(getLayoutPosition()+"");
+					list.remove(position);
+					LogUtil.d("ischeck","remove");
+
 				}
 				notifyDataSetChanged();
 			}
 
 		}
-		public List<String> getGuestList(){
+		public List<CharSequence> getGuestList(){
 			if (list!=null && list.size()!=0){
 				return list;
 			}else {
@@ -118,11 +126,16 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 	 * 选中所有
 	 */
 	public  void addAll(){
-		list.clear();
-		for (int i=0;i<getItemCount(); i++){
-			list.add(i+"");
+		if (isAll){
+			//取消全选
+			list.clear();
+			isAll = !isAll;
+		}else {
+			for (int i=0;i<getItemCount(); i++){
+				list.add(i+"");
+			}
+			isAll = !isAll;
 		}
-		isAll = !isAll;
 		//刷新所有状态
 		notifyDataSetChanged();
 	}

@@ -35,8 +35,7 @@
                     android:layout_marginLeft="14dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="17dp"
-                    android:background="@drawable/btn_white_bg"
-                    android:src="@drawable/icon_food" />
+                     />
 
                 <TextView
                     android:id="@+id/hongbaoName"

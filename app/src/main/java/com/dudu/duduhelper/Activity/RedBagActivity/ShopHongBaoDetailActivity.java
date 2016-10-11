@@ -65,10 +65,10 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 	public void RightButtonClick() 
 	{
 		// 红包领取历史记录
-		/*super.RightButtonClick();
+		super.RightButtonClick();
 		Intent intent = new Intent(ShopHongBaoDetailActivity.this,ShopHongbaoHistoryListActivity.class);
-		intent.putExtra("data", data);
-		startActivity(intent);*/
+		intent.putExtra("id", data.getData().getId());
+		startActivity(intent);
 	}
 
 	private void initView() 

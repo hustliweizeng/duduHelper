@@ -112,10 +112,22 @@ public class Util
     	return new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date(Long.parseLong(data)));
     	
     }
+	//字符串转换为时间戳
+	public static long Data2Unix(String data){
+		long time = 0;
+			try {
+				time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(data).getTime();
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
+		return  time;
+	}
     //时分秒转换
     public static String TimeConVert(String time)
     {
-        return new SimpleDateFormat("HH:mm:ss").format(new Date(Long.parseLong(time)));
+	    //date是毫秒
+        return new SimpleDateFormat("HH:mm:ss").format(new Date(Long.parseLong(time)*1000));
     }
     //获取当前年月日
     public static String DateForomate3()

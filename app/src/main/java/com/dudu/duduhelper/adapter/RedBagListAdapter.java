@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.RedBagListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -77,9 +78,14 @@ public class RedBagListAdapter extends BaseAdapter {
 		holder.tv_name.setText(data.getTitle());
 		holder.tv_price.setText(data.getTotal());
 		//设置红包状态
-		//holder.tv_status.setText(data.getNum());
-		
-		
+		long time = Util.Data2Unix(data.getTime_end());
+		if (time <System.currentTimeMillis()){
+			//已过期
+			holder.tv_status.setText("已过期");
+		}else {
+			holder.tv_status.setText("发放中");
+			
+		}
 
 		return convertView;
 	}

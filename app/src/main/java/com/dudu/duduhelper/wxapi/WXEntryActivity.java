@@ -69,7 +69,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
 	private String time="";
 	private Button saveImageButton;
 	private String qrcode;
-	private String APP_ID;
+	private String APP_ID ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -96,7 +96,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
 				imageUrl=savedInstanceState.getString("imageUrl");
 			}
 		}
-		initHeadView("收款",true,true,R.drawable.icon_share);
+		initHeadView("收款",true,false,0);
 		initView();
 		initData();
 	}
@@ -125,7 +125,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
 
 	private void initData()
 	{
-		ColorDialog.showRoundProcessDialog(WXEntryActivity.this,R.layout.loading_process_dialog_color);
+		//ColorDialog.showRoundProcessDialog(WXEntryActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_SHOP_WXPIC, "GET",new TextHttpResponseHandler()
 		{
@@ -160,7 +160,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler
 			@Override
 			public void onFinish() 
 			{
-				ColorDialog.dissmissProcessDialog();
+				//ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}

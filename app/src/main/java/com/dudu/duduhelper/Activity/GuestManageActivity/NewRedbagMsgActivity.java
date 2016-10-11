@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 
+import java.util.ArrayList;
+
 /**
  * @author
  * @version 1.0
@@ -26,6 +28,7 @@ public class NewRedbagMsgActivity extends BaseActivity implements View.OnClickLi
 	private EditText ed_requirement;
 	private EditText ed_expireday;
 	private Button submitbtn;
+	private ArrayList<CharSequence> checkedList;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -54,7 +57,11 @@ public class NewRedbagMsgActivity extends BaseActivity implements View.OnClickLi
 
 				break;
 			case R.id.ll_choose_guest:
-				startActivity(new Intent(context,GuestSelectActivity.class));
+				Intent intent = new Intent(context, GuestSelectActivity.class);
+				if (checkedList!=null){
+					intent.putCharSequenceArrayListExtra("checked",checkedList);
+				}
+				startActivityForResult(intent,4);
 				break;
 		}
 	}
@@ -78,9 +85,16 @@ public class NewRedbagMsgActivity extends BaseActivity implements View.OnClickLi
 			Toast.makeText(this, "21", Toast.LENGTH_SHORT).show();
 			return;
 		}
-
-		// TODO validate success, do something
-
-
+	}
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode ==4){
+			ArrayList<CharSequence> list = data.getCharSequenceArrayListExtra("list");
+			if (list!=null ){
+				tv_guest_num.setText(list.size()+"人");
+				checkedList = list;
+			}
+		}
 	}
 }

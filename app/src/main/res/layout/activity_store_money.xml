@@ -85,6 +85,7 @@
         <EditText
             android:inputType="number"
             android:layout_width="60dp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:background="@drawable/edite_white"
             android:id="@+id/ed_num"/>

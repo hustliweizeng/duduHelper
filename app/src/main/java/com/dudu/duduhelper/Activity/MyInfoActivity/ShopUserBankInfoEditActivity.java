@@ -135,6 +135,8 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 					String code = json.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						Toast.makeText(context,"提交成功",Toast.LENGTH_LONG).show();
+						//到列表页面
+						startActivity(new Intent(context,ShopBankListActivity.class));
 						finish();
 					}else {
 						Toast.makeText(context,"服务器异常，请稍后再试",Toast.LENGTH_LONG).show();
@@ -164,12 +166,12 @@ public class ShopUserBankInfoEditActivity extends BaseActivity
 			//用户名
 			if(!TextUtils.isEmpty(info.getBank_name()))
 			{
-				userBankNameEditText.setHint(info.getName());
+				userBankNameEditText.setText(info.getName());
 			}
 			//银行卡号
 			if(!TextUtils.isEmpty(info.getCard_number()))
 			{
-				userBankNumEditText.setHint(info.getCard_number());
+				userBankNumEditText.setText(info.getCard_number());
 			}
 			//银行名称
 			if(!TextUtils.isEmpty(info.getBank_key()))

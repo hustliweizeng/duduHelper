@@ -30,8 +30,6 @@ public class MoneyHistoryAdapter extends BaseAdapter {
     public List<CashHistoryBean.DataBean.OrderBean> orders = new ArrayList<>();
     Context context;
     HashMap<Integer,String> dates = new HashMap<>();
-    private int count;
-    private int countTitle =0;
 
     public MoneyHistoryAdapter(Context context) {
         this.context = context;
@@ -47,7 +45,7 @@ public class MoneyHistoryAdapter extends BaseAdapter {
         }
         //重置日期
         dates.clear();
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     @Override
@@ -110,6 +108,8 @@ public class MoneyHistoryAdapter extends BaseAdapter {
         holder.tv_subject_money_history.setText(orders.get(position).getSubject());
         holder.tv_body_money_history.setText("-"+orders.get(position).getBody());
         holder.tv_price_item_money_hishory.setText("+￥"+orders.get(position).getFee());
+        //设置时间
+        LogUtil.d("time",orders.get(position).getTime());
         holder.tv_time_money_history.setText(Util.TimeConVert(orders.get(position).getTime()));
         return convertView;
     }

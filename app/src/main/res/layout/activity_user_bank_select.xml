@@ -27,7 +27,7 @@
             android:scrollbarTrackVertical="@color/text_color_yellow"
             android:scrollbarSize="4dp"
             android:dividerHeight="1dp"
-            android:layoutAnimation="@anim/list_controller" />
+             />
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

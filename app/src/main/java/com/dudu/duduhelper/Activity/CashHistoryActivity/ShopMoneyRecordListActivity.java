@@ -146,16 +146,21 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 						CashHistoryBean historyBean = new Gson().fromJson(s, CashHistoryBean.class);
 						//插入数据之前，清空之前的adapter的集合，否则数据会重复
 						adapter.orders.clear();
+						adapter.list.clear();
+						//获取数据非空判断
+						if (historyBean.getData()!=null &&historyBean.getData().size()>0){
+							adapter.addAll(historyBean.getData());
+							tv_msg.setVisibility(View.GONE);
+						}else {
+							tv_msg.setVisibility(View.VISIBLE);
+						}
+						//刷新页面
 						adapter.notifyDataSetChanged();
-						adapter.addAll(historyBean.getData());
-						tv_msg.setVisibility(View.GONE);
+
 					} else {
 						//数据请求失败
 						String msg = object.getString("msg");
-						tv_msg.setVisibility(View.VISIBLE);
-						//清空数据
-						adapter.orders.clear();
-						adapter.notifyDataSetChanged();
+						Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

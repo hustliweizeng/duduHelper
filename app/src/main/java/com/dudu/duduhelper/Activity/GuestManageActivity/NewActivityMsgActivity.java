@@ -2,6 +2,7 @@ package com.dudu.duduhelper.Activity.GuestManageActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+
+import java.util.ArrayList;
 
 /**
  * @author
@@ -25,6 +28,7 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 	private EditText ed_title;
 	private EditText ed_content;
 	private Button submitbtn;
+	private ArrayList<CharSequence> checkedList;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -52,7 +56,11 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 
 				break;
 			case R.id.ll_choose_guest:
-				startActivity(new Intent(context,GuestSelectActivity.class));
+				Intent intent = new Intent(context, GuestSelectActivity.class);
+				if (checkedList!=null){
+					intent.putCharSequenceArrayListExtra("checked",checkedList);
+				}
+				startActivityForResult(intent,2);
 				break;
 		}
 	}
@@ -71,8 +79,17 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 			return;
 		}
 
-		// TODO validate success, do something
+	}
 
-
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode ==2){
+			ArrayList<CharSequence> list = data.getCharSequenceArrayListExtra("list");
+			if (list!=null ){
+				tv_guest_num.setText(list.size()+"人");
+				checkedList = list;
+			}
+		}
 	}
 }

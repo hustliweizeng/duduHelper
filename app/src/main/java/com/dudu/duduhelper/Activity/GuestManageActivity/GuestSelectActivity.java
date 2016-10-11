@@ -1,5 +1,6 @@
 package com.dudu.duduhelper.Activity.GuestManageActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.GuestListCheckAdapter;
+
+import java.util.ArrayList;
 
 /**
  * @author
@@ -35,6 +38,10 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 	}
 
 	private void initData() {
+		ArrayList<CharSequence> checked = getIntent().getCharSequenceArrayListExtra("checked");
+		if (checked!=null){
+			adapter.setList(checked);
+		}
 		//设置店铺点击事件
 		adapter.setOnItemClickListner(new GuestListCheckAdapter.OnItemClickListner() {
 			@Override
@@ -65,9 +72,15 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 			case  R.id.recycleview_list:
 				break;
 			case  R.id.tv_select_all:
+				//全选
 				adapter.addAll();
 				break;
 			case  R.id.tv_submit:
+				//确定按钮
+				Intent intent = new Intent();
+				intent.putCharSequenceArrayListExtra("list",adapter.getList());
+				setResult(2,intent);
+				finish();
 				break;
 
 		}

@@ -94,6 +94,7 @@ public class ConstantParamPhone
     public static final String EDIT_REDBAG ="/api/app/red_packet/";//编辑红包
     public static final String ADD_REDBAG = "/api/app/red_packet";//添加红包
     public static final String DEL_REDBAG ="/api/app/red_packet/";//删除红包
+    public static final String REDBAG_HISTORY = "/api/app/red_packet/";//红包领取记录
  
  
  

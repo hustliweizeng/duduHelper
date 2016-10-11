@@ -136,7 +136,7 @@
             android:layout_centerVertical="true"
             android:background="@drawable/view_selector"
             android:focusable="false"
-            android:src="@drawable/icon_shangjia"/>
+            />
     </RelativeLayout>
 
     <View

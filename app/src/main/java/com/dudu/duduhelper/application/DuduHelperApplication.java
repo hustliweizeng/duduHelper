@@ -85,6 +85,7 @@ public class DuduHelperApplication extends Application
 				.showImageForEmptyUri(R.drawable.icon_head)
 				.showImageOnFail(R.drawable.icon_head)
 				.cacheInMemory(true).considerExifParams(true)
+				.cacheOnDisc(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.displayer(new FadeInBitmapDisplayer(100))
 				//图片缩放设置

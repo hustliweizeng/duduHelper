@@ -45,7 +45,8 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 		ed_num = (EditText) findViewById(R.id.ed_num);
 		tv_price = (TextView) findViewById(R.id.tv_price);
 		btn_subimit = (Button) findViewById(R.id.btn_subimit);
-
+		redbage_check.setOnClickListener(this);
+		activity_check.setOnClickListener(this);
 		btn_subimit.setOnClickListener(this);
 	}
 
