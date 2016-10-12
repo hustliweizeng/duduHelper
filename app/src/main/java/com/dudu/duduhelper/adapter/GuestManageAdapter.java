@@ -26,14 +26,15 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 	List<GuestListBean.GuestDetails> list = new ArrayList<>();
 	Context context ;
 
-	public GuestManageAdapter(Context context, List<GuestListBean.GuestDetails> t ){
+	public GuestManageAdapter(Context context ){
 		this.context = context;
-		list = t;
-		
+
 	}
 	public void addAll(List<GuestListBean.GuestDetails> list){
-		this.list = list;
-		notifyDataSetChanged();
+		if (list!=null){
+			this.list = list;
+			notifyDataSetChanged();
+		}
 	}
 	@Override
 	//把view封装成holder，自动复用
@@ -45,7 +46,6 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 	//填写数据
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		
 		MyViewHolder myholder = (MyViewHolder) holder;
 		GuestListBean.GuestDetails data = list.get(position);
 		ImageLoader.getInstance().displayImage(data.getAvatar(),myholder.iv_photo);
@@ -57,7 +57,7 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public int getItemCount() {
-		return 30;
+		return list.size();
 	}
 	//封装holder
 	public class MyViewHolder extends  RecyclerView.ViewHolder{

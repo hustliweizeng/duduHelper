@@ -39,6 +39,8 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 	private RelativeLayout activity_msg;
 	private TextView tv_count_redbag;
 	private RelativeLayout redbage_msg;
+	private float active_num;
+	private float unactive_num;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -46,7 +48,6 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 		setContentView(R.layout.activity_sendmessage);
 		initView();
 		initHeadView("选择通知类型",true,false,0);
-		initHeadView();
 		initData();
 	}
 
@@ -65,8 +66,10 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
 						ShopStatusBean shopStatusBean = new Gson().fromJson(s, ShopStatusBean.class);
-						active_user_num.setText(shopStatusBean.getActive_user());
-						unactive_user_num.setText(shopStatusBean.getInactivity_user());
+						active_num = Float.parseFloat(shopStatusBean.getActive_user());
+						unactive_num = Float.parseFloat(shopStatusBean.getInactivity_user());
+						active_user_num.setText(active_num+"");
+						unactive_user_num.setText(unactive_num+"");
 						//设置次数
 						List<ShopStatusBean.MessageListsBean> message_lists = shopStatusBean.getMessage_lists();
 						if (message_lists!=null &&message_lists.size()>0){
@@ -88,17 +91,27 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 					e.printStackTrace();
 				}
 			}
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				//初始化图片信息
+				initHeadView();
+
+			}
 		});
 		
 		
 	}
 
 	private void initHeadView() {
+		float total_num = active_num+unactive_num;
+
 		wheelIndicatorView = (WheelIndicatorTongjiView) findViewById(R.id.wheel_indicator_view);
 		wheelIndicatorView.setItemsLineWidth(Util.dip2px(this, 2));
 		//设置使用金额
-		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat("40") / Float.parseFloat("100"), Color.parseColor("#ff5000"), Util.dip2px(this, 4));
-		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(Float.parseFloat("40") / Float.parseFloat("100"), Color.parseColor("#2c4660"), Util.dip2px(this, 2));
+		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(unactive_num / total_num, Color.parseColor("#ff5000"), Util.dip2px(this, 4));
+		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(active_num / total_num, Color.parseColor("#2c4660"), Util.dip2px(this, 2));
 		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
 		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem);
 		wheelIndicatorView.startItemsAnimation();

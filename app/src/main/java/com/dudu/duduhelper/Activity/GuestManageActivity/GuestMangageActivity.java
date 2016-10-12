@@ -47,7 +47,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_guest_manager);
 		initHeadView("会员管理",true,false,0);
-		adapter = new GuestManageAdapter(context, null);
+		adapter = new GuestManageAdapter(context);
 		initView();
 		initData();
 
@@ -58,9 +58,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		
 		user_list.setLayoutManager(new LinearLayoutManager(this));
 		user_list.setAdapter(adapter);
-		Toast.makeText(context,"加载成功",Toast.LENGTH_SHORT).show();
 		RequestParams params = new RequestParams();
-		
 		params.put("page",page);
 		params.put("num",num);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_GUEST_LIST, "POST", new TextHttpResponseHandler() {
