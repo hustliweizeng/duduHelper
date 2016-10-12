@@ -1,6 +1,7 @@
 package com.dudu.duduhelper.Activity.GuestManageActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Display;
@@ -48,6 +49,18 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 		redbage_check.setOnClickListener(this);
 		activity_check.setOnClickListener(this);
 		btn_subimit.setOnClickListener(this);
+
+		String style = getIntent().getStringExtra("style");
+		//初始化界面按钮
+		if (style.equals("redbag")){
+			redbage_check.setTextColor(getResources().getColor(R.color.text_green_color));
+			activity_check.setTextColor(getResources().getColor(R.color.text_dark_color));
+			isRedbag = true;
+		}else if (style.equals("activity")){
+			redbage_check.setTextColor(getResources().getColor(R.color.text_dark_color));
+			activity_check.setTextColor(getResources().getColor(R.color.text_green_color));
+			isRedbag =false;
+		}
 	}
 
 	@Override
@@ -70,7 +83,7 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 
 	private void submit() {
 		// validate
-		String num = ed_num.getText().toString().trim();
+	/*	String num = ed_num.getText().toString().trim();
 		if (TextUtils.isEmpty(num)) {
 			Toast.makeText(this, "num不能为空", Toast.LENGTH_SHORT).show();
 			AlertDialog dailog = new  AlertDialog.Builder(context,R.style.AppTheme_Dialog).create();
@@ -88,9 +101,9 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 
 
 			return;
-		}
-
-
-
+		}*/
+		//直接跳转到支付结果页面
+		startActivity(new Intent(context,PayResultActivity.class));
+		finish();
 	}
 }

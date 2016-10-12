@@ -34,13 +34,11 @@
     <Button
         android:id="@+id/submitbtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="新建活动通知"
         android:textColor="@color/bg_white_color"
-        android:textSize="18dp"
+        android:textSize="20dp"
         android:background="@color/btn_color"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
         />
 
 </LinearLayout>

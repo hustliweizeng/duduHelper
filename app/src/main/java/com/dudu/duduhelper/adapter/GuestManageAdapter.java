@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.javabean.GuestListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -22,13 +23,17 @@ import java.util.List;
 
 public class GuestManageAdapter extends RecyclerView.Adapter {
 
-	List<Object> list = new ArrayList<>();
+	List<GuestListBean.GuestDetails> list = new ArrayList<>();
 	Context context ;
 
-	public GuestManageAdapter(Context context, List<Object> t ){
+	public GuestManageAdapter(Context context, List<GuestListBean.GuestDetails> t ){
 		this.context = context;
 		list = t;
 		
+	}
+	public void addAll(List<GuestListBean.GuestDetails> list){
+		this.list = list;
+		notifyDataSetChanged();
 	}
 	@Override
 	//把view封装成holder，自动复用
@@ -42,15 +47,17 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 		
 		MyViewHolder myholder = (MyViewHolder) holder;
-		//Object o = list.get(position);
-		//ImageLoader.getInstance().displayImage();
-		
-		
+		GuestListBean.GuestDetails data = list.get(position);
+		ImageLoader.getInstance().displayImage(data.getAvatar(),myholder.iv_photo);
+		myholder.tv_consume_price.setText(data.getTotal_consumption());
+		myholder.tv_consume_conut.setText(data.getTotal_num());
+		myholder.tv_date.setText(data.getLast_consumption_time());
+		myholder.tv_name.setText(data.getNickname());
 	}
 
 	@Override
 	public int getItemCount() {
-		return 3;
+		return 30;
 	}
 	//封装holder
 	public class MyViewHolder extends  RecyclerView.ViewHolder{

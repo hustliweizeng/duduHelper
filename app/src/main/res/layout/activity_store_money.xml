@@ -86,6 +86,7 @@
             android:inputType="number"
             android:layout_width="60dp"
             android:gravity="center"
+            android:textColor="@color/text_dark_color"
             android:layout_height="wrap_content"
             android:background="@drawable/edite_white"
             android:id="@+id/ed_num"/>
@@ -110,7 +111,10 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:padding="16dp">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -128,7 +132,10 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:padding="16dp">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -159,6 +166,7 @@
         </LinearLayout>
         
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -173,14 +181,13 @@
             android:layout_marginTop="30dp"
             android:text="立即支付"
             android:textColor="@color/bg_white_color"
-            android:textSize="18dp"
-            android:background="@drawable/btn_bg"
+            android:textSize="20dp"
+            android:background="@drawable/btn_larg_bg"
             />
         
         
         
     </LinearLayout>
-    
-    
+
 
 </LinearLayout>

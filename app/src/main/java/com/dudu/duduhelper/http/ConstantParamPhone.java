@@ -183,6 +183,15 @@ public class ConstantParamPhone
    public static final String USE_CARD ="/api/app/half/useCard";//使用五折卡
   //统计
    public static final String GET_SUM = "/api/app/stat/date";//获取统计数据
+ 
+ //客户管理
+   public static final String  GET_GUEST_ISOPEN ="/api/app/custom/status";//获取客户管理是否开启
+   public static final String  GET_GUEST_LIST = "/api/app/custom/members";//获取用户列表
+   public static final String  GET_SHOP_STATUS ="/api/app/custom/statistics";//获取商家状态
+   public static final String  GET_SEND_RECORD ="/api/app/custom/send_logs/";//获取发送记录
+   public static final String  GET_REDBAG_DETAILS ="/api/app/custom/red_packet/{id}";//获取红包详情
+   public static final String  SEND_MESSAGE ="/api/app/custom/message";//发送消息
+   
 
 
 

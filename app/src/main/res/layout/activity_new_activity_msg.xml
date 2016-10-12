@@ -52,58 +52,79 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_marginTop="16dp"
+        
+        <TextView
+            android:layout_marginLeft="16dp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/bg_white_color"
-            android:orientation="horizontal"
+            android:text="活动标题"
+            android:textSize="16dp"
             android:gravity="center_vertical"
-            >
-            <TextView
-                android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="活动标题"
-                android:textSize="16dp"
-                android:textColor="@color/text_dark_color"
-                />
-            <EditText
-                android:id="@+id/ed_title"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:layout_height="wrap_content"
-                android:hint="请编辑标题"
-                android:textSize="16dp"
-                android:background="@null"
-                android:layout_marginRight="16dp"
-                android:textColor="@color/text_dark_color"
-                />
+            android:textColor="@color/text_dark_color"
+            />
+        <EditText
+            android:id="@+id/ed_title"
+            android:layout_width="match_parent"
+            android:height="80dp"
+            android:layout_height="wrap_content"
+            android:hint="请编辑标题"
+            android:gravity="top"
+            android:padding="16dp"
+            android:textSize="16dp"
+            android:background="@color/bg_white_color"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/text_dark_color"
+            />
 
-        </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="活动描述"
+            android:text="活动内容"
             android:textColor="@color/text_dark_color"
             android:textSize="16dp"
             android:gravity="center_vertical"
             android:layout_marginLeft="16dp"
             />
-        <EditText
-            android:id="@+id/ed_content"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:gravity="top"
-            android:background="@drawable/edit_null"
-            />
+            android:layout_height="150dp">
+            <EditText
+                android:id="@+id/ed_content"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="top"
+                android:hint="请编辑内容"
+                android:padding="16dp"
+                android:background="@drawable/edit_null"
+                />
+            <TextView
+                android:id="@+id/tv_num_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="剩余300字"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/bg_white_color"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/tv_hint_bg"
+                />
+            
+            
+            
+        </RelativeLayout>
+        
         <Button
             android:id="@+id/submitbtn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="40dp"
-            android:background="@drawable/btn_bg"
+            android:background="@drawable/btn_larg_bg"
             android:text="提交"
             android:textSize="18dp"
             android:textColor="@color/bg_white_color"

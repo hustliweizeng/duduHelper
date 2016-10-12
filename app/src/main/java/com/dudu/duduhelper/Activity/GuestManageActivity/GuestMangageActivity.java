@@ -13,6 +13,16 @@ import android.widget.Toast;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.GuestManageAdapter;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.GuestListBean;
+import com.google.gson.Gson;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * @author
@@ -27,12 +37,17 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 	private Button send_message_guest_manage;
 	private RecyclerView user_list;
 	private SwipeRefreshLayout refreshLayout;
+	int page = 1;
+	int num = 10;
+	private GuestListBean guestList;
+	private GuestManageAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_guest_manager);
 		initHeadView("会员管理",true,false,0);
+		adapter = new GuestManageAdapter(context, null);
 		initView();
 		initData();
 
@@ -42,8 +57,45 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 	private void initData() {
 		
 		user_list.setLayoutManager(new LinearLayoutManager(this));
-		user_list.setAdapter(new GuestManageAdapter(context,null));
+		user_list.setAdapter(adapter);
 		Toast.makeText(context,"加载成功",Toast.LENGTH_SHORT).show();
+		RequestParams params = new RequestParams();
+		
+		params.put("page",page);
+		params.put("num",num);
+		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_GUEST_LIST, "POST", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						guestList = new Gson().fromJson(s, GuestListBean.class);
+						//設置頁面
+						total_guest.setText(guestList.getCount().getTotal());
+						new_guest.setText(guestList.getCount().getNow());
+						if (guestList.getList()!= null &&guestList.getList().size()>0){
+							adapter.addAll(guestList.getList());
+						}
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		
+		
 		refreshLayout.setRefreshing(false);
 	}
 

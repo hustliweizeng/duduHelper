@@ -6,12 +6,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.ShopStatusBean;
 import com.dudu.duduhelper.widget.WheelIndicatorItem;
 import com.dudu.duduhelper.widget.WheelIndicatorTongjiView;
+import com.google.gson.Gson;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * @author
@@ -35,6 +47,50 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 		initView();
 		initHeadView("选择通知类型",true,false,0);
 		initHeadView();
+		initData();
+	}
+
+	private void initData() {
+		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SHOP_STATUS, "get", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						ShopStatusBean shopStatusBean = new Gson().fromJson(s, ShopStatusBean.class);
+						active_user_num.setText(shopStatusBean.getActive_user());
+						unactive_user_num.setText(shopStatusBean.getInactivity_user());
+						//设置次数
+						List<ShopStatusBean.MessageListsBean> message_lists = shopStatusBean.getMessage_lists();
+						if (message_lists!=null &&message_lists.size()>0){
+							if (message_lists.get(0).getType_id().equals("1")){
+								//设置活动次数
+								tv_count_activity.setText(message_lists.get(0).getMonth_free_num());
+							}else if (message_lists.get(1).getType_id().equals("2")){
+								//设置红包剩余次数
+								tv_count_redbag.setText(message_lists.get(1).getMonth_free_num());
+							}
+						}
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		
 	}
 
 	private void initHeadView() {
@@ -67,20 +123,22 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 			//红包消息
 			case R.id.redbage_msg:
 			//判断当前可用次数是否为0
-				count = 1;
+				count = 0;
 			if (count >0){
 				intent = new Intent(context, CreateRedbagmsgActivity.class);
 			}else {
 				intent = new Intent(context,StoreMoneyActivity.class);
+				intent.putExtra("style","redbag");
 			}
 			break;
 			//活动消息
 			case R.id.activity_msg:
-				count =0;
+				count =1;
 			if (count >0){
 				intent = new Intent(context, CreateActivityMsg.class);
 			}else {
 				intent = new Intent(context,StoreMoneyActivity.class);
+				intent.putExtra("style","activity");
 			}
 			break;
 		}

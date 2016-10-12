@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dudu.duduhelper"
-    android:versionCode="14"
-    android:versionName="2.3.6" >
+          package="com.dudu.duduhelper"
+          android:versionCode="14"
+          android:versionName="2.3.6" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -110,6 +110,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden" >
 
         </activity>
+        <activity android:name=".Activity.GuestManageActivity.PayResultActivity"/>
         <activity android:name=".Activity.RedBagActivity.EditRedbag2Activity"/>
         <activity
             android:name=".Activity.CheckSellAcitivty.CashSellActivity"
@@ -138,7 +139,8 @@
             android:name=".Activity.CheckSellAcitivty.CashSellScanFailActivity"
             android:label="@string/title_activity_cash_sell_scan_fail" >
         </activity>
-        <activity android:name=".Activity.GuestManageActivity.SendMessageActivity"/>
+        <activity android:name=".Activity.GuestManageActivity.SendMessageActivity"
+                  android:launchMode="singleTask"/>
         <activity android:name=".Activity.GuestManageActivity.GuestMangageActivity"/>
         <activity
             android:name=".Activity.CheckSellAcitivty.MemberSellActivity"
@@ -245,7 +247,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
+
         </activity>
         <activity
             android:name=".Activity.WelcomeActivity.LoadingActivity"
@@ -273,7 +275,7 @@
             android:name=".Activity.CashHistoryActivity.GetInComeActivity"
             android:label="@string/title_activity_get_in_come" >
         </activity>
-       
+
         <activity
             android:name=".Activity.PrinterActivity.ShopSearchBlueToothActivity"
             android:label="@string/title_activity_search_blue_tooth" >
@@ -454,8 +456,8 @@
             android:label="@string/title_activity_shop_account_watch" >
         </activity>
         <!--<activity-->
-            <!--android:name=".ShopSearchBlueToothActivity"-->
-            <!--android:label="@string/title_activity_shop_search_blue_tooth" >-->
+        <!--android:name=".ShopSearchBlueToothActivity"-->
+        <!--android:label="@string/title_activity_shop_search_blue_tooth" >-->
         <!--</activity>-->
         <activity
             android:name=".Activity.BigBandActivity.ShopProductDetailActivity"
@@ -507,7 +509,7 @@
             android:label="@string/title_activity_shop_money_record_list" >
         </activity>
         <activity android:name=".Activity.RedBagActivity.CreateRedBagActivity"
-            android:label=".CreateRedBagActivity"/>
+                  android:label=".CreateRedBagActivity"/>
     </application>
 
 </manifest>

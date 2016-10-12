@@ -26,9 +26,11 @@ import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountDataActivity;
 import com.dudu.duduhelper.Activity.fiveDiscountActivity.DiscountSellActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.RedBagListBean;
+import com.dudu.duduhelper.widget.ColorDialog;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
@@ -57,6 +59,8 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	private LinearLayout moneyRecordLinButton;
 	//红包列表状态
 	private LinearLayout guest_manager;
+	private Intent intent;
+	private boolean shopIsoPen;
 
 	@Override
 	@Nullable
@@ -71,6 +75,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		initFragmentView();
+		requestStatus();
 	}
 	private void initFragmentView() 
 	{
@@ -108,7 +113,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	public void onClick(View v) 
 	{
 		// TODO Auto-generated method stub
-		Intent intent=new Intent();
+		intent = new Intent();
 		switch (v.getId())
 		{
 			case R.id.orderBtnLin:
@@ -117,11 +122,11 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 				break;
 			case R.id.getCashRelBtn:
 				//进入收款页面
-				intent=new Intent(getActivity(),ShopGetInComeCashActivity.class);
+				intent =new Intent(getActivity(),ShopGetInComeCashActivity.class);
 				break;
 			case R.id.getHexiaoRelBtn:
 				//核销
-				intent=new Intent(getActivity(),MipcaActivityCapture.class);
+				intent =new Intent(getActivity(),MipcaActivityCapture.class);
 				intent.putExtra("action", "hexiao");
 				break;
 			case R.id.getCountBtn:
@@ -134,12 +139,12 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			    break;
 			case R.id.dapaibuyBtn:
 				//大牌抢购
-				intent=new Intent(getActivity(),shopProductListActivity.class);
+				intent =new Intent(getActivity(),shopProductListActivity.class);
 				intent.putExtra("category", "bigband");
 			    break;
 			case R.id.youhuiBtn:
 				//优惠券
-				intent=new Intent(getActivity(),shopProductListActivity.class);
+				intent =new Intent(getActivity(),shopProductListActivity.class);
 				intent.putExtra("category", "discount");
 			    break;
 			case R.id.hongbaoBtn:
@@ -147,29 +152,65 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			    return;
 			case R.id.wuzheBtn:
 				//五折验证
-				intent=new Intent(getActivity(),DiscountSellActivity.class);
+				intent =new Intent(getActivity(),DiscountSellActivity.class);
 				intent.putExtra("action", "wuzhe");
 			    break;
 			case R.id.memberBtn:
 				//员工管理
-				intent=new Intent(getActivity(),ShopMemberListActivity.class);
+				intent =new Intent(getActivity(),ShopMemberListActivity.class);
 			    break;
 			case R.id.shopmanagerBtn:
 				//门店管理
-				intent=new Intent(getActivity(),ShopListManagerActivity.class);
-			    break;
+				intent =new Intent(getActivity(),ShopListManagerActivity.class);
+				break;
 			//账单流水
 			case R.id.moneyRecordLinButton:
-				intent=new Intent(getActivity(),ShopMoneyRecordListActivity.class);
-			    break;
+				intent =new Intent(getActivity(),ShopMoneyRecordListActivity.class);
+				break;
 			case R.id.guest_manager:
 				//客户管理
-				intent = new Intent(getActivity(), GuestMangageActivity.class);
+				if (shopIsoPen){
+					intent = new  Intent(getActivity(), GuestMangageActivity.class);
+				}else {
+					Toast.makeText(getActivity(),"当前功能未开通，敬请期待",Toast.LENGTH_SHORT).show();
+					return;
+				}
 				break;
 			default:
 				break;
 		}
 		startActivity(intent);
+	}
+	public void requestStatus(){
+		HttpUtils.getConnection(getActivity(), null, ConstantParamPhone.GET_GUEST_ISOPEN, "GET", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(getActivity(),"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						if (object.getString("status").equals("1")){
+							shopIsoPen = true;
+						}else{
+							shopIsoPen = false;
+						}
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 

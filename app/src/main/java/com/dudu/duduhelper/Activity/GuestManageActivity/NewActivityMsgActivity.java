@@ -3,7 +3,9 @@ package com.dudu.duduhelper.Activity.GuestManageActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,8 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 	private EditText ed_content;
 	private Button submitbtn;
 	private ArrayList<CharSequence> checkedList;
+	private TextView tv_num_remind;
+	int max_num = 300;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -44,6 +48,25 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 		ll_choose_guest.setOnClickListener(this);
 		ed_title = (EditText) findViewById(R.id.ed_title);
 		ed_content = (EditText) findViewById(R.id.ed_content);
+		//字体输入监听
+		ed_content.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				int letf_num = max_num-s.length();
+				tv_num_remind.setText("剩余"+letf_num+"字");
+			}
+		});
+		tv_num_remind = (TextView) findViewById(R.id.tv_num_remind);
 		submitbtn = (Button) findViewById(R.id.submitbtn);
 
 		submitbtn.setOnClickListener(this);

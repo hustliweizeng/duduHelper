@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.GuestListCheckAdapter;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
+		LogUtil.d("res","success");
 		setContentView(R.layout.activity_guest_select);
 		initHeadView("选择客户", true, false, 0);
 		adapter = new GuestListCheckAdapter(this);
