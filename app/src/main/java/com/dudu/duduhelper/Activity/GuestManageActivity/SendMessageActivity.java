@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -68,6 +69,9 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 						ShopStatusBean shopStatusBean = new Gson().fromJson(s, ShopStatusBean.class);
 						active_num = Float.parseFloat(shopStatusBean.getActive_user());
 						unactive_num = Float.parseFloat(shopStatusBean.getInactivity_user());
+						LogUtil.d("unactive",unactive_num+"");
+						LogUtil.d("active",active_num+"");
+
 						active_user_num.setText(active_num+"");
 						unactive_user_num.setText(unactive_num+"");
 						//设置次数
@@ -80,6 +84,8 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 								//设置红包剩余次数
 								tv_count_redbag.setText(message_lists.get(1).getMonth_free_num());
 							}
+							tv_count_redbag.setText(message_lists.get(1).getMonth_free_num());
+
 						}
 
 					}else {
@@ -110,10 +116,11 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 		wheelIndicatorView = (WheelIndicatorTongjiView) findViewById(R.id.wheel_indicator_view);
 		wheelIndicatorView.setItemsLineWidth(Util.dip2px(this, 2));
 		//设置使用金额
-		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(unactive_num / total_num, Color.parseColor("#ff5000"), Util.dip2px(this, 4));
-		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(active_num / total_num, Color.parseColor("#2c4660"), Util.dip2px(this, 2));
-		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
+		//背景是蓝底，所以未到店的是分子，总数是分母
+		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(unactive_num/total_num, Color.parseColor("#ff5000"), Util.dip2px(this, 4));//非活跃
+		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(unactive_num/total_num, Color.parseColor("#2c4660"), Util.dip2px(this, 2));//活跃
 		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem);
+		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
 		wheelIndicatorView.startItemsAnimation();
 	}
 
@@ -136,7 +143,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 			//红包消息
 			case R.id.redbage_msg:
 			//判断当前可用次数是否为0
-				count = 0;
+				count = 1;
 			if (count >0){
 				intent = new Intent(context, CreateRedbagmsgActivity.class);
 			}else {
@@ -146,7 +153,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 			break;
 			//活动消息
 			case R.id.activity_msg:
-				count =1;
+				count = 1;
 			if (count >0){
 				intent = new Intent(context, CreateActivityMsg.class);
 			}else {

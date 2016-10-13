@@ -5,20 +5,32 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.ActivityMsGListAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.ActivityMsgBean;
+import com.dudu.duduhelper.widget.ColorDialog;
+import com.google.gson.Gson;
+import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
+
+import static com.dudu.duduhelper.R.id.loading_progressBar;
 
 /**
  * @author
@@ -30,11 +42,16 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 	private RecyclerView recycleview_list;
 	private SwipeRefreshLayout swiperefresh;
 	private Button submitbtn;
+	private ActivityMsGListAdapter adapter;
+	private  int page = 1;
+	private  int sise = 10;
+	private View footView;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_create_activity_msg);
+		adapter = new ActivityMsGListAdapter(context);
 		initView();
 		initHeadView("活动通知",true,false,0);
 		initData();
@@ -42,22 +59,32 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 	}
 
 	private void initData() {
-		recycleview_list.setLayoutManager(new LinearLayoutManager(this));
-		recycleview_list.setAdapter(new ActivityMsGListAdapter(context));
-		swiperefresh.setRefreshing(false);
-		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SEND_RECORD+"1", "GET", new TextHttpResponseHandler() {
+
+		//ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		swiperefresh.setRefreshing(true);
+		RequestParams params = new RequestParams();
+		params.put("type_id","1");//红包的typeid是2
+		params.put("page",page);
+		params.put("size",sise);
+		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SEND_RECORD, "post", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
 
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("acti",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
-
+						ActivityMsgBean activityMsgBean = new Gson().fromJson(s, ActivityMsgBean.class);
+						List<ActivityMsgBean.ListBean> list = activityMsgBean.getList();
+						if (list!=null &list.size()>0){
+							adapter.addAll(list);
+						}
 
 					}else {
 						//数据请求失败
@@ -68,10 +95,16 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 					e.printStackTrace();
 				}
 			}
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				swiperefresh.setRefreshing(false);
+				//移除底部view
+				recycleview_list.removeView(footView);
+				ColorDialog.dissmissProcessDialog();
+			}
 		});
-		
-		
-		
 		
 	}
 
@@ -86,6 +119,33 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 				initData();
 			}
 		});
+		recycleview_list.setLayoutManager(new LinearLayoutManager(this));
+		recycleview_list.setAdapter(adapter);
+		recycleview_list.setOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+				super.onScrollStateChanged(recyclerView, newState);
+				//滑动停止以后
+				if (newState == RecyclerView.SCROLL_STATE_IDLE){
+					//获取是否在底部
+					boolean isBottom = recyclerView.canScrollVertically(1);
+
+					//说明滑到底部
+					if (isBottom){
+						footView = View.inflate(context,R.layout.activity_listview_foot,null);
+//					ProgressBar loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
+//					TextView loading_text=(TextView) footView.findViewById(R.id.loading_text);
+						recycleview_list.addView(footView);
+						page++;
+						initData();
+					}
+					
+				}
+				
+			}
+			
+		});
+		
 	}
 
 	@Override
@@ -93,7 +153,6 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 		switch (v.getId()) {
 			case R.id.submitbtn:
 				startActivity(new Intent(context,NewActivityMsgActivity.class));
-
 				break;
 		}
 	}

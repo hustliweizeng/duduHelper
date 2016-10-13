@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
 
@@ -85,6 +86,25 @@ public class NewRedbagMsgActivity extends BaseActivity implements View.OnClickLi
 			Toast.makeText(this, "21", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		"type_id" => "消息类型编号"
+		"members" => array:1 [▼
+		0 => "member_id"
+		]
+		"params" => array:5 [▼
+		"money" => "红包消息:金额"
+		"life" => "红包消息:有效期"
+		"min_use_money" => "红包消息:最低使用金额"
+		"title" => "活动通知:标题"
+		"desc" => "活动通知:描述"
+		]
+		
+		
+		
+		RequestParams params = new RequestParams();
+		params.put("type_id","2");
+		params.put("members",);
+		params.put("params");
+
 	}
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

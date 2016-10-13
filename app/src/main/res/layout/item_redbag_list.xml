@@ -79,7 +79,7 @@
             android:layout_alignParentRight="true"
             android:text="发放中"
             android:textColor="@color/text_color_light"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
         
 
       

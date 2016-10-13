@@ -188,9 +188,10 @@ public class ConstantParamPhone
    public static final String  GET_GUEST_ISOPEN ="/api/app/custom/status";//获取客户管理是否开启
    public static final String  GET_GUEST_LIST = "/api/app/custom/members";//获取用户列表
    public static final String  GET_SHOP_STATUS ="/api/app/custom/statistics";//获取商家状态
-   public static final String  GET_SEND_RECORD ="/api/app/custom/send_logs/";//获取发送记录
+   public static final String  GET_SEND_RECORD ="/api/app/custom/send_logs";//获取发送记录
    public static final String  GET_REDBAG_DETAILS ="/api/app/custom/red_packet/{id}";//获取红包详情
    public static final String  SEND_MESSAGE ="/api/app/custom/message";//发送消息
+    public static final String  GET_USER_LIST ="/api/app/custom/members";//获取用户列表
    
 
 

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
 
@@ -101,6 +102,11 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 			Toast.makeText(this, "content不能为空", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		
+		
+		
+		
+
 
 	}
 

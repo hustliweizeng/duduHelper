@@ -16,6 +16,8 @@ import com.dudu.duduhelper.adapter.GuestListCheckAdapter;
 
 import java.util.ArrayList;
 
+import static com.dudu.duduhelper.Activity.GuestManageActivity.GuestMangageActivity.guestList;
+
 /**
  * @author
  * @version 1.0
@@ -35,6 +37,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 		setContentView(R.layout.activity_guest_select);
 		initHeadView("选择客户", true, false, 0);
 		adapter = new GuestListCheckAdapter(this);
+		adapter.addAll(guestList.getList());
 		initView();
 		initData();
 	}

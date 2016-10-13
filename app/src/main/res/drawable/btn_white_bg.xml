@@ -6,11 +6,7 @@
 		     <stroke  
 		        android:width="0.5dp"         
 		        android:color="@color/line_color_gray" />  
-		      <padding  
-		        android:bottom="1dp"   
-		        android:top="1dp"
-		        android:left="1dp"
-		        android:right="1dp" />
+		     
 		      <corners android:topLeftRadius="1.2dp"     
 		             android:topRightRadius="1.2dp"      
 		             android:bottomRightRadius="1.2dp"     
@@ -23,11 +19,7 @@
 		     <stroke  
 		        android:width="0.5dp"         
 		        android:color="@color/line_color_gray" />  
-		      <padding  
-		        android:bottom="1dp"   
-		        android:top="1dp"
-		        android:left="1dp"
-		        android:right="1dp" />
+		     
 		      <corners android:topLeftRadius="1.2dp"     
 		             android:topRightRadius="1.2dp"      
 		             android:bottomRightRadius="1.2dp"     

@@ -4,6 +4,9 @@ android {
     signingConfigs {
         config {
             storeFile file('C:/Users/lwz/Desktop/dudu')
+            keyPassword '123456'
+            storePassword '880119'
+            keyAlias 'dudu'
         }
     }
     compileSdkVersion 22

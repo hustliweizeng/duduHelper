@@ -40,7 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="22"
                 android:textColor="@color/text_green_color"
                 android:textSize="20sp" />
 
@@ -55,7 +54,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="33"
                 android:textColor="@color/text_yellow_color"
                 android:textSize="20sp" />
 
@@ -123,7 +121,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/btn_color"
-                    android:text="1"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -195,13 +192,12 @@
                     android:textColor="@color/text_gray_color"
                     />
                 <TextView
+                    android:id="@+id/tv_count_redbag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/btn_color"
-                    android:text="1"
                     />
                 <TextView
-                    android:id="@+id/tv_count_redbag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="次"

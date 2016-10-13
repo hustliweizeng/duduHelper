@@ -175,6 +175,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 					Toast.makeText(getActivity(),"当前功能未开通，敬请期待",Toast.LENGTH_SHORT).show();
 					return;
 				}
+
 				break;
 			default:
 				break;

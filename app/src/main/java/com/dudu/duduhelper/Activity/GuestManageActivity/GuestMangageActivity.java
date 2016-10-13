@@ -39,7 +39,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 	private SwipeRefreshLayout refreshLayout;
 	int page = 1;
 	int num = 10;
-	private GuestListBean guestList;
+	public static GuestListBean guestList;
 	private GuestManageAdapter adapter;
 
 	@Override

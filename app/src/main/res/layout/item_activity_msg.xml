@@ -54,6 +54,8 @@
                 android:id="@+id/discription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:gravity="top"
                 android:text="国庆期间，凡是再本店购买商品的客户，都建获得惊喜大礼包一个"
                 android:textSize="16dp"
                 />

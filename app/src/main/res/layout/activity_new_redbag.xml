@@ -102,6 +102,7 @@
                     android:layout_marginTop="30dp"
                     android:background="@drawable/btn_create_redbag"
                     android:text="开始创建"
+                    android:textColor="#785209"
                     android:textSize="16sp"/>
             </RelativeLayout>
 

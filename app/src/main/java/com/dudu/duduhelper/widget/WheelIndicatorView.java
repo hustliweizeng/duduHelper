@@ -26,7 +26,7 @@ public class WheelIndicatorView extends View
     private final static int DEFAULT_FILLED_PERCENT = 100;
     private final static int DEFAULT_ITEM_LINE_WIDTH = 2;
     public static final int ANIMATION_DURATION = 2400;
-    public static final int INNER_BACKGROUND_CIRCLE_COLOR = Color.parseColor("#2c4660"); // Color for
+    public static final int INNER_BACKGROUND_CIRCLE_COLOR = Color.parseColor("#2c465f"); // Color for
 
     private Paint itemArcPaint;
     private Paint itemEndPointsPaint;

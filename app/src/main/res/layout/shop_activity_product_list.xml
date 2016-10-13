@@ -193,7 +193,6 @@
             android:scaleType="centerInside"
             android:src="@drawable/icon_xuanze"
              />
-
         <TextView
             android:id="@+id/tv_chekcAll_product_list"
             android:layout_width="wrap_content"
@@ -206,7 +205,8 @@
 
         <ImageView
             android:id="@+id/productAllDelectButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="@drawable/btn_white_bg"
             android:padding="14dp"
@@ -214,6 +214,8 @@
             android:textColor="@color/text_color" />
 
         
+
+
     </LinearLayout>
 
     <Button
