@@ -184,7 +184,6 @@ public class shopProductListActivity extends BaseActivity
 						}
 						//解析红包列表信息
 						if (category.equals("hongbao")){
-
 						}
 						//解析大牌抢购列表信息
 						if (category.equals("discount")){

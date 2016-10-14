@@ -4,9 +4,11 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.RedbagMsgListBean;
 
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ import java.util.List;
 public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 	Context context;
 	List<RedbagMsgListBean.ListBean> list = new ArrayList<>();
-	
+
 
 	public RedbagMsgListAdapter(Context context) {
 		this.context = context;
@@ -37,6 +39,7 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 	public void addAll(List<RedbagMsgListBean.ListBean> list) {
 		if (list!=null && list.size()>0){
 			this.list = list;
+			LogUtil.d("ok","条目数:"+list.size());
 			notifyDataSetChanged();
 		}
 	}
@@ -62,6 +65,13 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 			}else {
 				holder1.tv_status.setVisibility(View.GONE);
 			}
+			//如果是最后一条
+			if (position == list.size()-1 &&position >10){
+				//添加脚布局
+				holder1.footview.setVisibility(View.VISIBLE);
+			}else {
+				holder1.footview.setVisibility(View.GONE);
+			}
 			
 		}
 	}
@@ -79,6 +89,7 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 		private TextView msg_fail;
 		private TextView msg_use;
 		private TextView promote_price;
+		private LinearLayout footview;
 
 		public MyViewHolder(final View itemView) {
 			super(itemView);
@@ -89,6 +100,7 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 			msg_fail = (TextView) itemView.findViewById(R.id.msg_fail);
 			msg_use = (TextView) itemView.findViewById(R.id.msg_use);
 			promote_price = (TextView) itemView.findViewById(R.id.promote_price);
+			footview = (LinearLayout) itemView.findViewById(R.id.footview);
 			itemView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

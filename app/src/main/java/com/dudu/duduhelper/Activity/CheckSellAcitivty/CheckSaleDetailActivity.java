@@ -148,7 +148,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 				tv_username_check_sale.setText(info.getName());
 				tv_gettime_check_sale.setText(info.getCreated_time());
 				btn_subimit.setText("重新输入");
-				iv_check_status_check_sale.setImageResource(R.drawable.icon_fail);
+				iv_check_status_check_sale.setImageResource(R.drawable.icon_checked);
 				tv_check_status_check_sale.setText("该优惠券已使用");
 				tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.erro_status));
 				break;
@@ -161,6 +161,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 				tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.erro_status));
 				//隐藏下面的所有内容
 				ll_content_check_sale.setVisibility(View.GONE);
+				LogUtil.d("no","hide");
 				break;
 		}
 		//确定状态后，显示页面

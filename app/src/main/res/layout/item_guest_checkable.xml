@@ -26,8 +26,8 @@
         android:layout_toRightOf="@id/iv_ischeck"
         android:layout_marginLeft="16dp"
         android:id="@+id/iv_item_guest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/icon_redbag"
         />
     <TextView

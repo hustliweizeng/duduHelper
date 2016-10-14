@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.javabean.GuestListBean;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +24,47 @@ import java.util.List;
 
 public class GuestListCheckAdapter extends RecyclerView.Adapter {
 	Context mContext;
+	//客户列表
+	private  List<GuestListBean.GuestDetails> guestList = new ArrayList<>();
 	//选中的条目
-	private ArrayList<CharSequence> list = new ArrayList<>();
+	public  ArrayList<CharSequence> list = new ArrayList<>();
+	//选中的客户id
+	public  ArrayList<CharSequence> guest_ids = new ArrayList<>();
+
 	//是否全选
 	private boolean isAll = false;
 
 	public GuestListCheckAdapter(Context context) {
 		mContext = context;
 	}
+	public  ArrayList<CharSequence> getIds(){
+		LogUtil.d("return",guest_ids.size()+"");
+		return  guest_ids;
+	}
 	public ArrayList<CharSequence> getList(){
 		return list;
 	}
+	//设置存储的位置列表
 	public void setList(ArrayList<CharSequence> list){
-		this.list = list;
+		if(list!=null){
+			this.list = list;
+			notifyDataSetChanged();
+		}
+			
+	}
+	//设置存储的id列表
+	public void setIds(ArrayList<CharSequence> ids){
+		if (guest_ids!=null){
+			this.guest_ids = ids;
+			notifyDataSetChanged();
+		}
+	}
+	public void addGuests (List<GuestListBean.GuestDetails> guestList){
+		if (guestList!=null & guestList.size()>0){
+			this.guestList = guestList;
+			LogUtil.d("ok","size="+guestList.size());
+			notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -49,21 +79,22 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 		
 		Myholder myholder = (Myholder)holder;
 		if (list.contains(position+"")){
-			LogUtil.d("che","yes");
 			myholder.iv_ischeck.setImageResource(R.drawable.select_check);
 		}else {
-			LogUtil.d("che","no");
-
 			myholder.iv_ischeck.setImageResource(R.drawable.select_empty);
 		}
-		
-		
-			
+		//设置客户详情
+		GuestListBean.GuestDetails guestDetails = guestList.get(position);
+		ImageLoader.getInstance().displayImage(guestDetails.getAvatar(),myholder.iv_item_guest);
+		myholder.tv_title_item_guest.setText(guestDetails.getNickname());
+		myholder.tv_count_item_guest.setText(guestDetails.getTotal_num());
+		myholder.tv_totalprice_item_guest.setText(guestDetails.getTotal_consumption());
+		myholder.tv_date_item_guest.setText(guestDetails.getLast_consumption_time());
 	}
 
 	@Override
 	public int getItemCount() {
-		return 10;
+		return guestList.size();
 	}
 
 	class Myholder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -99,14 +130,18 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 				//事件回调
 				listener.onItemClick(v,getLayoutPosition());
 				String position = getLayoutPosition()+"";
+				//根据位置获取id
+				String member_id = guestList.get(getLayoutPosition()).getMember_id();
+				LogUtil.d("id","id="+member_id);
 				//当该条目被点击后，设置图标状态
 				if (!list.contains(position)){
 					list.add(position);
-					LogUtil.d("ischeck","add");
+					guest_ids.add(member_id);
+					LogUtil.d("ischeck","ad_id="+member_id);
 				}else {
 					list.remove(position);
-					LogUtil.d("ischeck","remove");
-
+					guest_ids.remove(member_id);
+					LogUtil.d("ischeck","remove_id="+member_id);
 				}
 				notifyDataSetChanged();
 			}
@@ -126,13 +161,17 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 	 * 选中所有
 	 */
 	public  void addAll(){
+		list.clear();
 		if (isAll){
 			//取消全选
-			list.clear();
 			isAll = !isAll;
 		}else {
 			for (int i=0;i<getItemCount(); i++){
 				list.add(i+"");
+				//把所有id放进去
+				String member_id = guestList.get(i).getMember_id();
+				guest_ids.add(member_id);
+				LogUtil.d("addall","id="+member_id);
 			}
 			isAll = !isAll;
 		}

@@ -1,5 +1,7 @@
 package com.dudu.duduhelper.javabean;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
  * @date 2016/10/13
  */
 
-public class RedbagMsgListBean {
+public class RedbagMsgListBean implements Serializable{
 
 
 	private String total_red_packet;
@@ -16,7 +18,7 @@ public class RedbagMsgListBean {
 	private PageInfoBean page_info;
 	private String code;
 	private String msg;
-	private List<ListBean> list;
+	private ArrayList<ListBean> list;
 
 	public String getTotal_red_packet() {
 		return total_red_packet;
@@ -58,15 +60,15 @@ public class RedbagMsgListBean {
 		this.msg = msg;
 	}
 
-	public List<ListBean> getList() {
+	public ArrayList<ListBean> getList() {
 		return list;
 	}
 
-	public void setList(List<ListBean> list) {
+	public void setList(ArrayList<ListBean> list) {
 		this.list = list;
 	}
 
-	public static class PageInfoBean {
+	public static class PageInfoBean implements  Serializable{
 		private String page;
 		private String size;
 		private String count;
@@ -105,7 +107,7 @@ public class RedbagMsgListBean {
 		}
 	}
 
-	public static class ListBean {
+	public static class ListBean implements  Serializable {
 		private String status;
 		private String created_at;
 		private String send_num;
@@ -188,9 +190,9 @@ public class RedbagMsgListBean {
 			this.red_packet_info = red_packet_info;
 		}
 
-		public static class RedPacketInfoBean {
+		public static class RedPacketInfoBean implements  Serializable{
 			private String money;
-			private LimitBean limit;
+			private String limit;
 			private String life;
 
 			public String getMoney() {
@@ -201,11 +203,11 @@ public class RedbagMsgListBean {
 				this.money = money;
 			}
 
-			public LimitBean getLimit() {
+			public String getLimit() {
 				return limit;
 			}
 
-			public void setLimit(LimitBean limit) {
+			public void setLimit(String limit) {
 				this.limit = limit;
 			}
 
@@ -215,10 +217,6 @@ public class RedbagMsgListBean {
 
 			public void setLife(String life) {
 				this.life = life;
-			}
-
-			public static class LimitBean {
-				
 			}
 		}
 	}

@@ -45,7 +45,6 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 	private ActivityMsGListAdapter adapter;
 	private  int page = 1;
 	private  int sise = 10;
-	private View footView;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -100,8 +99,6 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 			public void onFinish() {
 				super.onFinish();
 				swiperefresh.setRefreshing(false);
-				//移除底部view
-				recycleview_list.removeView(footView);
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
@@ -132,14 +129,9 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 
 					//说明滑到底部
 					if (isBottom){
-						footView = View.inflate(context,R.layout.activity_listview_foot,null);
-//					ProgressBar loading_progressBar=(ProgressBar) footView.findViewById(R.id.loading_progressBar);
-//					TextView loading_text=(TextView) footView.findViewById(R.id.loading_text);
-						recycleview_list.addView(footView);
 						page++;
 						initData();
 					}
-					
 				}
 				
 			}

@@ -71,11 +71,13 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 			case R.id.redbage_check	:
 				redbage_check.setTextColor(getResources().getColor(R.color.text_green_color));
 				activity_check.setTextColor(getResources().getColor(R.color.text_dark_color));
+				ed_num.setText("");
 				isRedbag = true;
 				break;
 			case R.id.activity_check:
 				redbage_check.setTextColor(getResources().getColor(R.color.text_dark_color));
 				activity_check.setTextColor(getResources().getColor(R.color.text_green_color));
+				ed_num.setText("");
 				isRedbag =false;
 				break;
 		}

@@ -87,7 +87,7 @@
             android:layout_width="60dp"
             android:gravity="center"
             android:textColor="@color/text_dark_color"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:background="@drawable/edite_white"
             android:id="@+id/ed_num"/>
 

@@ -39,7 +39,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 	private SwipeRefreshLayout refreshLayout;
 	int page = 1;
 	int num = 10;
-	public static GuestListBean guestList;
+	public  GuestListBean guestList;
 	private GuestManageAdapter adapter;
 
 	@Override
@@ -60,7 +60,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		user_list.setAdapter(adapter);
 		RequestParams params = new RequestParams();
 		params.put("page",page);
-		params.put("num",num);
+		params.put("size",num);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_GUEST_LIST, "POST", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {

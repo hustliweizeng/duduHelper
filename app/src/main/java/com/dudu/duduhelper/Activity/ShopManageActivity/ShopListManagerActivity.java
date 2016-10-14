@@ -66,8 +66,6 @@ public class ShopListManagerActivity extends BaseActivity
 	@SuppressLint("ResourceAsColor") 
 	private void initView() 
 	{
-		
-		
 		//listview设置
 		adapter=new ShopAdapterAdapter(this);
 		lv_shop_list=(ListView) this.findViewById(R.id.lv_shop_list);

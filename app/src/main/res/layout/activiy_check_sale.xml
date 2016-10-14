@@ -3,6 +3,7 @@
               android:orientation="vertical"
               android:background="@color/bg_color"
               android:id="@+id/ll_all"
+              android:fitsSystemWindows="true"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <include
@@ -10,13 +11,13 @@
         layout="@layout/activity_head" />
     
     <LinearLayout
-        
-        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bg_up_check_sale"
+        android:background="@drawable/bg_up1_check_sale"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             android:background="@drawable/bg_up_check_sale"
             android:layout_marginLeft="17dp"
             android:layout_marginRight="17dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             >
@@ -42,23 +43,30 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_remind"
                 android:textSize="18dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="20dp"
                 android:text="该优惠券核销成功"/>
            
 
         </LinearLayout>
+        
+        
+       
+        
+    </LinearLayout>
+    <LinearLayout
+        android:padding="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="visible"
+        android:id="@+id/ll_content_check_sale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_up_check_sale"
+        android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="14dp"
             android:src="@drawable/icon_xuxian"/>
-        
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:padding="16dp"
-            android:id="@+id/ll_content_check_sale"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
         <RelativeLayout
             android:layout_marginBottom="17dp"
             android:layout_width="match_parent"
@@ -79,7 +87,7 @@
                 android:layout_alignParentRight="true"
                 android:textColor="@color/text_remind"
                 />
-            
+
         </RelativeLayout>
         <RelativeLayout
             android:layout_marginBottom="17dp"
@@ -257,21 +265,27 @@
                 />
 
         </RelativeLayout>
-        </LinearLayout>
-        
     </LinearLayout>
-    <Button
-        android:id="@+id/btn_subimit"
-        android:layout_marginTop="10dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="继续核销"
-        android:textColor="@color/bg_white_color"
-        android:background="@color/text_remind"
-        android:paddingTop="17dp"
-        android:paddingBottom="17dp"
-        />
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/btn_subimit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textSize="20dp"
+            android:text="继续核销"
+            android:textColor="@color/bg_white_color"
+            android:background="@color/text_remind"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
+            />
+        
+    </RelativeLayout>
+   
     
 
 </LinearLayout>

@@ -233,6 +233,7 @@ public class ProductAdapter extends BaseAdapter
 			viewHolder.productImage=(ImageView) convertView.findViewById(R.id.productImage);
 			viewHolder.downButton=(ImageView) convertView.findViewById(R.id.downButton);
 			viewHolder.productGetNum=(TextView) convertView.findViewById(R.id.productGetNum);
+			viewHolder.tv_status = (TextView)convertView.findViewById(R.id.tv_status);
 			//红包页面的时候，有几个控件设置不可见
 			if(isHongbao)
 			{
@@ -397,10 +398,12 @@ public class ProductAdapter extends BaseAdapter
 			{
 				viewHolder.productAction.setText("未上架");
 				viewHolder.downButton.setImageResource(R.drawable.icon_up);
+				viewHolder.tv_status.setText("未上架");
 			}
 			if(list.get(position).getStatus().equals("1"))
 			{
 				viewHolder.productAction.setText("已上架");
+				viewHolder.tv_status.setText("已上架");
 				viewHolder.downButton.setImageResource(R.drawable.icon_down);
 
 			}
@@ -478,6 +481,7 @@ public class ProductAdapter extends BaseAdapter
 		Button delectButton;
 		ImageView downButton;
 		TextView productGetNum;
+		TextView tv_status;
 	}
 	//商品删除事件
 	private class OnClick implements OnClickListener

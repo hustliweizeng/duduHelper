@@ -73,7 +73,9 @@
         android:orientation="vertical">
         <RelativeLayout
             android:id="@+id/activity_msg"
-            android:padding="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
@@ -143,11 +145,13 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginLeft="16dp"
-            android:background="@color/text_hint_color"/>
+            android:background="@color/list_divide"/>
 
         <RelativeLayout
             android:id="@+id/redbage_msg"
-            android:padding="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

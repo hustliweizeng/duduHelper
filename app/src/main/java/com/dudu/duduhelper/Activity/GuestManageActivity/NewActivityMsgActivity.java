@@ -15,7 +15,16 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -34,6 +43,7 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 	private ArrayList<CharSequence> checkedList;
 	private TextView tv_num_remind;
 	int max_num = 300;
+	private ArrayList<CharSequence> checkedIDs;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -69,7 +79,6 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 		});
 		tv_num_remind = (TextView) findViewById(R.id.tv_num_remind);
 		submitbtn = (Button) findViewById(R.id.submitbtn);
-
 		submitbtn.setOnClickListener(this);
 	}
 
@@ -77,13 +86,17 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.submitbtn:
-
+				submit();
 				break;
 			case R.id.ll_choose_guest:
 				Intent intent = new Intent(context, GuestSelectActivity.class);
 				if (checkedList!=null){
 					intent.putCharSequenceArrayListExtra("checked",checkedList);
 				}
+				if (checkedIDs!=null){
+					intent.putCharSequenceArrayListExtra("checked_id",checkedIDs);
+				}
+				
 				startActivityForResult(intent,2);
 				break;
 		}
@@ -102,6 +115,56 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 			Toast.makeText(this, "content不能为空", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		String members = "";
+		if (checkedIDs!=null& checkedIDs.size()>0){
+			LogUtil.d("update",checkedIDs.toString());
+			members = checkedIDs.toString();
+		}else {
+			Toast.makeText(context,"选择的用户数不能为0!",Toast.LENGTH_SHORT).show();
+			return;
+		}
+		String detail ="";
+		try {
+			JSONObject object = new JSONObject();
+			object.put("title",title);
+			object.put("desc",content);
+			detail = object.toString();
+			LogUtil.d("detail",detail);
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+		RequestParams params = new RequestParams();
+		params.put("type_id","1");
+		params.put("members",members);
+		params.put("params",detail);
+		HttpUtils.getConnection(context, params, ConstantParamPhone.SEND_MESSAGE, "post", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						Toast.makeText(context,"提交成功",Toast.LENGTH_SHORT).show();
+						finish();
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,"发送失败,错误代码:"+msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		
 		
 		
@@ -115,9 +178,15 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode ==2){
 			ArrayList<CharSequence> list = data.getCharSequenceArrayListExtra("list");
+			ArrayList<CharSequence> ids = data.getCharSequenceArrayListExtra("ids");
+
 			if (list!=null ){
 				tv_guest_num.setText(list.size()+"人");
 				checkedList = list;
+			}
+			if (ids!=null){
+				checkedIDs = ids;
+				LogUtil.d("ids",ids.size()+"");
 			}
 		}
 	}

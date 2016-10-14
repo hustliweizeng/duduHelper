@@ -272,8 +272,6 @@ public class ShopMineFragment extends Fragment {
             }
         });
 
-
-
     }
 
     @Override
@@ -287,5 +285,6 @@ public class ShopMineFragment extends Fragment {
             }
         }
     }
+    
    
 }

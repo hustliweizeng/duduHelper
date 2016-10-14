@@ -44,7 +44,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/iv1"
-                    android:src="@drawable/icon_head" />
+                     />
 
                 <ImageView
                     android:id="@+id/iv1"
@@ -81,8 +81,9 @@
                     <EditText
                         android:id="@+id/ed_title_shop_info"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="48dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|right"
+                        android:layout_marginRight="45dp"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:hint="请输入店铺名称"
@@ -119,8 +120,9 @@
                     <TextView
                         android:id="@+id/tv_class_shop_info"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="14dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|right"
+                        android:layout_marginRight="8dp"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:hint="请选择行业分类"
@@ -164,10 +166,11 @@
                     <TextView
                         android:id="@+id/tv_shopcircle_shop_info"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="14dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
                         android:layout_centerVertical="true"
                         android:background="@null"
+                        android:gravity="center|right"
                         android:hint="请选择商圈分类"
                         android:layout_toLeftOf="@+id/iv3"
                         android:textColor="@color/text_middledark_color"
@@ -209,10 +212,11 @@
                     <EditText
                         android:id="@+id/ed_mobile_shop_info"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="48dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="45dp"
                         android:layout_centerVertical="true"
                         android:background="@null"
+                        android:gravity="center|right"
                         android:hint="请输入联系方式"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/text_middledark_color"
@@ -247,8 +251,9 @@
                     <TextView
                         android:id="@+id/tv_opentime_shop_info"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="14dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center|right"
+                        android:layout_marginRight="8dp"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:hint="请选择营业时间"
@@ -291,8 +296,9 @@
                     <EditText
                         android:id="@+id/ed_address_shop_info"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="48dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="45dp"
+                        android:gravity="center|right"
                         android:layout_centerVertical="true"
                         android:background="@null"
                         android:hint="请输入店铺地址"
@@ -309,16 +315,16 @@
             <EditText
                 android:id="@+id/ed_des_shop_info"
                 android:layout_width="match_parent"
-                android:layout_height="66dp"
+                android:layout_height="86dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/bg_white_color"
                 android:enabled="true"
                 android:gravity="top"
-                android:hint="请输入店家描述..."
+                android:hint="请输入店铺详情"
                 android:inputType="textMultiLine"
                 android:maxLines="10"
-                android:minLines="8"
-                android:padding="14dp"
+                android:minLines="4"
+                android:padding="10dp"
                 android:scrollbars="vertical"
                 android:textColorHint="@color/text_hint_color"
                 android:textSize="14dp" />
@@ -339,7 +345,7 @@
                     android:background="@drawable/shop_image_whitelin"
                     android:padding="4dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/icon_head" />
+                    />
 
                 <TextView
                     android:id="@+id/tv_imgNum_shop_info"

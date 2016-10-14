@@ -36,7 +36,7 @@
                 android:id="@+id/tv_guest_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50人"
+                android:text="0人"
                 android:textSize="16dp"
                 android:textColor="@color/text_dark_color"
                 />

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.GuestListCheckAdapter;
 import com.dudu.duduhelper.adapter.RedbagMsgListAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -26,6 +27,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -41,6 +43,9 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 	private SwipeRefreshLayout refresh_msg;
 	private Button submitbtn;
 	private RedbagMsgListAdapter adapter;
+	private  int page = 1;
+	private  int size = 10;
+	private RedbagMsgListBean redbagMsgListBean;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -56,8 +61,8 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.put("type_id",2);//红包的typeid是2
-		params.put("page","1");
-		params.put("size","2");
+		params.put("page",page);
+		params.put("size",size);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SEND_RECORD, "post", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
@@ -66,19 +71,19 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
-						RedbagMsgListBean redbagMsgListBean = new Gson().fromJson(s, RedbagMsgListBean.class);
+						redbagMsgListBean = new Gson().fromJson(s, RedbagMsgListBean.class);
 						tv_send_num.setText(redbagMsgListBean.getTotal_red_packet());
 						tv_create_money.setText(redbagMsgListBean.getTotal_promote_consumer());
 						List<RedbagMsgListBean.ListBean> list = redbagMsgListBean.getList();
 						if (list!=null &&list.size()>0){
 							adapter.addAll(list);
 						}
-
 
 					}else {
 						//数据请求失败
@@ -94,6 +99,7 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 			public void onFinish() {
 				super.onFinish();
 				ColorDialog.dissmissProcessDialog();
+				//请求结束后隐藏
 			}
 		});
 		
@@ -124,7 +130,26 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 		adapter.setOnItemClickListner(new GuestListCheckAdapter.OnItemClickListner() {
 			@Override
 			public void onItemClick(View view, int position) {
-				startActivity(new Intent(context,RedbagMsgDetail.class));
+				Intent intent = new Intent(context, RedbagMsgDetail.class);
+				intent.putExtra("data",redbagMsgListBean.getList().get(position));
+				startActivity(intent);
+			}
+		});
+		recycleview_msg.setOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+				super.onScrollStateChanged(recyclerView, newState);
+				//滑动停止以后
+				if (newState == RecyclerView.SCROLL_STATE_IDLE){
+					//获取是否在底部
+					boolean isBottom = recyclerView.canScrollVertically(1);
+					//说明滑到底部
+					if (isBottom){
+						page++;
+						initData();
+					}
+
+				}
 			}
 		});
 	}
