@@ -81,10 +81,9 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 						//数据请求成功
 						ActivityMsgBean activityMsgBean = new Gson().fromJson(s, ActivityMsgBean.class);
 						List<ActivityMsgBean.ListBean> list = activityMsgBean.getList();
-						if (list!=null &list.size()>0){
+						if (list!=null &&list.size()>0){
 							adapter.addAll(list);
 						}
-
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");

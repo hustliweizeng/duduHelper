@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.SendShaiShaiAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.Utils.Util;
@@ -242,8 +243,12 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 	}
 
 	private void initData() {
-
 		RedbagDetailBean bean  = (RedbagDetailBean) getIntent().getSerializableExtra("data");
+		if (bean==null){
+			Toast.makeText(context,"没有要显示的数据",Toast.LENGTH_SHORT).show();
+			LogUtil.d("ok","获取到数据");
+			return;
+		}
 		hongbaoBean = bean.getData();
 		hongbaoNameEditText.setText(hongbaoBean.getTitle());
 		hongbaoPrice.setText(hongbaoBean.getTotal());
@@ -335,8 +340,8 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 			LinearLayout val = (LinearLayout) entry.getValue();
 			EditText ed_high = (EditText) val.findViewById(R.id.ed_high);
 			EditText ed_low = (EditText) val.findViewById(R.id.ed_low);
-			params.put("limit[price][" + Integer.parseInt(ed_high.getText().toString().trim()) + "]", Integer.parseInt(ed_high.getText().toString().trim()));
-			params.put("limit[usable][" + Integer.parseInt(ed_low.getText().toString().trim()) + "]", Integer.parseInt(ed_low.getText().toString().trim()));
+			params.put("limit[price][" + Float.parseFloat(ed_high.getText().toString().trim()) + "]", Float.parseFloat(ed_high.getText().toString().trim()));
+			params.put("limit[usable][" + Float.parseFloat(ed_low.getText().toString().trim()) + "]", Float.parseFloat(ed_low.getText().toString().trim()));
 		}
 		
 		

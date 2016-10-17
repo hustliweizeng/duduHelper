@@ -69,7 +69,6 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 		adapter = new RedBagListAdapter(context);
 		initHeadView("商家红包",true,false,0);
 		initView();
-		requestRedbagStatus();
 	}
 
 	
@@ -109,6 +108,13 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 			}
 		});
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		//重新请求数据
+		requestRedbagStatus();
 	}
 
 	/**

@@ -333,7 +333,9 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		startTime = getIntent().getStringExtra("starTime");
 		endTime = getIntent().getStringExtra("endTime");
 		
-		
+		LogUtil.d("start",startTime);
+		LogUtil.d("endTime",endTime);
+
 		RequestParams params = new RequestParams();
 		params.put("title",title);
 		params.put("time_start",startTime);
@@ -383,8 +385,8 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 						//数据请求成功
 						Toast.makeText(EditRedbag2Activity.this,"成功",Toast.LENGTH_LONG).show();
 						finish();
-						startActivity(new Intent());
-
+						//跳转到列表页面
+						startActivity(new Intent(EditRedbag2Activity.this,RedBagList.class));
 
 					}else {
 						//数据请求失败

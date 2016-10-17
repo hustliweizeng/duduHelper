@@ -40,8 +40,10 @@ public class ShopAdapterAdapter extends BaseAdapter
     }
     public void addAll(List<ShopListBean.DataBean> list)
     {
-    	this.list.addAll(this.list.size(), list);
-    	notifyDataSetChanged();
+	    if (list!=null){
+		    this.list.addAll(this.list.size(), list);
+		    notifyDataSetChanged();
+	    }
     }
 
 	@Override

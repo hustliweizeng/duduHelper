@@ -102,8 +102,11 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				Intent intent=new Intent(ShopHongBaoDetailActivity.this,ShopHongBaoAddActivity.class);
+				LogUtil.d("edit","edtred");
 				intent.putExtra("data",data);
 				startActivityForResult(intent, 1);
+				//结束当前页面
+				finish();
 			}
 		});
 	}

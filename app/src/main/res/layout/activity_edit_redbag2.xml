@@ -95,6 +95,7 @@
                         android:layout_marginRight="16dp"
                         android:background="@null"
                         android:hint="请输入红包金额"
+                        android:gravity="right"
                         android:textColor="@color/text_dark_color"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
@@ -217,6 +218,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
                     android:background="@null"
+                    android:gravity="right"
                     android:hint="请输入红包数量"
                     android:textColor="@color/text_dark_color"
                     android:textColorHint="@color/text_hint_color"
@@ -365,11 +367,12 @@
                     />
 
             </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/ll_plus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@color/bg_white_color"
                 android:orientation="vertical">
               <View
@@ -426,13 +429,12 @@
                         />
                     <EditText
                         android:id="@+id/ed_life"
-                        android:layout_width="50dp"
+                        android:layout_width="wrap_content"
                         android:layout_marginRight="16dp"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="30天"
+                        android:hint="请输入红包有效期"
                         android:inputType="numberDecimal"
-
                         android:gravity="right"
                         android:textSize="16dp"
                         android:layout_alignParentRight="true"
@@ -468,11 +470,11 @@
                 <EditText
                     android:id="@+id/ed_rule"
                     android:layout_width="match_parent"
-                    android:layout_height="74dp"
+                    android:layout_height="84dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:gravity="top"
-                    
+                    android:padding="6dp"
                     android:background="@drawable/edite_white"
                     android:layout_marginBottom="16dp"
                     />
@@ -524,6 +526,7 @@
                 android:background="@drawable/btn_create_redbag"
                 android:text="提交"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="16dp"
                 android:textColor="#785209"
                 android:textSize="16sp" />
 

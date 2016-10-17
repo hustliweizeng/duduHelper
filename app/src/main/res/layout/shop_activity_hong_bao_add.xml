@@ -78,6 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="numberDecimal"
                     android:background="@null"
                     android:gravity="right|center_vertical"
                     android:hint="请输入红包总金额"
@@ -114,7 +115,7 @@
                     android:background="@null"
                     android:gravity="right|center_vertical"
                     android:hint="请输入红包总数量"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:paddingRight="10dp"
                     android:textColorHint="@color/text_color_light"
                     android:textSize="14sp" />
@@ -288,6 +289,7 @@
                     android:gravity="right|center_vertical"
                     android:hint="请输入红包有效天数"
                     android:paddingRight="10dp"
+                    android:inputType=""
                     android:textColorHint="@color/text_color_light"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -388,6 +390,22 @@
                 android:background="@drawable/shop_image_whitelin"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_head" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_above="@+id/saveProductbutton"
+                android:background="@color/divider_line_color" />
+
+            <Button
+                android:id="@+id/saveProductbutton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/view_selector"
+                android:text="提交"
+                android:textColor="@color/text_green_color"
+                android:textSize="16sp" />
+
 
             <!--
                  <Button
@@ -418,20 +436,5 @@
         android:textColor="@color/text_white_color"
         android:textSize="14dp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_above="@+id/saveProductbutton"
-        android:background="@color/divider_line_color" />
-
-    <Button
-        android:id="@+id/saveProductbutton"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/view_selector"
-        android:text="提交"
-        android:textColor="@color/text_green_color"
-        android:textSize="16sp" />
 
 </RelativeLayout>

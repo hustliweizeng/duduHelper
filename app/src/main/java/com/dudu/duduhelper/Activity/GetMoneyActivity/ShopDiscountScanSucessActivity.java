@@ -314,7 +314,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 						//设置页面信息
 						result.setText("收款成功！");
 						//设置成功的图片
-						imageCashCodeImg.setImageResource(R.drawable.icon_success);
+						imageCashCodeImg.setImageResource(R.drawable.icon_pay_sucess);
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");

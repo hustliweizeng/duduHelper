@@ -38,7 +38,7 @@ public class NewRedbagMsgActivity extends BaseActivity implements View.OnClickLi
 	private EditText ed_expireday;
 	private Button submitbtn;
 	private ArrayList<CharSequence> checkedList;
-	private ArrayList<CharSequence> checkedIDs;
+	private ArrayList<CharSequence> checkedIDs =new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -101,7 +101,7 @@ public class NewRedbagMsgActivity extends BaseActivity implements View.OnClickLi
 	
 		//封装用户id
 		String members = "";
-		if (checkedIDs!=null& checkedIDs.size()>0){
+		if (checkedIDs!=null&& checkedIDs.size()>0){
 			LogUtil.d("update",checkedIDs.toString());
 			members = checkedIDs.toString();
 		}else {

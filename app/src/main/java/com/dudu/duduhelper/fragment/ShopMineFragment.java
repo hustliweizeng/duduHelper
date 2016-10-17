@@ -94,7 +94,64 @@ public class ShopMineFragment extends Fragment {
         //返回页面时，重新加载数据
         LogUtil.d("info","reload");
         //重新显示logo
-        ImageLoader.getInstance().displayImage(sp.getString("shopLogo",""),mineImageHead);
+        requetConnetion();
+        
+    }
+    private void requetConnetion()
+    {
+        RequestParams params = new RequestParams();
+        //请求网络连接之前，设置保存cookie，
+        String url = ConstantParamPhone.GET_USER_INFO;
+        HttpUtils.getConnection(getActivity(), params, url, "POST", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+                Toast.makeText(getActivity(),"网络故障，请重试",Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onSuccess(int i, Header[] headers, String s) {
+                try {
+                    JSONObject object = new JSONObject(s);
+                    String code =  object.getString("code");
+                    if ("SUCCESS".equalsIgnoreCase(code)){
+                        //数据请求成功
+                        InfoBean infoBean = new Gson().fromJson(s, InfoBean.class);
+
+                        //保存用户信息
+                        //1.通过sp保存用户信息
+                        SharedPreferences.Editor edit = sp.edit();
+                        edit.putString("username",infoBean.getUser().getName())
+                                .putString("nickename",infoBean.getUser().getNickname())//手动添加
+                                .putString("mobile",infoBean.getUser().getMobile())
+                                //2.存储商店信息
+                                .putString("id",infoBean.getShop().getId())
+                                .putString("shopLogo",infoBean.getShop().getLogo())
+                                .putString("shopName",infoBean.getShop().getName())
+                                //3.储存今日状态
+                                .putString("todayIncome",infoBean.getTodaystat().getIncome())
+                                //4.存储总计状态
+                                .putString("frozenMoney",infoBean.getTotalstat().getFreezemoney())
+                                .putString("useableMoney",infoBean.getTotalstat().getUsablemoney())
+                                //在后台处理
+                                .apply();
+                        LogUtil.d("welcome",s);
+                    }else {
+                        //数据请求失败
+                        String msg = object.getString("msg");
+                        Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                //更新数据
+                initFragemntView();
+            }
+        });
+
     }
 
     //初始化页面显示
@@ -268,6 +325,7 @@ public class ShopMineFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), ShopBankListActivity.class);
                     intent.putExtra("action", "banklist");
                     startActivity(intent);
+                    //
                 }
             }
         });

@@ -182,7 +182,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 
 		//设置店名
 		orderNameTextView.setText(orderData.getSubject());
-		int color = 0;
+		int color = R.color.text_dark_color;
 		String content =null;
 		switch (Integer.parseInt(orderData.getStatus())){
 			case 0 :

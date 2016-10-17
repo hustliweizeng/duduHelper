@@ -40,7 +40,7 @@ public class RedbagDetailBean implements Serializable {
 		this.msg = msg;
 	}
 
-	public static class DataBean {
+	public static class DataBean implements Serializable{
 		private String id;
 		private String title;
 		private String num;
@@ -195,7 +195,7 @@ public class RedbagDetailBean implements Serializable {
 			this.limit = limit;
 		}
 
-		public static class LimitBean {
+		public static class LimitBean implements  Serializable{
 			private String price;
 			private String usable;
 
