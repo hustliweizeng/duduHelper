@@ -14,12 +14,14 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -116,6 +118,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
             Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
         }
     };
+    private ScrollView ed_scroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +154,20 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         iv_img_shop_info = (ImageView) findViewById(R.id.iv_img_shop_info);
         tv_imgNum_shop_info = (TextView) findViewById(R.id.tv_imgNum_shop_info);
         btn_subimt_shop_info = (Button) findViewById(R.id.btn_subimt_shop_info);
+        ed_scroll = (ScrollView) findViewById(R.id.ed_scroll);
+        //设置文本编辑的上下滚动事件
+        ed_scroll.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        //请求父控件不干涉，也就是我处理
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
 
         backButton.setOnClickListener(this);
         selectClickButton.setOnClickListener(this);

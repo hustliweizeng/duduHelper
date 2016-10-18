@@ -1,5 +1,7 @@
 package com.dudu.duduhelper.javabean;
 
+import java.util.List;
+
 /**
  * @author
  * @version 1.0
@@ -15,9 +17,9 @@ public class SummoryDetaiBean {
 	private String visiter;
 	private String buyer;
 	private String order;
-	private TradeModulesBean trade_modules;
 	private String code;
 	private String msg;
+	private List<TradeModulesBean> trade_modules;
 
 	public String getDaynum() {
 		return daynum;
@@ -67,14 +69,6 @@ public class SummoryDetaiBean {
 		this.order = order;
 	}
 
-	public TradeModulesBean getTrade_modules() {
-		return trade_modules;
-	}
-
-	public void setTrade_modules(TradeModulesBean trade_modules) {
-		this.trade_modules = trade_modules;
-	}
-
 	public String getCode() {
 		return code;
 	}
@@ -91,8 +85,41 @@ public class SummoryDetaiBean {
 		this.msg = msg;
 	}
 
-	public static class TradeModulesBean {
+	public List<TradeModulesBean> getTrade_modules() {
+		return trade_modules;
+	}
 
-		
+	public void setTrade_modules(List<TradeModulesBean> trade_modules) {
+		this.trade_modules = trade_modules;
+	}
+
+	public static class TradeModulesBean {
+		private String module_id;
+		private String num;
+		private String fee;
+
+		public String getModule_id() {
+			return module_id;
+		}
+
+		public void setModule_id(String module_id) {
+			this.module_id = module_id;
+		}
+
+		public String getNum() {
+			return num;
+		}
+
+		public void setNum(String num) {
+			this.num = num;
+		}
+
+		public String getFee() {
+			return fee;
+		}
+
+		public void setFee(String fee) {
+			this.fee = fee;
+		}
 	}
 }

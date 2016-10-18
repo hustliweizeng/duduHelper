@@ -1,7 +1,11 @@
 package com.dudu.duduhelper.http;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.webkit.WebSettings;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -27,6 +31,18 @@ public class HttpUtils {
 		//保存cookie，自动保存到了shareprefercece,自动保存，自动使用
 		PersistentCookieStore myCookieStore = new PersistentCookieStore(mContext);
 		client.setCookieStore(myCookieStore);
+		//获取本地user_agent;
+		String defaultUserAgent = WebSettings.getDefaultUserAgent(mContext);
+		if (isWifiAvailable(mContext)){
+			client.addHeader("NETTYPE","WIFI");
+			LogUtil.d("WIFI","ON");
+		}else {
+			client.addHeader("NETTYPE","3G+");
+			LogUtil.d("WIFI","OFF");
+		}
+		LogUtil.d("sett",defaultUserAgent);
+		client.setUserAgent(defaultUserAgent);
+		//设置请求头
 		if ("get".equalsIgnoreCase(method)){
 
 			client.get(ConstantParamPhone.BASE_URL+url, params,mTextHttpResponseHandler);
@@ -38,5 +54,22 @@ public class HttpUtils {
 			return;
 		}
 
+	}
+	/**
+	 * 判断wifi连接状态
+	 *
+	 * @param ctx
+	 * @return
+	 */
+	public static  boolean isWifiAvailable(Context ctx) {
+		ConnectivityManager conMan = (ConnectivityManager) ctx
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo.State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+				.getState();
+		if (NetworkInfo.State.CONNECTED == wifi) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

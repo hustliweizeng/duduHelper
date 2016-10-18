@@ -10,6 +10,7 @@ import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.ModuelSummoryAdapter;
+import com.dudu.duduhelper.adapter.SummoryModuleAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.Modules;
@@ -42,9 +43,9 @@ public class ShopAccountWatchActivity extends BaseActivity
 	private TextView fangkeNumText;
 	private TextView buyerNumText;
 	private TextView orderNumText;
-	private TextView tv_price_bigband;
-	private TextView tv_price_dis;
-	private TextView tv_price_other;
+	private SummoryModuleAdapter adapter;
+	private float totalIncome;
+	private float totalTrade;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -52,6 +53,7 @@ public class ShopAccountWatchActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_account_watch);
 		initHeadView("自定义统计", true, false, 0);
+		adapter = new SummoryModuleAdapter(context);
 		initView();
 		initData();
 		
@@ -86,30 +88,22 @@ public class ShopAccountWatchActivity extends BaseActivity
 						fangkeNumText.setText(data.getVisiter());
 						buyerNumText.setText(data.getBuyer());
 						orderNumText.setText(data.getOrder());
-						//获取列表信息
-						JSONObject trade_modules = new JSONObject(s).getJSONObject("trade_modules");
-						//取得所有的key
-						Iterator<String> keys = trade_modules.keys();
-						while (keys.hasNext()){
-							String id = keys.next();
-							String price = trade_modules.getString(id);
-							if(id == "1"){
-								tv_price_bigband.setText(price);
-							}else if(id == "7"){
-								tv_price_dis.setText(price);
-							}else {
-								tv_price_other.setText(price);
-							}
-						}
-						//把数据放到适配器
-						
+						//总交易额
+						totalIncome = Float.parseFloat(data.getIncome());
+						totalTrade = Float.parseFloat(data.getTrade());
+						setCricle();
 
+						//获取列表信息
+						List<SummoryDetaiBean.TradeModulesBean> trade_modules = data.getTrade_modules();
+						//把数据放到适配器
+						adapter.addAll(trade_modules);
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
 						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 					}
-				} catch (JSONException e) {
+				} catch (JSONException e)
+				{
 					e.printStackTrace();
 				}
 			}
@@ -128,18 +122,15 @@ public class ShopAccountWatchActivity extends BaseActivity
 		fangkeNumText = (TextView) findViewById(R.id.fangkeNumText);
 		buyerNumText = (TextView) findViewById(R.id.buyerNumText);
 		orderNumText = (TextView) findViewById(R.id.orderNumText);
-		tv_price_bigband = (TextView) findViewById(R.id.tv_price_bigband);
-		tv_price_dis = (TextView) findViewById(R.id.tv_price_dis);
-		tv_price_other = (TextView) findViewById(R.id.tv_price_other);
-
-
-
-
+	}
+	public  void setCricle(){
 		wheelIndicatorView = (WheelIndicatorTongjiView) findViewById(R.id.wheel_indicator_view);
 		wheelIndicatorView.setItemsLineWidth(Util.dip2px(this, 2));
 		//设置使用金额
-		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat("40")/Float.parseFloat("100"), Color.parseColor("#ff5000"),Util.dip2px(this, 4));
-		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(Float.parseFloat("40")/Float.parseFloat("100"), Color.parseColor("#2c4660"),Util.dip2px(this, 2));
+		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem
+				(totalIncome/totalTrade, Color.parseColor("#ff5000"),Util.dip2px(this, 4));//外圈
+		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem
+				(totalIncome/totalTrade, Color.parseColor("#2c4660"),Util.dip2px(this, 2));//内圈
 		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
 		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem);
 		wheelIndicatorView.startItemsAnimation();
