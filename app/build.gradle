@@ -28,7 +28,25 @@ android {
     lintOptions {
         disable "ResourceType"
     }
+    signingConfigs {
+
+        release {
+            //.jks文件放在项目目录
+            storeFile file("xxx.jks")
+            storePassword "xxx"
+            keyAlias "xxx.release"
+            keyPassword "xxx"
+        }
+        debug {
+            //.jks文件放在项目目录
+            storeFile file("xxx.jks")
+            storePassword "xxx"
+            keyAlias "xxx.release"
+            keyPassword "xxx"
+        }
+    }
 }
+
 dependencies {
     compile 'com.jakewharton:butterknife:8.3.0'
     apt 'com.jakewharton:butterknife-compiler:8.3.0'
