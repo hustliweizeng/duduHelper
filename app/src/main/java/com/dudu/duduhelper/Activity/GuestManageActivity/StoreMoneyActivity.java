@@ -1,7 +1,10 @@
 package com.dudu.duduhelper.Activity.GuestManageActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +12,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +20,13 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.Utils.WxUtil;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.widget.MyAlertDailog;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -25,13 +35,16 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
+import org.apache.http.Header;
+import org.json.JSONObject;
+
 /**
  * @author
  * @version 1.0
  * @date 2016/9/23
  */
 
-public class StoreMoneyActivity extends BaseActivity implements View.OnClickListener  {
+public class StoreMoneyActivity extends BaseActivity implements View.OnClickListener ,IWXAPIEventHandler{
 	private TextView redbage_check;
 	private TextView activity_check;
 	private EditText ed_num;
@@ -112,14 +125,69 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 
 			return;
 		}*/
-		//直接跳转到支付结果页面
-		final IWXAPI msgApi = WXAPIFactory.createWXAPI(context, null);
-		// 将该app注册到微信
-		msgApi.registerApp("wxd930ea5d5a258f4f");
-		//调用预支付
-		IWXAPI api = WXAPIFactory.createWXAPI(this, "你在微信开放平台创建的app的APPID");
+		//1.注册appid
+		api = WXAPIFactory.createWXAPI(this, "wxb4ba3c02aa476ea1");
+		//2.将该app注册到微信
+		api.registerApp("wxb4ba3c02aa476ea1");
+		//3.预支付请求的服务器地址
+		String url = "http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
+		//Toast.makeText(this, "获取订单中...", Toast.LENGTH_SHORT).show();
 		//我将后端反给我的信息放到了WeiXinPay中，这步是获取数据
-		msgApi.registerApp("你在微信开放平台创建的app的APPID");
+		AsyncHttpClient client = new AsyncHttpClient();
+		PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
+		client.setCookieStore(myCookieStore);
+		//获取本地user_agent;
+		String defaultUserAgent = WebSettings.getDefaultUserAgent(context);
+		if (isWifiAvailable(context)){
+			client.addHeader("NETTYPE","WIFI");
+			LogUtil.d("WIFI","ON");
+		}else {
+			client.addHeader("NETTYPE","3G+");
+			LogUtil.d("WIFI","OFF");
+		}
+		client.setUserAgent(defaultUserAgent);
+		//请求网络
+		
+		client.get( url, null, new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				LogUtil.d("fail","dssd");
+				throwable.printStackTrace();
+
+			}
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
+				try {
+					JSONObject json = new JSONObject(s);
+					if(null != json ){
+						PayReq req = new PayReq();
+						//req.appId = "wxf8b4f85f3a794e77";  // 测试用appId
+						req.appId			= json.getString("appid");
+						req.partnerId		= json.getString("partnerid");
+						req.prepayId		= json.getString("prepayid");
+						req.nonceStr		= json.getString("noncestr");
+						req.timeStamp		= json.getString("timestamp");
+						req.packageValue	= json.getString("package");
+						req.sign			= json.getString("sign");
+						req.extData			= "app data"; // optional
+						//Toast.makeText(context, "正常调起支付", Toast.LENGTH_SHORT).show();
+						// 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+						api.sendReq(req);
+					}else{
+						Log.d("PAY_GET", "返回错误"+json.getString("retmsg"));
+						Toast.makeText(context, "返回错误"+json.getString("retmsg"), Toast.LENGTH_SHORT).show();
+					}
+			}catch(Exception e){
+				Log.e("PAY_GET", "异常："+e.getMessage());
+				Toast.makeText(context, "异常："+e.getMessage(), Toast.LENGTH_SHORT).show();
+			}
+		}
+		});
+		
+		
+		
+	/*	msgApi.registerApp("你在微信开放平台创建的app的APPID");
 		PayReq request = new PayReq();
 		request.appId = "wxd930ea5d5a258f4f";//应用ID
 		request.partnerId = "1900000109";//商户id
@@ -128,24 +196,55 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 		request.nonceStr= "1101000000140429eb40476f8896f4c9";
 		request.timeStamp= "1398746574";//时间戳，请见接口规则-参数规定
 		request.sign= "7FFECB600D7157C5AA49810D2D8F28BC2811827B";//签名，详见签名生成算法
-		api.sendReq(request);
+		api.sendReq(request);*/
 		
 		
 		
 		
 		
-		
+		/*
 		startActivity(new Intent(context,PayResultActivity.class));
-		finish();
+		finish();*/
+	}
+	private IWXAPI api;
+	//支付成功以后回调
+	@Override
+	public void onReq(BaseReq baseReq) {
 	}
 
-	//支付结果回掉
-	public void onResp(BaseResp resp){
-		if(resp.getType()== ConstantsAPI.COMMAND_PAY_BY_WX){
-			Log.d("tag","onPayFinish,errCode="+resp.errCode);
+	@Override
+	public void onResp(BaseResp baseResp) {
+		Log.d("res", "onPayFinish, errCode = " + baseResp.errCode);
+		if(baseResp.getType()== ConstantsAPI.COMMAND_PAY_BY_WX){
+			Log.d("tag","onPayFinish,errCode="+baseResp.toString());
 			AlertDialog.Builder builder=new AlertDialog.Builder(this);
-			builder.setTitle("ss");
+			builder.setTitle("支付成功");
+			builder.show();
 		}
 	}
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		api.handleIntent(intent, this);
+	}
+	/**
+	 * 判断wifi连接状态
+	 *
+	 * @param ctx
+	 * @return
+	 */
+	public static  boolean isWifiAvailable(Context ctx) {
+		ConnectivityManager conMan = (ConnectivityManager) ctx
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo.State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+				.getState();
+		if (NetworkInfo.State.CONNECTED == wifi) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 }

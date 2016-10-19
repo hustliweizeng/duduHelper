@@ -396,16 +396,24 @@ public class ProductAdapter extends BaseAdapter
 			//上架状态
 			if(list.get(position).getStatus().equals("0"))
 			{
-				viewHolder.productAction.setText("未上架");
+				//viewHolder.productAction.setText("正在审核");
 				viewHolder.downButton.setImageResource(R.drawable.icon_up);
-				viewHolder.tv_status.setText("未上架");
+				viewHolder.tv_status.setText("正在审核");
 			}
-			if(list.get(position).getStatus().equals("1"))
+			else if(list.get(position).getStatus().equals("2"))
 			{
-				viewHolder.productAction.setText("已上架");
-				viewHolder.tv_status.setText("已上架");
+				//viewHolder.productAction.setText("审核中");
+				viewHolder.tv_status.setText("审核未通过");
 				viewHolder.downButton.setImageResource(R.drawable.icon_down);
 
+			}else  if (list.get(position).getStatus().equals("1")){
+				if (list.get(position).getIs_on_sale().equals("0")){
+					//未上架
+					
+				}else {
+					//已上架
+				}
+				
 			}
 			//商品图片
 			if(!TextUtils.isEmpty(list.get(position).getThumbnail()))

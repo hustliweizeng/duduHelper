@@ -143,7 +143,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 			//红包消息
 			case R.id.redbage_msg:
 			//判断当前可用次数是否为0
-				count = 1;
+				count = 0;
 			if (count >0){
 				intent = new Intent(context, CreateRedbagmsgActivity.class);
 			}else {

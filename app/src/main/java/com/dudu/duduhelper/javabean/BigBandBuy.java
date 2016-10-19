@@ -39,111 +39,29 @@ public class BigBandBuy implements Serializable{
     public static class DataBean implements  Serializable{
         private String id;
         private String status;
+        private String is_on_sale;
+        private String invitation;
         private String name;
         private String thumbnail;
-        private String[] show_img;
+        private Object show_img;
+        private String delivery;
+        private Object address;
         private String shop_id;
+        private String agent_id;
         private String price;
         private String current_price;
         private String rule;
         private String stock;
         private String amount;
         private String saled_count;
-        private String validation_count;
-        private String explain;
-        private String upshelf;
-        private String downshelf;
         private String clicked_count;
-        private String sold;
-        private String category_id;
-        private String[] pics;
-        private String agent_id;
-        private String expiry;
+        private String validation_count;
+        private String views;
+        private String explain;
         private String created_at;
         private String updated_at;
-
-        public String getClicked_count() {
-            return clicked_count;
-        }
-
-        public void setClicked_count(String clicked_count) {
-            this.clicked_count = clicked_count;
-        }
-
-        public String getCreated_at() {
-            return created_at;
-        }
-
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
-        }
-
-        public String getUpdated_at() {
-            return updated_at;
-        }
-
-        public void setUpdated_at(String updated_at) {
-            this.updated_at = updated_at;
-        }
-
-        public String getSold() {
-            return sold;
-        }
-
-        public void setSold(String sold) {
-            this.sold = sold;
-        }
-
-        public String getCategory_id() {
-            return category_id;
-        }
-
-        public void setCategory_id(String category_id) {
-            this.category_id = category_id;
-        }
-
-        public String[] getPics() {
-            return pics;
-        }
-
-        public void setPics(String[] pics) {
-            this.pics = pics;
-        }
-
-        public String getAgent_id() {
-            return agent_id;
-        }
-
-        public void setAgent_id(String agent_id) {
-            this.agent_id = agent_id;
-        }
-
-        public String getExpiry() {
-            return expiry;
-        }
-
-        public void setExpiry(String expiry) {
-            this.expiry = expiry;
-        }
-
-        
-        public String getDownshelf() {
-            return downshelf;
-        }
-
-        public void setDownshelf(String downshelf) {
-            this.downshelf = downshelf;
-        }
-
-        public String getUpshelf() {
-            return upshelf;
-        }
-
-        public void setUpshelf(String upshelf) {
-            this.upshelf = upshelf;
-        }
-
-        
+        private Object deleted_at;
+        private List<String> apply_shops;
 
         public String getId() {
             return id;
@@ -159,6 +77,22 @@ public class BigBandBuy implements Serializable{
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public String getIs_on_sale() {
+            return is_on_sale;
+        }
+
+        public void setIs_on_sale(String is_on_sale) {
+            this.is_on_sale = is_on_sale;
+        }
+
+        public String getInvitation() {
+            return invitation;
+        }
+
+        public void setInvitation(String invitation) {
+            this.invitation = invitation;
         }
 
         public String getName() {
@@ -177,12 +111,28 @@ public class BigBandBuy implements Serializable{
             this.thumbnail = thumbnail;
         }
 
-        public String[] getShow_img() {
+        public Object getShow_img() {
             return show_img;
         }
 
-        public void setShow_img(String[] show_img) {
+        public void setShow_img(Object show_img) {
             this.show_img = show_img;
+        }
+
+        public String getDelivery() {
+            return delivery;
+        }
+
+        public void setDelivery(String delivery) {
+            this.delivery = delivery;
+        }
+
+        public Object getAddress() {
+            return address;
+        }
+
+        public void setAddress(Object address) {
+            this.address = address;
         }
 
         public String getShop_id() {
@@ -191,6 +141,14 @@ public class BigBandBuy implements Serializable{
 
         public void setShop_id(String shop_id) {
             this.shop_id = shop_id;
+        }
+
+        public String getAgent_id() {
+            return agent_id;
+        }
+
+        public void setAgent_id(String agent_id) {
+            this.agent_id = agent_id;
         }
 
         public String getPrice() {
@@ -241,6 +199,14 @@ public class BigBandBuy implements Serializable{
             this.saled_count = saled_count;
         }
 
+        public String getClicked_count() {
+            return clicked_count;
+        }
+
+        public void setClicked_count(String clicked_count) {
+            this.clicked_count = clicked_count;
+        }
+
         public String getValidation_count() {
             return validation_count;
         }
@@ -249,12 +215,52 @@ public class BigBandBuy implements Serializable{
             this.validation_count = validation_count;
         }
 
+        public String getViews() {
+            return views;
+        }
+
+        public void setViews(String views) {
+            this.views = views;
+        }
+
         public String getExplain() {
             return explain;
         }
 
         public void setExplain(String explain) {
             this.explain = explain;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
+        public String getUpdated_at() {
+            return updated_at;
+        }
+
+        public void setUpdated_at(String updated_at) {
+            this.updated_at = updated_at;
+        }
+
+        public Object getDeleted_at() {
+            return deleted_at;
+        }
+
+        public void setDeleted_at(Object deleted_at) {
+            this.deleted_at = deleted_at;
+        }
+
+        public List<String> getApply_shops() {
+            return apply_shops;
+        }
+
+        public void setApply_shops(List<String> apply_shops) {
+            this.apply_shops = apply_shops;
         }
     }
 }

@@ -28,23 +28,7 @@ android {
     lintOptions {
         disable "ResourceType"
     }
-    signingConfigs {
-
-        release {
-            //.jks文件放在项目目录
-            storeFile file("xxx.jks")
-            storePassword "xxx"
-            keyAlias "xxx.release"
-            keyPassword "xxx"
-        }
-        debug {
-            //.jks文件放在项目目录
-            storeFile file("xxx.jks")
-            storePassword "xxx"
-            keyAlias "xxx.release"
-            keyPassword "xxx"
-        }
-    }
+   
 }
 
 dependencies {

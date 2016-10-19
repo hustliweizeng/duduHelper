@@ -110,6 +110,9 @@
             android:windowSoftInputMode="adjustPan|stateHidden" >
 
         </activity>
+        <activity android:name=".wxapi.WXPayEntryActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
         <activity android:name=".Activity.GuestManageActivity.PayResultActivity"/>
         <activity android:name=".Activity.RedBagActivity.EditRedbag2Activity"/>
         <activity
