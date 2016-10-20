@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -43,6 +44,7 @@ import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.widget.ColorDialog;
+import com.dudu.duduhelper.widget.MyAlertDailog;
 import com.dudu.duduhelper.widget.SwitchView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -122,7 +124,92 @@ public class ShopProductAddActivity extends BaseActivity
 		}
 	};
 	private BigBandBuy.DataBean data;
+	private AlertDialog dailog1;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.shop_product_add);
+		initHeadView("详情编辑",true, false, 0);
+		DuduHelperApplication.getInstance().addActivity(this);
+		//页面类别category；
+		category=getIntent().getStringExtra("category");
+		LogUtil.d("Category",category);
+		initView();
+		initData();
+	}
+
+
+	private void showAlertDailog() {
+		
+		//弹窗提醒
+		dailog1 = new AlertDialog.Builder(context).create();
+		dailog1.show();
+		//获取window之前必须先show
+		Window window = dailog1.getWindow();
+		window.setContentView(R.layout.alertdailg_bigband);
+		Button confirm = (Button) window.findViewById(R.id.confirm);
+		Button canle = (Button) window.findViewById(R.id.cancel);
+		TextView dis = (TextView) window.findViewById(R.id.disc);
+		canle.setText("取消编辑");
+		confirm.setText("继续提交");
+		String status = data.getStatus();
+		String is_on_sale = data.getIs_on_sale();
+		LogUtil.d("tag",status);
+		if ("0".equals(status)){
+			//正在审核
+			dis.setText("您的商品正在审核，变更信息将会导致商品下架并需运营商重新审核方能上架出售");
+		}
+		if ("1".equals(is_on_sale)){
+			dis.setText("您的商品正在出售，变更信息将会导致商品下架并需运营商重新审核方能上架出售");
+		}
+		//确定按钮
+		confirm.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				RequestParams params  =new RequestParams();
+				params.add("id",data.getId());
+
+				HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_STATUS, "post", new TextHttpResponseHandler() {
+					@Override
+					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+						Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onSuccess(int i, Header[] headers, String s) {
+						try {
+							JSONObject object = new JSONObject(s);
+							String code =  object.getString("code");
+							if ("SUCCESS".equalsIgnoreCase(code)){
+								//数据请求成功
+								dailog1.dismiss();
+								SubmitProduct();
+								
+							}else {
+								//数据请求失败
+								String msg = object.getString("msg");
+								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+			}
+		});
+		//取消按钮
+		canle.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dailog1.dismiss();
+				
+			}
+		});
+	}
 	private void initData()
 	{
 		//接收传递过来的数据(说明进入编辑页面，否则是进入新增商品页面)
@@ -179,25 +266,13 @@ public class ShopProductAddActivity extends BaseActivity
 		}
 	}
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.shop_product_add);
-		initHeadView("详情编辑",true, false, 0);
-		DuduHelperApplication.getInstance().addActivity(this);
-		//页面类别category；
-		category=getIntent().getStringExtra("category");
-		LogUtil.d("Category",category);
-		initView();
-		initData();
-	}
 
 
 
 	//提交修改的信息
 	private void SubmitProduct()
 	{
+		
 
 		if(TextUtils.isEmpty(productNameEditText.getText().toString().trim()))
 		{
@@ -240,7 +315,6 @@ public class ShopProductAddActivity extends BaseActivity
 			return;
 		}
 
-		Gson gson = new Gson();
 		BigBandBuy.DataBean dataBean = new BigBandBuy.DataBean();
 		if (category.equals("discount")){
 
@@ -271,7 +345,7 @@ public class ShopProductAddActivity extends BaseActivity
 			dataBean.setApply_shops(dataBean.getApply_shops());
 
 		}
-		ColorDialog.showRoundProcessDialog(ShopProductAddActivity.this,R.layout.loading_process_dialog_color);
+		
 		RequestParams params = new RequestParams();
 		params.put("op","save");
 		params.add("id",data.getId());
@@ -307,11 +381,6 @@ public class ShopProductAddActivity extends BaseActivity
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-			}
-			@Override
-			public void onFinish()
-			{
-				ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}
@@ -438,7 +507,14 @@ public class ShopProductAddActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
-				SubmitProduct();
+				String is_on_sale = data.getIs_on_sale();
+				if ("0".equals(is_on_sale)||"2".equals(is_on_sale)){
+					//未通过和审核失败直接调上传
+					SubmitProduct();
+				}else {
+
+					showAlertDailog();
+				}
 			}
 		});
 

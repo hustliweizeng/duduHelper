@@ -279,8 +279,11 @@ public class ProductAdapter extends BaseAdapter
 						//获取window之前必须先show
 						Window window = dailog.getWindow();
 						window.setContentView(R.layout.alertdailog_subimt);
+						//设置提交成功以后的状态
+						dailog.dismiss();
+						SwitchStatus(position);
+						
 					}else {
-
 						dailog = new AlertDialog.Builder(context).create();
 						dailog.show();
 						//获取window之前必须先show
@@ -288,6 +291,7 @@ public class ProductAdapter extends BaseAdapter
 						window.setContentView(R.layout.alertdailg_bigband);
 						Button confirm = (Button) window.findViewById(R.id.confirm);
 						Button canle = (Button) window.findViewById(R.id.cancel);
+						canle.setTextColor(context.getResources().getColor(R.color.btn_normal_color));
 						TextView dis = (TextView) window.findViewById(R.id.disc);
 						 if ("1".equals(is_on_sale)){
 							//已上架
@@ -297,35 +301,8 @@ public class ProductAdapter extends BaseAdapter
 						confirm.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-
-								RequestParams params  =new RequestParams();
-								params.add("id",list.get(position).getId());
-
-								HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_STATUS, "post", new TextHttpResponseHandler() {
-									@Override
-									public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-										Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
-									}
-
-									@Override
-									public void onSuccess(int i, Header[] headers, String s) {
-										try {
-											JSONObject object = new JSONObject(s);
-											String code =  object.getString("code");
-											if ("SUCCESS".equalsIgnoreCase(code)){
-												//数据请求成功
-												dailog.dismiss();
-											}else {
-												//数据请求失败
-												String msg = object.getString("msg");
-												Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-											}
-										} catch (JSONException e) {
-											e.printStackTrace();
-										}
-									}
-								});
-
+								dailog.dismiss();
+								SwitchStatus(position);
 							}
 						});
 						//取消按钮
@@ -465,6 +442,7 @@ public class ProductAdapter extends BaseAdapter
 			{
 				viewHolder.productSellNum.setText("已售:"+list.get(position).getSaled_count());
 			}
+			
 			//上架状态
 			if(list.get(position).getStatus().equals("0"))
 			{
@@ -553,6 +531,38 @@ public class ProductAdapter extends BaseAdapter
 		}
 		return convertView;
 	}
+
+	private void SwitchStatus(int position) {
+		RequestParams params  =new RequestParams();
+		String id = list.get(position).getId();
+		LogUtil.d("switch",id);
+		params.add("id",id);
+		HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_STATUS, "post", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						dailog.dismiss();
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	private class ViewHolder
 	{
 		ImageView productCheckImg;

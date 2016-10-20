@@ -7,8 +7,8 @@
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
@@ -17,7 +17,7 @@
             android:id="@+id/disc"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:text="描述2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222信息"
+            android:text=""
             android:textSize="16dp"
             android:maxLines="3"
             android:paddingLeft="30dp"
@@ -43,8 +43,8 @@
                 android:text="确定"
                 android:textSize="18dp"
                 />
-            <view
-                android:layout_width="0.2dp"
+            <ImageView
+                android:layout_width="0.5dp"
                 android:layout_height="match_parent"
                 android:src="@color/list_divide"/>
             <Button
@@ -53,6 +53,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="取消"
+                android:textColor="@color/btn_normal_color"
                 android:background="@null"
                 android:textSize="18dp"
                 />
