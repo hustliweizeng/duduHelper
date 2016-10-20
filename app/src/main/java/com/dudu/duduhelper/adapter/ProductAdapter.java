@@ -1,6 +1,7 @@
 package com.dudu.duduhelper.adapter;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -9,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +24,7 @@ import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.bean.HongbaoListBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
+import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.Activity.BigBandActivity.shopProductListActivity;
 import com.dudu.duduhelper.widget.ColorDialog;
@@ -34,6 +38,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +65,7 @@ public class ProductAdapter extends BaseAdapter
 	public boolean isAllSelect;
 	//是否显示复选框
 	public  boolean isShowCheckBox;
+	private AlertDialog dailog;
 
 
 	//初始化listview的checkbox
@@ -216,7 +223,6 @@ public class ProductAdapter extends BaseAdapter
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) 
 	{
-		OnClick listener=null;
 		if(convertView==null)
 		{
 			viewHolder = new ViewHolder();
@@ -224,6 +230,7 @@ public class ProductAdapter extends BaseAdapter
 			//复选框
 			viewHolder.productCheckImg=(ImageView) convertView.findViewById(R.id.productCheckImg);
 			viewHolder.productRelPriceTextView=(TextView) convertView.findViewById(R.id.productRelPriceTextView);
+			//设置横线
 			viewHolder.productRelPriceTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG );
 			viewHolder.productName=(TextView) convertView.findViewById(R.id.productName);
 			viewHolder.producthaveNum=(TextView) convertView.findViewById(R.id.producthaveNum);
@@ -234,27 +241,107 @@ public class ProductAdapter extends BaseAdapter
 			viewHolder.downButton=(ImageView) convertView.findViewById(R.id.downButton);
 			viewHolder.productGetNum=(TextView) convertView.findViewById(R.id.productGetNum);
 			viewHolder.tv_status = (TextView)convertView.findViewById(R.id.tv_status);
+			
 			//红包页面的时候，有几个控件设置不可见
-			if(isHongbao)
-			{
+			if(isHongbao) {
 				viewHolder.downButton.setVisibility(View.GONE);
 				viewHolder.productGetNum.setVisibility(View.VISIBLE);
 				viewHolder.productRelPriceTextView.setVisibility(View.GONE);
 				viewHolder.productPrice.setVisibility(View.GONE);
 			}
-			viewHolder.delectButton=(Button) convertView.findViewById(R.id.delectButton);
-			listener=new OnClick();
-			viewHolder.delectButton.setOnClickListener(listener);
 			//设置tag复用
-			convertView.setTag(viewHolder.delectButton.getId(), listener);
 			convertView.setTag(viewHolder);
 		}
 		//开始复用
 		else
 		{
 			viewHolder = (ViewHolder) convertView.getTag();
-			listener=(OnClick) convertView.getTag(viewHolder.delectButton.getId());
 		}
+		/***************************************************************************
+		 *	设置每个条目的数据和事件
+		 */
+		//设置上下架按钮的监听事件
+		final String status = list.get(position).getStatus();
+		final String is_on_sale = list.get(position).getIs_on_sale();
+		if ("0".equals(status)){
+			//审核中不能点击
+			viewHolder.downButton.setEnabled(false);
+		}else {
+			viewHolder.downButton.setEnabled(true);
+			viewHolder.downButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(context,"点击了"+position,Toast.LENGTH_SHORT).show();
+					if ("2".equals(status)||"0".equals(is_on_sale)){
+						//审核不通过，点击重新审核,新的界面
+						AlertDialog dailog =  new AlertDialog.Builder(context).create();
+						dailog.show();
+						//获取window之前必须先show
+						Window window = dailog.getWindow();
+						window.setContentView(R.layout.alertdailog_subimt);
+					}else {
+
+						dailog = new AlertDialog.Builder(context).create();
+						dailog.show();
+						//获取window之前必须先show
+						Window window = dailog.getWindow();
+						window.setContentView(R.layout.alertdailg_bigband);
+						Button confirm = (Button) window.findViewById(R.id.confirm);
+						Button canle = (Button) window.findViewById(R.id.cancel);
+						TextView dis = (TextView) window.findViewById(R.id.disc);
+						 if ("1".equals(is_on_sale)){
+							//已上架
+							 dis.setText("下架后需运营商重新审核，方能上架出售");
+						}
+						//确定按钮
+						confirm.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+
+								RequestParams params  =new RequestParams();
+								params.add("id",list.get(position).getId());
+
+								HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_STATUS, "post", new TextHttpResponseHandler() {
+									@Override
+									public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+										Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+									}
+
+									@Override
+									public void onSuccess(int i, Header[] headers, String s) {
+										try {
+											JSONObject object = new JSONObject(s);
+											String code =  object.getString("code");
+											if ("SUCCESS".equalsIgnoreCase(code)){
+												//数据请求成功
+												dailog.dismiss();
+											}else {
+												//数据请求失败
+												String msg = object.getString("msg");
+												Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+											}
+										} catch (JSONException e) {
+											e.printStackTrace();
+										}
+									}
+								});
+
+							}
+						});
+						//取消按钮
+						canle.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								dailog.dismiss();
+							}
+						});
+					}
+					
+				}
+			});
+		}
+		
+		
 		//根据传递过来的布尔值
 		if (isShowCheckBox){
 			//是否显示多选框
@@ -270,7 +357,6 @@ public class ProductAdapter extends BaseAdapter
 			if(!TextUtils.isEmpty(hongBaolist.get(position).getId()))
 			{
 				//
-				listener.setpositionAndId(hongBaolist.get(position).getId(),position,ConstantParamPhone.DELECT_HONGBAO);
 			}
 			if(!TextUtils.isEmpty(hongBaolist.get(position).getSend_num())&&!TextUtils.isEmpty(hongBaolist.get(position).getNum()))
 			{
@@ -354,20 +440,6 @@ public class ProductAdapter extends BaseAdapter
 		//如果是商品列表
 		else
 		{
-			if(!TextUtils.isEmpty(list.get(position).getId()))
-			{
-				if(isDisCount)
-				{
-					//设置商品删除或编辑
-					listener.setpositionAndId(list.get(position).getId(),position,ConstantParamPhone.DELECT_COUPON);
-				}
-				else
-				{
-					//设置商品删除或编辑
-					listener.setpositionAndId(list.get(position).getId(),position,ConstantParamPhone.DELECT_PRODUCT);
-				}
-
-			}
 			//商品原价
 			if(!TextUtils.isEmpty(list.get(position).getPrice()))
 			{
@@ -397,21 +469,26 @@ public class ProductAdapter extends BaseAdapter
 			if(list.get(position).getStatus().equals("0"))
 			{
 				//viewHolder.productAction.setText("正在审核");
-				viewHolder.downButton.setImageResource(R.drawable.icon_up);
+				viewHolder.downButton.setImageResource(R.drawable.icon_shenhe);
 				viewHolder.tv_status.setText("正在审核");
 			}
 			else if(list.get(position).getStatus().equals("2"))
 			{
 				//viewHolder.productAction.setText("审核中");
 				viewHolder.tv_status.setText("审核未通过");
-				viewHolder.downButton.setImageResource(R.drawable.icon_down);
-
+				viewHolder.downButton.setImageResource(R.drawable.icon_fail);
+			//审核通过状态
 			}else  if (list.get(position).getStatus().equals("1")){
 				if (list.get(position).getIs_on_sale().equals("0")){
 					//未上架
-					
+					viewHolder.tv_status.setText("未上架");
+					viewHolder.downButton.setImageResource(R.drawable.icon_down);
+
 				}else {
 					//已上架
+					viewHolder.tv_status.setText("已上架");
+					viewHolder.downButton.setImageResource(R.drawable.icon_up);
+
 				}
 				
 			}
@@ -486,7 +563,7 @@ public class ProductAdapter extends BaseAdapter
 		TextView productSellNum;//销售量
 		TextView productPrice;//售价
 		TextView productAction;//商品状态
-		Button delectButton;
+		ImageButton delectButton;
 		ImageView downButton;
 		TextView productGetNum;
 		TextView tv_status;

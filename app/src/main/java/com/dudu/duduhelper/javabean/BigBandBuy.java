@@ -43,9 +43,9 @@ public class BigBandBuy implements Serializable{
         private String invitation;
         private String name;
         private String thumbnail;
-        private Object show_img;
+        private String[] show_img;
         private String delivery;
-        private Object address;
+        private String address;
         private String shop_id;
         private String agent_id;
         private String price;
@@ -60,8 +60,73 @@ public class BigBandBuy implements Serializable{
         private String explain;
         private String created_at;
         private String updated_at;
-        private Object deleted_at;
+        private String deleted_at;
         private List<String> apply_shops;
+        
+        //折扣的字段(因为2个页面字段差不多，所以公用一个bean)
+        private String category_id;
+        private String[] pics;
+        private String upshelf;
+        private String downshelf;
+        private String expiry;
+        private String sold;
+        private String description;
+
+        public String getCategory_id() {
+            return category_id;
+        }
+
+        public void setCategory_id(String category_id) {
+            this.category_id = category_id;
+        }
+
+        public String[] getPics() {
+            return pics;
+        }
+
+        public void setPics(String[] pics) {
+            this.pics = pics;
+        }
+
+        public String getUpshelf() {
+            return upshelf;
+        }
+
+        public void setUpshelf(String upshelf) {
+            this.upshelf = upshelf;
+        }
+
+        public String getDownshelf() {
+            return downshelf;
+        }
+
+        public void setDownshelf(String downshelf) {
+            this.downshelf = downshelf;
+        }
+
+        public String getExpiry() {
+            return expiry;
+        }
+
+        public void setExpiry(String expiry) {
+            this.expiry = expiry;
+        }
+
+        public String getSold() {
+            return sold;
+        }
+
+        public void setSold(String sold) {
+            this.sold = sold;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
         public String getId() {
             return id;
@@ -111,11 +176,11 @@ public class BigBandBuy implements Serializable{
             this.thumbnail = thumbnail;
         }
 
-        public Object getShow_img() {
+        public String[] getShow_img() {
             return show_img;
         }
 
-        public void setShow_img(Object show_img) {
+        public void setShow_img(String[] show_img) {
             this.show_img = show_img;
         }
 
@@ -131,7 +196,7 @@ public class BigBandBuy implements Serializable{
             return address;
         }
 
-        public void setAddress(Object address) {
+        public void setAddress(String address) {
             this.address = address;
         }
 
@@ -251,7 +316,7 @@ public class BigBandBuy implements Serializable{
             return deleted_at;
         }
 
-        public void setDeleted_at(Object deleted_at) {
+        public void setDeleted_at(String deleted_at) {
             this.deleted_at = deleted_at;
         }
 

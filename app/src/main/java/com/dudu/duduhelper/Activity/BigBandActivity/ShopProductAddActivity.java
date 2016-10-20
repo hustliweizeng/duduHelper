@@ -62,31 +62,31 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-public class ShopProductAddActivity extends BaseActivity 
+public class ShopProductAddActivity extends BaseActivity
 {
 	private String category;
-	
+
 	private EditText productNameEditText;
-	
+
 	private TextView productTypeTextView;
-	
+
 	private EditText productYuanPriceEditText;
-	
+
 	private EditText productNowPriceEditText;
-	
+
 	private EditText productKuCunNumEditText;
-	
+
 	private LinearLayout ll_startTime_shop_product;
 	private TextView tv_startTime_shop_product;
-	
+
 	private LinearLayout ll_endTime_shop_product;
 	private TextView tv_endTime_shop_product;
-	
+
 	private SwitchView productStatusSwitch;
-	
+
 	private LinearLayout productDetailLine;
 	private TextView productDetaliTextView;
-	
+
 	private Button saveProductbutton;
 	private EditText productSoldTextView;
 	private String desprotion;
@@ -95,9 +95,9 @@ public class ShopProductAddActivity extends BaseActivity
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	//用来拼接日期和时间，最终用来显示的
 	private StringBuilder datastr = new StringBuilder("");
-    private int flag=0;
-    private int flag1=0;
-    private ImageView shopImageView;
+	private int flag=0;
+	private int flag1=0;
+	private ImageView shopImageView;
 	private TextView tv_photo_num_shop_product;
 	private EditText ed_explain;
 	private String[] imgs;
@@ -139,10 +139,10 @@ public class ShopProductAddActivity extends BaseActivity
 		ed_explain.setText(data.getExplain());
 		productDetaliTextView.setText(data.getExplain());
 		LogUtil.d("timereule", data.getRule());
-		
+
 		//设置开始结束时间
 		if (!TextUtils.isEmpty(data.getRule())){
-			
+
 			try {
 				JSONArray array = new JSONArray(data.getRule());
 				JSONObject time = array.getJSONObject(0);
@@ -161,7 +161,7 @@ public class ShopProductAddActivity extends BaseActivity
 				LogUtil.d("Jsonerro",e.toString());
 			}
 		}
-		
+
 		if(category.equals("discount")){
 
 			if (data.getPics()!=null & data.getPics().length >0){
@@ -180,7 +180,7 @@ public class ShopProductAddActivity extends BaseActivity
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_product_add);
@@ -192,13 +192,13 @@ public class ShopProductAddActivity extends BaseActivity
 		initView();
 		initData();
 	}
-			
-		
-	
+
+
+
 	//提交修改的信息
-	private void SubmitProduct() 
+	private void SubmitProduct()
 	{
-		
+
 		if(TextUtils.isEmpty(productNameEditText.getText().toString().trim()))
 		{
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品名称",Toast.LENGTH_SHORT).show();
@@ -239,11 +239,11 @@ public class ShopProductAddActivity extends BaseActivity
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品描述",Toast.LENGTH_SHORT).show();
 			return;
 		}
-		
+
 		Gson gson = new Gson();
 		BigBandBuy.DataBean dataBean = new BigBandBuy.DataBean();
 		if (category.equals("discount")){
-			
+
 			dataBean.setName(productNameEditText.getText().toString().trim());
 			dataBean.setCurrent_price(productNowPriceEditText.getText().toString().trim());
 			dataBean.setPrice(productYuanPriceEditText.getText().toString().trim());
@@ -253,6 +253,9 @@ public class ShopProductAddActivity extends BaseActivity
 			dataBean.setAmount(productSoldTextView.getText().toString().trim());
 			dataBean.setRule(data.getRule());
 			dataBean.setShow_img(picsPath);
+			//把id信息重新提交
+			dataBean.setShop_id(data.getShop_id());
+			dataBean.setApply_shops(dataBean.getApply_shops());
 		}else {
 			dataBean.setName(productNameEditText.getText().toString().trim());
 			dataBean.setCurrent_price(productNowPriceEditText.getText().toString().trim());
@@ -263,7 +266,10 @@ public class ShopProductAddActivity extends BaseActivity
 			dataBean.setRule(data.getRule());
 			//设置组图
 			dataBean.setShow_img(picsPath);
-			
+			//把id信息重新提交
+			dataBean.setShop_id(data.getShop_id());
+			dataBean.setApply_shops(dataBean.getApply_shops());
+
 		}
 		ColorDialog.showRoundProcessDialog(ShopProductAddActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
@@ -273,16 +279,16 @@ public class ShopProductAddActivity extends BaseActivity
 		String panic_data=  new Gson().toJson(dataBean);
 		LogUtil.d("data",panic_data);
 		params.put("panic_data",panic_data);
-        HttpUtils.getConnection(context,params,ConstantParamPhone.GET_BIG_BAND_DETAIL, "post",new TextHttpResponseHandler(){
+		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_BIG_BAND_DETAIL, "post",new TextHttpResponseHandler(){
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
+			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 			{
 				LogUtil.d("FIX",arg2);
 				Toast.makeText(ShopProductAddActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
 			}
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
+			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
 				LogUtil.d("FIX",arg2);
 
@@ -303,14 +309,14 @@ public class ShopProductAddActivity extends BaseActivity
 				}
 			}
 			@Override
-			public void onFinish() 
+			public void onFinish()
 			{
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}
 
-	private void initView() 
+	private void initView()
 	{
 		//点击添加图片
 		shopImageView = (ImageView) this.findViewById(R.id.productImageView);
@@ -319,10 +325,10 @@ public class ShopProductAddActivity extends BaseActivity
 		ed_explain = (EditText) findViewById(R.id.ed_explain);
 		//动态显示图片的数量
 		tv_photo_num_shop_product = (TextView) findViewById(R.id.tv_photo_num_shop_product);
-		shopImageView.setOnClickListener(new OnClickListener() 
+		shopImageView.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
@@ -333,32 +339,32 @@ public class ShopProductAddActivity extends BaseActivity
 		textToumingView = (TextView) this.findViewById(R.id.textToumingView);
 		AlphaAnimation animation = new AlphaAnimation((float)1, (float)0);
 		animation.setDuration(4000); //设置持续时间2秒  
-		animation.setAnimationListener(new AnimationListener() 
+		animation.setAnimationListener(new AnimationListener()
 		{
-			
+
 			@Override
-			public void onAnimationStart(Animation animation) 
+			public void onAnimationStart(Animation animation)
 			{
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
-			public void onAnimationRepeat(Animation animation) 
+			public void onAnimationRepeat(Animation animation)
 			{
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
-			public void onAnimationEnd(Animation animation) 
+			public void onAnimationEnd(Animation animation)
 			{
 				// TODO Auto-generated method stub
 				textToumingView.setVisibility(View.GONE);
 			}
 		});
 		textToumingView.startAnimation(animation);
-		
+
 		productImageView=(ImageView) this.findViewById(R.id.productImageView);
 		productSoldTextView=(EditText) this.findViewById(R.id.productSoldTextView);
 		saveProductbutton=(Button) this.findViewById(R.id.saveProductbutton);
@@ -373,36 +379,36 @@ public class ShopProductAddActivity extends BaseActivity
 		//结束时间
 		ll_endTime_shop_product = (LinearLayout) this.findViewById(R.id.ll_endTime_shop_product);
 		tv_endTime_shop_product =(TextView) this.findViewById(R.id.tv_endTime_shop_product);
-		
-		
+
+
 		productDetailLine=(LinearLayout) this.findViewById(R.id.productDetailLine);
 		productDetaliTextView=(TextView) this.findViewById(R.id.productDetaliTextView);
 		//选择图片上传
-		productImageView.setOnClickListener(new OnClickListener() 
+		productImageView.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
-				
-			Intent intent = new Intent(ShopProductAddActivity.this,ShopImageViewBrower.class);
-			//把网络数据传输过去
-			listSource = new ArrayList<String>();
-			if(imgs!=null){
-				for (String img:imgs){
-					listSource.add(img);
+
+				Intent intent = new Intent(ShopProductAddActivity.this,ShopImageViewBrower.class);
+				//把网络数据传输过去
+				listSource = new ArrayList<String>();
+				if(imgs!=null){
+					for (String img:imgs){
+						listSource.add(img);
+					}
 				}
-			}
-			intent.putStringArrayListExtra("imageList", listSource);
-			intent.putExtra("type",1);
-			startActivityForResult(intent, 1);
+				intent.putStringArrayListExtra("imageList", listSource);
+				intent.putExtra("type",1);
+				startActivityForResult(intent, 1);
 
 			}
 		});
-		productDetailLine.setOnClickListener(new OnClickListener() 
+		productDetailLine.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				//弹出编辑产品详情页面
 				Intent intent = new Intent(ShopProductAddActivity.this, ProductInfoEditActivity.class);
@@ -413,7 +419,7 @@ public class ShopProductAddActivity extends BaseActivity
 		ll_startTime_shop_product.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				//弹出时间对话框
 				//showDataDialog(tv_startTime_shop_product);
@@ -425,17 +431,17 @@ public class ShopProductAddActivity extends BaseActivity
 				//showDataDialog(tv_endTime_shop_product);
 			}
 		});
-		
-		saveProductbutton.setOnClickListener(new OnClickListener() 
+
+		saveProductbutton.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				SubmitProduct();
 			}
 		});
-		
+
 		if("bigband".equals(category))
 		{
 			productTypeTextView.setText("大牌抢购");
@@ -450,9 +456,9 @@ public class ShopProductAddActivity extends BaseActivity
 		}
 	}
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) 
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		if (requestCode == 1 && resultCode == RESULT_OK) 
+		if (requestCode == 1 && resultCode == RESULT_OK)
 		{
 			uplodImgs = (ArrayList<String>) data.getSerializableExtra("pics");
 			picsPath = new String[uplodImgs.size()];
@@ -467,58 +473,58 @@ public class ShopProductAddActivity extends BaseActivity
 			}
 		}
 	}
-	
+
 	//选择日期,调用系统主题
-    @SuppressLint("InlinedApi") 
-    private void showDataDialog(final TextView textView)
-    {
-    	 flag=0;
-    	 flag1=0;
-    	 datastr.delete(0,datastr.length());
-    	 Calendar mycalendar=Calendar.getInstance(Locale.CHINA);
-         Date mydate=new Date(); //获取当前日期Date对象
-         mycalendar.setTime(mydate);////为Calendar对象设置时间为当前日期
-    	 DatePickerDialog datePicker=new DatePickerDialog(ShopProductAddActivity.this,AlertDialog.THEME_HOLO_LIGHT, new OnDateSetListener() 
-    	 {
-             @Override
-             public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) 
-             {
-                 //Toast.makeText(RegisterActivity.this, year+"year "+(monthOfYear+1)+"month "+dayOfMonth+"day", Toast.LENGTH_SHORT).show();
-            	 if(flag==0)
-            	 {
-            		 flag=1;
-            		 datastr.append(year+"-"+(monthOfYear+1)+"-"+dayOfMonth+" ");
-                	 showTimePickerDialog(textView);
-            	 }
-            	 //textView.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
-             }
-         },mycalendar.get(Calendar.YEAR),mycalendar.get(Calendar.MONTH), mycalendar.get(Calendar.DAY_OF_MONTH));
-         datePicker.show();
-    }
-    @SuppressLint("InlinedApi") 
-    public void showTimePickerDialog(final TextView textView) 
-    {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(System.currentTimeMillis());
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-         
-        TimePickerDialog dialog = new TimePickerDialog(this,AlertDialog.THEME_HOLO_LIGHT, new OnTimeSetListener() {
-     
-            @Override
-            public void onTimeSet(TimePicker arg0, int hour, int minute) 
-            {
-            	if(flag1==0)
-            	{
-            		flag1=1;
-	            	datastr.append(hour+":"+minute+":00");
-	            	textView.setText(datastr);
-            	}
-            }
-             
-        }, hour, minute, true);
-        dialog.show();
-    }
+	@SuppressLint("InlinedApi")
+	private void showDataDialog(final TextView textView)
+	{
+		flag=0;
+		flag1=0;
+		datastr.delete(0,datastr.length());
+		Calendar mycalendar=Calendar.getInstance(Locale.CHINA);
+		Date mydate=new Date(); //获取当前日期Date对象
+		mycalendar.setTime(mydate);////为Calendar对象设置时间为当前日期
+		DatePickerDialog datePicker=new DatePickerDialog(ShopProductAddActivity.this,AlertDialog.THEME_HOLO_LIGHT, new OnDateSetListener()
+		{
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth)
+			{
+				//Toast.makeText(RegisterActivity.this, year+"year "+(monthOfYear+1)+"month "+dayOfMonth+"day", Toast.LENGTH_SHORT).show();
+				if(flag==0)
+				{
+					flag=1;
+					datastr.append(year+"-"+(monthOfYear+1)+"-"+dayOfMonth+" ");
+					showTimePickerDialog(textView);
+				}
+				//textView.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
+			}
+		},mycalendar.get(Calendar.YEAR),mycalendar.get(Calendar.MONTH), mycalendar.get(Calendar.DAY_OF_MONTH));
+		datePicker.show();
+	}
+	@SuppressLint("InlinedApi")
+	public void showTimePickerDialog(final TextView textView)
+	{
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(System.currentTimeMillis());
+		int hour = c.get(Calendar.HOUR_OF_DAY);
+		int minute = c.get(Calendar.MINUTE);
+
+		TimePickerDialog dialog = new TimePickerDialog(this,AlertDialog.THEME_HOLO_LIGHT, new OnTimeSetListener() {
+
+			@Override
+			public void onTimeSet(TimePicker arg0, int hour, int minute)
+			{
+				if(flag1==0)
+				{
+					flag1=1;
+					datastr.append(hour+":"+minute+":00");
+					textView.setText(datastr);
+				}
+			}
+
+		}, hour, minute, true);
+		dialog.show();
+	}
 	/**
 	 * imageUri 上传图片的本地uri地址
 	 */
@@ -569,8 +575,8 @@ public class ShopProductAddActivity extends BaseActivity
 				}
 			}
 
-			
+
 		});
-		
+
 	}
 }

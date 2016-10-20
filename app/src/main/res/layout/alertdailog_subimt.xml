@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+    >
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/bg_alertdailog">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_point"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="提交成功"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/text_dark_color"
+            />
+        <TextView
+            android:id="@+id/disc"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="您的商品已提交至审核，请耐心等待"
+            android:textSize="16dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:textColor="@color/text_gray_color"
+            android:gravity="left"/>
+    
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+    >
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/bg_alertdailog">
+        <TextView
+            android:id="@+id/disc"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="描述2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222信息"
+            android:textSize="16dp"
+            android:maxLines="3"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:textColor="@color/text_dark_color"
+            android:gravity="left"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:src="@color/list_divide"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="50dp">
+            <Button
+                android:id="@+id/confirm"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:text="确定"
+                android:textSize="18dp"
+                />
+            <view
+                android:layout_width="0.2dp"
+                android:layout_height="match_parent"
+                android:src="@color/list_divide"/>
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="取消"
+                android:background="@null"
+                android:textSize="18dp"
+                />
+            
+            
+            
+        </LinearLayout>
+     
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

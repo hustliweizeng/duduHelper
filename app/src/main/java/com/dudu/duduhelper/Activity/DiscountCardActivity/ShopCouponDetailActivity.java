@@ -18,7 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+//折扣详情页面
 public class ShopCouponDetailActivity extends BaseActivity
 {
 	private Button editCouponButton;

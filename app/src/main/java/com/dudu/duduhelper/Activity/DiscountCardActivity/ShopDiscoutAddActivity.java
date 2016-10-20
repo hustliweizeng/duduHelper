@@ -58,7 +58,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
+//编辑优惠券想去
 public class ShopDiscoutAddActivity extends BaseActivity 
 {
 	private String id;
@@ -202,6 +202,8 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		//dataBean.setDownshelf(data.getDownshelf());
 		//dataBean.setUpshelf(data.getUpshelf());
 		dataBean.setPics(picsPath);
+		dataBean.setShop_id(data.getShop_id());
+		dataBean.setApply_shops(data.getApply_shops());
 
 
 

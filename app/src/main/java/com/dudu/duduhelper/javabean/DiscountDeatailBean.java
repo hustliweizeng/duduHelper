@@ -1,6 +1,7 @@
 package com.dudu.duduhelper.javabean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author
@@ -43,7 +44,7 @@ public class DiscountDeatailBean implements  Serializable{
         private String name;
         private String category_id;
         private String thumbnail;
-        private Object pics;
+        private String[] pics;
         private String shop_id;
         private String agent_id;
         private String price;
@@ -61,6 +62,15 @@ public class DiscountDeatailBean implements  Serializable{
         private String created_at;
         private String updated_at;
         private String deleted_at;
+        private List<String> apply_shops;
+
+        public List<String> getApply_shops() {
+            return apply_shops;
+        }
+
+        public void setApply_shops(List<String> apply_shops) {
+            this.apply_shops = apply_shops;
+        }
 
         public String getId() {
             return id;
@@ -106,7 +116,7 @@ public class DiscountDeatailBean implements  Serializable{
             return pics;
         }
 
-        public void setPics(Object pics) {
+        public void setPics(String[] pics) {
             this.pics = pics;
         }
 
