@@ -30,6 +30,7 @@ android {
     }
    
 }
+allprojects { gradle.projectsEvaluated { tasks.withType(JavaCompile) { options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation" } }}
 
 dependencies {
     compile 'com.jakewharton:butterknife:8.3.0'

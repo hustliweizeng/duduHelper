@@ -226,6 +226,11 @@ public class LoginActivity extends BaseActivity
 				params.add("umeng_token",umeng_token);
 				params.setContentEncoding("UTF-8");
 				LogUtil.d("welcome","usernmae="+username.getText().toString().trim()+"paswword="+Util.md5(password.getText().toString().trim()));
+				//保存用户名和密码到本地
+				sp.edit().putString("loginname",username.getText().toString().trim())
+				.putString("password",Util.md5(password.getText().toString().trim()))		
+				.commit();		
+				
 				String url = ConstantParamPhone.USER_LOGIN;
 		        HttpUtils.getConnection(context, params,url,"POST",new TextHttpResponseHandler()
 				{

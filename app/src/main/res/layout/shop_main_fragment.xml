@@ -438,7 +438,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:background="@drawable/icon_guest_manage" />
+                            android:background="@drawable/icon_guest" />
 
                         <TextView
                             android:layout_width="wrap_content"

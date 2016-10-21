@@ -35,12 +35,12 @@ public class HttpUtils {
 		String defaultUserAgent = WebSettings.getDefaultUserAgent(mContext);
 		if (isWifiAvailable(mContext)){
 			client.addHeader("NETTYPE","WIFI");
-			LogUtil.d("WIFI","ON");
+			//LogUtil.d("WIFI","ON");
 		}else {
 			client.addHeader("NETTYPE","3G+");
-			LogUtil.d("WIFI","OFF");
+			//LogUtil.d("WIFI","OFF");
 		}
-		LogUtil.d("sett",defaultUserAgent);
+		//LogUtil.d("sett",defaultUserAgent);
 		client.setUserAgent(defaultUserAgent);
 		//设置请求头
 		if ("get".equalsIgnoreCase(method)){

@@ -66,6 +66,8 @@ public class ProductAdapter extends BaseAdapter
 	//是否显示复选框
 	public  boolean isShowCheckBox;
 	private AlertDialog dailog;
+	private AlertDialog dailog1;
+	private boolean isNoConfirm;
 
 
 	//初始化listview的checkbox
@@ -266,6 +268,7 @@ public class ProductAdapter extends BaseAdapter
 		if ("0".equals(status)){
 			//审核中不能点击
 			viewHolder.downButton.setEnabled(false);
+			viewHolder.downButton.setFocusable(false);
 		}else {
 			viewHolder.downButton.setEnabled(true);
 			viewHolder.downButton.setOnClickListener(new OnClickListener() {
@@ -274,17 +277,20 @@ public class ProductAdapter extends BaseAdapter
 					Toast.makeText(context,"点击了"+position,Toast.LENGTH_SHORT).show();
 					if ("2".equals(status)||"0".equals(is_on_sale)){
 						//审核不通过，点击重新审核,新的界面
-						AlertDialog dailog =  new AlertDialog.Builder(context).create();
-						dailog.show();
+						dailog1 = new AlertDialog.Builder(context).create();
+						dailog1.show();
 						//获取window之前必须先show
-						Window window = dailog.getWindow();
+						Window window = dailog1.getWindow();
 						window.setContentView(R.layout.alertdailog_subimt);
-						//设置提交成功以后的状态
-						dailog.dismiss();
+						//不需要按钮的状态
+						isNoConfirm = true;
 						SwitchStatus(position);
 						
-					}else {
-						dailog = new AlertDialog.Builder(context).create();
+					}else if ("1".equals(is_on_sale)){
+						//如果是已上架状态直接切换为下架状态
+						isNoConfirm =false;
+						SwitchStatus(position);
+						/*dailog = new AlertDialog.Builder(context).create();
 						dailog.show();
 						//获取window之前必须先show
 						Window window = dailog.getWindow();
@@ -297,6 +303,7 @@ public class ProductAdapter extends BaseAdapter
 							//已上架
 							 dis.setText("下架后需运营商重新审核，方能上架出售");
 						}
+						isNoConfirm =false;
 						//确定按钮
 						confirm.setOnClickListener(new OnClickListener() {
 							@Override
@@ -311,7 +318,7 @@ public class ProductAdapter extends BaseAdapter
 							public void onClick(View v) {
 								dailog.dismiss();
 							}
-						});
+						});*/
 					}
 					
 				}
@@ -550,7 +557,16 @@ public class ProductAdapter extends BaseAdapter
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
-						dailog.dismiss();
+						if (isNoConfirm){
+							//改变图片状态
+							dailog1.dismiss();
+							viewHolder.downButton.setImageResource(R.drawable.icon_shenhe);
+							viewHolder.tv_status.setText("审核中");
+							
+						}else {
+							viewHolder.downButton.setImageResource(R.drawable.icon_down);
+							viewHolder.tv_status.setText("已下架");
+						}
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -573,7 +589,6 @@ public class ProductAdapter extends BaseAdapter
 		TextView productSellNum;//销售量
 		TextView productPrice;//售价
 		TextView productAction;//商品状态
-		ImageButton delectButton;
 		ImageView downButton;
 		TextView productGetNum;
 		TextView tv_status;

@@ -1,16 +1,21 @@
 package com.dudu.duduhelper.Activity.RedBagActivity;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,6 +35,8 @@ import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.RedBagListBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -37,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -61,19 +69,25 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 	private RedBagCheckAdapter<String> arrayAdapter1;
 	private RedBagListBean list;
 	private Button btn_new_redbag;
+	private boolean isDel =false;
+	private ImageButton btn_check;
+	private int count;
+	private Button btn_edit;
+	private ImageButton backButton;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_redbag_list);
 		adapter = new RedBagListAdapter(context);
-		initHeadView("商家红包",true,false,0);
 		initView();
 	}
 
 	
 
 	private void initView() {
+		backButton = (ImageButton) findViewById(R.id.backButton);
+		btn_edit = (Button) findViewById(R.id.btn_edit);
 		tv_source = (TextView) findViewById(R.id.tv_source);
 		tv_status = (TextView) findViewById(R.id.tv_status);
 		reloadButton = (Button) findViewById(R.id.reloadButton);
@@ -85,12 +99,19 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 		selectLine = (LinearLayout) this.findViewById(R.id.selectLine);
 		iv_source = (ImageView) findViewById(R.id.iv_source);
 		iv_status = (ImageView) findViewById(R.id.iv_status);
+		btn_check = (ImageButton) findViewById(R.id.btn_check);
 		btn_new_redbag = (Button) findViewById(R.id.btn_new_redbag);
 		btn_new_redbag.setOnClickListener(this);
 		tv_source.setOnClickListener(this);
 		tv_status.setOnClickListener(this);
 		reloadButton.setOnClickListener(this);
 		lv_redbag.setAdapter(adapter);
+		backButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		swipe_product_list.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -107,8 +128,106 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 				startActivity(intent);
 			}
 		});
+		//删除选中条目
+		iv_del.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				HashMap<Integer, Boolean> delList = adapter.getDelList();
+				if (delList== null ||delList.size()==0){
+					Toast.makeText(context,"当前没有选中的条目",Toast.LENGTH_SHORT).show();
+					return;
+				}
+				count = delList.size()-1;
+				for (Integer item :delList.keySet()){
+					LogUtil.d("load","正在删除"+item);
+					delItem(item+"");
+				}
+
+			}
+		});
+		btn_edit.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!isDel) {
+					ll_check.setVisibility(View.VISIBLE);
+					btn_new_redbag.setVisibility(View.GONE);
+					adapter.setIsDel();
+					btn_edit.setText("取消");
+					isDel = !isDel;
+				} else {
+					ll_check.setVisibility(View.GONE);
+					btn_new_redbag.setVisibility(View.VISIBLE);
+					adapter.setIsDel();
+					btn_edit.setText("编辑");
+					isDel = !isDel;
+				}
+			}
+		});
 
 	}
+
+	private void delItem(String id) {
+		AsyncHttpClient client = new AsyncHttpClient();
+		PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
+		client.setCookieStore(myCookieStore);
+		String defaultUserAgent = WebSettings.getDefaultUserAgent(context);
+		if (isWifiAvailable(context)){
+			client.addHeader("NETTYPE","WIFI");
+		}else {
+			client.addHeader("NETTYPE","3G+");
+		}
+		client.setUserAgent(defaultUserAgent);
+		client.delete(context, ConstantParamPhone.DEL_REDBAG+id, new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				throwable.printStackTrace();
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						count--;
+						if (count ==0){
+							Toast.makeText(context,"所选红包已经删除",Toast.LENGTH_SHORT).show();
+							//全部删除后，刷新页面
+							requestRedbagStatus();
+						}
+						
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	/**
+	 * 判断wifi连接状态
+	 *
+	 * @param ctx
+	 * @return
+	 */
+	public  boolean isWifiAvailable(Context ctx) {
+		ConnectivityManager conMan = (ConnectivityManager) ctx
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo.State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+				.getState();
+		if (NetworkInfo.State.CONNECTED == wifi) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	@Override
 	public void onResume() {

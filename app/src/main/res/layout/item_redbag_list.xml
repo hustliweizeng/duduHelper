@@ -11,7 +11,17 @@
         android:layout_height="106dp"
         android:background="@drawable/view_selector" >
 
-
+        <ImageButton
+            android:id="@+id/btn_check"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:visibility="gone"
+            android:focusable="false"
+            android:src="@drawable/icon_xuanze"
+            android:scaleType="centerInside"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"/>
 
         <ImageView
             android:id="@+id/iv_logo"
@@ -21,7 +31,7 @@
             android:scaleType="fitXY"
             android:layout_marginRight="10dp"
             android:layout_marginTop="17dp"
-            android:layout_toRightOf="@+id/productCheckImg"
+            android:layout_toRightOf="@+id/btn_check"
             android:src="@drawable/friends_sends_pictures_no" />
 
         <TextView
@@ -76,10 +86,15 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="14dp"
             android:layout_marginRight="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:background="@drawable/circle"
             android:layout_alignParentRight="true"
             android:text="发放中"
             android:textColor="@color/text_color_light"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
         
 
       

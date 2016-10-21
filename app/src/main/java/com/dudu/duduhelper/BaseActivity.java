@@ -42,7 +42,6 @@ import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.Header;
 import org.json.JSONObject;
 
 public class BaseActivity extends FragmentActivity 
@@ -220,82 +219,5 @@ public class BaseActivity extends FragmentActivity
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	//更新版本信息
-	private void updateCheck() 
-	{
-		try 
-		{
-			// TODO Auto-generated method stub
-			PackageManager manager = this.getPackageManager(); 
-			PackageInfo info;
-			info = manager.getPackageInfo(this.getPackageName(), 0);
-	        final String appVersion = info.versionName; // 版本名  
-	        //String currentVersionCode = info.versionCode; // 版本号  
-	        //if(!appVersion.equals(RespBen.getApk_version()))//
-	        RequestParams params = new RequestParams();
-			params.setContentEncoding("UTF-8");
-			AsyncHttpClient client = new AsyncHttpClient();
-			//保存cookie，自动保存到了shareprefercece  
-	        PersistentCookieStore myCookieStore = new PersistentCookieStore(BaseActivity.this);    
-	        client.setCookieStore(myCookieStore); 
-	        client.get(ConstantParamPhone.IP+ConstantParamPhone.GET_VERSION, params,new TextHttpResponseHandler()
-			{
 	
-				@Override
-				public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-				{
-					Toast.makeText(BaseActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
-				}
-				@Override
-				public void onSuccess(int arg0, Header[] arg1, String arg2) 
-				{
-					final UpdateBean updateBean=new Gson().fromJson(arg2,UpdateBean.class);
-					if(!updateBean.getStatus().equals("1"))
-					{
-						Toast.makeText(BaseActivity.this, updateBean.getInfo(), Toast.LENGTH_LONG).show();
-						//保存用户信息
-					}
-					else
-					{
-						if(!appVersion.equals(updateBean.getData().getVersion()))
-						{
-							MyDialog.showDialog(BaseActivity.this, "版本更新", true, true, "别烦我", "立即更新", new OnClickListener() 
-							{
-								
-								@Override
-								public void onClick(View v) 
-								{
-									// TODO Auto-generated method stub
-									MyDialog.cancel();
-								}
-							}, new OnClickListener() {
-								
-								@Override
-								public void onClick(View v) 
-								{
-									// TODO Auto-generated method stub
-									Intent intent=new Intent(BaseActivity.this,UpdateService.class);
-									intent.putExtra("apkUrl", updateBean.getData().getUrl());
-							        startService(intent);
-							        MyDialog.cancel();
-								}
-							});
-						}
-					}
-				}
-				@Override
-				public void onFinish() 
-				{
-					// TODO Auto-generated method stub
-					ColorDialog.dissmissProcessDialog();
-				}
-			});
-		} 
-		catch (NameNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-//	        
-	}
 }

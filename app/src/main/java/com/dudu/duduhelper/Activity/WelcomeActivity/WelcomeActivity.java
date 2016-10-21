@@ -88,7 +88,40 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			//如果登陆保存过用户数据,直接请问网络
 			if(!TextUtils.isEmpty(sp.getString("username", "")))
 			{
-				requetConnetion();
+				//直接登录
+				RequestParams params = new RequestParams();
+				params.add("username",sp.getString("loginname",""));
+				params.add("password",sp.getString("password",""));
+				String umeng_token = getSharedPreferences("umeng_token",MODE_PRIVATE).getString("token","");
+				params.add("umeng_token",umeng_token);
+				HttpUtils.getConnection(context, params, ConstantParamPhone.USER_LOGIN, "post", new TextHttpResponseHandler() {
+					@Override
+					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+						//登录失败跳转到登录页面
+						finish();
+						startActivity(new Intent(context,LoginActivity.class));
+					}
+
+					@Override
+					public void onSuccess(int i, Header[] headers, String s) {
+						try {
+							JSONObject object = new JSONObject(s);
+							String code =  object.getString("code");
+							if ("SUCCESS".equalsIgnoreCase(code)){
+								//请求用户数据
+								requetConnetion();
+
+							}else {
+								//数据请求失败
+								String msg = object.getString("msg");
+								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
 			}
 			else
 			{

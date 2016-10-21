@@ -281,103 +281,15 @@
                     android:textColor="@color/text_color_gray"
                     android:textSize="16dp" />
             </RelativeLayout>
-            <RelativeLayout
+            <ListView
+                android:id="@+id/lv_datas"
+                android:background="@color/bg_white_color"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#fff"
-                android:visibility="gone"
-                android:gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp" >
-
-                <TextView
-                    android:id="@+id/tv_name_bigband"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="大牌抢购"
-                    android:textColor="@color/text_color_dark"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_price_bigband"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/text_green_color"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="16dp"
-                android:background="@color/divider_line_color" />
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:visibility="gone"
-                android:background="#fff"
-                android:gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp" >
-
-                <TextView
-                    android:id="@+id/tv_name_dis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="优惠券"
-                    android:textColor="@color/text_color_dark"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_price_dis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/text_green_color"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="16dp"
-                android:background="@color/divider_line_color" />
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#fff"
-                android:visibility="gone"
-                android:gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp" >
-
-                <TextView
-                    android:id="@+id/tv_name_other"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="其他"
-                    android:textColor="@color/text_color_dark"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_price_other"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/text_green_color"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="16dp"
-                android:background="@color/divider_line_color" />
-
+                android:layout_height="200dp"
+                >
+                
+                
+            </ListView>
         </LinearLayout>
         
     </com.dudu.duduhelper.widget.OverScrollView>

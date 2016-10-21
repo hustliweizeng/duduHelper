@@ -17,7 +17,6 @@
 	        android:layout_height="20dp"
 	        android:visibility="gone"
 	        android:focusable="false"
-	        android:src="@drawable/icon_dingdan"
 	        android:scaleType="centerInside"
 	        android:background="@null"
 	        android:layout_centerVertical="true"
@@ -37,7 +36,7 @@
 
         <TextView
             android:id="@+id/productName"
-            android:layout_width="180dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:maxLines="1"
@@ -112,32 +111,40 @@
             android:id="@+id/viewlin"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_toLeftOf="@+id/downButton"
+            android:layout_toLeftOf="@+id/rl"
             android:background="@color/divider_line_color" />
+        <RelativeLayout
+            android:id="@+id/rl"
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+            <ImageView
+                android:id="@+id/downButton"
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/view_selector"
+                android:focusable="false"
+                />
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/downButton"
+                android:layout_marginTop="3dp"
+                android:textSize="12dp"
+                android:layout_marginRight="6dp"
+                android:textColor="#999999"
+                />  
+            
+            
+            
+        </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/downButton"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/view_selector"
-            android:focusable="false"
-            />
-        <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/downButton"
-            android:layout_marginTop="3dp"
-            android:textSize="12dp"
-            android:layout_marginRight="6dp"
-            android:textColor="#999999"
-            />
+       
 
         <TextView
             android:id="@+id/producthaveNum"

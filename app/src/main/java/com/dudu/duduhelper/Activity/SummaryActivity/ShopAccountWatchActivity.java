@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.ModuelSummoryAdapter;
 import com.dudu.duduhelper.adapter.SummoryModuleAdapter;
@@ -46,6 +47,7 @@ public class ShopAccountWatchActivity extends BaseActivity
 	private SummoryModuleAdapter adapter;
 	private float totalIncome;
 	private float totalTrade;
+	private ListView lv_datas;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -76,6 +78,7 @@ public class ShopAccountWatchActivity extends BaseActivity
 
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
@@ -122,6 +125,8 @@ public class ShopAccountWatchActivity extends BaseActivity
 		fangkeNumText = (TextView) findViewById(R.id.fangkeNumText);
 		buyerNumText = (TextView) findViewById(R.id.buyerNumText);
 		orderNumText = (TextView) findViewById(R.id.orderNumText);
+		lv_datas = (ListView) findViewById(R.id.lv_datas);
+		lv_datas.setAdapter(adapter);
 	}
 	public  void setCricle(){
 		wheelIndicatorView = (WheelIndicatorTongjiView) findViewById(R.id.wheel_indicator_view);

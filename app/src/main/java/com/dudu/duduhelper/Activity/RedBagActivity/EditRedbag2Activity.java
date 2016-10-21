@@ -71,7 +71,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 	private LinearLayout ll_content_edit_redab2;
 	private LinearLayout ll_condition_edit_redbag2;
 	//红包使用条件的默认加入位置
-	private int position = 7;
+	private int position = 6;
 	private ImageButton backButton;
 	private LinearLayout relayout_mytitle;
 	private EditText ed_total;
@@ -373,6 +373,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				LogUtil.d("erro",s);
+				throwable.printStackTrace();
 				Toast.makeText(EditRedbag2Activity.this,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
 
