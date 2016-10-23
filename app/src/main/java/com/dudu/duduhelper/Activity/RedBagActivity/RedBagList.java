@@ -193,6 +193,7 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
 						count--;
+						LogUtil.d("count:",+count+"");
 						if (count ==0){
 							Toast.makeText(context,"所选红包已经删除",Toast.LENGTH_SHORT).show();
 							//全部删除后，刷新页面

@@ -91,15 +91,28 @@ public class RedBagListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 			LogUtil.d("position","复用了");
 		}
+		
+		
+		
+		
+		//显示图片（防止图片显示错乱）
 		data = list.get(position);
-		if(data.getLogo()!=null && data.getLogo().startsWith("http")){
-			ImageLoader.getInstance().displayImage(data.getLogo(), holder.iv_logo);
+		//设置tag
+		holder.iv_logo.setTag(data.getLogo());
+		//获取tag
+		String  logo_url = (String) holder.iv_logo.getTag();
+		//判断tag
+		if (logo_url!=null &&logo_url.equals(data.getLogo())){
+
+			if( data.getLogo().startsWith("http")){
+				ImageLoader.getInstance().displayImage(data.getLogo(), holder.iv_logo);
+			}
 		}
+
 		holder.tv_sold.setText("已领:"+ data.getUsed_num());
 		holder.tv_stock.setText("红包:"+ data.getNum());
 		holder.tv_name.setText(data.getTitle());
 		holder.tv_price.setText(data.getTotal());
-		
 		//设置红包状态
 		long time = Util.Data2Unix(data.getTime_end());
 		if (time <System.currentTimeMillis()){
