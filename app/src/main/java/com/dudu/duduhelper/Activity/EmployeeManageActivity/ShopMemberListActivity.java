@@ -50,7 +50,7 @@ public class ShopMemberListActivity extends BaseActivity {
         setContentView(R.layout.shop_member_list);
         initHeadView("店员管理", true, true, R.drawable.ic_launcher);
         initView();
-        ColorDialog.showRoundProcessDialog(ShopMemberListActivity.this, R.layout.loading_process_dialog_color);
+        //ColorDialog.showRoundProcessDialog(ShopMemberListActivity.this, R.layout.loading_process_dialog_color);
         initData();
     }
 
@@ -149,7 +149,7 @@ public class ShopMemberListActivity extends BaseActivity {
             public void onFinish() {
                 // TODO Auto-generated method stub
                 memberListswipeLayout.setRefreshing(false);
-                ColorDialog.dissmissProcessDialog();
+               // ColorDialog.dissmissProcessDialog();
             }
         });
     }
@@ -160,7 +160,7 @@ public class ShopMemberListActivity extends BaseActivity {
         //清空adapter数据
         memberAdapter.clear();
         //loadMoreView.setVisibility(View.GONE);
-        ColorDialog.showRoundProcessDialog(this, R.layout.loading_process_dialog_color);
+       // ColorDialog.showRoundProcessDialog(this, R.layout.loading_process_dialog_color);
         initData();
     }
 

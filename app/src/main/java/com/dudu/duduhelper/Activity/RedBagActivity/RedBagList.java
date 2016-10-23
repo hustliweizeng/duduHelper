@@ -242,7 +242,7 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 	 * 请求红包状态
 	 */
 	private void requestRedbagStatus() {
-		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		//ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		//弹对话框
 		String url = ConstantParamPhone.GET_REDBAG_LIST;
 		//请求结果处理
@@ -284,7 +284,7 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 			@Override
 			public void onFinish() {
 				super.onFinish();
-				ColorDialog.dissmissProcessDialog();
+				//ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}

@@ -53,6 +53,7 @@ public class ProductAdapter extends BaseAdapter
     private boolean isHongbao=false;//是否是红包
     private boolean isMulChoice;//是否显示批量删除
 	private boolean isDisCount=false;//是
+	private HashMap<Integer,String> statusList = new HashMap<>();//保存上下架状态
 
     public  HashMap<Integer, Integer> visiblecheck ;//是否显示复选框
     public  HashMap<Integer, Boolean> ischeck;//复选框是否选中
@@ -65,10 +66,7 @@ public class ProductAdapter extends BaseAdapter
 	public boolean isAllSelect;
 	//是否显示复选框
 	public  boolean isShowCheckBox;
-	private AlertDialog dailog;
 	private AlertDialog dailog1;
-	private String status;
-	private String is_on_sale;
 
 
 	//初始化listview的checkbox
@@ -211,13 +209,6 @@ public class ProductAdapter extends BaseAdapter
 			viewHolder.downButton=(ImageView) convertView.findViewById(R.id.downButton);
 			viewHolder.productGetNum=(TextView) convertView.findViewById(R.id.productGetNum);
 			viewHolder.tv_status = (TextView)convertView.findViewById(R.id.tv_status);
-			//红包页面的时候，有几个控件设置不可见
-			if(isHongbao) {
-				viewHolder.downButton.setVisibility(View.GONE);
-				viewHolder.productGetNum.setVisibility(View.VISIBLE);
-				viewHolder.productRelPriceTextView.setVisibility(View.GONE);
-				viewHolder.productPrice.setVisibility(View.GONE);
-			}
 			//设置tag复用
 			convertView.setTag(viewHolder);
 			LogUtil.d("new","new");
@@ -232,49 +223,72 @@ public class ProductAdapter extends BaseAdapter
 		 *	设置每个条目的数据和事件
 		 */
 		//设置上下架按钮的监听事件
-		status = list.get(position).getStatus();
-		is_on_sale = list.get(position).getIs_on_sale();
-		
-		if ("0".equals(status)){
+		if ("0".equals(list.get(position).getStatus())){
 			//审核中不能点击
 			viewHolder.downButton.setEnabled(false);
 			viewHolder.downButton.setFocusable(false);
-		}else {
+		}else if ("1".equals(list.get(position).getStatus())){
+		//审核通过状态，只有上下架状态
 			viewHolder.downButton.setEnabled(true);
 			//上下架切换按钮
 			viewHolder.downButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					LogUtil.d("is_on_sale",is_on_sale);
-					if ("1".equals(is_on_sale)){
+					Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
+					LogUtil.d("is_on_sale",list.get(position).getIs_on_sale());
+					if ("1".equals(list.get(position).getIs_on_sale())){
 						//如果是已上架状态直接切换为下架状态
 						LogUtil.d("up","上架");
-						list.get(position).setIs_on_sale("0");//设置数据源为下架
+						//list.get(position).setIs_on_sale("0");//设置数据源为下架
+						if (!statusList.containsKey(position)){//没有存该位置信息
+							statusList.put(position,"down");
+						}else {
+							statusList.remove(position);//存了改位置信息
+							statusList.put(position,"down");
+						}
 						SwitchStatus(position);
 					}
-					if ("0".equals(is_on_sale)){
+					if ("0".equals(list.get(position).getIs_on_sale())){
 						LogUtil.d("down","下架");
+						if (!statusList.containsKey(position)){
+							statusList.put(position,"up");
+						}else {
+							statusList.remove(position);
+							statusList.put(position,"up");
+						}
 						list.get(position).setIs_on_sale("1");//设置数据源为上架
-						LogUtil.d("is_on_sale",list.get(position).getIs_on_sale());
 						SwitchStatus(position);
 					}
-					if ("2".equals(status)){
-						//审核不通过，点击重新审核,新的界面
-						dailog1 = new AlertDialog.Builder(context).create();
-						dailog1.show();
-						//获取window之前必须先show
-						Window window = dailog1.getWindow();
-						window.setContentView(R.layout.alertdailog_subimt);
-						//不需要按钮的状态
-						list.get(position).setStatus("0");//设置数据源为正在审核
-						SwitchStatus(position);
-						
-					}
-					
+					notifyDataSetChanged();
 				}
 			});
+		}else {
+			viewHolder.downButton.setEnabled(true);
+			viewHolder.downButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
+
+					//审核不通过，点击重新审核,新的界面
+					dailog1 = new AlertDialog.Builder(context).create();
+					dailog1.show();
+					//获取window之前必须先show
+					Window window = dailog1.getWindow();
+					window.setContentView(R.layout.alertdailog_subimt);
+					//不需要按钮的状态
+					if (!statusList.containsKey(position)){
+						statusList.put(position,"load");
+					}
+					//list.get(position).setStatus("0");//设置数据源为正在审核
+					notifyDataSetChanged();
+					SwitchStatus(position);
+				}
+			});
+
+
 		}
-		
+
+
 		
 		//根据传递过来的布尔值
 		if (isShowCheckBox){
@@ -336,6 +350,29 @@ public class ProductAdapter extends BaseAdapter
 			}
 			
 		}
+		//设置上下架状态-可以覆盖上面的内容
+		if (statusList!=null &&statusList.size()>0){
+			for (Integer i :statusList.keySet()){
+				if (i==position){
+					String sta = statusList.get(i);
+					if ("up".equals(sta)){
+						viewHolder.downButton.setImageResource(R.drawable.icon_up);
+						viewHolder.tv_status.setText("已上架");
+					}
+					if ("down".equals(sta)){
+						viewHolder.downButton.setImageResource(R.drawable.icon_down);
+						viewHolder.tv_status.setText("未上架");
+					}
+					if ("load".equals(sta)){
+						viewHolder.downButton.setImageResource(R.drawable.icon_shenhe);
+						viewHolder.tv_status.setText("正在审核");
+					}
+				}
+			}
+		}
+
+
+
 		//商品图片
 		if(!TextUtils.isEmpty(list.get(position).getThumbnail()))
 		{
@@ -420,7 +457,7 @@ public class ProductAdapter extends BaseAdapter
 						if (dailog1!=null){
 							dailog1.dismiss();
 						}
-						notifyDataSetChanged();
+						//notifyDataSetChanged();
 
 					}else {
 						//数据请求失败

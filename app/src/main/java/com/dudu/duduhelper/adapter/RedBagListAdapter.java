@@ -1,6 +1,7 @@
 package com.dudu.duduhelper.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -97,15 +98,19 @@ public class RedBagListAdapter extends BaseAdapter {
 		
 		//显示图片（防止图片显示错乱）
 		data = list.get(position);
-		//设置tag
-		holder.iv_logo.setTag(data.getLogo());
-		//获取tag
-		String  logo_url = (String) holder.iv_logo.getTag();
-		//判断tag
-		if (logo_url!=null &&logo_url.equals(data.getLogo())){
 
-			if( data.getLogo().startsWith("http")){
-				ImageLoader.getInstance().displayImage(data.getLogo(), holder.iv_logo);
+
+		//商品图片
+		if(!TextUtils.isEmpty(list.get(position).getLogo()))
+		{
+			String imagepath = list.get(position).getLogo();
+			//当前logo的地址和view存的tag地址不一样时（一样时说明在复用），不一样说明是2个holder
+			//设置tag就是来区分复用的converview
+			if(!imagepath.equals(holder.iv_logo.getTag()))
+			{
+				//设置tag，这样图片加载时就不会跳了
+				holder.iv_logo.setTag(imagepath);
+				ImageLoader.getInstance().displayImage(list.get(position).getLogo(),holder.iv_logo);
 			}
 		}
 

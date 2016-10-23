@@ -199,7 +199,7 @@ public class ShopOrderActivity extends BaseActivity
 			public void onFinish()
 			{
 				orderallswipeLayout.setRefreshing(false);
-				ColorDialog.dissmissProcessDialog();
+				//ColorDialog.dissmissProcessDialog();
 			}
 		});
 		//设置适配器
@@ -274,7 +274,7 @@ public class ShopOrderActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
-				ColorDialog.showRoundProcessDialog(ShopOrderActivity.this,R.layout.loading_process_dialog_color);
+			//ColorDialog.showRoundProcessDialog(ShopOrderActivity.this,R.layout.loading_process_dialog_color);
 				initData();
 			}
 		});
@@ -426,7 +426,7 @@ public class ShopOrderActivity extends BaseActivity
 					LogUtil.d("status",statuss+"");
 				}
 				//条目点击之后，根据条件请求新的数据
-				ColorDialog.showRoundProcessDialog(ShopOrderActivity.this,R.layout.loading_process_dialog_color);
+				//ColorDialog.showRoundProcessDialog(ShopOrderActivity.this,R.layout.loading_process_dialog_color);
 				reffinish=false;
 				//清空所有数据
 				orderAdapter.clear();

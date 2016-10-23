@@ -503,23 +503,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 	//发送打印信息
 	private void sendPrint() 
 	{
-		/*getPrintStatus();
-		//获取打印模式
-		getMode();
-		//打印测试也
-		try {
-			int rel = mGpService.printeTestPage(mPrinterIndex); //
-			Log.i("ServiceConnection", "rel " + rel);
-			GpCom.ERROR_CODE r=GpCom.ERROR_CODE.values()[rel];
-			if(r != GpCom.ERROR_CODE.SUCCESS){
-				Toast.makeText(getApplicationContext(),GpCom.getErrorText(r),
-						Toast.LENGTH_SHORT).show();
-			}
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
-		
+
 		if (this.isConnection) 
 		{    
             System.out.println("开始打印！！");    
@@ -588,11 +572,6 @@ public class ShopOrderDetailActivity extends BaseActivity
                 esc.addTurnEmphasizedModeOnOrOff(ENABLE.OFF);
                 esc.addText("\n"+share.getString("getagentname", "")+"竭诚为您服务\n\n"); 
                 esc.addText("*******************************\n\n\n\n\n\n\n");
-
-	            
-
-
-
 
 	            Vector<Byte> datas = esc.getCommand(); //发送数据
                 Byte[] Bytes = datas.toArray(new Byte[datas.size()]);
