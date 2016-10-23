@@ -53,7 +53,6 @@ public class ProductAdapter extends BaseAdapter
     private boolean isHongbao=false;//是否是红包
     private boolean isMulChoice;//是否显示批量删除
 	private boolean isDisCount=false;//是
-	private HashMap<Integer,String> statusList = new HashMap<>();//保存上下架状态
 
     public  HashMap<Integer, Integer> visiblecheck ;//是否显示复选框
     public  HashMap<Integer, Boolean> ischeck;//复选框是否选中
@@ -211,13 +210,13 @@ public class ProductAdapter extends BaseAdapter
 			viewHolder.tv_status = (TextView)convertView.findViewById(R.id.tv_status);
 			//设置tag复用
 			convertView.setTag(viewHolder);
-			LogUtil.d("new","new");
+			//LogUtil.d("new","new");
 		}
 		//开始复用
 		else
 		{
 			viewHolder = (ViewHolder) convertView.getTag();
-			LogUtil.d("old","复用");
+			//LogUtil.d("old","复用");
 		}
 		/***************************************************************************
 		 *	设置每个条目的数据和事件
@@ -239,23 +238,11 @@ public class ProductAdapter extends BaseAdapter
 					if ("1".equals(list.get(position).getIs_on_sale())){
 						//如果是已上架状态直接切换为下架状态
 						LogUtil.d("up","上架");
-						//list.get(position).setIs_on_sale("0");//设置数据源为下架
-						if (!statusList.containsKey(position)){//没有存该位置信息
-							statusList.put(position,"down");
-						}else {
-							statusList.remove(position);//存了改位置信息
-							statusList.put(position,"down");
-						}
+						list.get(position).setIs_on_sale("0");//设置数据源为下架
 						SwitchStatus(position);
 					}
 					if ("0".equals(list.get(position).getIs_on_sale())){
 						LogUtil.d("down","下架");
-						if (!statusList.containsKey(position)){
-							statusList.put(position,"up");
-						}else {
-							statusList.remove(position);
-							statusList.put(position,"up");
-						}
 						list.get(position).setIs_on_sale("1");//设置数据源为上架
 						SwitchStatus(position);
 					}
@@ -267,7 +254,7 @@ public class ProductAdapter extends BaseAdapter
 			viewHolder.downButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
+					//Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
 
 					//审核不通过，点击重新审核,新的界面
 					dailog1 = new AlertDialog.Builder(context).create();
@@ -276,10 +263,8 @@ public class ProductAdapter extends BaseAdapter
 					Window window = dailog1.getWindow();
 					window.setContentView(R.layout.alertdailog_subimt);
 					//不需要按钮的状态
-					if (!statusList.containsKey(position)){
-						statusList.put(position,"load");
-					}
-					//list.get(position).setStatus("0");//设置数据源为正在审核
+
+					list.get(position).setStatus("0");//设置数据源为正在审核
 					notifyDataSetChanged();
 					SwitchStatus(position);
 				}
@@ -350,27 +335,6 @@ public class ProductAdapter extends BaseAdapter
 			}
 			
 		}
-		//设置上下架状态-可以覆盖上面的内容
-		if (statusList!=null &&statusList.size()>0){
-			for (Integer i :statusList.keySet()){
-				if (i==position){
-					String sta = statusList.get(i);
-					if ("up".equals(sta)){
-						viewHolder.downButton.setImageResource(R.drawable.icon_up);
-						viewHolder.tv_status.setText("已上架");
-					}
-					if ("down".equals(sta)){
-						viewHolder.downButton.setImageResource(R.drawable.icon_down);
-						viewHolder.tv_status.setText("未上架");
-					}
-					if ("load".equals(sta)){
-						viewHolder.downButton.setImageResource(R.drawable.icon_shenhe);
-						viewHolder.tv_status.setText("正在审核");
-					}
-				}
-			}
-		}
-
 
 
 		//商品图片
@@ -438,7 +402,7 @@ public class ProductAdapter extends BaseAdapter
 	private void SwitchStatus(int position) {
 		RequestParams params  =new RequestParams();
 		String id = list.get(position).getId();
-		LogUtil.d("switch1",id);
+		//LogUtil.d("switch1",id);
 
 		params.add("id",id);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_STATUS, "post", new TextHttpResponseHandler() {
@@ -449,7 +413,7 @@ public class ProductAdapter extends BaseAdapter
 
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
-				LogUtil.d("res",s);
+				//LogUtil.d("res",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
