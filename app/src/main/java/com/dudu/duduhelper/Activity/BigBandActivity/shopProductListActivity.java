@@ -152,7 +152,7 @@ public class shopProductListActivity extends BaseActivity
 	//请求不同的接口url
 	private void initData(String url)
 	{
-		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		//ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		//loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
 		productListView.setAdapter(productAdapter);
@@ -205,7 +205,7 @@ public class shopProductListActivity extends BaseActivity
 			public void onFinish()
 			{
 				//隐藏对话框
-				ColorDialog.dissmissProcessDialog();
+				//ColorDialog.dissmissProcessDialog();
 				//隐藏swipe的进度条
 				swipe_product_list.setRefreshing(false);
 				//隐藏脚布局

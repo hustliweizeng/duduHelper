@@ -32,7 +32,7 @@ public class RedBagListAdapter extends BaseAdapter {
 	private List<RedBagListBean.DataBean> list  = new ArrayList<>();
 	private HashMap< Integer,Boolean> delList = new HashMap<>();
 	//存储要删除的列表
-	private List<String> delIds = new ArrayList<>();
+	public List<String> delIds = new ArrayList<>();
 	private boolean isDel =false;
 	private ViewHolder holder;
 	private RedBagListBean.DataBean data;
@@ -44,6 +44,7 @@ public class RedBagListAdapter extends BaseAdapter {
 	public void AddAll(List<RedBagListBean.DataBean> list) {
 		if (list != null & list.size() > 0){
 			this.list = list;
+			//初始化集合的数据
 			for (int i= 0; i<list.size() ;i++){
 				delList.put(i,false);
 			}
@@ -120,17 +121,20 @@ public class RedBagListAdapter extends BaseAdapter {
 			holder.btn_check.setVisibility(View.GONE);
 		}
 		//复选框的监听事件
+		final  String id = list.get(position).getId();
 		holder.btn_check.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				//判断集合中是否包含该条目
 				if (delList.get(position)){
 					delList.put(position,false);
-					delIds.remove(data.getId());
+					delIds.remove(id);
+					LogUtil.d("remove",id);
 					holder.btn_check.setImageResource(R.drawable.icon_xuanze);
 				}else {
 					delList.put(position,true);
-					delIds.add(data.getId());
+					delIds.add(id);
+					LogUtil.d("add",id);
 					holder.btn_check.setImageResource(R.drawable.icon_xuanze_sel);
 				}
 				notifyDataSetChanged();

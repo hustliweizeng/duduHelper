@@ -67,7 +67,8 @@ public class ProductAdapter extends BaseAdapter
 	public  boolean isShowCheckBox;
 	private AlertDialog dailog;
 	private AlertDialog dailog1;
-	private boolean isNoConfirm;
+	private String status;
+	private String is_on_sale;
 
 
 	//初始化listview的checkbox
@@ -148,40 +149,7 @@ public class ProductAdapter extends BaseAdapter
     	notifyDataSetChanged();
     }
     
-    public void addHongbaoAll(List<HongbaoListBean> list,boolean isChoose)
-    {
-    	this.hongBaolist.addAll(this.hongBaolist.size(), list);
-    	if(isChoose)
-    	{
-    		//设置所有checkbox可见
-            for(int i=0;i<getCount();i++)
-            {
-            	if(ischeck.size()-1>i)
-            	{
-            		if(ischeck.get(i))
-                	{
-                		ischeck.put(i, true);
-                	}
-            	}
-            	else
-            	{
-            		ischeck.put(i, false);
-            	}
-            	
-                visiblecheck.put(i, CheckBox.VISIBLE);
-            }
-        }
-        else
-        {
-            for(int i=0;i<getCount();i++)
-            {
-            	//设置所有checkbox隐藏
-                ischeck.put(i, false);
-                visiblecheck.put(i, CheckBox.GONE);
-            }
-        }
-    	notifyDataSetChanged();
-    }
+ 
     
 	@Override
 	public int getCount() 
@@ -243,7 +211,6 @@ public class ProductAdapter extends BaseAdapter
 			viewHolder.downButton=(ImageView) convertView.findViewById(R.id.downButton);
 			viewHolder.productGetNum=(TextView) convertView.findViewById(R.id.productGetNum);
 			viewHolder.tv_status = (TextView)convertView.findViewById(R.id.tv_status);
-			
 			//红包页面的时候，有几个控件设置不可见
 			if(isHongbao) {
 				viewHolder.downButton.setVisibility(View.GONE);
@@ -253,29 +220,45 @@ public class ProductAdapter extends BaseAdapter
 			}
 			//设置tag复用
 			convertView.setTag(viewHolder);
+			LogUtil.d("new","new");
 		}
 		//开始复用
 		else
 		{
 			viewHolder = (ViewHolder) convertView.getTag();
+			LogUtil.d("old","复用");
 		}
 		/***************************************************************************
 		 *	设置每个条目的数据和事件
 		 */
 		//设置上下架按钮的监听事件
-		final String status = list.get(position).getStatus();
-		final String is_on_sale = list.get(position).getIs_on_sale();
+		status = list.get(position).getStatus();
+		is_on_sale = list.get(position).getIs_on_sale();
+		
 		if ("0".equals(status)){
 			//审核中不能点击
 			viewHolder.downButton.setEnabled(false);
 			viewHolder.downButton.setFocusable(false);
 		}else {
 			viewHolder.downButton.setEnabled(true);
+			//上下架切换按钮
 			viewHolder.downButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(context,"点击了"+position,Toast.LENGTH_SHORT).show();
-					if ("2".equals(status)||"0".equals(is_on_sale)){
+					LogUtil.d("is_on_sale",is_on_sale);
+					if ("1".equals(is_on_sale)){
+						//如果是已上架状态直接切换为下架状态
+						LogUtil.d("up","上架");
+						list.get(position).setIs_on_sale("0");//设置数据源为下架
+						SwitchStatus(position);
+					}
+					if ("0".equals(is_on_sale)){
+						LogUtil.d("down","下架");
+						list.get(position).setIs_on_sale("1");//设置数据源为上架
+						LogUtil.d("is_on_sale",list.get(position).getIs_on_sale());
+						SwitchStatus(position);
+					}
+					if ("2".equals(status)){
 						//审核不通过，点击重新审核,新的界面
 						dailog1 = new AlertDialog.Builder(context).create();
 						dailog1.show();
@@ -283,42 +266,9 @@ public class ProductAdapter extends BaseAdapter
 						Window window = dailog1.getWindow();
 						window.setContentView(R.layout.alertdailog_subimt);
 						//不需要按钮的状态
-						isNoConfirm = true;
+						list.get(position).setStatus("0");//设置数据源为正在审核
 						SwitchStatus(position);
 						
-					}else if ("1".equals(is_on_sale)){
-						//如果是已上架状态直接切换为下架状态
-						isNoConfirm =false;
-						SwitchStatus(position);
-						/*dailog = new AlertDialog.Builder(context).create();
-						dailog.show();
-						//获取window之前必须先show
-						Window window = dailog.getWindow();
-						window.setContentView(R.layout.alertdailg_bigband);
-						Button confirm = (Button) window.findViewById(R.id.confirm);
-						Button canle = (Button) window.findViewById(R.id.cancel);
-						canle.setTextColor(context.getResources().getColor(R.color.btn_normal_color));
-						TextView dis = (TextView) window.findViewById(R.id.disc);
-						 if ("1".equals(is_on_sale)){
-							//已上架
-							 dis.setText("下架后需运营商重新审核，方能上架出售");
-						}
-						isNoConfirm =false;
-						//确定按钮
-						confirm.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								dailog.dismiss();
-								SwitchStatus(position);
-							}
-						});
-						//取消按钮
-						canle.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								dailog.dismiss();
-							}
-						});*/
 					}
 					
 				}
@@ -333,216 +283,126 @@ public class ProductAdapter extends BaseAdapter
 		}else {
 			viewHolder.productCheckImg.setVisibility(View.GONE);
 		}
-
-		//如果是红包页面
-		if(isHongbao)
+		//商品原价
+		if(!TextUtils.isEmpty(list.get(position).getPrice()))
 		{
+			viewHolder.productRelPriceTextView.setText(list.get(position).getPrice());
+		}
+		//商品价格
+		if(!TextUtils.isEmpty(list.get(position).getCurrent_price()))
+		{
+			viewHolder.productPrice.setText("￥"+list.get(position).getCurrent_price());
+		}
+		//产品名称
+		if(!TextUtils.isEmpty(list.get(position).getName()))
+		{
+			viewHolder.productName.setText(list.get(position).getName());
+		}
+		//库存
+		if(!TextUtils.isEmpty(list.get(position).getStock()))
+		{
+			viewHolder.producthaveNum.setText("库存:"+list.get(position).getStock());
+		}
+		//已售出
+		if(!TextUtils.isEmpty(list.get(position).getSaled_count()))
+		{
+			viewHolder.productSellNum.setText("已售:"+list.get(position).getSaled_count());
+		}
+		
+		//上架状态
+		if(list.get(position).getStatus().equals("0"))
+		{
+			//viewHolder.productAction.setText("正在审核");
+			viewHolder.downButton.setImageResource(R.drawable.icon_shenhe);
+			viewHolder.tv_status.setText("正在审核");
+		}
+		else if(list.get(position).getStatus().equals("2"))
+		{
+			//viewHolder.productAction.setText("审核中");
+			viewHolder.tv_status.setText("审核未通过");
+			viewHolder.downButton.setImageResource(R.drawable.icon_fail);
+		//审核通过状态
+		}else  if (list.get(position).getStatus().equals("1")){
+			if (list.get(position).getIs_on_sale().equals("0")){
+				//未上架
+				viewHolder.tv_status.setText("未上架");
+				viewHolder.downButton.setImageResource(R.drawable.icon_down);
 
-			if(!TextUtils.isEmpty(hongBaolist.get(position).getId()))
-			{
-				//
+			}else {
+				//已上架
+				viewHolder.tv_status.setText("已上架");
+				viewHolder.downButton.setImageResource(R.drawable.icon_up);
+
 			}
-			if(!TextUtils.isEmpty(hongBaolist.get(position).getSend_num())&&!TextUtils.isEmpty(hongBaolist.get(position).getNum()))
+			
+		}
+		//商品图片
+		if(!TextUtils.isEmpty(list.get(position).getThumbnail()))
+		{
+			String imagepath = list.get(position).getThumbnail();
+			if(!imagepath.equals(viewHolder.productImage.getTag()))
 			{
-				viewHolder.productGetNum.setText("已领："+hongBaolist.get(position).getSend_num()+"/"+hongBaolist.get(position).getNum());
+				//设置tag，这样图片加载时就不会跳了
+				viewHolder.productImage.setTag(imagepath);
+				imageLoader.displayImage(list.get(position).getThumbnail(),viewHolder.productImage, options);
 			}
-			if(!TextUtils.isEmpty(hongBaolist.get(position).getTitle()))
+		}
+
+
+
+		//迭代设置所有checkbox是否选中，做全选，清空重置使用
+		/*
+		 * 在复用时对其进行判断，根据其状态来显示相应的内容，这样在滑动时条目就不会再错乱了
+		 */
+		if(ischeck.get(position))
+		{
+			viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze_sel);
+		}
+		else
+		{
+			viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze);
+		}
+		viewHolder.productCheckImg.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
 			{
-				viewHolder.productName.setText(hongBaolist.get(position).getTitle());
-			}
-			if(!TextUtils.isEmpty(hongBaolist.get(position).getTotal()))
-			{
-				viewHolder.producthaveNum.setText("总额:"+hongBaolist.get(position).getTotal());
-			}
-			if(!TextUtils.isEmpty(hongBaolist.get(position).getTotal())&&!TextUtils.isEmpty(hongBaolist.get(position).getSend_money()))
-			{
-				viewHolder.productSellNum.setText("余额:"+(Double.parseDouble(hongBaolist.get(position).getTotal())-Double.parseDouble(hongBaolist.get(position).getSend_money())));
-			}
-			if(!TextUtils.isEmpty(hongBaolist.get(position).getTime_end()))
-			{
-				if(System.currentTimeMillis()>Long.parseLong(hongBaolist.get(position).getTime_end())*1000)
+				// TODO Auto-generated method stub
+				if(ischeck.get(position))
 				{
-				   viewHolder.productAction.setText("已截止");
-				   viewHolder.productAction.setTextColor(viewHolder.productAction.getResources().getColor(R.color.text_color_light));
+					viewHolder.productCheckImg.setImageResource(R.drawable.icon_dingdan);
+					//设置点击后其选中状态，不选中
+					ischeck.put(position,false);
+					//记录是否需要删除的数据id
+					selectid.remove(list.get(position).getId());
+					LogUtil.d("item_remove",list.get(position).getId());
+
 				}
 				else
 				{
-					viewHolder.productAction.setText("发放中");
+					viewHolder.productCheckImg.setImageResource(R.drawable.icon_guanyu);
+
+					ischeck.put(position,true);
+
+					//记录是否需要删除的数据id
+					selectid.add(list.get(position).getId());
+					LogUtil.d("item_add",list.get(position).getId());
+					
 				}
+				notifyDataSetChanged();
 			}
-			if(!TextUtils.isEmpty(hongBaolist.get(position).getLogo()))
-			{
-				String imagepath = hongBaolist.get(position).getLogo();
-				if(!imagepath.equals(viewHolder.productImage.getTag()))
-				{
-					viewHolder.productImage.setTag(imagepath);
-					imageLoader.displayImage(hongBaolist.get(position).getLogo(),viewHolder.productImage, options);
-				}
-			}
-
-			//迭代设置所有checkbox是否选中，做全选，清空重置使用
-			/*
-			 * 在复用时对其进行判断，根据其状态来显示相应的内容，这样在滑动时条目就不会再错乱了
-			 */
-			//根据之前复选框信息，设置当前条目样式
-			if(ischeck.get(position))
-			{
-				viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze_sel);
-			}
-			else
-			{
-				viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze);
-			}
-			//复选框的监听
-			viewHolder.productCheckImg.setOnClickListener(new OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					// TODO Auto-generated method stub
-					if(ischeck.get(position))
-					{
-						viewHolder.productCheckImg.setImageResource(R.drawable.icon_dingdan);
-						//设置点击后其选中状态，不选中
-						ischeck.put(position,false);
-						//记录是否需要删除的数据id
-						selectid.remove(hongBaolist.get(position).getId());
-					}
-					else
-					{
-						viewHolder.productCheckImg.setImageResource(R.drawable.icon_guanyu);
-						ischeck.put(position,true);
-						//记录是否需要删除的数据id
-						selectid.add(hongBaolist.get(position).getId());
-					}
-					notifyDataSetChanged();
-				}
-			});
-			//迭代设置所有checkbox的可见性
-			//viewHolder.productCheckImg.setVisibility(visiblecheck.get(position));
-		}
-		//如果是商品列表
-		else
-		{
-			//商品原价
-			if(!TextUtils.isEmpty(list.get(position).getPrice()))
-			{
-				viewHolder.productRelPriceTextView.setText(list.get(position).getPrice());
-			}
-			//商品价格
-			if(!TextUtils.isEmpty(list.get(position).getCurrent_price()))
-			{
-				viewHolder.productPrice.setText("￥"+list.get(position).getCurrent_price());
-			}
-			//产品名称
-			if(!TextUtils.isEmpty(list.get(position).getName()))
-			{
-				viewHolder.productName.setText(list.get(position).getName());
-			}
-			//库存
-			if(!TextUtils.isEmpty(list.get(position).getStock()))
-			{
-				viewHolder.producthaveNum.setText("库存:"+list.get(position).getStock());
-			}
-			//已售出
-			if(!TextUtils.isEmpty(list.get(position).getSaled_count()))
-			{
-				viewHolder.productSellNum.setText("已售:"+list.get(position).getSaled_count());
-			}
-			
-			//上架状态
-			if(list.get(position).getStatus().equals("0"))
-			{
-				//viewHolder.productAction.setText("正在审核");
-				viewHolder.downButton.setImageResource(R.drawable.icon_shenhe);
-				viewHolder.tv_status.setText("正在审核");
-			}
-			else if(list.get(position).getStatus().equals("2"))
-			{
-				//viewHolder.productAction.setText("审核中");
-				viewHolder.tv_status.setText("审核未通过");
-				viewHolder.downButton.setImageResource(R.drawable.icon_fail);
-			//审核通过状态
-			}else  if (list.get(position).getStatus().equals("1")){
-				if (list.get(position).getIs_on_sale().equals("0")){
-					//未上架
-					viewHolder.tv_status.setText("未上架");
-					viewHolder.downButton.setImageResource(R.drawable.icon_down);
-
-				}else {
-					//已上架
-					viewHolder.tv_status.setText("已上架");
-					viewHolder.downButton.setImageResource(R.drawable.icon_up);
-
-				}
-				
-			}
-			//商品图片
-			if(!TextUtils.isEmpty(list.get(position).getThumbnail()))
-			{
-				String imagepath = list.get(position).getThumbnail();
-				if(!imagepath.equals(viewHolder.productImage.getTag()))
-				{
-					//设置tag，这样图片加载时就不会跳了
-					viewHolder.productImage.setTag(imagepath);
-					imageLoader.displayImage(list.get(position).getThumbnail(),viewHolder.productImage, options);
-				}
-			}
-
-
-
-			//迭代设置所有checkbox是否选中，做全选，清空重置使用
-			/*
-			 * 在复用时对其进行判断，根据其状态来显示相应的内容，这样在滑动时条目就不会再错乱了
-			 */
-			if(ischeck.get(position))
-			{
-				viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze_sel);
-			}
-			else
-			{
-				viewHolder.productCheckImg.setImageResource(R.drawable.icon_xuanze);
-			}
-			viewHolder.productCheckImg.setOnClickListener(new OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					// TODO Auto-generated method stub
-					if(ischeck.get(position))
-					{
-						viewHolder.productCheckImg.setImageResource(R.drawable.icon_dingdan);
-						//设置点击后其选中状态，不选中
-						ischeck.put(position,false);
-						//记录是否需要删除的数据id
-						selectid.remove(list.get(position).getId());
-						LogUtil.d("item_remove",list.get(position).getId());
-
-					}
-					else
-					{
-						viewHolder.productCheckImg.setImageResource(R.drawable.icon_guanyu);
-
-						ischeck.put(position,true);
-
-						//记录是否需要删除的数据id
-						selectid.add(list.get(position).getId());
-						LogUtil.d("item_add",list.get(position).getId());
-						
-					}
-					notifyDataSetChanged();
-				}
-			});
-			//迭代设置所有checkbox的可见性
-			//viewHolder.productCheckImg.setVisibility(visiblecheck.get(position));
-		}
+		});
+		//迭代设置所有checkbox的可见性
+		//viewHolder.productCheckImg.setVisibility(visiblecheck.get(position));
+		
 		return convertView;
 	}
 
 	private void SwitchStatus(int position) {
 		RequestParams params  =new RequestParams();
 		String id = list.get(position).getId();
-		LogUtil.d("switch",id);
+		LogUtil.d("switch1",id);
+
 		params.add("id",id);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_STATUS, "post", new TextHttpResponseHandler() {
 			@Override
@@ -552,21 +412,16 @@ public class ProductAdapter extends BaseAdapter
 
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
-						//数据请求成功
-						if (isNoConfirm){
-							//改变图片状态
+						if (dailog1!=null){
 							dailog1.dismiss();
-							viewHolder.downButton.setImageResource(R.drawable.icon_shenhe);
-							viewHolder.tv_status.setText("审核中");
-							
-						}else {
-							viewHolder.downButton.setImageResource(R.drawable.icon_down);
-							viewHolder.tv_status.setText("已下架");
 						}
+						notifyDataSetChanged();
+
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -579,7 +434,7 @@ public class ProductAdapter extends BaseAdapter
 		});
 	}
 
-	private class ViewHolder
+	private static class ViewHolder
 	{
 		ImageView productCheckImg;
 		ImageView productImage;
@@ -592,118 +447,8 @@ public class ProductAdapter extends BaseAdapter
 		ImageView downButton;
 		TextView productGetNum;
 		TextView tv_status;
+		
 	}
-	//商品删除事件
-	private class OnClick implements OnClickListener
-	{
-        String id;
-        int postion;
-        String methord;
-        public void setpositionAndId(String id,int postion,String methord)
-        {
-        	this.id=id;
-        	this.postion=postion;
-        	this.methord=methord;
-        }
-		@Override
-		public void onClick(View v) 
-		{
-			// TODO Auto-generated method stub
-			
-			ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
-			RequestParams params = new RequestParams();
-			params.add("token", ((shopProductListActivity)context).share.getString("token", ""));
-			params.add("category",((shopProductListActivity)context).category);
-			params.add("id",id);
-			params.add("version", ConstantParamPhone.VERSION);
-			params.setContentEncoding("UTF-8");
-			AsyncHttpClient client = new AsyncHttpClient();
-			//保存cookie，自动保存到了shareprefercece  
-	        PersistentCookieStore myCookieStore = new PersistentCookieStore(context);    
-	        client.setCookieStore(myCookieStore); 
-	        if(isHongbao)
-			{
-	        	client.post(ConstantParamPhone.IP+methord, params,new TextHttpResponseHandler()
-				{
-
-					@Override
-					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-					{
-						Toast.makeText(context, "网络不给力呀", Toast.LENGTH_LONG).show();
-					}
-					@Override
-					public void onSuccess(int arg0, Header[] arg1, String arg2) 
-					{
-						ResponsBean responsBean=new Gson().fromJson(arg2,ResponsBean.class);
-						if(!responsBean.getStatus().equals("0"))
-						{
-							Toast.makeText(context, "出错啦！", Toast.LENGTH_LONG).show();
-						}
-						else
-						{
-							Toast.makeText(context, "删除成功啦！", Toast.LENGTH_LONG).show();
-						}
-					}
-					@Override
-					public void onFinish() 
-					{
-						// TODO Auto-generated method stub
-						ColorDialog.dissmissProcessDialog();
-						if(isHongbao)
-						{
-						   hongBaolist.remove(postion);
-						}
-						else
-						{
-						   list.remove(postion);
-						}
-						notifyDataSetChanged();
-					}
-				});
-			}
-	        else
-	        {
-	        	client.get(ConstantParamPhone.IP+methord, params,new TextHttpResponseHandler()
-				{
-
-					@Override
-					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-					{
-						Toast.makeText(context, "网络不给力呀", Toast.LENGTH_LONG).show();
-					}
-					@Override
-					public void onSuccess(int arg0, Header[] arg1, String arg2) 
-					{
-						ResponsBean responsBean=new Gson().fromJson(arg2,ResponsBean.class);
-						if(!responsBean.getStatus().equals("1"))
-						{
-							Toast.makeText(context, "出错啦！", Toast.LENGTH_LONG).show();
-						}
-						else
-						{
-							Toast.makeText(context, "删除成功啦！", Toast.LENGTH_LONG).show();
-							
-						}
-					}
-					@Override
-					public void onFinish() 
-					{
-						// TODO Auto-generated method stub
-						ColorDialog.dissmissProcessDialog();
-						if(isHongbao)
-						{
-						   hongBaolist.remove(postion);
-						}
-						else
-						{
-						   list.remove(postion);
-						}
-						notifyDataSetChanged();
-					}
-				});
-	        }
-	        
-		}
-	}
+	
 
 }

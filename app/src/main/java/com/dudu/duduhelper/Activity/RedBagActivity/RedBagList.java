@@ -71,7 +71,7 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 	private Button btn_new_redbag;
 	private boolean isDel =false;
 	private ImageButton btn_check;
-	private int count;
+	private int count =0;
 	private Button btn_edit;
 	private ImageButton backButton;
 
@@ -132,15 +132,15 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 		iv_del.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				HashMap<Integer, Boolean> delList = adapter.getDelList();
+				List<String> delList = adapter.getDelList();
 				if (delList== null ||delList.size()==0){
 					Toast.makeText(context,"当前没有选中的条目",Toast.LENGTH_SHORT).show();
 					return;
 				}
-				count = delList.size()-1;
-				for (Integer item :delList.keySet()){
+				for (String item :delList){
 					LogUtil.d("load","正在删除"+item);
-					delItem(item+"");
+					count++;
+					delItem(item);
 				}
 
 			}
@@ -165,8 +165,9 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 		});
 
 	}
-
+	//删除指定id
 	private void delItem(String id) {
+		LogUtil.d("res","id="+id);
 		AsyncHttpClient client = new AsyncHttpClient();
 		PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
 		client.setCookieStore(myCookieStore);
@@ -177,15 +178,15 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 			client.addHeader("NETTYPE","3G+");
 		}
 		client.setUserAgent(defaultUserAgent);
-		client.delete(context, ConstantParamPhone.DEL_REDBAG+id, new TextHttpResponseHandler() {
+		client.delete(ConstantParamPhone.BASE_URL+ConstantParamPhone.DEL_REDBAG+id, null,new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				throwable.printStackTrace();
 				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
@@ -196,9 +197,9 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 							Toast.makeText(context,"所选红包已经删除",Toast.LENGTH_SHORT).show();
 							//全部删除后，刷新页面
 							requestRedbagStatus();
+							//每次删除完毕后清空集合
+							adapter.delIds.clear();
 						}
-						
-
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -277,8 +278,6 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 					e.printStackTrace();
 				}
 				//默认设置没有红包
-
-
 			}
 
 			@Override

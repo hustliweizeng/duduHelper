@@ -38,16 +38,12 @@ import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.ShopImageViewBrower;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
-import com.dudu.duduhelper.Utils.ViewUtils;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyAlertDailog;
 import com.dudu.duduhelper.widget.SwitchView;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -61,7 +57,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Locale;
 
 public class ShopProductAddActivity extends BaseActivity
@@ -84,14 +79,12 @@ public class ShopProductAddActivity extends BaseActivity
 	private LinearLayout ll_endTime_shop_product;
 	private TextView tv_endTime_shop_product;
 
-	private SwitchView productStatusSwitch;
 
 	private LinearLayout productDetailLine;
 	private TextView productDetaliTextView;
 
 	private Button saveProductbutton;
 	private EditText productSoldTextView;
-	private String desprotion;
 	private ImageView productImageView;
 	private TextView textToumingView;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
@@ -163,6 +156,9 @@ public class ShopProductAddActivity extends BaseActivity
 		}
 		if ("1".equals(is_on_sale)){
 			dis.setText("您的商品正在出售，变更信息将会导致商品下架并需运营商重新审核方能上架出售");
+		}
+		if ("0".equals(is_on_sale)){
+			dis.setText("您的商品是下架状态,提交后运营商将进行审核，请耐心等待");
 		}
 		//确定按钮
 		confirm.setOnClickListener(new OnClickListener() {
@@ -508,11 +504,15 @@ public class ShopProductAddActivity extends BaseActivity
 			public void onClick(View v)
 			{
 				String is_on_sale = data.getIs_on_sale();
-				if ("0".equals(is_on_sale)||"2".equals(is_on_sale)){
-					//未通过和审核失败直接调上传
+				LogUtil.d("status",data.getStatus());
+				LogUtil.d("ison",data.getIs_on_sale());
+
+				if ("2".equals(data.getStatus())){
+					//审核失败时
+					LogUtil.d("load","sds");
 					SubmitProduct();
 				}else {
-
+					LogUtil.d("load","22");
 					showAlertDailog();
 				}
 			}
