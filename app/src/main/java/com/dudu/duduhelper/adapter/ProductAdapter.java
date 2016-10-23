@@ -233,15 +233,17 @@ public class ProductAdapter extends BaseAdapter
 			viewHolder.downButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
+					//Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
 					LogUtil.d("is_on_sale",list.get(position).getIs_on_sale());
 					if ("1".equals(list.get(position).getIs_on_sale())){
 						//如果是已上架状态直接切换为下架状态
 						LogUtil.d("up","上架");
 						list.get(position).setIs_on_sale("0");//设置数据源为下架
 						SwitchStatus(position);
-					}
-					if ("0".equals(list.get(position).getIs_on_sale())){
+					}else{
+						/**
+                         * 刚开始写的不是else一直不能正常点击我擦啊！
+						 */
 						LogUtil.d("down","下架");
 						list.get(position).setIs_on_sale("1");//设置数据源为上架
 						SwitchStatus(position);
@@ -402,8 +404,6 @@ public class ProductAdapter extends BaseAdapter
 	private void SwitchStatus(int position) {
 		RequestParams params  =new RequestParams();
 		String id = list.get(position).getId();
-		//LogUtil.d("switch1",id);
-
 		params.add("id",id);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_STATUS, "post", new TextHttpResponseHandler() {
 			@Override
