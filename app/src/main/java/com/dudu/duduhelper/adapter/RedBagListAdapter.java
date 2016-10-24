@@ -1,6 +1,7 @@
 package com.dudu.duduhelper.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,9 @@ import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.RedBagListBean;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,6 +101,18 @@ public class RedBagListAdapter extends BaseAdapter {
 		
 		//显示图片（防止图片显示错乱）
 		data = list.get(position);
+		DisplayImageOptions opt = new DisplayImageOptions.Builder()
+			.cacheInMemory(true)
+			.cacheOnDisc(true)
+			//.showImageOnLoading(R.drawable.icon_head)//加载时候显示的图片
+			.showImageForEmptyUri(R.drawable.ic_rb_def)
+			.showImageOnFail(R.drawable.ic_rb_def)
+			.cacheInMemory(true).considerExifParams(true)
+			.cacheOnDisc(true)
+			.bitmapConfig(Bitmap.Config.RGB_565)
+			.displayer(new FadeInBitmapDisplayer(100))
+			//图片缩放设置
+			.build();
 
 
 		//商品图片
@@ -110,7 +125,7 @@ public class RedBagListAdapter extends BaseAdapter {
 			{
 				//设置tag，这样图片加载时就不会跳了
 				holder.iv_logo.setTag(imagepath);
-				ImageLoader.getInstance().displayImage(list.get(position).getLogo(),holder.iv_logo);
+				ImageLoader.getInstance().displayImage(list.get(position).getLogo(),holder.iv_logo,opt);
 			}
 		}
 

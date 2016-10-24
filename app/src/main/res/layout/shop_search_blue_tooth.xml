@@ -80,15 +80,15 @@
         android:text=""
         android:textColor="@color/text_color_dark"
         android:textSize="16sp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <View
         android:id="@+id/lineView"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_below="@+id/bindDevicesTextView"
-        android:background="@color/line_color_gray"
-        android:visibility="gone" />
+        android:background="@color/list_divide"
+        android:visibility="visible" />
 
     <ListView
         android:id="@+id/devicesList"

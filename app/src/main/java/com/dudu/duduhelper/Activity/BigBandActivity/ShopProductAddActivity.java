@@ -295,16 +295,7 @@ public class ShopProductAddActivity extends BaseActivity
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品库存",Toast.LENGTH_SHORT).show();
 			return;
 		}
-		/*if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
-		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品上架时间",Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if(TextUtils.isEmpty(tv_endTime_shop_product.getText().toString().trim()))
-		{
-			Toast.makeText(ShopProductAddActivity.this, "请输入商品下架时间",Toast.LENGTH_SHORT).show();
-			return;
-		}*/
+	
 		if(TextUtils.isEmpty(productDetaliTextView.getText().toString().trim()))
 		{
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品描述",Toast.LENGTH_SHORT).show();

@@ -26,8 +26,12 @@ public class DeviceAdapter extends BaseAdapter
     }
     public void addItem(BluetoothDevice device)
     {
-    	list.add(device);
-    	notifyDataSetChanged();
+	    if (device!=null){
+		    list.add(device);
+		    notifyDataSetChanged();
+			LogUtil.d("add",device.getAddress());
+	    }
+	    
     }
 	@Override
 	public int getCount() 
@@ -52,7 +56,7 @@ public class DeviceAdapter extends BaseAdapter
 		textView=(TextView) convertView.findViewById(R.id.textView1);
 		String id =null;
 		if (list.get(position).getName() ==null){
-			id = "未知设备";
+			id = list.get(position).getAddress();
 			
 		}else {
 			id = list.get(position).getName();

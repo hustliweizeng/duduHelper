@@ -82,8 +82,8 @@ public class DuduHelperApplication extends Application
 				.cacheInMemory(true)
 				.cacheOnDisc(true)
 				//.showImageOnLoading(R.drawable.icon_head)//加载时候显示的图片
-				.showImageForEmptyUri(R.drawable.icon_head)
-				.showImageOnFail(R.drawable.icon_head)
+				.showImageForEmptyUri(R.drawable.ic_defalut)
+				.showImageOnFail(R.drawable.ic_defalut)
 				.cacheInMemory(true).considerExifParams(true)
 				.cacheOnDisc(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)

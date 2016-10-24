@@ -28,41 +28,22 @@ import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.OrderDetailBean;
 import com.dudu.duduhelper.javabean.OrderStatusBean;
 import com.dudu.duduhelper.javabean.SelectorBean;
-import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
 import com.gprinter.command.EscCommand;
-import com.gprinter.command.GpCom;
-import com.gprinter.io.GpDevice;
-import com.gprinter.service.GpPrintService;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.gprinter.command.EscCommand.ENABLE;
@@ -87,13 +68,8 @@ public class ShopOrderDetailActivity extends BaseActivity
 	private static BluetoothSocket bluetoothSocket = null;    
 	private static OutputStream outputStream = null;  
 	private boolean isConnection = false; 
-	private OrderDetailBean orderDetailBean;
 	private TextView orderFeeTextView;
 	private TextView orderdiscountTextView;
-	private TextView couponNumTextView;
-	private TextView couponStatusTextView;
-	private RelativeLayout couponNumLin;
-	private RelativeLayout couponStatusLin;
 	private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private OrderDetailBean.DataBean orderData;
 	private String id;
@@ -110,33 +86,13 @@ public class ShopOrderDetailActivity extends BaseActivity
 		id = getIntent().getLongExtra("id",0)+"";
 		LogUtil.d("id",id);
 		orderDetailAdapter=new OrderDetailAdapter(this);
-		initFilter();
 		initView();
 		initData();
-		
-		//开启打印服务
-		/*startService();
-		connection();*/
 	}
-	private void initFilter() 
-	{
-		// TODO Auto-generated method stub
-		// 设置广播信息过滤      
-		IntentFilter intentFilter = new IntentFilter();     
-		intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);//开关状态
-		intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);//设备开始绑定
-		// 注册广播接收器，接收并处理搜索结果      
-		registerReceiver(receiver, intentFilter);
-
-		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-		registerReceiver(receiver, filter);
-		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-		registerReceiver(receiver, filter);
-	}
+	
 
 	private void initData() 
 	{
-		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		if (TextUtils.isEmpty(id)){
 			return;
 		}
@@ -168,7 +124,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 			@Override
 			public void onFinish() {
 				super.onFinish();
-				ColorDialog.dissmissProcessDialog();
 				fillData();
 			}
 		});
@@ -239,10 +194,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 				orderSourceTextView.setText(bean.name);
 			}
 		}
-		/*//设置核销按钮
-		if (content.equals("已支付")&& orderSourceTextView.getText().equals("优惠券")){
-			enterButton.setVisibility(View.VISIBLE);	
-		}*/
 		if (content.equals("已支付") &&orderSourceTextView.getText().equals("大牌抢购")){
 			//设置核销按钮可见
 			enterButton.setVisibility(View.VISIBLE);
@@ -263,37 +214,9 @@ public class ShopOrderDetailActivity extends BaseActivity
 		
 	}
 
-	public void setListViewHeightBasedOnChildren(ListView listView) {   
-        // 获取ListView对应的Adapter   
-		OrderDetailAdapter orderDetailAdapter = (OrderDetailAdapter) listView.getAdapter();   
-        if (orderDetailAdapter == null) {   
-            return;   
-        }   
-   
-        int totalHeight = 0;   
-        for (int i = 0, len = orderDetailAdapter.getCount(); i < len; i++) {   
-            // listAdapter.getCount()返回数据项的数目   
-            View listItem = orderDetailAdapter.getView(i, null, listView);   
-            // 计算子项View 的宽高   
-            listItem.measure(0, 0);    
-            // 统计所有子项的总高度   
-            totalHeight += listItem.getMeasuredHeight();    
-        }   
-   
-        ViewGroup.LayoutParams params = listView.getLayoutParams();   
-        params.height = totalHeight+ (listView.getDividerHeight() * (orderDetailAdapter.getCount() - 1));   
-        // listView.getDividerHeight()获取子项间分隔符占用的高度   
-        // params.height最后得到整个ListView完整显示需要的高度   
-        listView.setLayoutParams(params);   
-    }   
 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
-		couponNumLin=(RelativeLayout) this.findViewById(R.id.couponNumLin);
-		couponStatusLin=(RelativeLayout) this.findViewById(R.id.couponStatusLin);
-		couponNumTextView=(TextView) this.findViewById(R.id.couponNumTextView);
-		couponStatusTextView=(TextView) this.findViewById(R.id.couponStatusTextView);
 		orderFeeTextView=(TextView) this.findViewById(R.id.orderFeeTextView);
 		orderdiscountTextView=(TextView) this.findViewById(R.id.orderdiscountTextView);
 		enterButton=(Button) this.findViewById(R.id.enterButton);
@@ -311,7 +234,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 		btn_print.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				OpenBlueTooth();
 			}
 		});
@@ -354,7 +276,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 	//核销订单
 	private void changeStatus(String status) 
 	{
-		ColorDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.put("id",orderData.getId());
 		params.put("status",status);
@@ -384,7 +305,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 			@Override
 			public void onFinish() 
 			{
-				ColorDialog.dissmissProcessDialog();
 				Intent intent=new Intent();  
                 setResult(RESULT_OK, intent);  
                 finish();
@@ -395,111 +315,18 @@ public class ShopOrderDetailActivity extends BaseActivity
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 1) 
+		if (resultCode == 2) 
 		{
-			if (resultCode == RESULT_OK) 
-			{
-				//蓝牙已经开启
-				Toast.makeText(context,"蓝牙已开启",Toast.LENGTH_SHORT).show();
-				
-			} 
-			else if (resultCode == RESULT_CANCELED) 
-			{
-				ColorDialog.dissmissProcessDialog();
-				Toast.makeText(ShopOrderDetailActivity.this,"打开蓝牙取消", Toast.LENGTH_SHORT).show();
+			String adrress = data.getStringExtra("device");//获取返回的设备地址
+			if (adrress!=null){
+				device = bluetoothAdapter.getRemoteDevice(adrress);//设置设备
+				LogUtil.d("get","接收");
+				Toast.makeText(context,"蓝牙链接成功",Toast.LENGTH_SHORT).show();
+				getConnect();
 			}
 		}
 	}
-	//广播接收者
-	//绑定广播过滤器--开关状态和设备绑定，发生其他状态的广播时由另外一个接收者负责处理
-	private BroadcastReceiver receiver=new BroadcastReceiver() 
-	{
-		@Override
-		public void onReceive(Context context, Intent intent) 
-		{
-			//根据不同的action做出响应
-			String action = intent.getAction(); 
-			//蓝牙开启状态
-			if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action))
-			{
-				if (bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON)
-				{
-					Toast.makeText(ShopOrderDetailActivity.this,"打开蓝牙成功", Toast.LENGTH_SHORT).show();
-					ColorDialog.dissmissProcessDialog();
-				}
-				else
-				{
-					Toast.makeText(ShopOrderDetailActivity.this,"打开蓝牙失败", Toast.LENGTH_SHORT).show();
-					ColorDialog.dissmissProcessDialog();
-				}
-			}
-			//找到设备  
-			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-				LogUtil.d("device","found");
-
-				BluetoothDevice device = intent
-						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				LogUtil.d("device",device.getName());
-
-
-				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-
-					Log.v("", "find device:" + device.getName()
-							+ device.getAddress());
-				}
-			}
-			//绑定状态改变
-			if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action))
-			{
-				LogUtil.d("device","change");
-
-				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);  
-                if (device.getBondState() == BluetoothDevice.BOND_BONDED) 
-                {
-	                LogUtil.d("device",device.getName()+"bond");
-
-	                //绑定过的设备    
-                	Toast.makeText(ShopOrderDetailActivity.this,"配对成功", Toast.LENGTH_SHORT).show();
-                	/*enterButton.setClickable(true);
-                	enterButton.setPressed(false);*/
-	                //连接打印机
-	               getConnect();
-                } 
-                if (device.getBondState() == BluetoothDevice.BOND_NONE)  
-                {
-	                LogUtil.d("device","unbond");
-
-	                //未绑定的设备
-                	Toast.makeText(ShopOrderDetailActivity.this,"配对失败", Toast.LENGTH_SHORT).show();
-                	enterButton.setClickable(true);
-                	enterButton.setPressed(false);
-                }    
-			}
-
-
-			//找到设备  
-			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-				LogUtil.d("device","found");
-				BluetoothDevice device = intent
-						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-
-					Log.v("", "find device:" + device.getName()
-							+ device.getAddress());
-				}
-				
-				
-				
-			}
-			//搜索完成  
-			else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
-					.equals(action)) {
-				Toast.makeText(context,"没有发现设备",Toast.LENGTH_SHORT).show();
-			}
-
-		}
-	};
+	
 	//发送打印信息
 	private void sendPrint() 
 	{
@@ -602,11 +429,7 @@ public class ShopOrderDetailActivity extends BaseActivity
             enterButton.setPressed(false);
         }    
 	}
-
 	
-
-	
-
 	//绑定之后获取连接
 	private void getConnect()
 	{
@@ -618,7 +441,6 @@ public class ShopOrderDetailActivity extends BaseActivity
                 bluetoothSocket = this.device.createRfcommSocketToServiceRecord(uuid);   
 	            //连接设备
                 bluetoothSocket.connect();  
-	            
                 this.isConnection = true;    
                 if (this.bluetoothAdapter.isDiscovering()) 
                 {    
@@ -668,30 +490,23 @@ public class ShopOrderDetailActivity extends BaseActivity
 		 if(!bluetoothAdapter.isEnabled())//isEnabled enable是激活,开启蓝牙
 		{
 			//开启
-			ColorDialog.showRoundProcessDialog(ShopOrderDetailActivity.this,R.layout.loading_process_dialog_color);
 			//打开蓝牙并提示用户
 			Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);     
 			// 设置蓝牙可见性，最多300秒      
 			intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3000);     
-			startActivityForResult(intent, 1);
+			startActivity(intent);
 			//开始搜索
 			bluetoothAdapter.startDiscovery();
-			LogUtil.d("unacitive","unacitive");
 		}
 		//蓝牙已开启
 		else
 		{
-			LogUtil.d("acitive","acitive");
-			SharedPreferences sharePrint= getSharedPreferences("printinfo", MODE_PRIVATE);
-			//判断是否绑定过
-			//if(!TextUtils.isEmpty(sharePrint.getString("blueAddress", "")))
-			//判断已经绑定的设备
+			//判断已经绑定的设备是否可用
 			if (bluetoothAdapter.getBondedDevices()!=null &&bluetoothAdapter.getBondedDevices().size()>0)
 			{
 				btn_print.setClickable(false);
 				btn_print.setPressed(true);
 				//根据名称获取蓝牙地址
-				//device=bluetoothAdapter.getRemoteDevice(sharePrint.getString("blueAddress", ""));
 				for (BluetoothDevice item :bluetoothAdapter.getBondedDevices()){
 					if (item.getBondState() ==BluetoothDevice.BOND_BONDED ){
 						//当这个设备已经绑定时
@@ -701,43 +516,15 @@ public class ShopOrderDetailActivity extends BaseActivity
 				}
 				LogUtil.d("bind",device.getName()+"yes");
 				getConnect();
-				
-				/*//未绑定
-				if(device.getBondState() == BluetoothDevice.BOND_NONE)
-				{
-					LogUtil.d("bind","no");
-					try 
-					{
-						Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
-						//通过反射绑定该设备
-						createBondMethod.invoke(device);
-					}
-					catch (Exception e) 
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						Toast.makeText(ShopOrderDetailActivity.this, "配对失败！", Toast.LENGTH_SHORT).show(); 
-						enterButton.setClickable(true);
-						enterButton.setPressed(false);
-					}  
-					
-				}
-				else
-				{
-					LogUtil.d("bind","yes");
-
-					//绑定了
-					getConnect();
-				}*/
 			}
 			else
 			{
 				//第一次连接，进入到搜索绑定页面
 				Intent intent=new Intent(ShopOrderDetailActivity.this,ShopSearchBlueToothActivity.class);
+				intent.putExtra("source","orderDetail");
 				startActivity(intent);
 			}
 		}
     }
-	
 	
 }
