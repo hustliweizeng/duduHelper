@@ -44,6 +44,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.gprinter.command.EscCommand.ENABLE;
@@ -75,6 +76,8 @@ public class ShopOrderDetailActivity extends BaseActivity
 	private String id;
 	private TextView order_create_time;
 	private Button btn_print;
+	private RelativeLayout rl_address;
+	private TextView address;
 
 
 	@Override
@@ -134,6 +137,9 @@ public class ShopOrderDetailActivity extends BaseActivity
 			Toast.makeText(context,"没有要显示的数据",Toast.LENGTH_SHORT).show();
 			return;
 		}
+		//判断是否显示地址
+
+		
 
 		//设置店名
 		orderNameTextView.setText(orderData.getSubject());
@@ -194,6 +200,16 @@ public class ShopOrderDetailActivity extends BaseActivity
 				orderSourceTextView.setText(bean.name);
 			}
 		}
+		if ("大牌抢购".equals(orderSourceTextView.getText())){
+			String address1 = orderData.getAddress();
+			if (!TextUtils.isEmpty(address1)){
+				rl_address.setVisibility(View.VISIBLE);
+				address.setText(address1);
+			}
+		}
+		
+		
+		
 		if (content.equals("已支付") &&orderSourceTextView.getText().equals("大牌抢购")){
 			//设置核销按钮可见
 			enterButton.setVisibility(View.VISIBLE);
@@ -230,6 +246,8 @@ public class ShopOrderDetailActivity extends BaseActivity
 		orderPhoneTextView=(TextView) this.findViewById(R.id.orderPhoneTextView);
 		totalPriceTextView=(TextView) this.findViewById(R.id.totalPriceTextView);
 		order_create_time = (TextView) findViewById(R.id.order_create_time);
+		rl_address = (RelativeLayout) findViewById(R.id.rl_address);
+		address = (TextView) findViewById(R.id.address);
 		btn_print = (Button) findViewById(R.id.btn_print);
 		btn_print.setOnClickListener(new OnClickListener() {
 			@Override
@@ -272,6 +290,10 @@ public class ShopOrderDetailActivity extends BaseActivity
 				changeStatus("0");
 			}
 		});
+		
+		//
+		
+		
 	}
 	//核销订单
 	private void changeStatus(String status) 

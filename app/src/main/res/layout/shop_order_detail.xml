@@ -253,7 +253,32 @@
                 android:textColor="@color/text_middledark_color"
                 android:textSize="14sp" />
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_address"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#fff"
+            android:visibility="gone"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" >
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联系地址"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="未填写"
+                android:textColor="@color/text_middledark_color"
+                android:textSize="14sp" />
+        </RelativeLayout>
         <ListView
             android:id="@+id/orderDetailList"
             android:layout_width="match_parent"

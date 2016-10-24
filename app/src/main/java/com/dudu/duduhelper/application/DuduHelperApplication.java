@@ -106,7 +106,7 @@ public class DuduHelperApplication extends Application
 	public void addActivity(Activity activity)
 	{
 		mList.add(activity);
-		LogUtil.d("activityNum:",""+mList.size());
+		//LogUtil.d("activityNum:",""+mList.size());
 	}
 
 	public void exit() 

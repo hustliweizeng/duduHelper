@@ -348,6 +348,7 @@
                             android:background="@drawable/btn_rg_selector"
                             android:text="自取"
                             android:textSize="16sp"
+                            android:checked="false"
                             android:textColor="@color/text_color_light"
                             android:gravity="center"
 

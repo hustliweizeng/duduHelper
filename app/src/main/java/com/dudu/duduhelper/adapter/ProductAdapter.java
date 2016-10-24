@@ -76,9 +76,9 @@ public class ProductAdapter extends BaseAdapter
     	this.context=context;
 		//设置图片加载的信息
     	options = new DisplayImageOptions.Builder()
-		.showImageOnLoading(R.drawable.icon_head)
-		.showImageForEmptyUri(R.drawable.icon_head)
-		.showImageOnFail(R.drawable.icon_head)
+		.showImageOnLoading(R.drawable.ic_defalut)
+		.showImageForEmptyUri(R.drawable.ic_defalut)
+		.showImageOnFail(R.drawable.ic_defalut)
 		.cacheInMemory(true).considerExifParams(true)
 		.bitmapConfig(Bitmap.Config.RGB_565)
 		.displayer(new FadeInBitmapDisplayer(100)).build();
@@ -274,9 +274,9 @@ public class ProductAdapter extends BaseAdapter
 
 
 		}
-
-
 		
+
+
 		//根据传递过来的布尔值
 		if (isShowCheckBox){
 			//是否显示多选框

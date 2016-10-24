@@ -72,7 +72,6 @@
             android:padding="16dp"
             android:textSize="16dp"
             android:background="@color/bg_white_color"
-            android:layout_marginRight="16dp"
             android:textColor="@color/text_dark_color"
             />
 

@@ -118,6 +118,9 @@ public class ShopProductAddActivity extends BaseActivity
 	};
 	private BigBandBuy.DataBean data;
 	private AlertDialog dailog1;
+	private RadioButton rb1_shop_product_add;
+	private RadioButton rb2_shop_product_add;
+	private RadioGroup rg_shop_product_add;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -221,7 +224,17 @@ public class ShopProductAddActivity extends BaseActivity
 		productKuCunNumEditText.setText(data.getStock());
 		ed_explain.setText(data.getExplain());
 		productDetaliTextView.setText(data.getExplain());
-		LogUtil.d("timereule", data.getRule());
+		//设置配送方式
+		String delivery = data.getDelivery();
+		LogUtil.d("deliver",delivery);
+		//设置配送方式
+		if ("1".equals(delivery)){
+			rb2_shop_product_add.setChecked(true);
+			rb2_shop_product_add.setTextColor(getResources().getColor(R.color.text_color_red));
+		}else if ("2".equals(delivery)){
+			rb1_shop_product_add.setChecked(true);
+			rb1_shop_product_add.setTextColor(getResources().getColor(R.color.text_color_red));
+		}
 
 		//设置开始结束时间
 		if (!TextUtils.isEmpty(data.getRule())){
@@ -324,6 +337,10 @@ public class ShopProductAddActivity extends BaseActivity
 			dataBean.setStock(productKuCunNumEditText.getText().toString().trim());
 			dataBean.setExplain(productDetaliTextView.getText().toString().trim());
 			dataBean.setAmount(productSoldTextView.getText().toString().trim());
+			int checkedID = rg_shop_product_add.getCheckedRadioButtonId();
+			String delivery = (checkedID == R.id.rb1_shop_product_add ?"2":"1");
+			LogUtil.d("des",delivery);
+			dataBean.setDelivery(delivery);
 			dataBean.setRule(data.getRule());
 			//设置组图
 			dataBean.setShow_img(picsPath);
@@ -359,6 +376,8 @@ public class ShopProductAddActivity extends BaseActivity
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
 						Toast.makeText(context,"上传成功",Toast.LENGTH_SHORT).show();
+						
+						startActivity(new Intent(context,shopProductListActivity.class));
 						finish();
 					}else {
 						//数据请求失败
@@ -377,7 +396,24 @@ public class ShopProductAddActivity extends BaseActivity
 		//点击添加图片
 		shopImageView = (ImageView) this.findViewById(R.id.productImageView);
 		//选择配送方式
-		RadioGroup rg_shop_product_add = (RadioGroup) findViewById(R.id.rg_shop_product_add);
+		rg_shop_product_add = (RadioGroup) findViewById(R.id.rg_shop_product_add);
+		rb1_shop_product_add = (RadioButton) findViewById(R.id.rb1_shop_product_add);
+		rb2_shop_product_add = (RadioButton) findViewById(R.id.rb2_shop_product_add);
+		rg_shop_product_add.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				switch (checkedId){
+					case R.id.rb1_shop_product_add:
+						rb1_shop_product_add.setTextColor(getResources().getColor(R.color.text_red_color));
+						rb2_shop_product_add.setTextColor(getResources().getColor(R.color.text_color_light));
+						break;
+					case R.id.rb2_shop_product_add:
+						rb2_shop_product_add.setTextColor(getResources().getColor(R.color.text_red_color));
+						rb1_shop_product_add.setTextColor(getResources().getColor(R.color.text_color_light));
+						break;
+				}
+			}
+		});
 		ed_explain = (EditText) findViewById(R.id.ed_explain);
 		//动态显示图片的数量
 		tv_photo_num_shop_product = (TextView) findViewById(R.id.tv_photo_num_shop_product);

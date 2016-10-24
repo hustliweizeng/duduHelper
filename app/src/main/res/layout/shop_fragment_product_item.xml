@@ -32,7 +32,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="17dp"
             android:layout_toRightOf="@+id/productCheckImg"
-            android:src="@drawable/friends_sends_pictures_no" />
+             />
 
         <TextView
             android:id="@+id/productName"
