@@ -76,7 +76,6 @@
                             android:id="@+id/tv_rangeday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="390天"
                             android:textColor="@color/text_green_color"
                             android:textSize="20sp" />
 
@@ -153,7 +152,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="39450323.0"
                         android:textColor="@color/text_green_color"
                         android:textSize="20sp" />
 
@@ -168,7 +166,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="39450323.0"
                         android:textColor="@color/text_yellow_color"
                         android:textSize="20sp" />
 
@@ -198,7 +195,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="123"
                         android:textColor="@color/text_white_color"
                         android:textSize="18sp" />
 
@@ -223,7 +219,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="123"
                         android:textColor="@color/text_white_color"
                         android:textSize="18sp" />
 
@@ -257,7 +252,6 @@
                         android:id="@+id/orderNumText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="123"
                         android:textColor="@color/text_white_color"
                         android:textSize="18sp"
                         android:layout_alignParentTop="true"
@@ -285,7 +279,7 @@
                 android:id="@+id/lv_datas"
                 android:background="@color/bg_white_color"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 >
                 
                 

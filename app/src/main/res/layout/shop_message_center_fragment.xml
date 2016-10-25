@@ -52,9 +52,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginLeft="16dp"
-            android:background="@color/divider_line_color" />
+            android:background="@color/list_divide" />
 
         <LinearLayout
             android:id="@+id/yunyingMessageLin"
@@ -96,9 +96,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginLeft="16dp"
-            android:background="@color/divider_line_color" />
+            android:background="@color/list_divide" />
 
         <LinearLayout
             android:id="@+id/caozuoMessageLin"
@@ -140,9 +140,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginLeft="16dp"
-            android:background="@color/divider_line_color" />
+            android:background="@color/list_divide" />
 
         <LinearLayout
             android:id="@+id/orderMessageLin"

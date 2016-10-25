@@ -138,10 +138,9 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@color/divider_line_color" />
+                    android:background="@color/list_divide" />
 
                 <LinearLayout
                     android:id="@+id/lin1"
@@ -178,10 +177,10 @@
                             android:textSize="14dp" />
 
                         <View
-                            android:layout_width="1dp"
+                            android:layout_width="0.5dp"
                             android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
-                            android:background="@color/divider_line_color" />
+                            android:background="@color/list_divide" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -207,17 +206,14 @@
                             android:text="冻结金额"
                             android:textColor="@color/text_color_light"
                             android:textSize="14dp" />
-
-
-
-
                     </RelativeLayout>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/divider_line_color" />
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="@color/list_divide" />
 
                 <RelativeLayout
                     android:id="@+id/bankCardRel"
@@ -245,9 +241,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:background="@color/divider_line_color" />
 
                 <RelativeLayout
@@ -308,9 +303,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:background="@color/divider_line_color" />
 
                 <RelativeLayout
@@ -339,9 +333,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:background="@color/divider_line_color" />
 
                 <RelativeLayout

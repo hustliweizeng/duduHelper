@@ -46,11 +46,10 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_guest_manager);
-		initHeadView("会员管理",true,false,0);
+		initHeadView("客户管理",true,false,0);
 		adapter = new GuestManageAdapter(context);
 		initView();
 		initData();
-
 
 	}
 

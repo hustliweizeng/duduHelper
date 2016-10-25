@@ -93,7 +93,6 @@ public class ShopMineFragment extends Fragment {
         MobclickAgent.onPageStart("MineFragment");
         //返回页面时，重新加载数据
         LogUtil.d("info","reload");
-        //重新显示logo
         requetConnetion();
         
     }

@@ -225,6 +225,7 @@
         </activity>
         <activity
             android:name=".Activity.BigBandActivity.shopProductListActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_product_list" >
         </activity>
         <activity

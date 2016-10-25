@@ -74,12 +74,13 @@ public class ShopImageAdapter extends BaseAdapter
 	{
 		for (Integer postion : listDelect) 
 		{
+			LogUtil.d("DEL","adapter删除前"+imageList.size());
 			imageList.remove((int) postion);
-			LogUtil.d("DEL","adapter删除"+postion);
+			LogUtil.d("DEL","adapter删除后"+imageList.size());
 		}
 		//清空复选框集合
 		listDelect.clear();
-		notifyDataSetChanged();
+		notifyDataSetChanged();//刷新数据
 	}
 	public void setCheckVisableOffOn()
 	{

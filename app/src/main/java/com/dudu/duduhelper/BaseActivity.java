@@ -216,7 +216,6 @@ public class BaseActivity extends FragmentActivity
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	

@@ -81,10 +81,9 @@ public class ShopImageViewBrower extends BaseActivity
 		editButton.setVisibility(View.VISIBLE);
 		delectButton = (ImageView) this.findViewById(R.id.delectButton);
 		delectButton.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				shopImageAdapter.delectSelectImageList();
+				shopImageAdapter.delectSelectImageList();//删除选中的图片
 			}
 		});
 		delectLinearView = (LinearLayout) this.findViewById(R.id.delectLinearView);
@@ -226,7 +225,6 @@ public class ShopImageViewBrower extends BaseActivity
 				case AFTER_CUT:
 					//把裁剪后的地址插入到适配器的数据源
 					shopImageAdapter.add(picPath);
-					//imageView.setImageURI(urilocal);
 					break;
 				default:
 					break;
@@ -277,23 +275,24 @@ public class ShopImageViewBrower extends BaseActivity
     @Override
     public void RightButtonClick()
     {
-    	// TODO Auto-generated method stub
     	super.RightButtonClick();
     }
 
 
 	@Override
 	/**
-	 * 当页面不可见时，通过子线程上传图片
+	 * 当页面不可见时，设置结果集
 	 */
 	public void onPause() {
 		super.onPause();
 		ArrayList<String> uplodImgs = shopImageAdapter.getImageList();
+		
 		//设置返回的数据
 		Intent intent =null;
 		if (sourceType == 5){
 			//相册
 			intent = new Intent(context,ShopInfoEditActivity.class);
+			LogUtil.d("uplodImgs1",uplodImgs.size()+"");
 		}
 		if (sourceType ==1){
 			//大牌抢购添加

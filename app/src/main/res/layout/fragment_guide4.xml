@@ -10,14 +10,14 @@
     </ImageView>
     <Button
         android:id="@+id/enterButton"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_width="120dp"
+        android:layout_height="44dp"
         android:text="立即体验" 
-        android:background="@drawable/btn_bg"
+        android:background="@drawable/btn_larg_bg"
         android:textColor="#fff"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
-        android:textSize="14sp"/>
+        android:layout_marginBottom="40dp"
+        android:textSize="16sp"/>
 
 </RelativeLayout>

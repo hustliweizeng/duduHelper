@@ -103,28 +103,8 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 				break;
 		}
 	}
-
+	
 	private void submit() {
-		// validate
-	/*	String num = ed_num.getText().toString().trim();
-		if (TextUtils.isEmpty(num)) {
-			Toast.makeText(this, "num不能为空", Toast.LENGTH_SHORT).show();
-			AlertDialog dailog = new  AlertDialog.Builder(context,R.style.AppTheme_Dialog).create();
-			dailog.show();
-			//获取弹窗界面
-			Window window = dailog.getWindow();
-			//获取屏幕的宽度
-			WindowManager windowManager = getWindowManager();
-			Display display = windowManager.getDefaultDisplay();
-			WindowManager.LayoutParams lp = dailog.getWindow().getAttributes();
-			lp.width = (int)(display.getWidth()); //设置宽度    
-			dailog.getWindow().setAttributes(lp);
-			//设置布局
-			window.setContentView(R.layout.dailog_confirm_order);
-
-
-			return;
-		}*/
 		//1.注册appid
 		api = WXAPIFactory.createWXAPI(this, "wxb4ba3c02aa476ea1");
 		//2.将该app注册到微信
@@ -183,28 +163,12 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 				Toast.makeText(context, "异常："+e.getMessage(), Toast.LENGTH_SHORT).show();
 			}
 		}
+
 		});
 		
 		
 		
-	/*	msgApi.registerApp("你在微信开放平台创建的app的APPID");
-		PayReq request = new PayReq();
-		request.appId = "wxd930ea5d5a258f4f";//应用ID
-		request.partnerId = "1900000109";//商户id
-		request.prepayId= "1101000000140415649af9fc314aa427";//预支付交易会话ID
-		request.packageValue = "Sign=WXPay";//随机字符串，不长于32位。推荐随机数生成算法
-		request.nonceStr= "1101000000140429eb40476f8896f4c9";
-		request.timeStamp= "1398746574";//时间戳，请见接口规则-参数规定
-		request.sign= "7FFECB600D7157C5AA49810D2D8F28BC2811827B";//签名，详见签名生成算法
-		api.sendReq(request);*/
-		
-		
-		
-		
-		
-		/*
-		startActivity(new Intent(context,PayResultActivity.class));
-		finish();*/
+	
 	}
 	private IWXAPI api;
 	//支付成功以后回调

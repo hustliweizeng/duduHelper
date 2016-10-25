@@ -40,7 +40,6 @@ import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.ShopCategoryBean;
 import com.dudu.duduhelper.javabean.ShopCricleBean;
 import com.dudu.duduhelper.javabean.ShopInfoBean;
-import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyAlertDailog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
@@ -205,7 +204,6 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     //请求网络数据
     private void requstHttpData() {
         //如果超时了，加载网络数据
-        ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
         RequestParams params = new RequestParams();
         HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SHOP_INFO, "GET", new TextHttpResponseHandler() {
             @Override
@@ -239,7 +237,6 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onFinish() {
                 super.onFinish();
-                ColorDialog.dissmissProcessDialog();
             }
         });
     }
@@ -264,7 +261,10 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         ed_mobile_shop_info.setText(info.getContact());
         tv_opentime_shop_info.setText(info.getOpen_time());
         ed_address_shop_info.setText(info.getAddress());
-        ed_des_shop_info.setText(info.getDescription());
+        String description = info.getDescription();
+        //用正则表达式去除数据中的html数据
+        String simple = "^<.*$/>";
+        ed_des_shop_info.setText(description);
         //初始化商圈id和行业id
         circle_id = Integer.parseInt(info.getArea());
         category_id = Integer.parseInt(info.getCategory());
@@ -371,7 +371,6 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.iv_img_shop_info:
                 //进入选择相册页面
-                Intent picIntent = new Intent(context,ShopImageViewBrower.class);
                 //传递图片过去
                 Intent intent1 = new Intent(context,ShopImageViewBrower.class);
                 //把网络数据传输过去
@@ -490,47 +489,47 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK)
-        {
-            switch (requestCode)
-            {
-                //4.4以上的版本
-                case 1:
-                    //logo选择页面
-                    String path = Util.getPath(context, data.getData());
-                    Uri uri = Uri.fromFile(new File(path));
-                    startPhotoZoom(uri);
-                    System.out.println("开始裁剪"+data);
-                    break;
-                case 2:
-                    //logo裁剪结束后返回
-                    iv_logo_shop_info.setImageURI(urilocal);
-                    //子线程上传图片，上传完毕handler告诉主线程
-                    String imgPath = ViewUtils.getRealFilePath(context,urilocal);
-                    uploadPicPath = ViewUtils.uploadImg(context,imgPath);
-                    LogUtil.d("logo",uploadPicPath);
+       if (resultCode ==RESULT_OK){
+           switch (requestCode)
+           {
+               //4.4以上的版本
+               case 1:
+                   //logo选择页面
+                   String path = Util.getPath(context, data.getData());
+                   Uri uri = Uri.fromFile(new File(path));
+                   startPhotoZoom(uri);
+                   System.out.println("开始裁剪"+data);
+                   break;
+               case 2:
+                   //logo裁剪结束后返回
+                   iv_logo_shop_info.setImageURI(urilocal);
+                   //子线程上传图片，上传完毕handler告诉主线程
+                   String imgPath = ViewUtils.getRealFilePath(context,urilocal);
+                   uploadPicPath = ViewUtils.uploadImg(context,imgPath);
+                   LogUtil.d("logo",uploadPicPath);
+                   break;
+               case 5:
+                   LogUtil.d("request",requestCode+"");
+                   //获取店家环境相册
+                   if (data!=null ){
+                       uplodImgs = data.getStringArrayListExtra("pics");
+                       LogUtil.d("list",uplodImgs.size()+"");
+                       picsPath = new String[uplodImgs.size()];
+                       //后台上传本地的图片
+                       for(String s:uplodImgs){
+                           if (!s.startsWith("http")){
+                               //这边是子线程上传，所以不会立即完成
+                               uploadImg(context, s);
+                               subThreadCount = 0;
+                               subThreadCount++;
+                           }
+                       }
+                   }
+                   break;
+           } 
+       }
+       
 
-                    break;
-                case 5:
-                    //获取店家环境相册
-                    uplodImgs = (ArrayList<String>) data.getSerializableExtra("pics");
-                    picsPath = new String[uplodImgs.size()];
-                    //后台上传本地的图片
-                    ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
-                    for(String s:uplodImgs){
-                        if (!s.startsWith("http")){
-                            //这边是子线程上传，所以不会立即完成
-                            uploadImg(context, s);
-                            subThreadCount = 0;
-                            subThreadCount++;
-                        }
-                    }
-                    
-                default:
-                    break;
-            }
-
-        }
     }
 
 
@@ -629,7 +628,6 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onFinish() {
                 super.onFinish();
-                ColorDialog.dissmissProcessDialog();
             }
         });
 

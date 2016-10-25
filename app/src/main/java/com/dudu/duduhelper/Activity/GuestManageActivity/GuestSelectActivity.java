@@ -49,7 +49,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 		super.onCreate(arg0);
 		LogUtil.d("res","success");
 		setContentView(R.layout.activity_guest_select);
-		initHeadView("选择客户", false, false, 0);
+		initHeadView("选择客户", true, false, 0);
 		adapter = new GuestListCheckAdapter(this);
 		//设置客户列表,从静态变量那里直接获取
 
@@ -90,10 +90,6 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 			}
 		});
 
-
-
-
-
 	}
 
 	private void initView() {
@@ -126,7 +122,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 		recycleview_list.setLayoutManager(new LinearLayoutManager(this));
 		recycleview_list.setAdapter(adapter);
 	}
-
+	
 
 	@Override
 	public void onClick(View v) {
@@ -143,6 +139,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 				intent.putCharSequenceArrayListExtra("list",adapter.getList());
 				intent.putCharSequenceArrayListExtra("ids",adapter.getIds());
 				setResult(2,intent);
+				//在onpaause方法中返回数据
 				finish();
 				break;
 

@@ -71,8 +71,9 @@
             android:gravity="top"
             android:padding="16dp"
             android:textSize="16dp"
+            android:textColor="@color/text_color_light"
             android:background="@color/bg_white_color"
-            android:textColor="@color/text_dark_color"
+            android:textColorHint="@color/text_hint_color"
             />
 
         <TextView
@@ -93,7 +94,10 @@
                 android:layout_height="150dp"
                 android:gravity="top"
                 android:hint="请编辑内容"
+                android:textSize="16dp"
                 android:padding="16dp"
+                android:textColor="@color/text_color_light"
+                android:textColorHint="@color/text_hint_color"
                 android:background="@drawable/edit_null"
                 />
             <TextView

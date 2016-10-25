@@ -231,6 +231,7 @@
         android:layout_alignParentLeft="true"
         android:background="@drawable/btn_white_bg"
         android:scaleType="centerInside"
+        android:visibility="gone"
         android:src="@drawable/icon_delecthongbao"
         android:text="新建/添加"
         android:textColor="@color/text_green_color"

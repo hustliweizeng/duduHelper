@@ -124,20 +124,20 @@ public class shopProductListActivity extends BaseActivity
 		initView();
 
 		//根据不同类型请求不同的参数
-		if(category.equals("discount"))
+		if("discount".equals(category))
 		{
 			//优惠券列表
 			productAdapter=new ProductAdapter(this,isMulChoice,isDisCount,isHongbao);
 			initData(ConstantParamPhone.GET_DISCOUNT_LIST);
 		}
-		if(category.equals("bigband"))
+		if("bigband".equals(category))
 		{
 			LogUtil.d("bigband","商品列表");
 			//商品列表
 			productAdapter=new ProductAdapter(this,isMulChoice,isDisCount,isHongbao);
 			initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 		}
-		if(category.equals("hongbao"))
+		if("hongbao".equals(category))
 		{
 			//红包列表
 			//商品排序
@@ -236,20 +236,20 @@ public class shopProductListActivity extends BaseActivity
 		//第二个筛选项
 		productAction=(TextView) this.findViewById(R.id.productAction);
 		//设置头布局
-		if(category.equals("discount"))
+		if("discount".equals(category))
 		{
 			initHeadView("优惠券", true, false, 0);
 			isDisCount=true;
 			isHongbao=false;
 			productAction.setText("优惠券状态");
 		}
-		if(category.equals("bigband"))
+		if("bigband".equals(category))
 		{
 			initHeadView("大牌抢购", true, false, 0);
 			isDisCount=false;
 			isHongbao=false;
 		}
-		if(category.equals("hongbao"))
+		if("hongbao".equals(category))
 		{
 			initHeadView("商家红包", true, true, R.drawable.icon_tianjia);
 			isDisCount=false;
@@ -279,18 +279,18 @@ public class shopProductListActivity extends BaseActivity
 				//清空适配器中的数据
 				productAdapter.clear();
 				//根据不同类型请求不同的参数
-				if(category.equals("discount"))
+				if("discount".equals(category))
 				{
 					//优惠券列表
 					initData(ConstantParamPhone.GET_DISCOUNT_LIST);
 				}
-				if(category.equals("bigband"))
+				if("bigband".equals(category))
 				{
 					LogUtil.d("bigband","商品列表");
 					//商品列表
 					initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 				}
-				if(category.equals("hongbao"))
+				if("hongbao".equals(category))
 				{
 					//红包列表
 					//商品排序
@@ -329,7 +329,7 @@ public class shopProductListActivity extends BaseActivity
 		editButton=(Button) this.findViewById(R.id.selectTextClickButton);
 		editButton.setText("批量");
 		//editButton.setPadding(28, 30, 26, 28);
-		if(category.equals("hongbao"))
+		if("hongbao".equals(category))
 		{
 			editButton.setVisibility(View.GONE);
 		}
@@ -646,10 +646,10 @@ public class shopProductListActivity extends BaseActivity
 		ProductStatus products = new ProductStatus();
 
 		//左侧筛选，设置列表数据
-		if(action.equals("order"))
+		if("order".equals(action))
 		{
 			orderSelectorAdapter =new OrderSelectorAdapter(this);
-			if(category.equals("hongbao"))
+			if("hongbao".equals(category))
 			//红包列表
 			{
 				selectList.addAll(redBagStatus.getRedBagOrderby());
@@ -669,7 +669,7 @@ public class shopProductListActivity extends BaseActivity
 		else
 		{
 			orderSelectorAdapter =new OrderSelectorAdapter(this);
-			if(category.equals("hongbao"))
+			if("hongbao".equals(category))
 			{
 				selectList.addAll(redBagStatus.getRedBagStatus());
 			}
@@ -692,7 +692,7 @@ public class shopProductListActivity extends BaseActivity
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id)
 			{
 				//左侧筛选事件
-				if(action.equals("order"))
+				if("order".equals(action))
 				{
 					//获取被选中条目的信息-左侧
 					order= selectList.get(position).id+"";
@@ -837,11 +837,11 @@ public class shopProductListActivity extends BaseActivity
 						//清空数据,再去重新加载
 						productAdapter.list.clear();
 						//再次请求数据
-						if (category.equals("discount")){
+						if ("discount".equals(category)){
 							
 							initData(ConstantParamPhone.GET_DISCOUNT_LIST);
 						}
-						if (category.equals("bigband")){
+						if ("bigband".equals(category)){
 							initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 						}
 						//清空选中的条目

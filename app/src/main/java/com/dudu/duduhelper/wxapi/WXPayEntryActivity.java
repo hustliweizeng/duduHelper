@@ -57,6 +57,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 	@Override
 	public void onResp(BaseResp resp) {
 		int errCode = resp.errCode;
+		LogUtil.d("resp",resp.errCode+"");
 
 		if (errCode == 0) {
 			// 0成功 展示成功页面

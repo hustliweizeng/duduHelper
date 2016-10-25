@@ -17,6 +17,7 @@
         android:paddingLeft="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        android:textColor="#ec8531"
         />
     <TextView
         android:layout_width="match_parent"
@@ -26,6 +27,7 @@
         android:textSize="18dp"
         android:paddingLeft="16dp"
         android:paddingTop="10dp"
+        android:textColor="#666666"
         android:paddingBottom="10dp"
         />
     <LinearLayout
@@ -175,13 +177,13 @@
         <Button
             android:id="@+id/btn_subimit"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="30dp"
             android:text="立即支付"
             android:textColor="@color/bg_white_color"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:background="@drawable/btn_larg_bg"
             />
         

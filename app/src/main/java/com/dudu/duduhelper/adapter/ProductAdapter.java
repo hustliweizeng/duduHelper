@@ -79,7 +79,7 @@ public class ProductAdapter extends BaseAdapter
 		.showImageOnLoading(R.drawable.ic_defalut)
 		.showImageForEmptyUri(R.drawable.ic_defalut)
 		.showImageOnFail(R.drawable.ic_defalut)
-		.cacheInMemory(true).considerExifParams(true)
+		.cacheInMemory(true).cacheOnDisc(true)
 		.bitmapConfig(Bitmap.Config.RGB_565)
 		.displayer(new FadeInBitmapDisplayer(100)).build();
 

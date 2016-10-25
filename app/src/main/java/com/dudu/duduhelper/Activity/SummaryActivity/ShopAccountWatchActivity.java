@@ -62,14 +62,14 @@ public class ShopAccountWatchActivity extends BaseActivity
 	}
 
 	private void initData() {
-		
-		
 		RequestParams params = new RequestParams();
 		params.put("start",getIntent().getStringExtra("start"));
 		params.put("end",getIntent().getStringExtra("end"));
 		tv_start.setText(getIntent().getStringExtra("start"));
 		tv_end.setText(getIntent().getStringExtra("end"));
-
+		
+		LogUtil.d("start",getIntent().getStringExtra("start"));
+		LogUtil.d("end",getIntent().getStringExtra("end"));
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SUM, "get", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {

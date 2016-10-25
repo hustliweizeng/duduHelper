@@ -30,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -42,7 +44,6 @@ import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
-import com.dudu.duduhelper.widget.SwitchView;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -121,6 +122,7 @@ public class ShopProductAddActivity extends BaseActivity
 	private RadioButton rb1_shop_product_add;
 	private RadioButton rb2_shop_product_add;
 	private RadioGroup rg_shop_product_add;
+	private ScrollView scroll_ed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -362,13 +364,11 @@ public class ShopProductAddActivity extends BaseActivity
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 			{
-				LogUtil.d("FIX",arg2);
 				Toast.makeText(ShopProductAddActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
 			}
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
-				LogUtil.d("FIX",arg2);
 
 				try {
 					JSONObject object = new JSONObject(arg2);
@@ -456,7 +456,8 @@ public class ShopProductAddActivity extends BaseActivity
 			}
 		});
 		textToumingView.startAnimation(animation);
-
+		scroll_ed = (ScrollView) findViewById(R.id.scroll_ed);
+		//编辑栏的滑动箭头
 		productImageView=(ImageView) this.findViewById(R.id.productImageView);
 		productSoldTextView=(EditText) this.findViewById(R.id.productSoldTextView);
 		saveProductbutton=(Button) this.findViewById(R.id.saveProductbutton);

@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="20dp"
                 android:background="@null"
                 android:hint="请输入店铺名称"
                 android:textColor="@color/text_middledark_color"
@@ -169,7 +169,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="20dp"
                 android:background="@null"
                 android:inputType="numberDecimal"
                 android:gravity="center|right"
@@ -207,7 +207,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="20dp"
                 android:layout_alignParentRight="true"
                 android:hint="请输入您的地址"
                 android:gravity="center|right"
@@ -248,7 +248,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="20dp"
                 android:background="@null"
                 android:hint="来段自述吧"
                 android:paddingLeft="50dp"
@@ -305,7 +305,7 @@
                 android:background="@drawable/shop_image_whitelin"
                 android:padding="4dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_head" />
+                android:src="@drawable/ic_defalut" />
 
             <TextView
                 android:id="@+id/tv_img_num"

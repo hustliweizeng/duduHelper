@@ -95,10 +95,6 @@ public class RedBagListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 			LogUtil.d("position","复用了");
 		}
-		
-		
-		
-		
 		//显示图片（防止图片显示错乱）
 		data = list.get(position);
 		DisplayImageOptions opt = new DisplayImageOptions.Builder()
@@ -130,7 +126,7 @@ public class RedBagListAdapter extends BaseAdapter {
 		}
 
 		holder.tv_sold.setText("已领:"+ data.getUsed_num());
-		holder.tv_stock.setText("红包:"+ data.getNum());
+		holder.tv_stock.setText("￥红包:"+ data.getNum());
 		holder.tv_name.setText(data.getTitle());
 		holder.tv_price.setText(data.getTotal());
 		//设置红包状态
@@ -138,6 +134,7 @@ public class RedBagListAdapter extends BaseAdapter {
 		if (time <System.currentTimeMillis()){
 			//已过期
 			holder.tv_status.setText("已截至");
+			holder.tv_status.setTextColor(context.getResources().getColor(R.color.text_color_light));
 		}else {
 			holder.tv_status.setText("发放中");
 			holder.tv_status.setTextColor(context.getResources().getColor(R.color.text_color_yellow));
