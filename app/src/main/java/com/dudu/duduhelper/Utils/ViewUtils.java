@@ -95,7 +95,7 @@ public class ViewUtils {
 	 * imageUri 上传图片的本地uri地址
 	 */
 	private static  String backtUrl;
-	public static String uploadImg(final Context context,String imageUri) {
+	public static void uploadImg(final Context context,String imageUri) {
 		
 		//压缩图片再上传
 		Bitmap img = BitmapFactory.decodeFile(imageUri);
@@ -125,6 +125,12 @@ public class ViewUtils {
 						//数据请求成功
 						backtUrl = object.getString("url");
 						LogUtil.d("pic_success",s);
+						if (!TextUtils.isEmpty(backtUrl)){
+							if (listner!=null){
+								listner.onFinish(backtUrl);//通过回掉把获取的url传递给请求的对象
+								LogUtil.d("reback","回掉了"+backtUrl);
+							}
+						}
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -135,17 +141,8 @@ public class ViewUtils {
 					e.printStackTrace();
 				}
 			}
-
-			@Override
-			public void onFinish() {
-				super.onFinish();
-			}
 		});
-		if (!TextUtils.isEmpty(backtUrl)){
-			return  backtUrl;
-		}else {
-			return "";
-		}
+		
 	}
 	//压缩图片质量
 	private Bitmap compressImage(Bitmap image) {
@@ -164,5 +161,11 @@ public class ViewUtils {
 	}
 
 
-
+	public static void setOnFinishListner(OnFinishListner lis) {
+		listner = lis;
+	}
+	public interface  OnFinishListner{
+		void onFinish(String url);
+	}
+	static OnFinishListner listner;
 }

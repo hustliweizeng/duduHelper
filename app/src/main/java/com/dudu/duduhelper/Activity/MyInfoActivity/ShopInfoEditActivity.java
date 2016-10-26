@@ -489,7 +489,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-       if (resultCode ==RESULT_OK){
+        if (resultCode ==RESULT_OK){
            switch (requestCode)
            {
                //4.4以上的版本
@@ -505,8 +505,14 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                    iv_logo_shop_info.setImageURI(urilocal);
                    //子线程上传图片，上传完毕handler告诉主线程
                    String imgPath = ViewUtils.getRealFilePath(context,urilocal);
-                   uploadPicPath = ViewUtils.uploadImg(context,imgPath);
-                   LogUtil.d("logo",uploadPicPath);
+                   ViewUtils.uploadImg(context,imgPath);//这是耗时操作，不能直接赋值？
+                   ViewUtils.setOnFinishListner(new ViewUtils.OnFinishListner() {
+                       @Override
+                       public void onFinish(String url) {
+                           uploadPicPath = url;
+                           LogUtil.d("logo_url",url);
+                       }
+                   });
                    break;
                case 5:
                    LogUtil.d("request",requestCode+"");

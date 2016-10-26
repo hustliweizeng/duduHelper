@@ -280,11 +280,8 @@ public class ShopImageViewBrower extends BaseActivity
 
 
 	@Override
-	/**
-	 * 当页面不可见时，设置结果集
-	 */
-	public void onPause() {
-		super.onPause();
+	public void onBackPressed() {
+	
 		ArrayList<String> uplodImgs = shopImageAdapter.getImageList();
 		
 		//设置返回的数据
@@ -309,6 +306,8 @@ public class ShopImageViewBrower extends BaseActivity
 		//传递数据
 		intent.putExtra("pics", (Serializable) uplodImgs);
 		setResult(RESULT_OK,intent);
+		super.onBackPressed();
+
 	}
 
 

@@ -268,7 +268,14 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 							.displayer(new RoundedBitmapDisplayer(Util.dip2px(EditRedbag2Activity.this,80))).build());
 					//子线程上传图片，上传完毕handler告诉主线程
 					String imgPath = ViewUtils.getRealFilePath(EditRedbag2Activity.this,urilocal);
-					uploadPicPath = ViewUtils.uploadImg(EditRedbag2Activity.this,imgPath);
+					ViewUtils.setOnFinishListner(new ViewUtils.OnFinishListner() {
+						@Override
+						public void onFinish(String url) {
+							uploadPicPath = url;
+						}
+					});
+					ViewUtils.uploadImg(EditRedbag2Activity.this,imgPath);
+					
 					LogUtil.d("logo", uploadPicPath);
 					break;
 			}
