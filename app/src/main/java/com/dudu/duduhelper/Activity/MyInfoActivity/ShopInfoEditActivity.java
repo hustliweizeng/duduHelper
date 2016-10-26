@@ -40,6 +40,7 @@ import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.ShopCategoryBean;
 import com.dudu.duduhelper.javabean.ShopCricleBean;
 import com.dudu.duduhelper.javabean.ShopInfoBean;
+import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyAlertDailog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
@@ -101,7 +102,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
     private ArrayList<String> uplodImgs;
     private String[] picsPath;
     private ArrayList<String> listSource;
-    private int subThreadCount;
+    private int subThreadCount = 0;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -517,18 +518,34 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                case 5:
                    LogUtil.d("request",requestCode+"");
                    //获取店家环境相册
+                   ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
                    if (data!=null ){
+                       int localpic = 0;//记录本地图片的数量
                        uplodImgs = data.getStringArrayListExtra("pics");
                        LogUtil.d("list",uplodImgs.size()+"");
                        picsPath = new String[uplodImgs.size()];
-                       //后台上传本地的图片
-                       for(String s:uplodImgs){
-                           if (!s.startsWith("http")){
+                       //后台上传本地的图片,当有本地图片时，才会更新数据，这个有bug
+                       for(int i= 0;i<uplodImgs.size();i++){
+                           if (!uplodImgs.get(i).startsWith("http")){
                                //这边是子线程上传，所以不会立即完成
-                               uploadImg(context, s);
-                               subThreadCount = 0;
+                               uploadImg(context, uplodImgs.get(i));
                                subThreadCount++;
+                               localpic++;
                            }
+                       }
+                       //当扫描到最后一项时，如果都是网络数据，那么直接更新ui
+                       if (localpic == 0){
+                           //更新ui
+                           //把上传的url放入到数组中
+                           for (int i= 0;i<uplodImgs.size();i++){
+                               picsPath[i] = uplodImgs.get(i);
+                           }
+                           //修改数据源
+                           pics= imgs =picsPath;
+                           imageLoader.displayImage(picsPath[0],iv_img_shop_info);
+                           tv_imgNum_shop_info.setText("相册有"+picsPath.length+"张图片");
+                           ColorDialog.dissmissProcessDialog();
+                           Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
                        }
                    }
                    break;
@@ -618,6 +635,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                         //说明上传完毕
                         if (subThreadCount ==0){
                             handler.sendEmptyMessage(0);
+                            ColorDialog.dissmissProcessDialog();
                         }
                         LogUtil.d("pic_success",s);
                     }else {

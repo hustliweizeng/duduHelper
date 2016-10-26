@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -73,10 +74,17 @@ public class ShopImageViewBrower extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_image_view_brower);
-		initHead();
-
-		//imageView = (ImageView) this.findViewById(R.id.imageView);
-		editButton=(Button) this.findViewById(R.id.selectTextClickButton);
+		//根据不同情况设置不同的页面标题
+		sourceType = getIntent().getIntExtra("type",-1);
+		//initHead();
+		ImageButton btn_back = (ImageButton) findViewById(R.id.backButton);
+		btn_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
+		editButton=(Button) this.findViewById(R.id.selectClickButton);
 		editButton.setText("编辑");
 		editButton.setVisibility(View.VISIBLE);
 		delectButton = (ImageView) this.findViewById(R.id.delectButton);
@@ -173,8 +181,7 @@ public class ShopImageViewBrower extends BaseActivity
 	}
 
 	private void initHead() {
-		//根据不同情况设置不同的页面标题
-		sourceType = getIntent().getIntExtra("type",-1);
+		
 		if (sourceType == 1){
 			initHeadView("商品相册", true, false, 0);
 		}else if(sourceType == 2){
@@ -279,9 +286,8 @@ public class ShopImageViewBrower extends BaseActivity
     }
 
 
-	@Override
+	@Override//一定要在最后调父super，或者手动finish
 	public void onBackPressed() {
-	
 		ArrayList<String> uplodImgs = shopImageAdapter.getImageList();
 		
 		//设置返回的数据
