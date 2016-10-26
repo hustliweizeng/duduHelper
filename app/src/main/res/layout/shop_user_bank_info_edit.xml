@@ -5,13 +5,13 @@
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.dudu.duduhelper.Activity.MyInfoActivity.ShopUserBankInfoEditActivity" >
+    tools:context="com.dudu.duduhelper.com.dudu.helper3.Activity.MyInfoActivity.ShopUserBankInfoEditActivity" >
 
     <include
         android:id="@id/head"
         layout="@layout/activity_head" />
 
-   <!--  <com.dudu.duduhelper.widget.OverScrollView
+   <!--  <OverScrollView
         android:id="@+id/mineScrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -376,6 +376,6 @@
                 android:textColor="#fff"
                 android:textSize="16sp" />
         </LinearLayout>
-    <!-- </com.dudu.duduhelper.widget.OverScrollView> -->
+    <!-- </OverScrollView> -->
 
 </LinearLayout>

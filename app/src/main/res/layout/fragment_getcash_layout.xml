@@ -14,7 +14,7 @@
         android:background="#fff"
         android:orientation="horizontal" >
 
-        <com.dudu.duduhelper.widget.PagerSlidingTabStrip
+        <com.dudu.helper3.widget.PagerSlidingTabStrip
             android:id="@+id/orderSeliderTabs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

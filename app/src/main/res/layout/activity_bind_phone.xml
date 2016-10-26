@@ -5,7 +5,7 @@
     android:background="@color/bg_color"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context=".Activity.WelcomeActivity.ForgetPwdCertifyMobileActivity">
+    tools:context="com.dudu.helper3.Activity.WelcomeActivity.ForgetPwdCertifyMobileActivity">
 
     <include
         android:id="@+id/head"

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/bg_color"
+              android:fitsSystemWindows="true"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/relayout_mytitle"
+        android:background="@color/head_color"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_head_bg"
+            android:paddingBottom="14dp"
+            android:paddingRight="20dp"
+            android:paddingTop="14dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/nav_btn_fanhui" />
+
+
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="适用门店"
+            android:textColor="@color/title_color"
+            android:textSize="19sp" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/lv"
+            android:footerDividersEnabled="false"
+            android:divider="@null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+  
+
+    <LinearLayout
+        android:id="@+id/ll_edit"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:background="@color/bg_white_color"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/lv_all"
+            android:layout_marginLeft="16dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/select_empty"
+            />
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全选"
+            android:textSize="18dp"
+            android:textColor="@color/text_dark_color"
+            />
+        <View
+            android:layout_width="0.7dp"
+            android:layout_height="35dp"
+            android:background="@color/list_divide"/>
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:text="确认提交"
+            android:textSize="18dp"
+            android:textColor="@color/text_green_color"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -5,7 +5,7 @@
               android:background="@color/bg_color"
               android:fitsSystemWindows="true"
               android:orientation="vertical"
-              tools:context="com.dudu.duduhelper.Activity.CashHistoryActivity.ShopMoneyRecordListActivity">
+              tools:context="com.dudu.duduhelper.com.dudu.helper3.Activity.CashHistoryActivity.ShopMoneyRecordListActivity">
 
     <include
         android:id="@+id/head"

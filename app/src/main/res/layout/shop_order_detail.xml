@@ -11,7 +11,7 @@
         android:id="@+id/head"
         layout="@layout/activity_head" />
 
-   <com.dudu.duduhelper.widget.OverScrollView
+   <com.dudu.helper3.widget.OverScrollView
         android:id="@+id/friendscrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -419,6 +419,6 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-  </com.dudu.duduhelper.widget.OverScrollView>
+  </com.dudu.helper3.widget.OverScrollView>
 
 </LinearLayout>

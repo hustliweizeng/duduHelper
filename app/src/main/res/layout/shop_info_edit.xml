@@ -5,13 +5,9 @@
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.dudu.duduhelper.Activity.MyInfoActivity.ShopInfoEditActivity" >
-
-    <include
-        android:id="@+id/head"
-        layout="@layout/activity_head" />
-
-    <com.dudu.duduhelper.widget.OverScrollView
+    tools:context="com.dudu.duduhelper.com.dudu.helper3.Activity.MyInfoActivity.ShopInfoEditActivity" >
+    <include layout="@layout/activity_head"/>
+    <com.dudu.helper3.widget.OverScrollView
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -367,6 +363,10 @@
                 android:textColor="#fff"
                 android:textSize="16sp" />
         </LinearLayout>
-    </com.dudu.duduhelper.widget.OverScrollView>
+    </com.dudu.helper3.widget.OverScrollView>
+
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
 
 </LinearLayout>

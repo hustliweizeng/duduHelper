@@ -12,7 +12,7 @@
         android:background="@drawable/btn_white_bg"
         android:scaleType="centerCrop" />
 
-    <com.dudu.duduhelper.widget.SmoothCheckBox
+    <com.dudu.helper3.widget.SmoothCheckBox
         android:id="@+id/photocheckbox"
         android:layout_width="20dp"
         android:layout_height="20dp"

@@ -17,7 +17,7 @@ import org.fireking.app.imagelib.view.MyImageView;
 import org.fireking.app.imagelib.view.MyImageView.OnMeasureListener;
 
 import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.application.DuduHelperApplication;
+import com.dudu.helper3.application.DuduHelperApplication;
 
 
 import android.content.Context;
@@ -38,7 +38,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -47,7 +46,6 @@ import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;

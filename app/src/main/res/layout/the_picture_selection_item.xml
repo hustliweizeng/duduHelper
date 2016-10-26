@@ -12,7 +12,7 @@
         android:layout_height="118dip"
         android:scaleType="centerCrop" />
 
-    <com.dudu.duduhelper.widget.SmoothCheckBox
+    <com.dudu.helper3.widget.SmoothCheckBox
         android:id="@+id/child_checkbox"
         android:layout_width="24dp"
         android:layout_height="24dp"

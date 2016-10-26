@@ -12,7 +12,7 @@
         android:id="@+id/head"
         layout="@layout/activity_head" />
 
-    <com.dudu.duduhelper.widget.OverScrollView
+    <com.dudu.helper3.widget.OverScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/foot"
@@ -77,7 +77,7 @@
                     android:layout_height="236dp"
                     android:orientation="vertical" >
 
-                    <com.dudu.duduhelper.widget.WheelIndicatorTongjiNoXuxianView
+                    <com.dudu.helper3.widget.WheelIndicatorTongjiNoXuxianView
                         android:id="@+id/wheel_indicator_view"
                         android:layout_width="200dp"
                         android:layout_height="200dp"
@@ -98,7 +98,7 @@
                             android:textColor="@color/text_gray_color"
                             android:textSize="14sp" />
 
-                        <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
+                        <com.dudu.helper3.widget.risenumbertextview.RiseNumberTextView
                             android:id="@+id/totalNumText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
                             android:layout_marginTop="6dp"
                             android:background="@color/divider_line_color" />
 
-                        <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
+                        <com.dudu.helper3.widget.risenumbertextview.RiseNumberTextView
                             android:id="@+id/sellNumText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                         android:textColor="@color/text_gray_color"
                         android:textSize="14sp" />
 
-                    <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
+                    <com.dudu.helper3.widget.risenumbertextview.RiseNumberTextView
                         android:id="@+id/leftNumText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -238,7 +238,7 @@
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-    </com.dudu.duduhelper.widget.OverScrollView>
+    </com.dudu.helper3.widget.OverScrollView>
 
     <LinearLayout
         android:id="@+id/foot"

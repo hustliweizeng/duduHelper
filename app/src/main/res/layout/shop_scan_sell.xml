@@ -12,7 +12,7 @@
         android:id="@+id/head"
         layout="@layout/activity_head" />
 
-   <!--  <com.dudu.duduhelper.widget.OverScrollView
+   <!--  <OverScrollView
         android:id="@+id/mineScrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,7 +45,7 @@
 
                 <!-- 进度 -->
 
-                <com.dudu.duduhelper.widget.ConfirmView
+                <com.dudu.helper3.widget.ConfirmView
                     android:id="@+id/confirm_view"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
@@ -53,7 +53,7 @@
 
                 <!-- 小圆点 -->
 
-                <com.dudu.duduhelper.widget.DilatingDotsProgressBar
+                <com.dudu.helper3.widget.DilatingDotsProgressBar
                     android:id="@+id/progress"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -289,7 +289,7 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-    <!-- </com.dudu.duduhelper.widget.OverScrollView> -->
+    <!-- </OverScrollView> -->
     <Button 
         android:id="@+id/submitButton"
         android:layout_width="match_parent"

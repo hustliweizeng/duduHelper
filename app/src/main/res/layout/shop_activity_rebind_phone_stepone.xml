@@ -5,7 +5,7 @@
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".Activity.MyInfoActivity.ShopRebindPhoneSteponeActivity" >
+    tools:context="com.dudu.helper3.Activity.MyInfoActivity.ShopRebindPhoneSteponeActivity" >
 
     <include
         android:id="@+id/head"

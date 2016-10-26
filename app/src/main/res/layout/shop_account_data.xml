@@ -5,7 +5,7 @@
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountDataActivity" >
+    tools:context="com.dudu.duduhelper.com.dudu.helper3.Activity.SummaryActivity.ShopAccountDataActivity" >
 
     <include
         android:id="@+id/head"
@@ -58,7 +58,7 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <com.dudu.duduhelper.widget.WaveView
+        <com.dudu.helper3.widget.WaveView
             android:id="@+id/wave"
             android:layout_width="match_parent"
             android:layout_height="198dp"
