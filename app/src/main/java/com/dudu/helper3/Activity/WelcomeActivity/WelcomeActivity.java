@@ -56,6 +56,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
     private PushAgent mPushAgent;
     private String device_token;
     private String methord="";
+	private boolean shopIsoPen;
 
 	@Override
 	/**
@@ -288,7 +289,17 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		                    finish();
 		                    return;
 	                    };
-	                    
+	                    requestStatus();
+	                    String isshopuser = infoBean.getUser().getIsshopuser();
+	                    boolean isManager = true;
+	                    if ("1".equals(isshopuser)){
+		                    isManager = false;
+		                    LogUtil.d("manager","false");
+	                    }
+	                    if ("0".equals(isshopuser)) {
+		                    isManager = true;
+		                    LogUtil.d("manager","true");
+	                    }
                         //保存用户信息
                         //1.通过sp保存用户信息
                         SharedPreferences.Editor edit = sp.edit();
@@ -309,7 +320,8 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		                 .putString("totalBuyer",infoBean.getTotalstat().getBuyer())
 		                 .putString("totalOrder",infoBean.getTotalstat().getOrder())
 		                  .putString("totalIncome",infoBean.getTotalstat().getIncome()) 
-		                  .putString("totalTrade",infoBean.getTotalstat().getTrade())      
+		                  .putString("totalTrade",infoBean.getTotalstat().getTrade()) 
+		                  .putString("isManager",isshopuser)      
 		                  //在后台处理
                         .apply();
                         LogUtil.d("welcome",s);
@@ -328,7 +340,38 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
                 }
 			}
 		});
+	}
+	public void requestStatus(){
+		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_GUEST_ISOPEN, "GET", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						if (object.getString("status").equals("1")){
+							shopIsoPen = true;
+						}else{
+							shopIsoPen = false;
+						}
+						sp.edit().putBoolean("shopstatus", shopIsoPen).commit();
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
 
+		});
 	}
 
 

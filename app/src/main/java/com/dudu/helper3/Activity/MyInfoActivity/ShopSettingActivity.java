@@ -78,6 +78,7 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 	@Override
 	public void onClick(View v) 
 	{
+		boolean isManager = sp.getBoolean("isManager", false);
 		Intent intent = null;
 		switch (v.getId())
 		{
@@ -92,10 +93,20 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 				intent=new Intent(ShopSettingActivity.this,ShopPasswordEditActivity.class);
 				break;
 			case R.id.mendianRel:
-				intent=new Intent(ShopSettingActivity.this,ShopListManagerActivity.class);
+				if (isManager){
+					intent =new Intent(context,ShopListManagerActivity.class);
+				}else {
+					Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
+					return;
+				}
 				break;
 			case R.id.memberRel:
-				intent=new Intent(ShopSettingActivity.this,ShopMemberListActivity.class);
+				if (isManager){
+					intent=new Intent(ShopSettingActivity.this,ShopMemberListActivity.class);
+				}else {
+					Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
+					return;
+				}
 				break;
 			case R.id.logoutButton:
                 MyDialog.showDialog(ShopSettingActivity.this, "  退出登录将清空用户信息，是否退出",true, true, "取消","确定", new OnClickListener() 

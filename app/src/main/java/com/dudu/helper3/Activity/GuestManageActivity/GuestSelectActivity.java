@@ -129,6 +129,8 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 				adapter.addAll();
 				break;
 			case R.id.backButton:
+				onBackPressed();
+				break;
 			case  R.id.tv_submit:
 				//确定按钮
 				Intent intent = new Intent();
@@ -143,7 +145,6 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
 		Intent intent = new Intent();
 		intent.putCharSequenceArrayListExtra("list",adapter.getList());
 		intent.putCharSequenceArrayListExtra("ids",adapter.getIds());

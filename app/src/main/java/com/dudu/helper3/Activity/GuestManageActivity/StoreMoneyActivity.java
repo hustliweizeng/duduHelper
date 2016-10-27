@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.widget.Button;
@@ -72,6 +73,8 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 	 * See https://g.co/AppIndexing/AndroidStudio for more information.
 	 */
 	private GoogleApiClient client2;
+	private float price;
+	private TextView tv_single_price;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -93,8 +96,11 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 		redbage_check.setOnClickListener(this);
 		activity_check.setOnClickListener(this);
 		btn_subimit.setOnClickListener(this);
+		tv_single_price = (TextView) findViewById(R.id.tv_single_price);
 
 		String style = getIntent().getStringExtra("style");
+		price = getIntent().getFloatExtra("price",50);
+		tv_single_price.setText(price+"元");//设置信息单价
 		//初始化界面按钮
 		if (style.equals("redbag")) {
 			redbage_check.setTextColor(getResources().getColor(R.color.text_green_color));
@@ -105,6 +111,17 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 			activity_check.setTextColor(getResources().getColor(R.color.text_green_color));
 			isRedbag = false;
 		}
+		//输入次数的监听，合计金额自动变化
+		ed_num.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				int num = Integer.parseInt(v.getText().toString().trim());
+				float total_price = num * price;
+				tv_price.setText(total_price+"");
+				return true;
+			}
+		});
+		
 	}
 
 	@Override

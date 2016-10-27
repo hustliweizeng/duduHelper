@@ -96,12 +96,13 @@
 
                 />
             <TextView
+                android:id="@+id/act_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="想让客户及时了解信息"
+                android:maxLines="1"
                 android:textSize="14dp"
                 android:layout_toRightOf="@id/iv_activity"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/text_gray_color"
                 android:layout_marginLeft="8dp"
                 android:layout_below="@id/tv_title1"
@@ -111,23 +112,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/linearLayout2">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="剩余"
+                    android:text="剩余 "
                     android:textColor="@color/text_gray_color"
                     />
                 <TextView
                     android:id="@+id/tv_count_activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="0"
                     android:textColor="@color/btn_color"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="次"
+                    android:text=" 次"
                     android:textColor="@color/text_gray_color"
                     />
                 <ImageView
@@ -173,13 +176,14 @@
 
                 />
             <TextView
+                android:id="@+id/redbag_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="想让客户及时了解信息"
                 android:textColor="@color/text_gray_color"
                 android:textSize="14dp"
+                android:maxLines="1"
                 android:layout_toRightOf="@id/iv_redbag"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_below="@id/tv_title3"
 
@@ -192,19 +196,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="剩余"
+                    android:text="剩余 "
                     android:textColor="@color/text_gray_color"
                     />
                 <TextView
                     android:id="@+id/tv_count_redbag"
                     android:layout_width="wrap_content"
+                    android:text="0"
                     android:layout_height="wrap_content"
                     android:textColor="@color/btn_color"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="次"
+                    android:text=" 次"
                     android:textColor="@color/text_gray_color"
                     />
                 <ImageView

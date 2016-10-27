@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
+import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
@@ -198,7 +199,9 @@ public class ShopUserBankInfoActivity extends BaseActivity
 				client.setCookieStore(myCookieStore);
 				RequestParams params = new RequestParams();
 				params.put("code",code);
-				client.delete(context,ConstantParamPhone.DEL_BANKCARD+comeinData.getId(),null, params, new TextHttpResponseHandler() {
+				LogUtil.d("code",code);
+				LogUtil.d("id",comeinData.getId());
+				client.delete(context,ConstantParamPhone.BASE_URL+ConstantParamPhone.DEL_BANKCARD+comeinData.getId(),null, params, new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 						Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();

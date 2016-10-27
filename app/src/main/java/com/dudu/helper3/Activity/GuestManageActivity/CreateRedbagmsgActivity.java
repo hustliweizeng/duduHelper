@@ -59,7 +59,7 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 	private void initData() {
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-		params.put("type_id",2);//红包的typeid是2
+		params.put("type_id","2");//红包的typeid是2
 		params.put("page",page);
 		params.put("size",size);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SEND_RECORD, "post", new TextHttpResponseHandler() {
@@ -78,7 +78,7 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 						//数据请求成功
 						redbagMsgListBean = new Gson().fromJson(s, RedbagMsgListBean.class);
 						tv_send_num.setText(redbagMsgListBean.getTotal_red_packet());
-						tv_create_money.setText(redbagMsgListBean.getTotal_promote_consumer());
+						tv_create_money.setText(redbagMsgListBean.getTotal_promote_consumer()+"");
 						List<RedbagMsgListBean.ListBean> list = redbagMsgListBean.getList();
 						if (list!=null &&list.size()>0){
 							adapter.addAll(list);

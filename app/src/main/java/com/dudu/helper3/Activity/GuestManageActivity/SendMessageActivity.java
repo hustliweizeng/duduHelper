@@ -42,6 +42,12 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 	private RelativeLayout redbage_msg;
 	private float active_num;
 	private float unactive_num;
+	private int activity_time;
+	private int redbag_time;
+	private float redbag_price;
+	private float activity_price;
+	private TextView act_content;
+	private TextView redbag_content;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -69,23 +75,30 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 						ShopStatusBean shopStatusBean = new Gson().fromJson(s, ShopStatusBean.class);
 						active_num = Float.parseFloat(shopStatusBean.getActive_user());
 						unactive_num = Float.parseFloat(shopStatusBean.getInactivity_user());
-						LogUtil.d("unactive",unactive_num+"");
-						LogUtil.d("active",active_num+"");
 
 						active_user_num.setText(active_num+"");
 						unactive_user_num.setText(unactive_num+"");
+						
 						//设置次数
 						List<ShopStatusBean.MessageListsBean> message_lists = shopStatusBean.getMessage_lists();
 						if (message_lists!=null &&message_lists.size()>0){
 							if (message_lists.get(0).getType_id().equals("1")){
 								//设置活动次数
-								tv_count_activity.setText(message_lists.get(0).getMonth_free_num());
-							}else if (message_lists.get(1).getType_id().equals("2")){
+								activity_time = Integer.parseInt(message_lists.get(0).getMax_month_send_num());
+								tv_count_activity.setText(activity_time+"");
+								act_content.setText(message_lists.get(0).getDesc());//说明
+								//发送活动信息的单价
+								activity_price = Float.parseFloat(message_lists.get(0).getPrice());
+							} 
+							if (message_lists.get(1).getType_id().equals("2")){
 								//设置红包剩余次数
-								tv_count_redbag.setText(message_lists.get(1).getMonth_free_num());
+								redbag_time = Integer.parseInt(message_lists.get(1).getMax_month_send_num());
+								LogUtil.d("redbag_time",redbag_time+"");
+								tv_count_redbag.setText(redbag_time+"");
+								redbag_content.setText(message_lists.get(1).getDesc());//说明
+								//红包信息单价
+								redbag_price = Float.parseFloat(message_lists.get(1).getPrice());
 							}
-							tv_count_redbag.setText(message_lists.get(1).getMonth_free_num());
-
 						}
 
 					}else {
@@ -131,34 +144,35 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 		activity_msg = (RelativeLayout) findViewById(R.id.activity_msg);
 		tv_count_redbag = (TextView) findViewById(R.id.tv_count_redbag);
 		redbage_msg = (RelativeLayout) findViewById(R.id.redbage_msg);
+		act_content = (TextView) findViewById(R.id.act_content);
+		redbag_content = (TextView) findViewById(R.id.redbag_content);
 		redbage_msg.setOnClickListener(this);
 		activity_msg.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
-		int count = 0;
 		Intent intent = null;
 		switch (v.getId()){
 			//红包消息
 			case R.id.redbage_msg:
 			//判断当前可用次数是否为0
-				count = 0;
-			if (count >0){
+			if (redbag_time >0){
 				intent = new Intent(context, CreateRedbagmsgActivity.class);
 			}else {
 				intent = new Intent(context,StoreMoneyActivity.class);
 				intent.putExtra("style","redbag");
+				intent.putExtra("price",redbag_price);
 			}
 			break;
 			//活动消息
 			case R.id.activity_msg:
-				count = 1;
-			if (count >0){
+			if (active_num >0){
 				intent = new Intent(context, CreateActivityMsg.class);
 			}else {
 				intent = new Intent(context,StoreMoneyActivity.class);
 				intent.putExtra("style","activity");
+				intent.putExtra("price",activity_price);
 			}
 			break;
 		}

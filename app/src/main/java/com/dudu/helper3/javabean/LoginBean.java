@@ -217,6 +217,15 @@ public class LoginBean {
 		private String mobile;
 		private String name;
 		private String nickname;
+		private String isshopuser;
+
+		public String getIsshopuser() {
+			return isshopuser;
+		}
+
+		public void setIsshopuser(String isshopuser) {
+			this.isshopuser = isshopuser;
+		}
 
 		public String getMobile() {
 			return mobile;

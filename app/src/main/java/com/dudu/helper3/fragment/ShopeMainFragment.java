@@ -1,6 +1,8 @@
 package com.dudu.helper3.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +29,7 @@ import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
+import com.dudu.helper3.widget.ColorDialog;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -67,7 +70,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		initFragmentView();
-		requestStatus();
+		
 	}
 	private void initFragmentView() 
 	{
@@ -104,6 +107,8 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	@Override
 	public void onClick(View v) 
 	{
+		SharedPreferences sp = getContext().getSharedPreferences("userconig", Context.MODE_PRIVATE);
+		boolean isManager = sp.getBoolean("isManager", false);
 		// TODO Auto-generated method stub
 		intent = new Intent();
 		switch (v.getId())
@@ -149,11 +154,21 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			    break;
 			case R.id.memberBtn:
 				//员工管理
-				intent =new Intent(getActivity(),ShopMemberListActivity.class);
+				if (isManager){
+					intent =new Intent(getActivity(),ShopMemberListActivity.class);
+				}else {
+					Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+					return;
+				}
 			    break;
 			case R.id.shopmanagerBtn:
 				//门店管理
-				intent =new Intent(getActivity(),ShopListManagerActivity.class);
+				if (isManager){
+					intent =new Intent(getActivity(),ShopListManagerActivity.class);
+				}else {
+					Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+					return;
+				}
 				break;
 			//账单流水
 			case R.id.moneyRecordLinButton:
@@ -161,6 +176,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 				break;
 			case R.id.guest_manager:
 				//客户管理
+				shopIsoPen = sp.getBoolean("shopstatus",false);
 				if (shopIsoPen){
 					intent = new  Intent(getActivity(), GuestMangageActivity.class);
 				}else {
@@ -174,37 +190,9 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		}
 		startActivity(intent);
 	}
-	public void requestStatus(){
-		HttpUtils.getConnection(getActivity(), null, ConstantParamPhone.GET_GUEST_ISOPEN, "GET", new TextHttpResponseHandler() {
-			@Override
-			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				Toast.makeText(getActivity(),"网络异常，稍后再试",Toast.LENGTH_LONG).show();
-			}
-			@Override
-			public void onSuccess(int i, Header[] headers, String s) {
-				LogUtil.d("res",s);
-				try {
-					JSONObject object = new JSONObject(s);
-					String code =  object.getString("code");
-					if ("SUCCESS".equalsIgnoreCase(code)){
-						//数据请求成功
-						if (object.getString("status").equals("1")){
-							shopIsoPen = true;
-						}else{
-							shopIsoPen = false;
-						}
-					}else {
-						//数据请求失败
-						String msg = object.getString("msg");
-						Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+	
 
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 
 }

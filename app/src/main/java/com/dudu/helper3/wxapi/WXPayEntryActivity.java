@@ -3,6 +3,8 @@ package com.dudu.helper3.wxapi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.dudu.helper3.BaseActivity;
@@ -26,6 +28,13 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
        setContentView(R.layout.activity_pay_result);
 		tv_res = (TextView) findViewById(R.id.tv_res);
+		Button btn_back = (Button) findViewById(R.id.btn_back);
+		btn_back.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		initHeadView("支付结果",true,false,0);
 		api = WXAPIFactory.createWXAPI(this, "wxa43dd59c979e6ab7");
 		api.handleIntent(getIntent(), this);

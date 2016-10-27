@@ -33,6 +33,8 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends BaseActivity
 {
@@ -47,6 +49,7 @@ public class LoginActivity extends BaseActivity
 	private ImageView mimaDelectIconBtn;
 	private String methord=ConstantParamPhone.USER_LOGIN;
 	private TextView findPasswordTextView;
+	private boolean shopIsoPen;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -204,6 +207,7 @@ public class LoginActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
+				
 				if(username.getText().toString().trim().equals(""))
 				{
 					Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_LONG).show();
@@ -250,33 +254,48 @@ public class LoginActivity extends BaseActivity
 						LoginBean loginBean = new Gson().fromJson(arg2,LoginBean.class);
 						//判断返回状态是否成功
 						if (ConstantParamPhone.SUCCESS.equalsIgnoreCase(loginBean.getCode())){
+							
 							//判断手机绑定没有
 							if (TextUtils.isEmpty(loginBean.getUser().getMobile())){
 								Toast.makeText(context,"当前账号未绑定，请先绑定手机号",Toast.LENGTH_LONG).show();
 								startActivity(new Intent(context,LoginBindPhoneActivity.class));
 								finish();
+								return;//不能进入了
 							}
+							requestStatus();//请求店铺状态
 							//对bean的数据做非空判断
-							
+							String isshopuser = loginBean.getUser().getIsshopuser();
+							boolean isManager = true;
+							if ("1".equals(isshopuser)){
+								isManager = false;
+								LogUtil.d("manager","false");
+							}
+							if ("0".equals(isshopuser)) {
+								isManager = true;
+							}
+								
 							//1.通过sp保存用户信息
 							SharedPreferences.Editor edit = sp.edit();
-							edit.putString("username",loginBean.getUser().getName())
-							.putString("nickename",loginBean.getUser().getNickname())//手动添加
-							.putString("mobile",loginBean.getUser().getMobile())
+							edit.putString("username", loginBean.getUser().getName())
+							.putString("nickename", loginBean.getUser().getNickname())//手动添加
+							.putString("mobile", loginBean.getUser().getMobile())
 							//2.存储商店信息
-							.putString("id",loginBean.getShop().getId())
-							.putString("shopLogo",loginBean.getShop().getLogo())
-							.putString("shopName",loginBean.getShop().getName())
+							.putString("id", loginBean.getShop().getId())
+							.putString("shopLogo", loginBean.getShop().getLogo())
+							.putString("shopName", loginBean.getShop().getName())
 							//3.储存今日状态
-							.putString("todayIncome",loginBean.getTodaystat().getIncome())
+							.putString("todayIncome", loginBean.getTodaystat().getIncome())
 							//4.存储总计状态
-							.putString("frozenMoney",loginBean.getTotalstat().getFreezemoney())
-							.putString("useableMoney",loginBean.getTotalstat().getUsablemoney())
+							.putString("frozenMoney", loginBean.getTotalstat().getFreezemoney())
+							.putString("useableMoney", loginBean.getTotalstat().getUsablemoney())
+							//储存店员状态
+							.putBoolean("isManager", isManager)
 							//在后台处理
 							.apply();
 							//跳转到主页
+							
 
-							startActivity(new Intent(context,MainActivity.class));
+							startActivity(new Intent(context, MainActivity.class));
 							finish();
 
 						}else if (ConstantParamPhone.FAIL.equalsIgnoreCase(loginBean.getCode())){
@@ -301,5 +320,42 @@ public class LoginActivity extends BaseActivity
 			DuduHelperApplication.getInstance().exit();
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	/**
+	 * 判断店员管理是否可用
+	 */
+	public void requestStatus(){
+		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_GUEST_ISOPEN, "GET", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						if (object.getString("status").equals("1")){
+							shopIsoPen = true;
+						}else{
+							shopIsoPen = false;
+							
+						}
+						sp.edit().putBoolean("shopstatus",shopIsoPen).commit();
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+		});
 	}
 }

@@ -61,9 +61,21 @@ public class ShopStatusBean {
 		private String id;
 		private String type_id;
 		private String month_free_num;
+		private String max_user_num;
+		private String max_month_send_num;
 		private String name;
 		private String image;
 		private String desc;
+
+		public String getPrice() {
+			return price;
+		}
+
+		public void setPrice(String price) {
+			this.price = price;
+		}
+
+		private String price;
 		private String surplus;
 
 		public String getId() {
@@ -88,6 +100,22 @@ public class ShopStatusBean {
 
 		public void setMonth_free_num(String month_free_num) {
 			this.month_free_num = month_free_num;
+		}
+
+		public String getMax_user_num() {
+			return max_user_num;
+		}
+
+		public void setMax_user_num(String max_user_num) {
+			this.max_user_num = max_user_num;
+		}
+
+		public String getMax_month_send_num() {
+			return max_month_send_num;
+		}
+
+		public void setMax_month_send_num(String max_month_send_num) {
+			this.max_month_send_num = max_month_send_num;
 		}
 
 		public String getName() {

@@ -185,9 +185,14 @@ public class ShopMineFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ShopBankListActivity.class);
-                intent.putExtra("action", "tixian");
-                startActivity(intent);
+                if (!sp.getBoolean("isManager",false)){
+                    Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    Intent intent = new Intent(getActivity(), ShopBankListActivity.class);
+                    intent.putExtra("action", "tixian");
+                    startActivity(intent);
+                }
             }
         });
         //个人中心按钮
@@ -303,27 +308,32 @@ public class ShopMineFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(sp.getString("mobile", ""))) {
-                    MyDialog.showDialog(getActivity(), "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener() {
+                if (!sp.getBoolean("isManager",false)){
+                    Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    if (TextUtils.isEmpty(sp.getString("mobile", ""))) {
+                        MyDialog.showDialog(getActivity(), "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener() {
 
-                        @Override
-                        public void onClick(View arg0) {
-                            Intent intent = new Intent(getActivity(), LoginBindPhoneActivity.class);
-                            startActivity(intent);
-                        }
-                    }, new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                Intent intent = new Intent(getActivity(), LoginBindPhoneActivity.class);
+                                startActivity(intent);
+                            }
+                        }, new OnClickListener() {
 
-                        @Override
-                        public void onClick(View arg0) {
-                            MyDialog.cancel();
-                        }
-                    });
-                } else {
-                    //进入银行卡页面
-                    Intent intent = new Intent(getActivity(), ShopBankListActivity.class);
-                    intent.putExtra("action", "banklist");
-                    startActivity(intent);
-                    //
+                            @Override
+                            public void onClick(View arg0) {
+                                MyDialog.cancel();
+                            }
+                        });
+                    } else {
+                        //进入银行卡页面
+                        Intent intent = new Intent(getActivity(), ShopBankListActivity.class);
+                        intent.putExtra("action", "banklist");
+                        startActivity(intent);
+                        //
+                    }
                 }
             }
         });

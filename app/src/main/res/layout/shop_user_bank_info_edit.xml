@@ -96,6 +96,7 @@
                         android:hint="请输入您的银行卡号"
                         android:inputType="number"
                         android:paddingRight="32dp"
+                        android:textColor="@color/text_color_dark"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -140,7 +141,7 @@
                         android:gravity="right|center_vertical"
                         android:hint="请输入开户银行"
                         android:layout_marginRight="32dp"
-                        android:textColor="@color/text_color_light"
+                        android:textColor="@color/text_dark_color"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
 
@@ -177,7 +178,7 @@
                         android:gravity="right|center_vertical"
                         android:hint="请选择开户银行所在省份"
                         android:paddingRight="6dp"
-                        android:textColor="@color/text_color_light"
+                        android:textColor="@color/text_dark_color"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
 
@@ -220,7 +221,7 @@
                         android:gravity="right|center_vertical"
                         android:hint="请选择开户银行所在城市"
                         android:paddingRight="6dp"
-                        android:textColor="@color/text_color_light"
+                        android:textColor="@color/text_dark_color"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
 
@@ -262,6 +263,7 @@
                         android:gravity="right|center_vertical"
                         android:hint="请输入开户银行支行名称"
                         android:paddingRight="32dp"
+                        android:textColor="@color/text_dark_color"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -310,6 +312,7 @@
                         android:gravity="right|center_vertical"
                         android:hint="请先绑定设备"
                         android:paddingRight="16dp"
+                        android:textColor="@color/text_dark_color"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14sp" />
 
@@ -358,6 +361,7 @@
                         android:background="@null"
                         android:gravity="right|center_vertical"
                         android:hint="此处为预留手机验证码"
+                        android:textColor="@color/text_dark_color"
                         android:textColorHint="@color/text_hint_color"
                         android:textSize="14dp" />
                 </RelativeLayout>
