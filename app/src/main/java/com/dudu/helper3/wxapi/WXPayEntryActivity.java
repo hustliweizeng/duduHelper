@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -27,7 +27,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
        setContentView(R.layout.activity_pay_result);
 		tv_res = (TextView) findViewById(R.id.tv_res);
 		initHeadView("支付结果",true,false,0);
-		api = WXAPIFactory.createWXAPI(this, "wxd930ea5d5a258f4f");
+		api = WXAPIFactory.createWXAPI(this, "wxa43dd59c979e6ab7");
 		api.handleIntent(getIntent(), this);
 	}
 

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 
 /**
  * Created by lwz on 2016/8/26.

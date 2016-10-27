@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.adapter.GuestListCheckAdapter;
 
 import java.util.ArrayList;

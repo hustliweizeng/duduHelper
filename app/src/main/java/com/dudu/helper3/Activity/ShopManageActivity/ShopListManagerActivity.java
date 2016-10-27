@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.adapter.ShopAdapterAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;

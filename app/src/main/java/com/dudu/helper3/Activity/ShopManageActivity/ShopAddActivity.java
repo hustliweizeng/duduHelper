@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.Activity.ShopImageViewBrower;
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.adapter.ShopCategoryAdapter;
 import com.dudu.helper3.adapter.ShopCircleAdapter;
@@ -58,7 +58,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 	private ArrayList<String> listSource;
 	private int category_id;
 	private int circle_id;
-	private ArrayList<String> uplodImgs;
+	private ArrayList<String> uplodImgs = new ArrayList<>();
 	//临时数组，返回后剋
 	private int subThreadCount;
 	private Handler handler = new Handler() {
@@ -72,7 +72,8 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 			Toast.makeText(context, "上传完毕", Toast.LENGTH_SHORT).show();
 		}
 	};
-	private ArrayList<String> webImgs;
+	private ArrayList<String> webImgs = new ArrayList<>();
+	private long firtTime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -178,10 +179,16 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 		params.add("description",ed_discription.getText().toString());
 		params.add("category",category_id+"");
 		params.add("area",circle_id+"");
+		LogUtil.d("area","upload="+circle_id);
 		//上传的图片转为数组
 		//说明没有修改图片,直接用获取到的数据
 		if (uplodImgs ==null){
-			uplodImgs = webImgs;
+			if (webImgs!=null &&webImgs.size()>0){
+				uplodImgs = webImgs;//从网络获取图片
+			}else {
+				//说明没选择图片
+				Toast.makeText(context,"请选择图片",Toast.LENGTH_SHORT).show();
+			}
 		}
 		String[] tempImgs  =new String[uplodImgs.size()];
 		int i=0;
@@ -309,7 +316,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 				Intent intent1 = new Intent(context, ShopImageViewBrower.class);
 				//把网络数据传输过去
 				intent1.putStringArrayListExtra("imageList", webImgs);
-				intent1.putExtra("type", 5);
+				intent1.putExtra("type", 6);
 				startActivityForResult(intent1, 5);
 				break;
 		}
@@ -368,9 +375,15 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 						if (!s.startsWith("http")) {
 							//这边是子线程上传，所以不会立即完成
 							uploadImg(context, s);
-							subThreadCount = 0;
 							subThreadCount++;
 						}
+					}
+					if (subThreadCount == 0){//说明都是网络图片
+						//刷新数据
+						webImgs = uplodImgs;
+						imageLoader.displayImage(uplodImgs.get(0), shopImageView);
+						tv_img_num.setText("相册有" + uplodImgs.size() + "张图片");
+						Toast.makeText(context, "修改完成", Toast.LENGTH_SHORT).show();	
 					}
 			}
 
@@ -431,6 +444,22 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 
 		});
 
+	}
 
+	@Override
+	public void onBackPressed() {
+		if (firtTime!=0 && System.currentTimeMillis()-firtTime>500){
+		finish();	
+		}
+		if (!TextUtils.isEmpty(ed_title_shop.getText().toString().trim())){
+			Toast.makeText(context,"退出后正在编辑的内容将不会保存，确定请再次点击返回",Toast.LENGTH_SHORT).show();
+			firtTime = System.currentTimeMillis();
+			return;
+		}
+		
+		
+		
+		
+		
 	}
 }

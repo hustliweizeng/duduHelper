@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 
 
 

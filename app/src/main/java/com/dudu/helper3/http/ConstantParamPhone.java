@@ -193,6 +193,7 @@ public class ConstantParamPhone
    public static final String  GET_REDBAG_DETAILS ="/api/app/custom/red_packet/{id}";//获取红包详情
    public static final String  SEND_MESSAGE ="/api/app/custom/message";//发送消息
     public static final String  GET_USER_LIST ="/api/app/custom/members";//获取用户列表
+    public static final String  GET_PAYORDER = "/api/app/custom/buy";//获取预支付订单
    
 
 

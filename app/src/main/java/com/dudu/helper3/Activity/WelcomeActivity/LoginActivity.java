@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.MainActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.Utils.Util;
@@ -58,7 +58,7 @@ public class LoginActivity extends BaseActivity
 		initView();
 		mContext = this;
 		MobclickAgent.openActivityDurationTrack(false);
-		MobclickAgent.updateOnlineConfig(this);
+		//MobclickAgent.updateOnlineConfig(this);
 	}
 	@Override
 	public void onResume() {

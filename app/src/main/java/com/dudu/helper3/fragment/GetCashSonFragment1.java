@@ -5,7 +5,7 @@ import org.apache.http.Header;
 import com.dudu.helper3.Activity.CashHistoryActivity.GetInComeActivity;
 import com.dudu.helper3.Activity.MainActivity;
 import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.adapter.GetCashAdapter;
 import com.dudu.helper3.bean.GetCashBean;
 import com.dudu.helper3.http.ConstantParamPhone;

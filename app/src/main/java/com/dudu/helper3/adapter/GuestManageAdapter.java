@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.javabean.GuestListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

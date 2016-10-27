@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.Activity.MyInfoActivity.ShopSettingActivity;
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.fragment.CopyOfOrderFragment;

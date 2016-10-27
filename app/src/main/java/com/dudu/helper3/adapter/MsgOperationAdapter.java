@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 
 /**
  * Created by lwz on 2016/8/22.

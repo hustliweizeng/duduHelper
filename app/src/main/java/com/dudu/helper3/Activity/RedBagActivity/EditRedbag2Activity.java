@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,10 +26,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.helper3.Activity.ShopImageViewBrower;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.Utils.ViewUtils;
@@ -286,6 +288,14 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		ll_plus = (LinearLayout) findViewById(R.id.ll_plus);
 		ed_rule = (EditText) findViewById(R.id.ed_rule);
 		ed_life = (EditText) findViewById(R.id.ed_life);
+		ed_life.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				ed_high.setText(v.getText()+"天");
+				
+				return true;
+			}
+		});
 		iv_logo = (ImageView) findViewById(R.id.iv_logo);
 		iv_pic = (ImageView) findViewById(R.id.iv_pic);
 		iv_pic.setOnClickListener(this);

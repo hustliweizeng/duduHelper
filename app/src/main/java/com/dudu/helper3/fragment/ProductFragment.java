@@ -1,7 +1,7 @@
 package com.dudu.helper3.fragment;
 
 import com.dudu.helper3.Activity.BigBandActivity.shopProductListActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.umeng.analytics.MobclickAgent;
 
 import android.content.Intent;

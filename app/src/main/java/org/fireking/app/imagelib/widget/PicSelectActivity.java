@@ -16,7 +16,7 @@ import org.fireking.app.imagelib.tools.NativeImageLoader.NativeImageCallBack;
 import org.fireking.app.imagelib.view.MyImageView;
 import org.fireking.app.imagelib.view.MyImageView.OnMeasureListener;
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.application.DuduHelperApplication;
 
 

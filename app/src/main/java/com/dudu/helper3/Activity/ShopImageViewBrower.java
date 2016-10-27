@@ -19,8 +19,9 @@ import com.dudu.helper3.Activity.BigBandActivity.ShopProductAddActivity;
 import com.dudu.helper3.Activity.DiscountCardActivity.ShopDiscoutAddActivity;
 import com.dudu.helper3.Activity.MyInfoActivity.ShopInfoEditActivity;
 import com.dudu.helper3.Activity.RedBagActivity.EditRedbag2Activity;
+import com.dudu.helper3.Activity.ShopManageActivity.ShopAddActivity;
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.ShopImageAdapter;
@@ -57,18 +58,7 @@ public class ShopImageViewBrower extends BaseActivity
 	private int sourceType;
 	private String picPath;
 
-	OnDelListener delListener;
-    public interface OnDelListener{
-		public void  Ondel();
-	}
-	public  void setOnDelListener(OnDelListener delListener){
-		this.delListener = delListener;
-	}
-	//获取当前集合数据
-	public ArrayList<String> getImgeList(){
-		return shopImageAdapter.getImageList();
-	}
-	@Override
+
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -294,7 +284,11 @@ public class ShopImageViewBrower extends BaseActivity
 		if (sourceType == 5){
 			//相册
 			intent = new Intent(context,ShopInfoEditActivity.class);
+		}
+		if (sourceType == 6){
+			intent = new Intent(context,ShopAddActivity.class);
 			LogUtil.d("uplodImgs1",uplodImgs.size()+"");
+
 		}
 		if (sourceType ==1){
 			//大牌抢购添加

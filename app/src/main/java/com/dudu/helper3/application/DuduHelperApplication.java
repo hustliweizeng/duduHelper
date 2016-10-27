@@ -5,7 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;

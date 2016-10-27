@@ -13,7 +13,7 @@ import org.fireking.app.imagelib.entity.ImageBean;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.helper3.Activity.BigBandActivity.ProductInfoEditActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.adapter.SendShaiShaiAdapter;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.bean.CouponDetailBean;

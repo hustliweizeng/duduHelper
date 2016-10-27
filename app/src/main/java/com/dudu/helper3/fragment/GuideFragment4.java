@@ -2,7 +2,7 @@ package com.dudu.helper3.fragment;
 
 
 import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -27,7 +27,7 @@ import com.dudu.helper3.Activity.GetMoneyActivity.ShopDiscountScanSucessActivity
 import com.dudu.helper3.Activity.GetMoneyActivity.ShopGetCashCodeActivity;
 import com.dudu.helper3.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;

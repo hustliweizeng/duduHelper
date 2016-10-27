@@ -1,7 +1,7 @@
 package com.dudu.helper3.fragment;
 
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

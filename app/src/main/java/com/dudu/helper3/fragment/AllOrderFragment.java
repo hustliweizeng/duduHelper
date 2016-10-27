@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.dudu.helper3.Activity.MainActivity;
 import com.dudu.helper3.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.adapter.ShopOrderAdapter;
 import com.dudu.helper3.bean.OrderBean;
 import com.dudu.helper3.http.ConstantParamPhone;

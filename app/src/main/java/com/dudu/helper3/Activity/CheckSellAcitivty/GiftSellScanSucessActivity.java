@@ -5,7 +5,7 @@ import org.apache.http.Header;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.bean.CashSellBean;
 import com.dudu.helper3.bean.ResponsBean;

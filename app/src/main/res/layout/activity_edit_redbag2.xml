@@ -437,8 +437,10 @@
                         android:inputType="numberDecimal"
                         android:gravity="right"
                         android:textSize="16dp"
+                        android:textColor="@color/text_dark_color"
                         android:layout_alignParentRight="true"
                         />
+                    
                   
 
                 </RelativeLayout>

@@ -18,7 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.adapter.ShopListAdapter;
 import com.dudu.helper3.bean.GetHongBaoHistBean;
 import com.dudu.helper3.http.ConstantParamPhone;

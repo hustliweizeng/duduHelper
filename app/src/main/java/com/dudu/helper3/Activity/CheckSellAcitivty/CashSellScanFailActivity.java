@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.example.qr_codescan.MipcaActivityCapture;
 
 public class CashSellScanFailActivity extends BaseActivity 

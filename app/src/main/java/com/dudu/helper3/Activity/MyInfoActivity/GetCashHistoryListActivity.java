@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.adapter.GetCashHistoryAdapter;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.bean.CashHistoryBean;

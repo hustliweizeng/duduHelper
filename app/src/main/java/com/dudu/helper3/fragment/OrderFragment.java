@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dudu.helper3.Activity.OrderActivity.SearchActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.adapter.FragmentAdapter;
 import com.umeng.analytics.MobclickAgent;
 

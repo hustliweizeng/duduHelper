@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 
 /**
  * @author

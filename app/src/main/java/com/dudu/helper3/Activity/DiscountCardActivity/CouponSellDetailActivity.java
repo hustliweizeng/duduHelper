@@ -4,7 +4,7 @@ import org.apache.http.Header;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.bean.CouponHistoryBean;
 import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.http.ConstantParamPhone;

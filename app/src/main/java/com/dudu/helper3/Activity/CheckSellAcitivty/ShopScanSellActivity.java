@@ -1,7 +1,7 @@
 package com.dudu.helper3.Activity.CheckSellAcitivty;
 
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.widget.ConfirmView;
 import com.dudu.helper3.widget.DilatingDotsProgressBar;
 

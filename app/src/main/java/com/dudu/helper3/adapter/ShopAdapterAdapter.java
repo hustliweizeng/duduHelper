@@ -3,7 +3,7 @@ package com.dudu.helper3.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.javabean.ShopListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;

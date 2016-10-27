@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.javabean.CashHistoryBean;
@@ -103,7 +103,7 @@ public class MoneyHistoryAdapter extends BaseAdapter {
 
         //2.设置其他内容（positoin是绝对位置，但是这里需要在集合中的相对位置）=转换为相对位置
         holder.tv_subject_money_history.setText(orders.get(position).getSubject());
-        holder.tv_body_money_history.setText("-"+orders.get(position).getBody());
+       // holder.tv_body_money_history.setText("-"+orders.get(position).getBody());
         holder.tv_price_item_money_hishory.setText("+￥"+orders.get(position).getFee());
         //设置时间
         LogUtil.d("time",orders.get(position).getTime());

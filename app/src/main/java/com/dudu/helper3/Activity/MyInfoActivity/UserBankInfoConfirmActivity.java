@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.bean.ResponsBean;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.widget.ColorDialog;

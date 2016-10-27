@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.dudu.helper3.Activity.CheckSellAcitivty.CheckSaleDetailActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.CashHistoryActivity.ShopMoneyRecordListActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.widget.ColorDialog;

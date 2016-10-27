@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.adapter.GuestListCheckAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
@@ -45,7 +45,6 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 		super.onCreate(arg0);
 		LogUtil.d("res","success");
 		setContentView(R.layout.activity_guest_select);
-		initHeadView("选择客户", true, false, 0);
 		adapter = new GuestListCheckAdapter(this);
 		//设置客户列表,从静态变量那里直接获取
 
@@ -129,16 +128,27 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 				//全选
 				adapter.addAll();
 				break;
+			case R.id.backButton:
 			case  R.id.tv_submit:
 				//确定按钮
 				Intent intent = new Intent();
 				intent.putCharSequenceArrayListExtra("list",adapter.getList());
 				intent.putCharSequenceArrayListExtra("ids",adapter.getIds());
 				setResult(2,intent);
-				//在onpaause方法中返回数据
 				finish();
 				break;
 
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		Intent intent = new Intent();
+		intent.putCharSequenceArrayListExtra("list",adapter.getList());
+		intent.putCharSequenceArrayListExtra("ids",adapter.getIds());
+		setResult(2,intent);
+		finish();
+		
 	}
 }

@@ -16,11 +16,10 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.R;
+import com.dudu.helper3.R;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.widget.SystemBarTintManager;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.analytics.onlineconfig.UmengOnlineConfigureListener;
 import com.umeng.message.PushAgent;
 import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
@@ -71,7 +70,7 @@ public class BaseActivity extends FragmentActivity
 
 		//umeng_token = getSharedPreferences("umengtoken",MODE_PRIVATE).getString("token","");
 		DuduHelperApplication.getInstance().addActivity(this);
-		MobclickAgent.updateOnlineConfig(this);//获取强制更新在线参数
+		/*MobclickAgent.updateOnlineConfig(this);//获取强制更新在线参数
 		FORCE_UPDATE=MobclickAgent.getConfigParams(this, "force_update" );
 		MobclickAgent.setOnlineConfigureListener(new UmengOnlineConfigureListener(){
 		  @Override
@@ -80,7 +79,7 @@ public class BaseActivity extends FragmentActivity
 			  JSONObject haha=data;
 			  System.out.println(haha);
 		  }
-		});
+		});*/
 		/**
 		 * 设置友盟更新
 		 */
