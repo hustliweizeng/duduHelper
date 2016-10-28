@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -183,9 +186,25 @@ public class ShopUserBankInfoActivity extends BaseActivity
 		TextView bindPhoneText = (TextView) view.findViewById(R.id.bindPhoneText);
 		bindPhoneText.setText(sp.getString("mobile","请先绑定手机号"));
 		final EditText messageCodeEditText = (EditText) view.findViewById(R.id.messageCodeEditText);
-        popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);
 		//提交确认解除绑定
-		Button submitPhoneBtn = (Button) view.findViewById(R.id.submitPhoneBtn);
+		final Button submitPhoneBtn = (Button) view.findViewById(R.id.submitPhoneBtn);
+		messageCodeEditText.addTextChangedListener(new TextWatcher() {//监听编辑框的变化
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				submitPhoneBtn.setBackgroundColor(getResources().getColor(R.color.btn_normal_color));
+				submitPhoneBtn.setTextColor(getResources().getColor(R.color.text_white_color));
+			}
+		});
+        popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);
+		
 		submitPhoneBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {

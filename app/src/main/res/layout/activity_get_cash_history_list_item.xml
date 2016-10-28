@@ -23,7 +23,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
-                android:text="提现成功"
                 android:textColor="@color/text_color_dark"
                 android:textSize="16sp" />
 
@@ -33,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="4dp"
-                android:text="2015.08.25 18:20"
                 android:textColor="@color/text_color_light"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -52,7 +50,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="14dp"
-            android:text="-18.00"
             android:textColor="@color/text_color_dark"
             android:textSize="16sp" />
     </RelativeLayout>

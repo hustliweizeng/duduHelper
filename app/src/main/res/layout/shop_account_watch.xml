@@ -279,6 +279,7 @@
                 android:id="@+id/lv_datas"
                 android:background="@color/bg_white_color"
                 android:layout_width="match_parent"
+                android:divider="@null"
                 android:layout_height="160dp"
                 >
                 

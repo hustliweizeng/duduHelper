@@ -291,7 +291,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 	                    };
 	                    requestStatus();
 	                    String isshopuser = infoBean.getUser().getIsshopuser();
-	                    boolean isManager = true;
+	                    boolean isManager = false;
 	                    if ("1".equals(isshopuser)){
 		                    isManager = false;
 		                    LogUtil.d("manager","false");

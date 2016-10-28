@@ -72,24 +72,8 @@ public class MessageCenterFragment extends Fragment implements OnClickListener
 		iv_operation_messagelist = (ImageView) MessageCenterFragmentView.findViewById(R.id.iv_operation_messagelist);
 		iv_order_messagelist = (ImageView) MessageCenterFragmentView.findViewById(R.id.iv_order_messagelist);
 
-		setMsgRemind(8);
+		//setMsgRemind(8);//设置消息条目
 
-
-
-
-
-		//在fragment中不能直接导R资源
-//		discountSellButton=(LinearLayout) SellFragmentView.findViewById(R.id.discountSellButton);
-//		discountSellButton.setOnClickListener(new OnClickListener() 
-//		{
-//			@Override
-//			public void onClick(View v) 
-//			{
-//				// TODO Auto-generated method stub
-//				getFirstData();
-//				
-//			}
-//		});
 	}
 
 	/**
@@ -137,70 +121,5 @@ public class MessageCenterFragment extends Fragment implements OnClickListener
 		}
 		startActivity(intent);
 	}
-	//获取五折卡前缀
-//	private void getFirstData() 
-//	{
-//		// TODO Auto-generated method stub
-//		ColorDialog.showRoundProcessDialog(getActivity(),R.layout.loading_process_dialog_color);
-//		RequestParams params = new RequestParams();
-//		params.add("token", ((MainActivity)getActivity()).share.getString("token", ""));
-//		params.add("version", ConstantParamPhone.VERSION);
-//		params.setContentEncoding("UTF-8");
-//		AsyncHttpClient client = new AsyncHttpClient();
-//		//保存cookie，自动保存到了shareprefercece  
-//        PersistentCookieStore myCookieStore = new PersistentCookieStore(getActivity());    
-//        client.setCookieStore(myCookieStore); 
-//        client.post(ConstantParamPhone.IP+ConstantParamPhone.GET_FIRST_CARD, params,new TextHttpResponseHandler(){
-//
-//			@Override
-//			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-//			{
-//				Toast.makeText(getActivity(), "网络不给力呀", Toast.LENGTH_LONG).show();
-//			}
-//			@Override
-//			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-//			{
-//				GetFirstCardBean getFirstCardBean=new Gson().fromJson(arg2, GetFirstCardBean.class);
-//				if(getFirstCardBean.getStatus().equals("-1006"))
-//				{
-//					MyDialog.showDialog(getActivity(), "该账号已在其他手机登录，是否重新登录", true, true, "取消", "确定",new OnClickListener() {
-//						
-//						@Override
-//						public void onClick(View v) {
-//							// TODO Auto-generated method stub
-//							MyDialog.cancel();
-//						}
-//					}, new OnClickListener() {
-//						
-//						@Override
-//						public void onClick(View v) {
-//							// TODO Auto-generated method stub
-//							Intent intent=new Intent(getActivity(),LoginActivity.class);
-//							startActivity(intent);
-//						}
-//					});
-//				}
-//				if(getFirstCardBean.getStatus().equals("0"))
-//				{
-//					if(!TextUtils.isEmpty(getFirstCardBean.getData()))
-//					{
-//						//discountFirstNumTextView.setText();
-//						Intent intent=new Intent(getActivity(),DiscountSellActivity.class);
-//						intent.putExtra("first", getFirstCardBean.getData());
-//						startActivity(intent);
-//					}
-//				}
-//				if(getFirstCardBean.getStatus().equals("-1"))
-//				{
-//					Toast.makeText(getActivity(), getFirstCardBean.getInfo().split(" ")[1], Toast.LENGTH_SHORT).show();
-//				}			
-//			}
-//			@Override
-//			public void onFinish() 
-//			{
-//				// TODO Auto-generated method stub
-//				ColorDialog.dissmissProcessDialog();
-//			}
-//		});
-//	}
+
 }

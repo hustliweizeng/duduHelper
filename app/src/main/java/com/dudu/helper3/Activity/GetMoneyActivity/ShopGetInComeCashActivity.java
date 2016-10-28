@@ -49,7 +49,7 @@ public class ShopGetInComeCashActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_get_in_come_cash);
-		initHeadView("收款", true, true, R.drawable.icon_historical);
+		initHeadView("核销", true, true, R.drawable.icon_historical);
 		if(getIntent().getStringExtra("action")!=null)
 		{
 			action = getIntent().getStringExtra("action");

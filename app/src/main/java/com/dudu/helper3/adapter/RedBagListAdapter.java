@@ -132,7 +132,7 @@ public class RedBagListAdapter extends BaseAdapter {
 		long time = Util.Data2Unix(data.getTime_end());
 		if (time <System.currentTimeMillis()){
 			//已过期
-			holder.tv_status.setText("已截至");
+			holder.tv_status.setText("已截止");
 			holder.tv_status.setTextColor(context.getResources().getColor(R.color.text_color_light));
 		}else {
 			holder.tv_status.setText("发放中");

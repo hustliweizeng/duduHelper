@@ -19,13 +19,12 @@ public class MsgOperationAdapter  extends BaseAdapter{
 	}
 	@Override
 	public int getCount() {
-		return 3;
+		return 0;
 	}
 	@Override
 	public View getView(int i, View converView, ViewGroup parent) {
 		if (converView == null){
 			converView = View.inflate(context,R.layout.item_msglist,null);
-
 		}
 
 		return converView;

@@ -9,18 +9,22 @@ import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
+import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.adapter.GetCashHistoryAdapter;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.bean.CashHistoryBean;
 import com.dudu.helper3.bean.CashHistoryDataBean;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
+import com.dudu.helper3.javabean.GetCashHistoryBean;
 import com.dudu.helper3.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,20 +82,27 @@ public class GetCashHistoryListActivity extends BaseActivity {
 				Toast.makeText(GetCashHistoryListActivity.this, "网络不给力呀", Toast.LENGTH_LONG).show();
 			}
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) {
-				CashHistoryBean cashHistoryBean = new Gson().fromJson(arg2, CashHistoryBean.class);
-				if ("SUCCESS".equalsIgnoreCase(cashHistoryBean.getCode())){
-					//请求数据成功
-					CashHistoryDataBean bean = new CashHistoryDataBean();
-					bean.setMoney("300");
-					bean.setTime(System.currentTimeMillis()+"");
-					bean.setStatus("1");
-					//cashHistoryBean.getData().add(bean);
-					List<CashHistoryDataBean> hisory = new ArrayList<CashHistoryDataBean>();
-					hisory.add(bean);
-					getCashHistoryAdapter.addAll(hisory);
+			public void onSuccess(int arg0, Header[] arg1, String s) {
+				LogUtil.d("cash",s);
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						GetCashHistoryBean cashHistoryBean = new Gson().fromJson(s, GetCashHistoryBean.class);
+						if (cashHistoryBean.getList()!=null &&cashHistoryBean.getList().size()>0){
+							getCashHistoryAdapter.addAll(cashHistoryBean.getList());
+						}
 
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
+				
 
 			}
 			@Override

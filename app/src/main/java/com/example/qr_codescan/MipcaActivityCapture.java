@@ -148,7 +148,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		{
 			moneyText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 0);
 			scanText.setText("请将用户提供的兑换码置入框内即可完成核销");
-			btnText.setText("兑换码收款");
+			btnText.setText("兑换码核销");
 			inputcodeBtn.setVisibility(View.GONE);
 			btnIconImg.setImageResource(R.drawable.icon_tiaoxingma);
 		}

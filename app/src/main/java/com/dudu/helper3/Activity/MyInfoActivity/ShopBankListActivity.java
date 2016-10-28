@@ -250,6 +250,8 @@ public class ShopBankListActivity extends BaseActivity
 	//显示下来提现窗口
 	private void getCashWindow()
 	{
+		//屏蔽标题栏的按钮
+		initHeadView("提现", false, false, 0);
 		//设置动画效果
 		AlphaAnimation animation = new AlphaAnimation((float)0, (float)1.0);
 		animation.setDuration(500); //设置持续时间0.5秒
@@ -353,6 +355,8 @@ public class ShopBankListActivity extends BaseActivity
 			{
 				mWaveHelper.cancel();
 				popupWindow.dismiss();
+				//屏蔽标题栏的按钮
+				initHeadView("提现", true, true, 0);
 				AlphaAnimation animation = new AlphaAnimation((float)1, (float)0);
 				animation.setDuration(500); //设置持续时间5秒
 				animation.setAnimationListener(new AnimationListener() 

@@ -41,7 +41,6 @@ public class DiscountSellActivity extends BaseActivity
 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		
 		discountNumEditText=(EditText) this.findViewById(R.id.discountNumEditText);
 		discountSellbutton=(Button) this.findViewById(R.id.discountSellbutton);
@@ -56,8 +55,6 @@ public class DiscountSellActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
-				// TODO Auto-generated method stub
 				if(TextUtils.isEmpty(discountNumEditText.getText().toString())||discountNumEditText.getText().toString().trim().length()<8)
 				{
 					Toast.makeText(DiscountSellActivity.this, "请输入卡号后八位数字", Toast.LENGTH_SHORT).show();
@@ -70,7 +67,6 @@ public class DiscountSellActivity extends BaseActivity
 	}
 	private void initData() 
 	{
-		ColorDialog.showRoundProcessDialog(DiscountSellActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("code", discountNumEditText.getText().toString().trim());
         HttpUtils.getConnection(context,params,ConstantParamPhone.VERTIFY_CARD, "post",new TextHttpResponseHandler(){

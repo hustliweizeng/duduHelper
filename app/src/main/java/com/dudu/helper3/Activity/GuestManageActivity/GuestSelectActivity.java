@@ -114,7 +114,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 			@Override
 			public void onItemClick(View view, int position) {
 				//点击
-				Toast.makeText(context,"点击了"+position,Toast.LENGTH_SHORT).show();
+				//Toast.makeText(context,"点击了"+position,Toast.LENGTH_SHORT).show();
 			}
 		});
 		recycleview_list.setLayoutManager(new LinearLayoutManager(this));

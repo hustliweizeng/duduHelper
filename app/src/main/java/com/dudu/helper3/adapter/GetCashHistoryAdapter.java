@@ -6,28 +6,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.bean.CashHistoryDataBean;
+import com.dudu.helper3.javabean.GetCashHistoryBean;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GetCashHistoryAdapter extends BaseAdapter 
 {
 	private ViewHolder viewHolder;
 	private Context context;
-	private List<CashHistoryDataBean> list=new ArrayList<CashHistoryDataBean>();
+	private List<GetCashHistoryBean.ListBean> list=new ArrayList<>();
 	
 	public GetCashHistoryAdapter(Context context) 
 	{
 		this.context=context;
 	}
-    public void addAll(List<CashHistoryDataBean> list)
+    public void addAll(List<GetCashHistoryBean.ListBean> list)
     {
-    	this.list.addAll(this.list.size(), list);
-    	notifyDataSetChanged();
+	    if(list!=null &&list.size()>0){
+		    this.list.addAll(this.list.size(), list);
+		    notifyDataSetChanged();
+	    }else {
+		    Toast.makeText(context,"没有数据",Toast.LENGTH_SHORT).show();
+	    }
     }
 	@Override
 	public int getCount() {
@@ -77,7 +85,8 @@ public class GetCashHistoryAdapter extends BaseAdapter
 			viewHolder.getCashMoneyTextView.setText("+"+list.get(position).getMoney());
 			viewHolder.getCashActionTextView.setTextColor(viewHolder.getCashActionTextView.getResources().getColor(R.color.text_color_yellow));
 		}
-		viewHolder.getCashTiemTextView.setText(Util.DataConVert(list.get(position).getTime()));
+		String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.parseLong(list.get(position).getTime())*1000));
+		viewHolder.getCashTiemTextView.setText(format);
 		return convertView;
 	}
 	private class ViewHolder

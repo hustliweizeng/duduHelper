@@ -6,7 +6,7 @@ public class CashHistoryBean
 {
 	private String code;
 	private String msg;
-	private List<CashHistoryDataBean> data;
+	private List<CashHistoryDataBean> list;
 	public String getCode() {
 		return code;
 	}
@@ -19,11 +19,11 @@ public class CashHistoryBean
 	public void setInfo(String info) {
 		this.msg = info;
 	}
-	public List<CashHistoryDataBean> getData() {
-		return data;
+	public List<CashHistoryDataBean> getList() {
+		return list;
 	}
-	public void setData(List<CashHistoryDataBean> data) {
-		this.data = data;
+	public void setList(List<CashHistoryDataBean> data) {
+		this.list = data;
 	}
 	
 
