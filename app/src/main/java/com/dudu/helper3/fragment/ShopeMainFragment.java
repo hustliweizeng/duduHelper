@@ -149,8 +149,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			    return;
 			case R.id.wuzheBtn:
 				//五折验证
-				intent =new Intent(getActivity(),DiscountSellActivity.class);
-				intent.putExtra("action", "wuzhe");
+				requestStatus();
 			    break;
 			case R.id.memberBtn:
 				//员工管理
@@ -190,9 +189,37 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		}
 		startActivity(intent);
 	}
-	
 
+	private void requestStatus() {
+		HttpUtils.getConnection(getActivity(), null, ConstantParamPhone.CHECK_CARD, "post", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(getActivity(),"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
 
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						intent =new Intent(getActivity(),DiscountSellActivity.class);
+						intent.putExtra("action", "wuzhe");
+
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+						return;
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 
 }

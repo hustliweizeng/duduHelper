@@ -180,6 +180,7 @@ public class ConstantParamPhone
     public static final String GET_SHOPABLE ="/api/app/shop_user/shops";//获取可选店铺
  
   //五折卡验证
+    public static final String  CHECK_CARD = "/api/app/half/index";//是否开通
    public static final String VERTIFY_CARD ="/api/app/half/valCode";//验证五折卡
    public static final String USE_CARD ="/api/app/half/useCard";//使用五折卡
   //统计

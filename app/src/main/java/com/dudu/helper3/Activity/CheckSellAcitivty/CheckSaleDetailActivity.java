@@ -48,7 +48,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 	private ImageView iv_check_status_check_sale;
 	private LinearLayout ll_content_check_sale;
 	private String vertifyCode;
-	private CheckTicketBean.CheckData info;
+	private CheckTicketBean info;
 	private LinearLayout ll_all;
 
 	@Override
@@ -68,7 +68,6 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
 				try {
@@ -78,7 +77,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 						//数据请求成功,肯定有info数据
 						CheckTicketBean  data = new Gson().fromJson(s,CheckTicketBean.class);
 						//显示数据
-						info = data.getData();
+						info = data;
 						certifyTicket(info);
 
 					}else {
@@ -89,7 +88,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 						ticketStatus =4;
 						btn_subimit.setText("重新输入");
 						iv_check_status_check_sale.setImageResource(R.drawable.icon_fail);
-						tv_check_status_check_sale.setText("该核销码不存在");
+						tv_check_status_check_sale.setText(msg);
 						tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.erro_status));
 						ll_all.setVisibility(View.VISIBLE);
 						//隐藏下面的所有内容
@@ -131,6 +130,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 			case CHECK_SUCCESS:
 				LogUtil.d("status","核销成功");
 				btn_subimit.setText("继续核销");
+				Toast.makeText(context,"核销成功!",Toast.LENGTH_SHORT).show();
 				tv_check_status_check_sale.setText("该优惠券可核销");
 				tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.text_remind));
 				
@@ -176,8 +176,11 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 	public static final int CHECKED = 3;//已经核销过了
 	public static final int NOT_EXIST = 4;//不存在
 
-	private void certifyTicket(CheckTicketBean.CheckData data) {
-		long expiredTime = Long.parseLong(data.getExpired_time());
+	private void certifyTicket(CheckTicketBean data) {
+		long expiredTime = 0;
+		if (data.getExpired_time()!=null){
+			expiredTime= Long.parseLong(data.getExpired_time());
+		}
 		String usedTime = data.getUsed_time();
 		//判断是否过期
 		if (expiredTime !=0){

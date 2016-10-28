@@ -25,7 +25,7 @@
             android:background="@drawable/bg_up_check_sale"
             android:layout_marginLeft="17dp"
             android:layout_marginRight="17dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="25dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             >
@@ -39,10 +39,11 @@
             <TextView
                 android:id="@+id/tv_check_status_check_sale"
                 android:layout_marginTop="13dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:textColor="@color/text_remind"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 android:layout_marginBottom="20dp"
                 android:text="该优惠券核销成功"/>
            
@@ -68,7 +69,7 @@
             android:layout_height="14dp"
             android:src="@drawable/icon_xuxian"/>
         <RelativeLayout
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -90,7 +91,7 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -112,7 +113,7 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -134,7 +135,7 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -156,7 +157,7 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -178,7 +179,7 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -200,7 +201,7 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -222,7 +223,7 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -244,7 +245,7 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -266,6 +267,7 @@
 
         </RelativeLayout>
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -273,19 +275,16 @@
         <Button
             android:id="@+id/btn_subimit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:text="继续核销"
             android:textColor="@color/bg_white_color"
             android:background="@color/text_remind"
-            android:paddingTop="17dp"
-            android:paddingBottom="17dp"
             />
         
     </RelativeLayout>
-   
-    
+
 
 </LinearLayout>
