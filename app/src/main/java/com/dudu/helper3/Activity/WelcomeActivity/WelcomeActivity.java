@@ -321,7 +321,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		                 .putString("totalOrder",infoBean.getTotalstat().getOrder())
 		                  .putString("totalIncome",infoBean.getTotalstat().getIncome()) 
 		                  .putString("totalTrade",infoBean.getTotalstat().getTrade()) 
-		                  .putString("isManager",isshopuser)      
+		                  .putBoolean("isManager",isManager)      
 		                  //在后台处理
                         .apply();
                         LogUtil.d("welcome",s);

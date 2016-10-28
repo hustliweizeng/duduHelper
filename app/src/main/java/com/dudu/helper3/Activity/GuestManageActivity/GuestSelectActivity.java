@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +63,6 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
 				LogUtil.d("res",s);
@@ -92,6 +93,8 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 		tv_select_all = (TextView) findViewById(R.id.tv_select_all);
 		tv_select_all.setOnClickListener(this);
 		tv_submit = (TextView) findViewById(R.id.tv_submit);
+		ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
+		backButton.setOnClickListener(this);
 		tv_submit.setOnClickListener(this);
 		ArrayList<CharSequence> checked = getIntent().getCharSequenceArrayListExtra("checked");
 		ArrayList<CharSequence> checkedIdS = getIntent().getCharSequenceArrayListExtra("checked_id");
@@ -130,6 +133,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 				break;
 			case R.id.backButton:
 				onBackPressed();
+				Toast.makeText(context,"点击了返回按钮",Toast.LENGTH_SHORT).show();
 				break;
 			case  R.id.tv_submit:
 				//确定按钮
@@ -142,14 +146,13 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 
 		}
 	}
-
+	//返回按钮
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent();
 		intent.putCharSequenceArrayListExtra("list",adapter.getList());
 		intent.putCharSequenceArrayListExtra("ids",adapter.getIds());
 		setResult(2,intent);
-		finish();
-		
+		super.onBackPressed();
 	}
 }
