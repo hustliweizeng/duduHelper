@@ -14,7 +14,9 @@ import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
+import com.dudu.helper3.javabean.FiveDiscountBean;
 import com.dudu.helper3.widget.ColorDialog;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -83,10 +85,14 @@ public class DiscountSellActivity extends BaseActivity
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
-						//数据请求成功
-						Toast.makeText(context,"验证成功",Toast.LENGTH_SHORT).show();
-						startActivity(new Intent(context,DiscountSellActivity.class));
+						FiveDiscountBean fiveDiscountBean = new Gson().fromJson(arg2, FiveDiscountBean.class);
 
+						//数据请求成功,验证成功以后使用五折卡页面
+						//Toast.makeText(context,"验证成功",Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent(context, DiscountSellResultActivity.class);
+						intent.putExtra("data",fiveDiscountBean);
+						intent.putExtra("id",discountNumEditText.getText().toString().trim());
+						startActivity(intent);
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");

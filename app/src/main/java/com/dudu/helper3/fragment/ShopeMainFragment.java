@@ -150,7 +150,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			case R.id.wuzheBtn:
 				//五折验证
 				requestStatus();
-			    break;
+				return;
 			case R.id.memberBtn:
 				//员工管理
 				if (isManager){
@@ -207,7 +207,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 						//数据请求成功
 						intent =new Intent(getActivity(),DiscountSellActivity.class);
 						intent.putExtra("action", "wuzhe");
-
+						startActivity(intent);
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");

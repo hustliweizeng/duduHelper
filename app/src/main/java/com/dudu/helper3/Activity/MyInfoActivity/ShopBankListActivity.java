@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
+import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.adapter.BankListAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
@@ -73,6 +75,7 @@ public class ShopBankListActivity extends BaseActivity
 	private EditText getcashmoneyedit;
 	private BankCardListBean bean1;
 	private Button loginbutton;
+	private ImageButton backButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -133,6 +136,7 @@ public class ShopBankListActivity extends BaseActivity
 		memberAdapter=new BankListAdapter(this);
 		backgroundLinearlayout = (LinearLayout) this.findViewById(R.id.backgroundLinearlayout);
 		memberListswipeLayout=(SwipeRefreshLayout) this.findViewById(R.id.memberListswipeLayout);
+		backButton = (ImageButton) findViewById(R.id.backButton);
 		//下拉刷新事件
 		memberListswipeLayout.setOnRefreshListener(new OnRefreshListener() 
 		{
@@ -353,10 +357,11 @@ public class ShopBankListActivity extends BaseActivity
 			@Override
 			public void onClick(View arg0) 
 			{
+				initHeadView("提现", true, true, image);
+				LogUtil.d("tag","title");
 				mWaveHelper.cancel();
 				popupWindow.dismiss();
 				//屏蔽标题栏的按钮
-				initHeadView("提现", true, true, 0);
 				AlphaAnimation animation = new AlphaAnimation((float)1, (float)0);
 				animation.setDuration(500); //设置持续时间5秒
 				animation.setAnimationListener(new AnimationListener() 
@@ -384,7 +389,9 @@ public class ShopBankListActivity extends BaseActivity
           @Override
           public void onDismiss() 
           {
-        	  
+			  initHeadView("提现",true,true,image);
+			  backButton.setVisibility(View.VISIBLE);
+			  LogUtil.d("tag","title");
           }
         });
 	}

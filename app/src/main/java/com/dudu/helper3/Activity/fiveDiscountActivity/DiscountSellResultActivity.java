@@ -11,6 +11,7 @@ import com.dudu.helper3.bean.DiscountDataBean;
 import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
+import com.dudu.helper3.javabean.FiveDiscountBean;
 import com.dudu.helper3.widget.ColorDialog;
 import com.dudu.helper3.widget.MyDialog;
 import com.loopj.android.http.RequestParams;
@@ -25,9 +26,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
+
 public class DiscountSellResultActivity extends BaseActivity 
 {
-	private DiscountDataBean dataBean;
+	private FiveDiscountBean dataBean;
 	private TextView discountSellStatus;
 	private TextView discountSellresultText;
 	private TextView discountNumTextView;
@@ -40,6 +43,8 @@ public class DiscountSellResultActivity extends BaseActivity
 	private Button discountSubmitbutton;
 	private LinearLayout memberinfoline;
 	private LinearLayout memberinfoContentline;
+	private FiveDiscountBean data;
+	private String id;
 	//private String status;
 
 	@Override
@@ -48,7 +53,8 @@ public class DiscountSellResultActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_discount_sell_result);
 		initHeadView("五折卡验证", true, false, 0);
-		DuduHelperApplication.getInstance().addActivity(this);
+		data = (FiveDiscountBean) getIntent().getSerializableExtra("data");
+		id = getIntent().getStringExtra("id");
 		initView();
 	}
 
@@ -67,23 +73,23 @@ public class DiscountSellResultActivity extends BaseActivity
 		discountPhoneTextView=(TextView) this.findViewById(R.id.discountPhoneTextView);
 		discountVIPExperTimeTextView=(TextView) this.findViewById(R.id.discountVIPExperTimeTextView);
 		// TODO Auto-generated method stub
-		if(getIntent().getIntExtra("status",1)==0)
-		{
+		if (data.getCode().equalsIgnoreCase("SUCCESS")){
+
 			discountSellStatus.setText("验证通过");
 			discountSellresultText.setText("会员身份确认，请放心使用");
-			dataBean=(DiscountDataBean) getIntent().getSerializableExtra("data");
+			dataBean=(FiveDiscountBean) getIntent().getSerializableExtra("data");
 			initData();
-		}
-		else
+		}else
 		{
 			discountSellStatus.setText("验证失败");
 			discountSubmitbutton.setText("重新验证");
 			memberinfoline.setVisibility(View.GONE);
 			memberinfoContentline.setVisibility(View.GONE);
-			if(!TextUtils.isEmpty(getIntent().getStringExtra("info")))
+			discountSubmitbutton.setText("重新输入");
+			/*if(!TextUtils.isEmpty(getIntent().getStringExtra("info")))
 			{
 				discountSellresultText.setText(getIntent().getStringExtra("info").split(" ")[1]);
-			}
+			}*/
 		}
 		discountSubmitbutton.setOnClickListener(new OnClickListener() 
 		{
@@ -91,16 +97,14 @@ public class DiscountSellResultActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				if(getIntent().getIntExtra("status",1)==0)
+				if(data.getCode().equalsIgnoreCase("SUCCESS"))
 				{
-				// TODO Auto-generated method stub
-					MyDialog.showDialog(DiscountSellResultActivity.this, "每张“五折卡”只可在指定商家单日、单次使用，当日不可重读使用。确定要用五折卡么？", true, true, "取消", "使用", new OnClickListener() 
+					MyDialog.showDialog(DiscountSellResultActivity.this,
+							"每张“五折卡”只可在指定商家单日、单次使用，当日不可重读使用。确定要用五折卡么？", true, true, "取消", "使用", new OnClickListener()
 					{
-						
 						@Override
 						public void onClick(View v) 
 						{
-							// TODO Auto-generated method stub
 							MyDialog.cancel();
 						}
 					},
@@ -110,17 +114,14 @@ public class DiscountSellResultActivity extends BaseActivity
 						@Override
 						public void onClick(View v) 
 						{
-							// TODO Auto-generated method stub
-							
-							submitData();
+							submitData();//可以使用时，提交使用
 						}
 					});
 				}
 				else
 				{
-					DiscountSellResultActivity.this.finish();
+					DiscountSellResultActivity.this.finish();//不能使用时结束该页面
 				}
-
 			}
 
 		});
@@ -128,9 +129,9 @@ public class DiscountSellResultActivity extends BaseActivity
 	
 	private void submitData() 
 	{
-		ColorDialog.showRoundProcessDialog(DiscountSellResultActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
-        HttpUtils.getConnection(context,params, ConstantParamPhone.USE_CARD, "PSOT",new TextHttpResponseHandler()
+		params.add("code",id);
+        HttpUtils.getConnection(context,params, ConstantParamPhone.USE_CARD, "post",new TextHttpResponseHandler()
         {
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
@@ -156,53 +157,40 @@ public class DiscountSellResultActivity extends BaseActivity
 					e.printStackTrace();
 				}
 			}
-			@Override
-			public void onFinish() 
-			{
-				// TODO Auto-generated method stub
-				ColorDialog.dissmissProcessDialog();
-			}
 		});
 	}
 	
 
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
-		if(!TextUtils.isEmpty(dataBean.getCode()))
+
+		if(!TextUtils.isEmpty(id))//卡号
 		{
-			discountNumTextView.setText(dataBean.getCode());
+			discountNumTextView.setText(id);
 		}
-		if(!TextUtils.isEmpty(dataBean.getNickname()))
+		if(!TextUtils.isEmpty(dataBean.getData().getTruename()))
 		{
-			discountNameTextView.setText(dataBean.getNickname());
+			discountNameTextView.setText(dataBean.getData().getTruename());
 		}
-		if(!TextUtils.isEmpty(dataBean.getSex()))
+		if(!TextUtils.isEmpty(dataBean.getData().getSex()))
 		{
-			if(dataBean.getSex().equals("1"))
-			{
-			   discountSexTextView.setText("男");
-			}
-			if(dataBean.getSex().equals("2"))
-			{
-			   discountSexTextView.setText("女");
-			}
+			   discountSexTextView.setText(dataBean.getData().getSex());
 		}
-		if(!TextUtils.isEmpty(dataBean.getBirthday()))
+		if(!TextUtils.isEmpty(dataBean.getData().getBirth()))
 		{
-			discountBirthTextView.setText(dataBean.getBirthday());
+			discountBirthTextView.setText(dataBean.getData().getBirth());
 		}
-		if(!TextUtils.isEmpty(dataBean.getCity()))
+		if(!TextUtils.isEmpty(dataBean.getData().getCity()))
 		{
-			discountCityTextView.setText(dataBean.getCity());
+			discountCityTextView.setText(dataBean.getData().getCity());
 		}
-		if(!TextUtils.isEmpty(dataBean.getMobile()))
+		if(!TextUtils.isEmpty(dataBean.getData().getMobile()))
 		{
-			discountPhoneTextView.setText(dataBean.getMobile());
+			discountPhoneTextView.setText(dataBean.getData().getMobile());
 		}
-		if(!TextUtils.isEmpty(dataBean.getCard_exp_time()))
+		if(!TextUtils.isEmpty(dataBean.getData().getExp_time()))
 		{
-			discountVIPExperTimeTextView.setText(Util.DataConVertMint(dataBean.getCard_exp_time()));
+			discountVIPExperTimeTextView.setText((dataBean.getData().getExp_time()));
 		}
 	}
 
