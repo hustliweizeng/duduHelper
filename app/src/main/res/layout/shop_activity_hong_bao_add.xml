@@ -15,7 +15,6 @@
         android:id="@+id/mineScrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/saveProductbutton"
         android:layout_below="@id/head"
         android:fillViewport="true"
         android:focusable="false" >

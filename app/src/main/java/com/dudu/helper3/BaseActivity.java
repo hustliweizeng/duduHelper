@@ -113,7 +113,6 @@ public class BaseActivity extends FragmentActivity
 		});
 	}
 	
-
 	//做版本兼容，
 	@TargetApi(19) 
 	private void setTranslucentStatus(boolean on) {

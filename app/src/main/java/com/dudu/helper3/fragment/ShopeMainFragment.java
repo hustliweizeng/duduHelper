@@ -32,6 +32,7 @@ import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.widget.ColorDialog;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.loopj.android.http.TextHttpResponseHandler;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -72,6 +73,19 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		initFragmentView();
 		
 	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("MainFragment");
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart("MainFragment");
+	}
+
 	private void initFragmentView() 
 	{
 		// TODO Auto-generated method stub
