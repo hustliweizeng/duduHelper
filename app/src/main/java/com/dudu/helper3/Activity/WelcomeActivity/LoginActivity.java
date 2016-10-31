@@ -290,6 +290,13 @@ public class LoginActivity extends BaseActivity
 							.putString("useableMoney", loginBean.getTotalstat().getUsablemoney())
 							//储存店员状态
 							.putBoolean("isManager", isManager)
+							//储存统计信息
+							.putString("totalVistor",loginBean.getTotalstat().getVisitor())
+							.putString("totalBuyer",loginBean.getTotalstat().getBuyer())
+							.putString("totalOrder",loginBean.getTotalstat().getOrder())
+							.putString("totalIncome",loginBean.getTotalstat().getIncome())
+							.putString("totalTrade",loginBean.getTotalstat().getTrade())
+							.putBoolean("isManager",isManager)
 							//在后台处理
 							.apply();
 							//跳转到主页

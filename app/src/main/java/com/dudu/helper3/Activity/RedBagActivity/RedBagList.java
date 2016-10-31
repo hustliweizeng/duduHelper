@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.RedBagCheckAdapter;
 import com.dudu.helper3.adapter.RedBagListAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
@@ -75,6 +76,8 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 		setContentView(R.layout.activity_redbag_list);
 		adapter = new RedBagListAdapter(context);
 		initView();
+		swipe_product_list.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+		swipe_product_list.setRefreshing(true);
 	}
 
 	
@@ -245,7 +248,6 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context, "网络不给力呀", Toast.LENGTH_LONG).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
 				//设置有无红包的状态,解析处理json数据
@@ -278,7 +280,7 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 			@Override
 			public void onFinish() {
 				super.onFinish();
-				//ColorDialog.dissmissProcessDialog();
+				swipe_product_list.setRefreshing(false);
 			}
 		});
 	}

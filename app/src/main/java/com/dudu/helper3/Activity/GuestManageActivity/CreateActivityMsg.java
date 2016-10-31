@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.ActivityMsGListAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
@@ -48,14 +49,14 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 		adapter = new ActivityMsGListAdapter(context);
 		initView();
 		initHeadView("活动通知",true,false,0);
+		swiperefresh.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+		swiperefresh.setRefreshing(true);
 		initData();
 
 	}
 
 	private void initData() {
 
-		//ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
-		swiperefresh.setRefreshing(true);
 		RequestParams params = new RequestParams();
 		params.put("type_id","1");//红包的typeid是2
 		params.put("page",page);
@@ -78,6 +79,8 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 						List<ActivityMsgBean.ListBean> list = activityMsgBean.getList();
 						if (list!=null &&list.size()>0){
 							adapter.addAll(list);
+						}else {
+							Toast.makeText(context,"当前没有已发送的活动通知",Toast.LENGTH_SHORT).show();
 						}
 					}else {
 						//数据请求失败
@@ -93,7 +96,6 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 			public void onFinish() {
 				super.onFinish();
 				swiperefresh.setRefreshing(false);
-				ColorDialog.dissmissProcessDialog();
 			}
 		});
 		

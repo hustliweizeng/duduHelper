@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.GuestListCheckAdapter;
 import com.dudu.helper3.adapter.RedbagMsgListAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
@@ -53,11 +55,12 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 		initHeadView("红包通知",true,false,0);
 		adapter = new RedbagMsgListAdapter(context);
 		initView();
+		refresh_msg.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+		refresh_msg.setRefreshing(true);
 		initData();
 	}
 
 	private void initData() {
-		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.put("type_id","2");//红包的typeid是2
 		params.put("page",page);
@@ -78,10 +81,15 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 						//数据请求成功
 						redbagMsgListBean = new Gson().fromJson(s, RedbagMsgListBean.class);
 						tv_send_num.setText(redbagMsgListBean.getTotal_red_packet());
-						tv_create_money.setText(redbagMsgListBean.getTotal_promote_consumer()+"");
+						if (!TextUtils.isEmpty(redbagMsgListBean.getTotal_promote_consumer())){
+
+							tv_create_money.setText(redbagMsgListBean.getTotal_promote_consumer());
+						} 
 						List<RedbagMsgListBean.ListBean> list = redbagMsgListBean.getList();
 						if (list!=null &&list.size()>0){
 							adapter.addAll(list);
+						}else {
+							Toast.makeText(context,"当前没有已发送的红包通知",Toast.LENGTH_SHORT).show();
 						}
 
 					}else {
@@ -97,7 +105,7 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 			@Override
 			public void onFinish() {
 				super.onFinish();
-				ColorDialog.dissmissProcessDialog();
+				refresh_msg.setRefreshing(false);
 				//请求结束后隐藏
 			}
 		});
@@ -114,7 +122,6 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 			@Override
 			public void onRefresh() {
 				initData();
-				refresh_msg.setRefreshing(false);
 			}
 		});
 		

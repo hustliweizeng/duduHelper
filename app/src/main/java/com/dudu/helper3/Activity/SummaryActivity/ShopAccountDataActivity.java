@@ -111,11 +111,11 @@ public class ShopAccountDataActivity extends BaseActivity
 			}
 		});
 		//设置统计数据
-		fangkeNumText.setText(sp.getString("totalVistor",""));
-		buyerNumText.setText(sp.getString("totalBuyer","'"));
-		orderNumText.setText(sp.getString("totalOrder",""));
-		allIncomeTextView.setText(sp.getString("totalIncome",""));
-		allFeeTextView.setText(sp.getString("totalTrade",""));
+		fangkeNumText.setText(sp.getString("totalVistor","0"));
+		buyerNumText.setText(sp.getString("totalBuyer","0"));
+		orderNumText.setText(sp.getString("totalOrder","0"));
+		allIncomeTextView.setText(sp.getString("totalIncome","0"));
+		allFeeTextView.setText(sp.getString("totalTrade","0"));
 		
 	}
 	//选择日期,调用系统主题

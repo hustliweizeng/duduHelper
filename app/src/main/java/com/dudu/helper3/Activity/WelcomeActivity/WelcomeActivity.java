@@ -98,8 +98,8 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 						//登录失败跳转到登录页面
-						finish();
 						startActivity(new Intent(context,LoginActivity.class));
+						finish();
 					}
 
 					@Override
@@ -130,7 +130,6 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 				startActivity(intent);
 				finish();
 			}
-			//finish();
 		}
 		else
 		{

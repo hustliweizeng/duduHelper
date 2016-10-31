@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.dudu.helper3.R;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.widget.SystemBarTintManager;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.update.UmengDialogButtonListener;
@@ -45,6 +46,7 @@ public class BaseActivity extends FragmentActivity
 	@Override
 	protected void onCreate(Bundle arg0) 
 	{
+		//CrashReport.testJavaCrash();//测试bugly
 		context = this;
 		//把所有页面加到application
 		DuduHelperApplication.getInstance().addActivity(this);
