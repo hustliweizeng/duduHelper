@@ -545,7 +545,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                            imageLoader.displayImage(picsPath[0],iv_img_shop_info);
                            tv_imgNum_shop_info.setText("相册有"+picsPath.length+"张图片");
                            ColorDialog.dissmissProcessDialog();
-                           Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
+                           //Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
                        }
                    }
                    break;

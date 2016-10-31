@@ -2,6 +2,7 @@ package com.dudu.helper3.Activity.CheckSellAcitivty;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -133,6 +134,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 				Toast.makeText(context,"核销成功!",Toast.LENGTH_SHORT).show();
 				tv_check_status_check_sale.setText("该优惠券可核销");
 				tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.text_remind));
+				finish();//结束当前y
 				
 				break;
 			case CHECKED:
@@ -184,16 +186,22 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 		String usedTime = data.getUsed_time();
 		//判断是否过期
 		if (expiredTime !=0){
-			if (System.currentTimeMillis() > expiredTime){
+			if (System.currentTimeMillis() > expiredTime*1000){//
 				Toast.makeText(context,"该优惠券已过期",Toast.LENGTH_SHORT).show();
 			}
 		}
 		//判断是否用过
-		if (!"0".equals(usedTime)){
-			Toast.makeText(context,"优惠券已经使用过了",Toast.LENGTH_SHORT).show();
-			ticketStatus =3;
+		if(usedTime!=null){
+			if (!"0".equals(usedTime)){
+				Toast.makeText(context,"优惠券已经使用过了",Toast.LENGTH_SHORT).show();
+				ticketStatus =3;
+			}else {
+				ticketStatus = 1;//可以使用
+			}
+		}else {
+			ticketStatus = 1;//可以使用,数据为null说明没用过
 		}
-		ticketStatus = 1;
+
 		//根据页面状态显示不同页面
 		fillPage(ticketStatus);
 		

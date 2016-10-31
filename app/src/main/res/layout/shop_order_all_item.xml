@@ -50,14 +50,14 @@
 
         <TextView
             android:id="@+id/orderTypeTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_margin="14dp"
             android:ellipsize="end"
-            android:singleLine="true"
+            android:maxLines="1"
             android:text="豪华景观双人床"
             android:textColor="@color/text_dark_color"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/orderPriceTextView"
