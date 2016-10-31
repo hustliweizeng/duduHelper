@@ -45,7 +45,6 @@ dependencies {
     compile files('libs/libammsdk.jar')
     compile files('libs/nineoldandroids-2.4.0.jar')
     compile files('libs/picasso-2.4.0.jar')
-    compile files('libs/umeng-analytics-v5.5.3.jar')
     compile files('libs/umeng-update-v2.6.0.1.jar')
     compile files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
     compile files('libs/wire-runtime-1.7.0.jar')
@@ -60,4 +59,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

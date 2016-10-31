@@ -125,6 +125,7 @@
                         android:background="@null"
                         android:gravity="right|center_vertical"
                         android:hint="请输入您的商品原价如9.99"
+                        android:textColor="@color/text_color_light"
                         android:inputType="numberDecimal"
                         android:textColorHint="@color/text_color_light"
                         android:textSize="14sp" />
@@ -162,6 +163,7 @@
                         android:gravity="right|center_vertical"
                         android:hint="请输入您的商品现价"
                         android:inputType="numberDecimal"
+                        android:textColor="@color/text_color_light"
                         android:textColorHint="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -198,6 +200,7 @@
                         android:gravity="right|center_vertical"
                         android:hint="请输入您的商品库存"
                         android:inputType="numberDecimal"
+                        android:textColor="@color/text_color_light"
                         android:textColorHint="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -361,6 +364,7 @@
                 android:textColor="@color/text_color_dark"
                 android:textSize="16dp" />
             <ScrollView
+                android:id="@+id/scroll2"
                 android:layout_width="match_parent"
                 android:layout_height="86dp">
             <EditText
@@ -417,7 +421,8 @@
         android:gravity="center_vertical"
         android:paddingLeft="17dp"
         android:text="更多商品详情请到web端口后台进行设置~"
-        android:textColor="@color/text_white_color"
+        android:textColor="@color/text_color_light"
+        android:textColorHint="@color/text_color_light"
         android:textSize="14dp" />
 
     <View

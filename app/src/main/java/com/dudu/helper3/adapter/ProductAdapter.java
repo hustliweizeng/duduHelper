@@ -296,11 +296,17 @@ public class ProductAdapter extends BaseAdapter
 		{
 			viewHolder.producthaveNum.setText("库存:"+list.get(position).getStock());
 		}
-		//已售出
+		//已售出-大牌抢购
 		if(!TextUtils.isEmpty(list.get(position).getSaled_count()))
 		{
 			viewHolder.productSellNum.setText("已售:"+list.get(position).getSaled_count());
 		}
+		//已售出-优惠券
+		if(!TextUtils.isEmpty(list.get(position).getSold()))
+		{
+			viewHolder.productSellNum.setText("已售:"+list.get(position).getSold());
+		}
+		
 		
 		//上架状态
 		if(list.get(position).getStatus().equals("0"))

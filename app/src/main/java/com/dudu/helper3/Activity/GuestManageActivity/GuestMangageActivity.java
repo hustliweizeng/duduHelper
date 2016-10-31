@@ -2,6 +2,7 @@ package com.dudu.helper3.Activity.GuestManageActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.GuestManageAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
@@ -49,12 +51,14 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		initHeadView("客户管理",true,false,0);
 		adapter = new GuestManageAdapter(context);
 		initView();
+		
+		refreshLayout.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+		refreshLayout.setRefreshing(true);
 		initData();
 
 	}
 
 	private void initData() {
-		
 		user_list.setLayoutManager(new LinearLayoutManager(this));
 		user_list.setAdapter(adapter);
 		RequestParams params = new RequestParams();
@@ -89,11 +93,15 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 					e.printStackTrace();
 				}
 			}
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				refreshLayout.setRefreshing(false);
+			}
 		});
 		
 		
-		
-		refreshLayout.setRefreshing(false);
 	}
 
 	private void initView() {
@@ -103,16 +111,15 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		user_list = (RecyclerView) findViewById(R.id.user_list);
 		refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_guest_magager);
 		send_message_guest_manage.setOnClickListener(this);
-		
 		//上啦刷新按钮
 		refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
 				initData();
-				
 			}
 			
 		});
+		
 	}
 
 	@Override

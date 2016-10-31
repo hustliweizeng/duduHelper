@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.MemberAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
@@ -45,7 +46,8 @@ public class ShopMemberListActivity extends BaseActivity {
         setContentView(R.layout.shop_member_list);
         initHeadView("店员管理", true, true, R.drawable.ic_launcher);
         initView();
-        //ColorDialog.showRoundProcessDialog(ShopMemberListActivity.this, R.layout.loading_process_dialog_color);
+        memberListswipeLayout.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+        memberListswipeLayout.setRefreshing(true);
         initData();
     }
 

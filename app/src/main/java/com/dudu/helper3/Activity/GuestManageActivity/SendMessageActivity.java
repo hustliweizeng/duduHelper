@@ -84,7 +84,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 						if (message_lists!=null &&message_lists.size()>0){
 							if (message_lists.get(0).getType_id().equals("1")){
 								//设置活动次数
-								activity_time = Integer.parseInt(message_lists.get(0).getMax_month_send_num());
+								activity_time = Integer.parseInt(message_lists.get(0).getSurplus());
 								tv_count_activity.setText(activity_time+"");
 								act_content.setText(message_lists.get(0).getDesc());//说明
 								//发送活动信息的单价
@@ -92,7 +92,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 							} 
 							if (message_lists.get(1).getType_id().equals("2")){
 								//设置红包剩余次数
-								redbag_time = Integer.parseInt(message_lists.get(1).getMax_month_send_num());
+								redbag_time = Integer.parseInt(message_lists.get(1).getSurplus());
 								LogUtil.d("redbag_time",redbag_time+"");
 								tv_count_redbag.setText(redbag_time+"");
 								redbag_content.setText(message_lists.get(1).getDesc());//说明
@@ -121,6 +121,12 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 		});
 		
 		
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		initData();
 	}
 
 	private void initHeadView() {
@@ -167,7 +173,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 			break;
 			//活动消息
 			case R.id.activity_msg:
-			if (active_num >0){
+			if (activity_time >0){
 				intent = new Intent(context, CreateActivityMsg.class);
 			}else {
 				intent = new Intent(context,StoreMoneyActivity.class);

@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -27,6 +28,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -141,7 +143,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		
 		//设置页面信息
 		productNameEditText.setText(data.getName());
-		productSoldTextView.setText(data.getSold());
+		productSoldTextView.setText(data.getAmount());
 		productYuanPriceEditText.setText(data.getPrice());
 		productNowPriceEditText.setText(data.getCurrent_price());
 		productKuCunNumEditText.setText(data.getStock());
@@ -299,6 +301,20 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		
 		productDetailLine=(LinearLayout) this.findViewById(R.id.productDetailLine);
 		ed_info = (EditText) this.findViewById(R.id.ed_info);
+		ScrollView scroll2 = (ScrollView) findViewById(R.id.scroll2);
+		scroll2.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch (event.getAction()){
+					case MotionEvent.ACTION_MOVE:
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+						break;
+					
+				}
+				return true;
+			}
+		});
+		
 		//选择图片上传
 		productImageView.setOnClickListener(new OnClickListener() 
 		{

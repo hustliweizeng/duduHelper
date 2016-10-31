@@ -3,6 +3,7 @@ package com.dudu.helper3.Activity.CashHistoryActivity;
 import android.app.ActionBar;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.MoneyHistoryAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
@@ -44,6 +46,7 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 	private CalendarView calendar;
 	private TextView tv_msg;
 	private int titleHight;
+	private SwipeRefreshLayout swiperefresh;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,8 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 		LogUtil.d("收银流水", downDate1);
 		initHeadView("收银流水", true, false, 0);
 		initView();
+		swiperefresh.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+		swiperefresh.setRefreshing(true);
 		getData(); 
 	}
 	private void initView() {
@@ -72,6 +77,13 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 			}
 		});
 		lv_checckmoneyhisory = (ListView) findViewById(R.id.lv_checckmoneyhisory);
+		swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+		swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				getData();
+			}
+		});
 	}
 
 	/**
@@ -120,7 +132,6 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 	 * 异步请求数据
 	 */
 	private void getData() {
-		ColorDialog.showRoundProcessDialog(context, R.layout.loading_process_dialog_color);
 		RequestParams param = new RequestParams();
 		param.add("date", downDate1);
 		LogUtil.d("selcetDATA",downDate1);
@@ -166,8 +177,8 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 			@Override
 			public void onFinish() {
 				super.onFinish();
+				swiperefresh.setRefreshing(false);
 				//数据请求成功后弹窗消失
-				ColorDialog.dissmissProcessDialog();
 				lv_checckmoneyhisory.setVisibility(View.VISIBLE);
 				//数据解析成功后，展示列表
 				lv_checckmoneyhisory.setAdapter(adapter);

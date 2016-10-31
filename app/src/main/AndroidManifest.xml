@@ -77,7 +77,7 @@
         //友盟推送
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="55f2b077e0f55ab5360013ec" >
+            android:value="58116d51c895767ef2001a1b" >
         </meta-data>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
@@ -85,7 +85,7 @@
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="Umeng" >
+            android:value="YingYongBao" >
         </meta-data>
 
         <service

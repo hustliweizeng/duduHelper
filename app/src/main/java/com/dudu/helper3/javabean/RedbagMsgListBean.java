@@ -1,7 +1,10 @@
 package com.dudu.helper3.javabean;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -192,7 +195,7 @@ public class RedbagMsgListBean implements Serializable{
 
 		public static class RedPacketInfoBean implements  Serializable{
 			private String money;
-			private String limit;
+			private HashMap<String,String> limit;
 			private String life;
 
 			public String getMoney() {
@@ -203,11 +206,11 @@ public class RedbagMsgListBean implements Serializable{
 				this.money = money;
 			}
 
-			public String getLimit() {
+			public HashMap<String,String> getLimit() {
 				return limit;
 			}
 
-			public void setLimit(String limit) {
+			public void setLimit(HashMap<String,String> limit) {
 				this.limit = limit;
 			}
 

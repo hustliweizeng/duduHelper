@@ -38,7 +38,7 @@ public class ShopCouponDetailActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_activity_coupon_detail);
-		initHeadView("优惠券",true, true, R.drawable.icon_historical);
+		initHeadView("优惠券",true, true, R.drawable.icon_historical);//优惠券历史
 		initView();
 		initData();
 	}
@@ -63,10 +63,11 @@ public class ShopCouponDetailActivity extends BaseActivity
 		couponVerify.setText(coupon.getValidation_count());
 
 		//领取数量  
-		couponSold.withNumber(Float.parseFloat(coupon.getClicked_count()));
+		couponSold.withNumber(Float.parseFloat(coupon.getSold()));
 		//核销数量
 		couponVerify.withNumber(Float.parseFloat(coupon.getValidation_count()));
-		leftNumText.withNumber(Float.parseFloat(String.valueOf(Integer.parseInt(coupon.getSold()) - Integer.parseInt(coupon.getValidation_count()))));
+		leftNumText.withNumber(Float.parseFloat(String.valueOf(Integer.parseInt(coupon.getSold()) -Integer.parseInt(coupon.getValidation_count()) )));
+		
 
 		couponSold.setDuration(1200);
 		couponVerify.setDuration(1200);
@@ -76,8 +77,8 @@ public class ShopCouponDetailActivity extends BaseActivity
 		couponSold.start();
 		couponVerify.start();
 		leftNumText.start();
-		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat(coupon.getSold()) / Float.parseFloat(coupon.getStock()), Color.parseColor("#ff5000"), Util.dip2px(this, 4));
-		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(Float.parseFloat(coupon.getSold()) / Float.parseFloat(coupon.getStock()), Color.parseColor("#ffffff"), Util.dip2px(this, 2));
+		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(Float.parseFloat(coupon.getValidation_count()) / Float.parseFloat(coupon.getSold()), Color.parseColor("#ff5000"), Util.dip2px(this, 4));
+		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(Float.parseFloat(coupon.getValidation_count()) / Float.parseFloat(coupon.getSold()), Color.parseColor("#ffffff"), Util.dip2px(this, 2));
 		wheelIndicatorTongjiNoXuxianView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
 		wheelIndicatorTongjiNoXuxianView.addWheelIndicatorItem(bikeActivityIndicatorItem);
 		wheelIndicatorTongjiNoXuxianView.startItemsAnimation();

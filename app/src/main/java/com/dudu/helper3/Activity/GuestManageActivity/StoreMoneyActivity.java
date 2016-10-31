@@ -7,7 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Xml;
 import android.view.KeyEvent;
@@ -46,6 +48,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.util.Iterator;
 import java.util.Map;
@@ -112,15 +115,28 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 			isRedbag = false;
 		}
 		//输入次数的监听，合计金额自动变化
-		ed_num.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		ed_num.addTextChangedListener(new TextWatcher() {
 			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				int num = Integer.parseInt(v.getText().toString().trim());
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			@Override
+			public void afterTextChanged(Editable s) {
+				int num = 0;
+				if (!TextUtils.isEmpty(s.toString())){//非空判断
+					num = Integer.parseInt(s.toString().trim());
+				}
 				float total_price = num * price;
-				tv_price.setText(total_price+"");
-				return true;
+				BigDecimal b   =   new   BigDecimal(total_price);
+				float   f1   =   b.setScale(2,   BigDecimal.ROUND_HALF_UP).floatValue();
+				//   b.setScale(2,   BigDecimal.ROUND_HALF_UP)   表明四舍五入，保留两位小数
+				tv_price.setText(f1+"");
 			}
 		});
+			
 		
 	}
 
@@ -129,16 +145,15 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 		switch (v.getId()) {
 			case R.id.btn_subimit:
 				submit();
+				break;
 			case R.id.redbage_check:
 				redbage_check.setTextColor(getResources().getColor(R.color.text_green_color));
 				activity_check.setTextColor(getResources().getColor(R.color.text_dark_color));
-				ed_num.setText("");
 				isRedbag = true;
 				break;
 			case R.id.activity_check:
 				redbage_check.setTextColor(getResources().getColor(R.color.text_dark_color));
 				activity_check.setTextColor(getResources().getColor(R.color.text_green_color));
-				ed_num.setText("");
 				isRedbag = false;
 				break;
 		}
@@ -228,6 +243,12 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 				}
 			}
 
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				Toast.makeText(context,"充值成功",Toast.LENGTH_SHORT);
+				finish();//结束当前页面
+			}
 		});
 
 

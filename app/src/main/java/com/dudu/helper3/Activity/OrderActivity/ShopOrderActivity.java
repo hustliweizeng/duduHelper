@@ -106,6 +106,8 @@ public class ShopOrderActivity extends BaseActivity
 		initHeadView("订单管理", true, true, R.drawable.icon_sousuo);
 		//初始化view
 		initViewFragment();
+		orderallswipeLayout.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+		orderallswipeLayout.setRefreshing(true);
 		initData();
 	}
 	public void setRefreshing()

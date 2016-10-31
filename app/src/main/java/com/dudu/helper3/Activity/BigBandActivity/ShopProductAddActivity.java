@@ -223,7 +223,7 @@ public class ShopProductAddActivity extends BaseActivity
 		}
 		//设置页面信息
 		productNameEditText.setText(data.getName());
-		productSoldTextView.setText(data.getSaled_count());
+		productSoldTextView.setText(data.getAmount());
 		productYuanPriceEditText.setText(data.getPrice());
 		productNowPriceEditText.setText(data.getCurrent_price());
 		productKuCunNumEditText.setText(data.getStock());

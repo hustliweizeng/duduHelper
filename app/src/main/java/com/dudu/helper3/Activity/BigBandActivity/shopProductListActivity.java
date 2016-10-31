@@ -34,6 +34,7 @@ import com.dudu.helper3.Activity.RedBagActivity.ShopHongBaoAddActivity;
 import com.dudu.helper3.Activity.RedBagActivity.ShopHongBaoDetailActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.OrderSelectorAdapter;
 import com.dudu.helper3.adapter.ProductAdapter;
 import com.dudu.helper3.application.DuduHelperApplication;
@@ -122,6 +123,8 @@ public class shopProductListActivity extends BaseActivity
 		//全屏显示的对话框进度条
 		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
+		swipe_product_list.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+		swipe_product_list.setRefreshing(true);
 
 		//根据不同类型请求不同的参数
 		if("discount".equals(category))
@@ -152,8 +155,6 @@ public class shopProductListActivity extends BaseActivity
 	//请求不同的接口url
 	private void initData(String url)
 	{
-		//ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
-		//loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
 		productListView.setAdapter(productAdapter);
 		RequestParams params = new RequestParams();

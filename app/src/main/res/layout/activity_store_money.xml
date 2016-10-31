@@ -43,7 +43,7 @@
         android:gravity="center"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_green_color"
+        android:textColor="@color/text_dark_color"
         android:text="红包"/>
         <View
             android:layout_width="1dp"
@@ -154,7 +154,6 @@
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
                 android:textSize="18dp"
                 android:textColor="@color/text_color_red"
                 />
