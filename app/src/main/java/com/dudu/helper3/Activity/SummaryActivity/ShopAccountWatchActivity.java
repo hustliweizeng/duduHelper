@@ -2,6 +2,7 @@ package com.dudu.helper3.Activity.SummaryActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +56,14 @@ public class ShopAccountWatchActivity extends BaseActivity
 	}
 
 	private void initData() {
+		String shopId = getIntent().getStringExtra("shopId");
+		if (!TextUtils.isEmpty(shopId)){
+			shopId = getIntent().getStringExtra("shopId");
+		}{
+			shopId = sp.getString("shopid","");
+		}
 		RequestParams params = new RequestParams();
+		params.put("id",shopId);
 		params.put("start",getIntent().getStringExtra("start"));
 		params.put("end",getIntent().getStringExtra("end"));
 		tv_start.setText(getIntent().getStringExtra("start"));

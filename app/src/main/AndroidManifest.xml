@@ -129,6 +129,7 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask">
         </activity>
+        <activity android:name=".Activity.ShopManageActivity.ShopStatusActivity"/>
         <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.NewActivityMsgActivity"/>
         <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.NewRedbagMsgActivity"/>
         <activity android:name="com.dudu.helper3.Activity.BigBandActivity.ShopSelectActivity"/>

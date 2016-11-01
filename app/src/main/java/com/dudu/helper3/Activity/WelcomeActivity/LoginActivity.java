@@ -279,6 +279,7 @@ public class LoginActivity extends BaseActivity
 							edit.putString("username", loginBean.getUser().getName())
 							.putString("nickename", loginBean.getUser().getNickname())//手动添加
 							.putString("mobile", loginBean.getUser().getMobile())
+							.putString("shopid",loginBean.getShop().getId())		//店铺id
 							//2.存储商店信息
 							.putString("id", loginBean.getShop().getId())
 							.putString("shopLogo", loginBean.getShop().getLogo())

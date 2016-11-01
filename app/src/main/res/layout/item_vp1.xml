@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="198dp"
+        android:background="@color/head_color"
+        android:gravity="center_horizontal" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="本月交易额"
+                android:textColor="@color/text_touming_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/month_trade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="0"
+                android:textColor="@color/text_white_color"
+                android:textSize="32sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="本月收入"
+                android:textColor="@color/text_touming_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/month_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="0"
+                android:textColor="@color/text_touming_color"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <com.dudu.helper3.widget.WaveView
+            android:id="@+id/wave1"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="198dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+    </RelativeLayout>
+
+</LinearLayout>

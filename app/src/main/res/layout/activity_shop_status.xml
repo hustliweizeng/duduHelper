@@ -1,0 +1,249 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.dudu.helper3.Activity.SummaryActivity.ShopAccountDataActivity" >
+
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="198dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_content"
+            android:layout_width="match_parent"
+            android:layout_height="198dp">
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            >
+            <ImageView
+                android:id="@+id/dot1"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:clickable="true"
+                android:layout_gravity="center_vertical"
+                android:padding="4dip"
+                android:src="@drawable/yuandian_sel"/>
+            <ImageView
+                android:id="@+id/dot2"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:clickable="true"
+                android:layout_gravity="center_vertical"
+                android:padding="4dip"
+                android:src="@drawable/yuandian"/>
+            
+
+        </LinearLayout>
+    </RelativeLayout>
+  
+
+    
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:background="#fff" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/view_selector"
+            android:clickable="true" >
+
+            <TextView
+                android:id="@+id/fangkeNumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="17dp"
+                android:text="0"
+                android:textColor="@color/text_dark_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fangkeNumText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:text="历史访客"
+                android:textColor="@color/text_gray_color"
+                android:textSize="13dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/view_selector" >
+
+            <TextView
+                android:id="@+id/buyerNumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="17dp"
+                android:text="0"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/buyerNumText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:text="买家数量"
+                android:textColor="@color/text_color_light"
+                android:textSize="13dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/view_selector" >
+
+            <TextView
+                android:id="@+id/orderNumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="17dp"
+                android:text="0"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/orderNumText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:text="总订单量"
+                android:textColor="@color/text_color_light"
+                android:textSize="13dp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="17dp"
+                android:layout_marginTop="17dp"
+                android:background="@color/bg_color" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:text="自定义统计"
+        android:textColor="@color/text_bg_color"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:background="@color/bg_white_color"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+            android:id="@+id/startTimeRel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_weight="2"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/startTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="44dp"
+                android:gravity="right"
+                android:text="起始时间"
+                android:textColor="@color/text_dark_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="44dp"
+                android:text="开始时间>"
+                android:textColor="@color/text_gray_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+            <ImageView
+                android:src="@drawable/icon_qiehuanlvse" 
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/finishTimeRel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_weight="2"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/finishTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="17dp"
+                android:gravity="right"
+                android:text="结束时间"
+                android:textColor="@color/text_dark_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="17dp"
+                android:text="结束时间>"
+                android:textColor="@color/text_gray_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/accountDatabutton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/btn_larg_bg"
+        android:text="统计"
+        android:textColor="#fff"
+        android:textSize="16sp" />
+
+</LinearLayout>

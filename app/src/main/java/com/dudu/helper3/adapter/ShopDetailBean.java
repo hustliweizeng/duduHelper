@@ -43,7 +43,17 @@ public class ShopDetailBean {
 	public static class DataBean {
 		private String id;
 		private String name;
+		private String logo;
 		private String contact;
+
+		public String getLogo() {
+			return logo;
+		}
+
+		public void setLogo(String logo) {
+			this.logo = logo;
+		}
+
 		private String address;
 		private String description;
 		private String category;

@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +24,8 @@ import com.dudu.helper3.Activity.ShopImageViewBrower;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.Utils.Util;
+import com.dudu.helper3.Utils.ViewUtils;
 import com.dudu.helper3.adapter.ShopCategoryAdapter;
 import com.dudu.helper3.adapter.ShopCircleAdapter;
 import com.dudu.helper3.adapter.ShopDetailBean;
@@ -38,7 +44,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ShopAddActivity extends BaseActivity implements View.OnClickListener {
@@ -53,6 +62,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 	private EditText ed_location_shop;
 	private String shopId;
 	private EditText ed_discription;
+	
 
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private ArrayList<String> listSource;
@@ -74,6 +84,10 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 	};
 	private ArrayList<String> webImgs = new ArrayList<>();
 	private long firtTime;
+	private ImageView iv_logo_shop_info;
+	private String uploadPicPath;
+	private Uri urilocal;
+	private String imagepath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +102,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 	private void initData() {
 		shopId = getIntent().getStringExtra("shopId");
 		String type = getIntent().getStringExtra("source");
-		if (!type.equals("detail")) {
+		if (!"detail".equals(type)) {
 			//新建店铺
 			return;
 
@@ -129,6 +143,11 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 											ImageLoader.getInstance().displayImage(webImgs.get(0), shopImageView);
 											tv_img_num.setText("相册有" + webImgs.size() + "张图片");
 										}
+										//初始化logo
+										if (data.getLogo()!=null){
+											ImageLoader.getInstance().displayImage(data.getLogo(),iv_logo_shop_info);
+
+										}
 									}
 
 								} else {
@@ -159,6 +178,8 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 		submitbtn.setOnClickListener(this);
 		ed_location_shop = (EditText) findViewById(R.id.ed_location_shop);
 		ed_discription = (EditText) findViewById(R.id.ed_discription);
+		iv_logo_shop_info = (ImageView) findViewById(R.id.iv_logo_shop_info);
+		iv_logo_shop_info.setOnClickListener(this);
 	}
 
 	//上传门店信息
@@ -179,7 +200,9 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 		params.add("description",ed_discription.getText().toString());
 		params.add("category",category_id+"");
 		params.add("area",circle_id+"");
+		params.add("logo",uploadPicPath);
 		LogUtil.d("area","upload="+circle_id);
+		LogUtil.d("logo",uploadPicPath);
 		//上传的图片转为数组
 		//说明没有修改图片,直接用获取到的数据
 		if (uplodImgs ==null){
@@ -196,8 +219,6 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 			tempImgs[i] = img;
 			i++;
 		}
-
-		
 		String url = null;
 		params.put("images",uplodImgs);
 		if (shopId !=null){
@@ -235,15 +256,26 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 			}
 		});
 
+	}
 
-
-
-
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (event.getAction() == KeyEvent.KEYCODE_BACK){
+			finish();
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	public void onClick(View v) {
 		switch (v.getId()) {
+			case R.id.iv_logo_shop_info:
+				//到相册选择页面
+				//设置logo
+				Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
+				intent.addCategory(Intent.CATEGORY_OPENABLE);
+				intent.setType("image/jpeg");
+				startActivityForResult(intent,  1);
+				break;
 			case R.id.backButton:
 				finish();
 				break;
@@ -381,13 +413,72 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 					if (subThreadCount == 0){//说明都是网络图片
 						//刷新数据
 						webImgs = uplodImgs;
-						imageLoader.displayImage(uplodImgs.get(0), shopImageView);
-						tv_img_num.setText("相册有" + uplodImgs.size() + "张图片");
-						Toast.makeText(context, "修改完成", Toast.LENGTH_SHORT).show();	
+						if (uplodImgs!=null&&uplodImgs.size()>0){//做非空判断
+							imageLoader.displayImage(uplodImgs.get(0), shopImageView);
+							tv_img_num.setText("相册有" + uplodImgs.size() + "张图片");
+							Toast.makeText(context, "修改完成", Toast.LENGTH_SHORT).show();
+						}
 					}
+					break;
+				case 1:
+					//logo选择页面
+					String path = Util.getPath(context, data.getData());
+					Uri uri = Uri.fromFile(new File(path));
+					startPhotoZoom(uri);
+					break;
+				case 2:
+					//logo裁剪结束后返回
+					iv_logo_shop_info.setImageURI(urilocal);
+					//子线程上传图片，上传完毕handler告诉主线程
+					String imgPath = ViewUtils.getRealFilePath(context,urilocal);
+					ViewUtils.uploadImg(context,imgPath);//这是耗时操作，不能直接赋值？
+					ViewUtils.setOnFinishListner(new ViewUtils.OnFinishListner() {
+						@Override
+						public void onFinish(String url) {
+							uploadPicPath = url;//通过回调获取上传完的地址
+							LogUtil.d("logo_url",url);
+						}
+					});
+					break;
 			}
 
 		}
+	}
+	/**
+	 * 根据uri地址裁剪图片，缩放
+	 * @param uri
+	 */
+	private void startPhotoZoom(Uri uri)
+	{   //系统自带的裁剪工具
+		Intent intent = new Intent("com.android.camera.action.CROP");
+		intent.setDataAndType(uri, "image/*");
+		// crop为true是设置在开启的intent中设置显示的view可以剪裁
+		intent.putExtra("crop", "true");
+		// aspectX aspectY 是宽高的比例
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		// outputX,outputY 是剪裁图片的宽高
+		intent.putExtra("outputX", 300);
+		intent.putExtra("outputY", 300);
+
+		//裁剪后的名称,上传的时候用
+		imagepath = Environment.getExternalStorageDirectory()+getPhotoFileName();
+		File cropFile = new File(Environment.getExternalStorageDirectory(),getPhotoFileName());
+		//把file转换成uri格式
+		urilocal = Uri.fromFile(cropFile);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, urilocal);
+
+		intent.putExtra("return-data", false);//设置返回data数据
+		intent.putExtra("noFaceDetection", true); //关闭人脸检测
+
+		startActivityForResult(intent, 2);
+	}
+	// 使用系统当前日期加以调整作为照片的名称
+	private String getPhotoFileName()
+	{
+		Date date = new Date(System.currentTimeMillis());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("'IMG'_yyyyMMdd_HHmmss");
+		return dateFormat.format(date) + ".jpg";
 	}
 
 	/**

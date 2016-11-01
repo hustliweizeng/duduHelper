@@ -33,11 +33,9 @@ public class ShopAccountDataActivity extends BaseActivity
 	private TextView startTimeTextView;
 	private TextView finishTimeTextView;
 	private Button accountDatabutton;
-	private TextView allIncomeTextView;
 	private TextView fangkeNumText;
 	private TextView buyerNumText;
 	private TextView orderNumText;
-	private TextView allFeeTextView;
 	//波浪助手
 	private WaveHelper mWaveHelper;
 	private WaveView waveView;
@@ -59,17 +57,14 @@ public class ShopAccountDataActivity extends BaseActivity
 	private void initView() 
 	{
 		waveView = (WaveView) findViewById(R.id.wave);
-		//waveView.setBorder(10, Color.parseColor("#44FFFFFF"));
 		mWaveHelper = new WaveHelper(waveView,5000,0.2f);
 		waveView.setShapeType(WaveView.ShapeType.SQUARE);
 		waveView.setWaveColor(Color.parseColor("#03ffffff"),Color.parseColor("#07ffffff"));
 		 
 		
-		allFeeTextView=(TextView) this.findViewById(R.id.allFeeTextView);
 		orderNumText=(TextView) this.findViewById(R.id.orderNumText);
 		fangkeNumText=(TextView) this.findViewById(R.id.fangkeNumText);
 		buyerNumText=(TextView) this.findViewById(R.id.buyerNumText);
-		allIncomeTextView=(TextView) this.findViewById(R.id.allIncomeTextView);
 		accountDatabutton=(Button) this.findViewById(R.id.accountDatabutton);
 		startTimeRel=(LinearLayout) this.findViewById(R.id.startTimeRel);
 		finishTimeRel=(LinearLayout) this.findViewById(R.id.finishTimeRel);
@@ -83,7 +78,6 @@ public class ShopAccountDataActivity extends BaseActivity
 				Intent intent = new Intent(ShopAccountDataActivity.this,ShopAccountWatchActivity.class);
 				String start = startTimeTextView.getText().toString().trim();
 				String end = finishTimeTextView.getText().toString().trim();
-
 				if (TextUtils.isEmpty(start) ||TextUtils.isEmpty(end)){
 					Toast.makeText(context,"请选择开始和结束日期",Toast.LENGTH_SHORT).show();
 					return;
@@ -114,8 +108,6 @@ public class ShopAccountDataActivity extends BaseActivity
 		fangkeNumText.setText(sp.getString("totalVistor","0"));
 		buyerNumText.setText(sp.getString("totalBuyer","0"));
 		orderNumText.setText(sp.getString("totalOrder","0"));
-		allIncomeTextView.setText(sp.getString("totalIncome","0"));
-		allFeeTextView.setText(sp.getString("totalTrade","0"));
 		
 	}
 	//选择日期,调用系统主题
@@ -131,8 +123,6 @@ public class ShopAccountDataActivity extends BaseActivity
              @Override
              public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) 
              {
-                 // TODO Auto-generated method stub
-                 //Toast.makeText(RegisterActivity.this, year+"year "+(monthOfYear+1)+"month "+dayOfMonth+"day", Toast.LENGTH_SHORT).show();
             	 textView.setText( year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
              }
          },mycalendar.get(Calendar.YEAR),mycalendar.get(Calendar.MONTH), mycalendar.get(Calendar.DAY_OF_MONTH));
@@ -141,9 +131,9 @@ public class ShopAccountDataActivity extends BaseActivity
     
     @Override
 	public void onPause() {
-        super.onPause();
+	    super.onPause();
 	    //波浪效果
-        mWaveHelper.cancel();
+	    mWaveHelper.cancel();
     }
 
     @Override

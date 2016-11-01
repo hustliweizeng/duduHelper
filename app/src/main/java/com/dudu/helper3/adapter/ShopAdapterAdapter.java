@@ -68,7 +68,8 @@ public class ShopAdapterAdapter extends BaseAdapter
 			convertView = View.inflate(context,R.layout.shop_manager_item, null);
 			viewHolder.shopimage = (ImageView) convertView.findViewById(R.id.shopimage);
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
-			viewHolder.address = (TextView) convertView.findViewById(R.id.shoplocationtext);
+			viewHolder.totalTrade  = (TextView) convertView.findViewById(R.id.total_trade);
+			viewHolder.month_trade  = (TextView) convertView.findViewById(R.id.month_trade);
 			convertView.setTag(viewHolder);
 		}
 		else
@@ -76,23 +77,21 @@ public class ShopAdapterAdapter extends BaseAdapter
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
-		
 		//设置数据
 		ShopListBean.DataBean dataBean = list.get(position);
 		LogUtil.d("daa",dataBean.getName());
-		viewHolder.address.setText(dataBean.getAddress());
 		viewHolder.name.setText(dataBean.getName());
-		if (dataBean.getImages()!=null && dataBean.getImages().length>0){
+		if (dataBean.getImages()!=null && dataBean.getImages().size()>0){
 			//显示图片之前检查大小
-			ImageLoader.getInstance().displayImage(dataBean.getImages()[0],viewHolder.shopimage);
+			ImageLoader.getInstance().displayImage(dataBean.getImages().get(0),viewHolder.shopimage);
 		}
 		return convertView;
 	}
 	private class ViewHolder
 	{
 		private ImageView shopimage;
-		private TextView address;
 		private TextView name;
-		
+		private TextView totalTrade;
+		public TextView month_trade;
 	}
 }

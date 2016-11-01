@@ -85,10 +85,9 @@ public class ShopListManagerActivity extends BaseActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
 			{
-				Intent intent = new Intent(ShopListManagerActivity.this,ShopAddActivity.class);
-				intent.putExtra("shopId", data.getData().get(position).getId());
-				intent.putExtra("source","detail");
-				startActivity(intent);
+				Intent intent = new Intent(context, ShopStatusActivity.class);
+				intent.putExtra("detail",data.getData().get(position));//把条目详情传递到下一页
+				startActivity(intent);//进入详情页面
 			}
 		});
 	}
@@ -127,7 +126,6 @@ public class ShopListManagerActivity extends BaseActivity
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				refresh_shop_list.setRefreshing(false);
 			}
 		});

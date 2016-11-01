@@ -305,6 +305,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
                         edit.putString("username",infoBean.getUser().getName())
                         .putString("nickename",infoBean.getUser().getNickname())//手动添加
                         .putString("mobile",infoBean.getUser().getMobile())
+		                .putString("shopid",infoBean.getShop().getId())		//店铺id        
                         //2.存储商店信息
                         .putString("id",infoBean.getShop().getId())
                         .putString("shopLogo",infoBean.getShop().getLogo())

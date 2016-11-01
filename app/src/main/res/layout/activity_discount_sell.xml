@@ -79,7 +79,7 @@
         <TextView
             android:layout_marginTop="17dp" 
             android:layout_marginLeft="17dp"
-            android:text="第二步、输入会员卡号"
+            android:text="第二步、输入“五折卡”卡号"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="输入顾客出示的实体卡或电子卡上的会员卡号"
+            android:text="输入顾客出示的实体卡或电子卡上的卡号"
             />
     </LinearLayout>
     <View 
@@ -107,7 +107,7 @@
         <TextView
             android:layout_marginTop="17dp" 
             android:layout_marginLeft="17dp"
-            android:text="第三步、验证VIP身份信息"
+            android:text="第三步、验证“五折卡”身份信息"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

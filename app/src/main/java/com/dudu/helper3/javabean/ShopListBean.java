@@ -40,11 +40,18 @@ public class ShopListBean implements Serializable{
 		this.data = data;
 	}
 
-	public static class DataBean implements  Serializable{
+	public static class DataBean implements Serializable{
 		private String id;
 		private String name;
 		private String address;
-		private String[] images;
+		private String trade_history;
+		private String income_sum;
+		private String uv_history;
+		private String order_num;
+		private String trade_month;
+		private String income_month;
+		private String user_num;
+		private List<String> images;
 
 		public String getId() {
 			return id;
@@ -70,11 +77,67 @@ public class ShopListBean implements Serializable{
 			this.address = address;
 		}
 
-		public String[] getImages() {
+		public String getTrade_history() {
+			return trade_history;
+		}
+
+		public void setTrade_history(String trade_history) {
+			this.trade_history = trade_history;
+		}
+
+		public String getIncome_sum() {
+			return income_sum;
+		}
+
+		public void setIncome_sum(String income_sum) {
+			this.income_sum = income_sum;
+		}
+
+		public String getUv_history() {
+			return uv_history;
+		}
+
+		public void setUv_history(String uv_history) {
+			this.uv_history = uv_history;
+		}
+
+		public String getOrder_num() {
+			return order_num;
+		}
+
+		public void setOrder_num(String order_num) {
+			this.order_num = order_num;
+		}
+
+		public String getTrade_month() {
+			return trade_month;
+		}
+
+		public void setTrade_month(String trade_month) {
+			this.trade_month = trade_month;
+		}
+
+		public String getIncome_month() {
+			return income_month;
+		}
+
+		public void setIncome_month(String income_month) {
+			this.income_month = income_month;
+		}
+
+		public String getUser_num() {
+			return user_num;
+		}
+
+		public void setUser_num(String user_num) {
+			this.user_num = user_num;
+		}
+
+		public List<String> getImages() {
 			return images;
 		}
 
-		public void setImages(String[] images) {
+		public void setImages(List<String> images) {
 			this.images = images;
 		}
 	}
