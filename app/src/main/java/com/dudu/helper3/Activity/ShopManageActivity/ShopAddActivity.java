@@ -33,6 +33,7 @@ import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.javabean.ShopCategoryBean;
 import com.dudu.helper3.javabean.ShopCricleBean;
+import com.dudu.helper3.widget.ColorDialog;
 import com.dudu.helper3.widget.MyAlertDailog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
@@ -88,6 +89,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 	private String uploadPicPath;
 	private Uri urilocal;
 	private String imagepath;
+	private ShopDetailBean detaiData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 
 	//初始化页面详情
 	private void initData() {
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		shopId = getIntent().getStringExtra("shopId");
 		String type = getIntent().getStringExtra("source");
 		if (!"detail".equals(type)) {
@@ -124,7 +127,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 								if ("SUCCESS".equalsIgnoreCase(code)) {
 									//数据请求成功
 									LogUtil.d("succ", s);
-									ShopDetailBean detaiData = new Gson().fromJson(s, ShopDetailBean.class);
+									detaiData = new Gson().fromJson(s, ShopDetailBean.class);
 									if (detaiData.getData() != null) {
 										ShopDetailBean.DataBean data = detaiData.getData();
 										ed_title_shop.setText(data.getName());
@@ -159,7 +162,14 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 								e.printStackTrace();
 							}
 						}
+
+						@Override
+						public void onFinish() {
+							super.onFinish();
+							ColorDialog.dissmissProcessDialog();
+						}
 					});
+			
 		}
 
 	}
@@ -200,9 +210,10 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 		params.add("description",ed_discription.getText().toString());
 		params.add("category",category_id+"");
 		params.add("area",circle_id+"");
+		if(TextUtils.isEmpty(uploadPicPath)){
+			uploadPicPath = detaiData.getData().getLogo();//什么都没改的时候
+		}
 		params.add("logo",uploadPicPath);
-		LogUtil.d("area","upload="+circle_id);
-		LogUtil.d("logo",uploadPicPath);
 		//上传的图片转为数组
 		//说明没有修改图片,直接用获取到的数据
 		if (uplodImgs ==null){
@@ -539,18 +550,6 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 
 	@Override
 	public void onBackPressed() {
-		if (firtTime!=0 && System.currentTimeMillis()-firtTime>500){
-		finish();	
-		}
-		if (!TextUtils.isEmpty(ed_title_shop.getText().toString().trim())){
-			Toast.makeText(context,"退出后正在编辑的内容将不会保存，确定请再次点击返回",Toast.LENGTH_SHORT).show();
-			firtTime = System.currentTimeMillis();
-			return;
-		}
-		
-		
-		
-		
-		
+		finish();
 	}
 }

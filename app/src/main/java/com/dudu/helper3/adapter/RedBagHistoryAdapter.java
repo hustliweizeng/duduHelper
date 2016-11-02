@@ -41,7 +41,7 @@ public class RedBagHistoryAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public RedBagHitsoryBean.DataBean getItem(int position) {
 		return list.get(position);
 	}
 

@@ -80,7 +80,7 @@ public class ShopHongbaoHistoryListActivity extends BaseActivity {
 			{
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ShopHongbaoHistoryListActivity.this,ShopHongbaoHistoryDetailActivity.class);
-				//intent.putExtra("hongbao", adapter.getItem(position));
+				intent.putExtra("hongbao", adapter.getItem(position));
 				startActivity(intent);
 			}
 		});

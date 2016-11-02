@@ -125,9 +125,9 @@ public class RedBagListAdapter extends BaseAdapter {
 		}
 
 		holder.tv_sold.setText("已领:"+ data.getUsed_num());
-		holder.tv_stock.setText("￥红包:"+ data.getNum());
+		holder.tv_stock.setText("红包:"+ data.getNum());
 		holder.tv_name.setText(data.getTitle());
-		holder.tv_price.setText(data.getTotal());
+		holder.tv_price.setText("￥"+data.getTotal());
 		//设置红包状态
 		long time = Util.Data2Unix(data.getTime_end());
 		if (time <System.currentTimeMillis()){

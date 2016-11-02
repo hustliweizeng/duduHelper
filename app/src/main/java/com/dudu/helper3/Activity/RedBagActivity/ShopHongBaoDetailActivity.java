@@ -134,17 +134,29 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 						hongbaoName.setText(hongbaoBean.getTitle());
 						hongbaoStartTimeTextView.setText(hongbaoBean.getTime_start()+" \n"+hongbaoBean.getTime_end());
 						imageLoader.displayImage(hongbaoBean.getLogo(),hongbaoImage, options);
-						wheelIndicatorView.setItemsLineWidth(Util.dip2px(context, 2));
+						
+						/**
+						 * 金额类统计
+						 */
 						//设置使用金额
+						wheelIndicatorView.setItemsLineWidth(Util.dip2px(context, 2));
 						WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem
 								(Float.parseFloat(hongbaoBean.getUsed_money())/Float.parseFloat(hongbaoBean.getSend_money()), Color.parseColor("#ff5400"),Util.dip2px(context, 6));
 						//设置领取金额
 						WheelIndicatorItem walkingActivityIndicatorItem = new WheelIndicatorItem
 								(Float.parseFloat(hongbaoBean.getSend_money())/Float.parseFloat(hongbaoBean.getTotal()), Color.parseColor("#3dd6bc"),Util.dip2px(context, 4));
-						wheelIndicatorView2.addWheelIndicatorItem(bikeActivityIndicatorItem);
-						wheelIndicatorView2.addWheelIndicatorItem(walkingActivityIndicatorItem);
+						wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem);
+						wheelIndicatorView.addWheelIndicatorItem(walkingActivityIndicatorItem);
 						wheelIndicatorView.startItemsAnimation();
 
+						//金额  
+						sendMoneyText.withNumber(Float.parseFloat(hongbaoBean.getTotal()));
+						getMoneyText.withNumber(Float.parseFloat(hongbaoBean.getSend_money()));
+						useMoneyText.withNumber(Float.parseFloat(hongbaoBean.getUsed_money()));
+
+						/**
+						 * 数量类统计
+						 */
 						//设置红包金额
 						wheelIndicatorView2.setItemsLineWidth(Util.dip2px(context, 2));
 						//设置红包使用数
@@ -156,16 +168,12 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 						wheelIndicatorView2.addWheelIndicatorItem(hongbaoGetIndicatorItem);
 						wheelIndicatorView2.addWheelIndicatorItem(hongbaoUseIndicatorItem);
 						wheelIndicatorView2.startItemsAnimation(); // Animate!
-						//设置数据  
-						sendMoneyText.withNumber(Float.parseFloat(hongbaoBean.getTotal()));
-						getMoneyText.withNumber(Float.parseFloat(hongbaoBean.getSend_money()));
-						useMoneyText.withNumber(Float.parseFloat(hongbaoBean.getUsed_money()));
-						
-						
+						//数量
 						totalHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getNum()));
 						getHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getSend_num()));
 						useHongbaoText.withNumber(Float.parseFloat(hongbaoBean.getUsed_num()));
 
+						
 						//设置动画播放时间  
 						sendMoneyText.setDuration(1200);
 						getMoneyText.setDuration(1200);

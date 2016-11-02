@@ -4,13 +4,14 @@ import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.bean.GetHongBaoHistDataBean;
 import com.dudu.helper3.Utils.Util;
+import com.dudu.helper3.javabean.RedBagHitsoryBean;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 public class ShopHongbaoHistoryDetailActivity extends BaseActivity 
 {
-	private GetHongBaoHistDataBean hongbao;
+	private RedBagHitsoryBean.DataBean hongbao;
 	private TextView hongbaoNameTextView;
 	private TextView hongbaoMoneyTextView;
 	private TextView hongbaoUserNameTextView;
@@ -28,10 +29,8 @@ public class ShopHongbaoHistoryDetailActivity extends BaseActivity
 		initView();
 		initData();
 	}
-
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		hongbaoNameTextView=(TextView) this.findViewById(R.id.hongbaoNameTextView);
 		hongbaoMoneyTextView=(TextView) this.findViewById(R.id.hongbaoMoneyTextView);
 		hongbaoUserNameTextView=(TextView) this.findViewById(R.id.hongbaoUserNameTextView);
@@ -43,12 +42,15 @@ public class ShopHongbaoHistoryDetailActivity extends BaseActivity
 
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
-		hongbao=(GetHongBaoHistDataBean) getIntent().getSerializableExtra("hongbao");
-		hongbaoNameTextView.setText(hongbao.getTitle());
+		hongbao=(RedBagHitsoryBean.DataBean) getIntent().getSerializableExtra("hongbao");
+		if (hongbao==null){
+			return;
+		}
+		hongbaoNameTextView.setText(hongbao.getRed_packet_title());
 		hongbaoMoneyTextView.setText("¥"+hongbao.getMoney());
-		hongbaoUserNameTextView.setText(hongbao.getNickname());
-		if((System.currentTimeMillis()-Long.parseLong(hongbao.getExpire_time())*1000)>0)
+		hongbaoUserNameTextView.setText(hongbao.getMember_nickname());
+		Long expireTime = Util.Data2Unix(hongbao.getExpire_time()) *1000;
+		if(System.currentTimeMillis()- expireTime >0)//判断是否过期
 		{
 			hongbaoActionTextView.setTextColor(hongbaoActionTextView.getResources().getColor(R.color.text_color_light));
 			hongbaoActionTextView.setText("已过期");
@@ -66,8 +68,10 @@ public class ShopHongbaoHistoryDetailActivity extends BaseActivity
 				hongbaoActionTextView.setText("已使用");
 			}
 		}
-		hongbaoGetTimeTextView.setText(Util.DataConVertMint(hongbao.getLog_time()));
-		hongbaoGuoqiTextView.setText(Util.DataConVertMint(hongbao.getExpire_time()));
-		hongbaoUseTimeTextView.setText(Util.DataConVertMint(hongbao.getUsed_time()));
+		hongbaoGetTimeTextView.setText(hongbao.getCreated_at());
+		hongbaoGuoqiTextView.setText(hongbao.getExpire_time());
+		if (hongbao.getUsed_at()!=null){
+			hongbaoUseTimeTextView.setText(hongbao.getUsed_at());
+		}
 	}
 }

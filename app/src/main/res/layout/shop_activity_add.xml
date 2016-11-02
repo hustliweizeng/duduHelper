@@ -341,7 +341,7 @@
                     <ImageView
                         android:id="@+id/shopImageView"
                         android:layout_width="96dp"
-                        android:layout_height="86dp"
+                        android:layout_height="72dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dp"
                         android:background="@drawable/shop_image_whitelin"

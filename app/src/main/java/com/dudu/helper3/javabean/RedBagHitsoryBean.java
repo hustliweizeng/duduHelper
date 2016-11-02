@@ -1,5 +1,6 @@
 package com.dudu.helper3.javabean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * @date 2016/10/11
  */
 
-public class RedBagHitsoryBean {
+public class RedBagHitsoryBean implements Serializable{
 
 
 	private String code;
@@ -39,12 +40,22 @@ public class RedBagHitsoryBean {
 		this.data = data;
 	}
 
-	public static class DataBean {
+	public static class DataBean implements Serializable{
 		private String id;
 		private String red_packet_title;
 		private String member_nickname;
 		private String money;
 		private String used;
+
+		public String getUsed_at() {
+			return used_at;
+		}
+
+		public void setUsed_at(String used_at) {
+			this.used_at = used_at;
+		}
+
+		private String used_at;
 		private String expire_time;
 		private String created_at;
 

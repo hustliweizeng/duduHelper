@@ -431,7 +431,8 @@
             android:hardwareAccelerated="false"
             android:label="@string/title_activity_hong_bao_detail" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.RedBagActivity.ShopHongBaoAddActivity" >
+        <activity android:name="com.dudu.helper3.Activity.RedBagActivity.ShopHongBaoAddActivity"
+                  android:windowSoftInputMode="stateUnchanged">
         </activity>
         <activity
             android:name="org.fireking.app.imagelib.widget.ImageBrowserActivity"
@@ -492,6 +493,7 @@
         </activity>
         <activity
             android:name="com.dudu.helper3.Activity.ShopManageActivity.ShopAddActivity"
+            android:windowSoftInputMode="stateUnchanged"
             android:label="@string/title_activity_shop_add" >
         </activity>
         <activity

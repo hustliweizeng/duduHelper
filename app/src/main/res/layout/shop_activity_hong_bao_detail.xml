@@ -35,10 +35,12 @@
                  <ImageView
                      android:id="@+id/hongbaoImage"
                      android:layout_width="72dp"
-                     android:layout_height="72dp"
+                     android:layout_height="54dp"
                      android:layout_marginLeft="14dp"
                      android:layout_marginRight="10dp"
+                     android:scaleType="fitXY"
                      android:layout_marginTop="17dp"
+                     android:src="@drawable/ic_defalut"
                       />
  
                  <TextView

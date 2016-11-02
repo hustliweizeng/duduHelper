@@ -76,10 +76,10 @@ public class ShopAdapterAdapter extends BaseAdapter
 		{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		
 		//设置数据
 		ShopListBean.DataBean dataBean = list.get(position);
-		LogUtil.d("daa",dataBean.getName());
+		viewHolder.totalTrade.setText(" ￥"+dataBean.getTrade_history());
+		viewHolder.month_trade.setText(" ￥"+dataBean.getTrade_month());
 		viewHolder.name.setText(dataBean.getName());
 		if (dataBean.getImages()!=null && dataBean.getImages().size()>0){
 			//显示图片之前检查大小
