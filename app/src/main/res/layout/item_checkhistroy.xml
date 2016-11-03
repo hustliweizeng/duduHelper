@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="6dp"
         android:text="2016-08-16"
         android:textColor="@color/text_bg_color"
         android:textSize="16sp"
@@ -25,12 +25,13 @@
 
         <ImageView
             android:id="@+id/checkhistory_img"
-            android:layout_width="92dp"
+            android:layout_width="96dp"
             android:layout_height="72dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="10dp"
+            android:scaleType="fitXY"
             android:layout_marginTop="17dp"
-            android:src="@drawable/friends_sends_pictures_no"/>
+            android:src="@drawable/ic_defalut"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -69,7 +70,6 @@
         </LinearLayout>
     </LinearLayout>
     <ImageView
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_width="match_parent"

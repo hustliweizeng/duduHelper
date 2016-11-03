@@ -195,8 +195,11 @@ public class ConstantParamPhone
    public static final String  SEND_MESSAGE ="/api/app/custom/message";//发送消息
     public static final String  GET_USER_LIST ="/api/app/custom/members";//获取用户列表
     public static final String  GET_PAYORDER = "/api/app/custom/buy";//获取预支付订单
-   
-
+   //会员管理
+    public static final String GET_VIP_ISOPEN = "/api/app/vip/status";//获取会员功能是否开启
+    public static final String GET_VIP_HISTORY = "/api/app/vip/logs";//获取验证记录
+    public static final String GET_VIP_INFO = "/api/app/vip/";//获取会员记录
+    public static final String USE_VIP ="/api/app/vip/";//使用会员卡
 
 
 

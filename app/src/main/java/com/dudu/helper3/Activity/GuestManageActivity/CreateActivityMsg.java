@@ -51,8 +51,13 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 		initHeadView("活动通知",true,false,0);
 		swiperefresh.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
 		swiperefresh.setRefreshing(true);
-		initData();
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		initData();
 	}
 
 	private void initData() {
@@ -80,7 +85,7 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 						if (list!=null &&list.size()>0){
 							adapter.addAll(list);
 						}else {
-							Toast.makeText(context,"当前没有已发送的活动通知",Toast.LENGTH_SHORT).show();
+							//Toast.makeText(context,"当前没有已发送的活动通知",Toast.LENGTH_SHORT).show();
 						}
 					}else {
 						//数据请求失败
@@ -125,8 +130,8 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 
 					//说明滑到底部
 					if (isBottom){
-						page++;
-						initData();
+						//page++;
+						//initData();
 					}
 				}
 				

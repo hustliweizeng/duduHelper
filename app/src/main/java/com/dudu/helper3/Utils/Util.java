@@ -130,9 +130,9 @@ public class Util
         return new SimpleDateFormat("HH:mm:ss").format(new Date(Long.parseLong(time)*1000));
     }
     //获取当前年月日
-    public static String DateForomate3()
+    public static String DateForomate3(String date)
     {
-        return new SimpleDateFormat("yyyy年MM月dd日").format(new Date());
+        return new SimpleDateFormat("yyyy年MM月dd日").format(new Date(Long.parseLong(date)));
     }
     
     //MD5加密

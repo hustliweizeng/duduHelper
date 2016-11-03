@@ -24,6 +24,7 @@ import com.dudu.helper3.Activity.RedBagActivity.RedBagList;
 import com.dudu.helper3.Activity.ShopManageActivity.ShopListManagerActivity;
 import com.dudu.helper3.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.helper3.Activity.SummaryActivity.ShopAccountDataActivity;
+import com.dudu.helper3.Activity.VipUserActivity.VipUserVertifyActivity;
 import com.dudu.helper3.Activity.fiveDiscountActivity.DiscountSellActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
@@ -57,12 +58,18 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	private LinearLayout guest_manager;
 	private Intent intent;
 	private boolean shopIsoPen;
+	private LinearLayout vip_manager;
+	private boolean isVipOpen;
+	private boolean isWuzheOpen;
 
 	@Override
 	@Nullable
 	public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) 
 	{
 		MainFragmentView= inflater.inflate(R.layout.shop_main_fragment, null);
+		requestVipStatus();//请求会员管理状态
+		requestStatus();//请求五折卡
+		
 		return MainFragmentView;
 	}
 	@Override
@@ -88,7 +95,6 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 
 	private void initFragmentView() 
 	{
-		// TODO Auto-generated method stub
 		shopmanagerBtn = (LinearLayout) MainFragmentView.findViewById(R.id.shopmanagerBtn);
 		shopmanagerBtn.setOnClickListener(this);
 		orderBtnLin = (LinearLayout) MainFragmentView.findViewById(R.id.orderBtnLin);
@@ -115,7 +121,9 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		moneyRecordLinButton.setOnClickListener(this);
 		guest_manager = (LinearLayout) MainFragmentView.findViewById(R.id.guest_manager);
 		guest_manager.setOnClickListener(this);
-		
+		vip_manager = (LinearLayout) MainFragmentView.findViewById(R.id.vip_manager);
+		vip_manager.setOnClickListener(this);
+
 	}
 	
 	@Override
@@ -123,7 +131,6 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	{
 		SharedPreferences sp = getContext().getSharedPreferences("userconig", Context.MODE_PRIVATE);
 		boolean isManager = sp.getBoolean("isManager", false);
-		// TODO Auto-generated method stub
 		intent = new Intent();
 		switch (v.getId())
 		{
@@ -163,8 +170,14 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			    return;
 			case R.id.wuzheBtn:
 				//五折验证
-				requestStatus();
-				return;
+				if (isWuzheOpen){
+					intent =new Intent(getActivity(),DiscountSellActivity.class);
+					intent.putExtra("action", "wuzhe");
+				}else {
+					Toast.makeText(getActivity(),"抱歉该商户未开通五折卡管理权限",Toast.LENGTH_SHORT).show();
+					return;
+				}
+				break;
 			case R.id.memberBtn:
 				//员工管理
 				if (isManager){
@@ -196,12 +209,52 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 					Toast.makeText(getActivity(),"当前功能未开通，敬请期待",Toast.LENGTH_SHORT).show();
 					return;
 				}
+				break;
+			case R.id.vip_manager:
+				if(isVipOpen){
+					//数据请求成功
+					intent =new Intent(getActivity(),VipUserVertifyActivity.class);
+					startActivity(intent);
+				}else {
+					Toast.makeText(getActivity(),"抱歉该商户未开通会员管理权限",Toast.LENGTH_SHORT).show();
+					return;
 
+				}
 				break;
 			default:
 				break;
 		}
 		startActivity(intent);
+	}
+
+	/**
+	 * 验证会员管理模块
+	 */
+	private void requestVipStatus() {
+		HttpUtils.getConnection(getActivity(), null, ConstantParamPhone.GET_VIP_ISOPEN, "get", new TextHttpResponseHandler() {
+			@Override
+			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				Toast.makeText(getActivity(),"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			}
+			@Override
+			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
+				try {
+					JSONObject object = new JSONObject(s);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						isVipOpen = true;
+					}else {
+						isVipOpen = false;
+						//数据请求失败
+						//String msg = object.getString("msg");
+						//Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	private void requestStatus() {
@@ -219,14 +272,13 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
-						intent =new Intent(getActivity(),DiscountSellActivity.class);
-						intent.putExtra("action", "wuzhe");
-						startActivity(intent);
+						isWuzheOpen = true;
 					}else {
+						isWuzheOpen = false;
+								
 						//数据请求失败
-						String msg = object.getString("msg");
-						Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
-						return;
+						//String msg = object.getString("msg");
+						//Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

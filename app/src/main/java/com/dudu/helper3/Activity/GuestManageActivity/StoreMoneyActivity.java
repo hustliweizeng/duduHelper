@@ -214,9 +214,6 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 						parameters.put("noncestr", randomString);
 						parameters.put("timestamp",time );
 						String signed = createSign("UTF_8", parameters);
-						/*LogUtil.d("sign",signed);
-						LogUtil.d("time",time);
-						LogUtil.d("random", randomString);*/
 						/**
 						 * 封装好请求参数
 						 */

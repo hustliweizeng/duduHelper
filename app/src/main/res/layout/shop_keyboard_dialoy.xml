@@ -177,7 +177,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/shop_keyboard_text_select"
+            android:background="@color/btn_normal_color"
             android:text="收款"
             android:textSize="22dp"
             android:textColor="@color/text_white_color"

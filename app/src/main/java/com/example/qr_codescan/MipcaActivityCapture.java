@@ -9,6 +9,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -26,15 +27,27 @@ import com.dudu.helper3.Activity.CheckSellAcitivty.CheckSaleHistoryActivity;
 import com.dudu.helper3.Activity.GetMoneyActivity.ShopDiscountScanSucessActivity;
 import com.dudu.helper3.Activity.GetMoneyActivity.ShopGetCashCodeActivity;
 import com.dudu.helper3.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
+import com.dudu.helper3.Activity.VipUserActivity.VipUserVertifyActivity;
+import com.dudu.helper3.Activity.VipUserActivity.VipUserVertifyResActivity;
+import com.dudu.helper3.Activity.VipUserActivity.VipVertifyHistoryActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.http.ConstantParamPhone;
+import com.dudu.helper3.http.HttpUtils;
+import com.dudu.helper3.javabean.VipDetailBean;
+import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.mining.app.zxing.camera.CameraManager;
 import com.mining.app.zxing.decoding.CaptureActivityHandler;
 import com.mining.app.zxing.decoding.InactivityTimer;
 import com.mining.app.zxing.view.ViewfinderView;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Vector;
@@ -84,13 +97,18 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 	}
 
 	private void initHeadView() {
-		if (action.equals("income"))
+		if ("income".equals(action))
 		{
 			initHeadView("收款", true, true, R.drawable.icon_historical);
 		}
 		else
 		{
-			initHeadView("核销", true, true, R.drawable.icon_historical);
+			if ("vip".equals(action)){
+				initHeadView("会员卡验证",true,true,R.drawable.icon_historical);
+			}else {
+
+				initHeadView("核销", true, true, R.drawable.icon_historical);
+			}
 		}
 		// ViewUtil.addTopView(getApplicationContext(), this,
 		// R.string.scan_card);
@@ -112,7 +130,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 			@Override
 			public void onClick(View v)
 			{
-			if(action.equals("income"))
+			if("income".equals(action))
 			{
 				Intent intent = new Intent(context, ShopGetCashCodeActivity.class);
 				intent.putExtra("price",price);
@@ -120,9 +138,15 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 			}
 			else
 			{
-				Intent intent = new Intent(MipcaActivityCapture.this,ShopGetInComeCashActivity.class);
-				intent.putExtra("action", "hexiao");
-				startActivity(intent);
+				if ("vip".equals(action)){
+					startActivity(new Intent(context, VipUserVertifyActivity.class));
+					
+				}else {
+					Intent intent = new Intent(MipcaActivityCapture.this,ShopGetInComeCashActivity.class);
+					intent.putExtra("action", "hexiao");
+					startActivity(intent);
+
+				}
 			}
 			}
 		});
@@ -146,11 +170,18 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		}
 		else
 		{
-			moneyText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 0);
-			scanText.setText("请将用户提供的兑换码置入框内即可完成核销");
-			btnText.setText("兑换码核销");
-			inputcodeBtn.setVisibility(View.GONE);
-			btnIconImg.setImageResource(R.drawable.icon_tiaoxingma);
+			if ("vip".equals(action)){
+				scanText.setText("请将用户出示的个人微信电子会员卡的二维码放入框内即可完成核销");
+				btnText.setText("输入会员卡卡号核销");
+				moneyText.setVisibility(View.INVISIBLE);
+			}else {
+
+				moneyText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 0);
+				scanText.setText("请将用户提供的兑换码置入框内即可完成核销");
+				btnText.setText("兑换码核销");
+				inputcodeBtn.setVisibility(View.GONE);
+				btnIconImg.setImageResource(R.drawable.icon_tiaoxingma);
+			}
 		}
 	}
 
@@ -160,8 +191,13 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		if(action.equals("income")){
 			startActivity(new Intent(context, ShopMoneyRecordListActivity.class));
 		}else {
-			//进入核销历史
-			startActivity(new Intent(context, CheckSaleHistoryActivity.class));
+			if ("vip".equals(action)) {
+				startActivity(new Intent(context,VipVertifyHistoryActivity.class));
+			}else {
+				//进入核销历史
+				startActivity(new Intent(context, CheckSaleHistoryActivity.class));
+			}
+			
 		}
 	}
 
@@ -214,7 +250,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 	{
 		inactivityTimer.onActivity();
 		playBeepSoundAndVibrate();
-		String resultString = result.getText();
+		final String resultString = result.getText();
 		LogUtil.d("success",resultString+"");
 		if (resultString.equals("")) {
 			Toast.makeText(MipcaActivityCapture.this, "扫描失败！",
@@ -231,9 +267,55 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 				intent.putExtra("result", resultString);
 				
 			}else {
-			//进入核销结果页面
-				intent = new Intent(context, CheckSaleDetailActivity.class);
-				intent.putExtra("result", resultString);
+				if ("vip".equals(action)){
+					//进入核销结果页面-请求网络处理核销结果
+					/**
+					 * 请求验证会员卡
+					 */
+						String number = resultString;
+						if (TextUtils.isEmpty(number)){
+							Toast.makeText(context,"卡号不能为空",Toast.LENGTH_SHORT).show();
+							return;
+						}
+						HttpUtils.getConnection(context, null, ConstantParamPhone.GET_VIP_INFO+number, "get", new TextHttpResponseHandler() {
+							@Override
+							public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+								Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+							}
+							@Override
+							public void onSuccess(int i, Header[] headers, String s) {
+
+								try {
+									JSONObject object = new JSONObject(s);
+									String code =  object.getString("code");
+									Intent intent = new Intent(context,VipUserVertifyResActivity.class);
+									if ("SUCCESS".equalsIgnoreCase(code)){
+										//数据请求成功
+										VipDetailBean detail = new Gson().fromJson(s, VipDetailBean.class);
+										//获取验证结果，跳转到相应页面
+										intent.putExtra("res",0);//成功
+										intent.putExtra("detail",detail);//详情
+										intent.putExtra("id",resultString);
+									}else {
+										//数据请求失败
+										String msg = object.getString("msg");
+										intent.putExtra("res",1);//失败
+										intent.putExtra("msg",msg);//错误信息
+									}
+									startActivity(intent);
+									finish();
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							}
+						});
+					
+				}else {
+
+					//进入核销结果页面
+					intent = new Intent(context, CheckSaleDetailActivity.class);
+					intent.putExtra("result", resultString);
+				}
 			}
 
 			startActivity(intent);

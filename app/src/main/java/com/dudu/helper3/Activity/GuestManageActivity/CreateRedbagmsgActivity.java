@@ -47,6 +47,7 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 	private  int page = 1;
 	private  int size = 10;
 	private RedbagMsgListBean redbagMsgListBean;
+	private boolean isBottom;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -57,10 +58,17 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 		initView();
 		refresh_msg.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
 		refresh_msg.setRefreshing(true);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 		initData();
+		LogUtil.d("resume","resume");
 	}
 
 	private void initData() {
+		
 		RequestParams params = new RequestParams();
 		params.put("type_id","2");//红包的typeid是2
 		params.put("page",page);
@@ -89,7 +97,7 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 						if (list!=null &&list.size()>0){
 							adapter.addAll(list);
 						}else {
-							Toast.makeText(context,"当前没有已发送的红包通知",Toast.LENGTH_SHORT).show();
+							//Toast.makeText(context,"当前没有已发送的红包通知",Toast.LENGTH_SHORT).show();
 						}
 
 					}else {
@@ -148,11 +156,12 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 				//滑动停止以后
 				if (newState == RecyclerView.SCROLL_STATE_IDLE){
 					//获取是否在底部
-					boolean isBottom = recyclerView.canScrollVertically(1);
+					isBottom = recyclerView.canScrollVertically(RecyclerView.VERTICAL);//每次判断是否在底部
 					//说明滑到底部
 					if (isBottom){
-						page++;
-						initData();
+						//page++;
+						//initData();
+						LogUtil.d("more","loadmore");
 					}
 
 				}

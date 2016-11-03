@@ -13,10 +13,12 @@ import android.widget.TextView;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.adapter.CheckSaleHistoryAdapter;
 import com.dudu.helper3.adapter.MoneyHistoryAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.javabean.CashHistoryBean;
+import com.dudu.helper3.javabean.CheckSaleHistoryBean;
 import com.dudu.helper3.widget.CalendarView;
 import com.dudu.helper3.widget.ColorDialog;
 import com.google.gson.Gson;
@@ -37,7 +39,7 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 	private TextView calendarCenter;
 	private CalendarView calener;
 	private ListView lv_checckmoneyhisory;
-	private MoneyHistoryAdapter adapter;
+	private CheckSaleHistoryAdapter adapter;
 	private String downDate1;
 	private SimpleDateFormat format;
 	private CalendarView calendar;
@@ -49,7 +51,7 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		//手动测量并记录标题栏的高度
 		setContentView(R.layout.shop_money_record_list);
-		adapter = new MoneyHistoryAdapter(this);
+		adapter = new CheckSaleHistoryAdapter(this);
 		//初始化当天日期
 		format = new SimpleDateFormat("yyyy-MM-dd");
 		downDate1 = format.format(new Date());
@@ -113,11 +115,9 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 				calendarCenter.setText(new SimpleDateFormat("yyyy年MM月dd日").format(downDate));
 				//弹窗收回，请求数据
 				popupWindow.dismiss();
-
 			}
 		});
 	}
-
 
 	/**
 	 * 异步请求数据
@@ -139,8 +139,8 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 					String code = object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)) {
 						//数据请求成功
-						CashHistoryBean historyBean = new Gson().fromJson(s, CashHistoryBean.class);
-						adapter.addAll(historyBean.getData());
+						CheckSaleHistoryBean historyBean = new Gson().fromJson(s, CheckSaleHistoryBean.class);
+						adapter.add(historyBean.getData());
 						tv_msg.setVisibility(View.GONE);
 					} else {
 						//数据请求失败

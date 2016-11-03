@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/bg_color"
+              android:fitsSystemWindows="true"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include
+        android:id="@+id/head"
+        layout="@layout/activity_head" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_up1_check_sale"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_up_check_sale"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginRight="17dp"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    >
+                    <ImageView
+                        android:id="@+id/iv_res"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_success"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_res"
+                        android:layout_marginTop="13dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/text_remind"
+                        android:textSize="17dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="该优惠券核销成功"/>
+
+
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:padding="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:visibility="visible"
+                android:id="@+id/ll_content_check_sale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_up_check_sale"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp"
+                    android:src="@drawable/icon_xuxian"/>
+                
+                <RelativeLayout
+                    android:layout_marginBottom="17dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="会员姓名"
+                        android:textColor="@color/text_color_gray"
+                        />
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="优惠价"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/text_remind"
+                        />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginBottom="17dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="性别"
+                        android:textColor="@color/text_color_gray"
+                        />
+                    <TextView
+                        android:id="@+id/tv_sex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="抵用券"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/text_color_light"
+                        />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginBottom="17dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="出生日期"
+                        android:textColor="@color/text_color_gray"
+                        />
+                    <TextView
+                        android:id="@+id/tv_birth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="抵用券"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/text_remind"
+                        />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginBottom="17dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="所在城市"
+                        android:textColor="@color/text_color_gray"
+                        />
+                    <TextView
+                        android:id="@+id/tv_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="抵用券"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/text_remind"
+                        />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginBottom="17dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="联系电话"
+                        android:textColor="@color/text_color_gray"
+                        />
+                    <TextView
+                        android:id="@+id/tv_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="抵用券"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/text_remind"
+                        />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginBottom="17dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="会员到期日"
+                        android:textColor="@color/text_color_gray"
+                        />
+                    <TextView
+                        android:id="@+id/tv_expireTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="抵用券"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/text_color_light"
+                        />
+
+                </RelativeLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp"
+                    android:src="@drawable/xuxian"/>
+                <RelativeLayout
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="17dp"
+                        android:text="今日会员折扣"
+                        android:textColor="@color/text_color_gray"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_discount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:text="抵用券"
+                        android:textColor="@color/text_yellow_color"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        
+        
+        >
+        <Button
+            android:id="@+id/btn_resubimit"
+            android:layout_width="0dp"
+            android:layout_weight="1.2"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textSize="18dp"
+            android:text="重新输入"
+            android:textColor="@color/text_color_gray"
+            android:background="@color/text_white_color"
+            />
+        <Button
+            android:id="@+id/btn_use"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textSize="18dp"
+            android:text="立即使用"
+            android:textColor="@color/bg_white_color"
+            android:background="@color/text_remind"
+            />
+        
+        
+        
+    </LinearLayout>
+  
+
+
+</LinearLayout>
