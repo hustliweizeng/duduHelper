@@ -74,6 +74,14 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 	private void initView() {
 		tv_msg = (TextView) findViewById(R.id.tv_msg);
 		swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+		swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				downDate1 = "";//清空日期再查询
+				lastid ="";
+				getData();
+			}
+		});
 		editButton = (Button) this.findViewById(R.id.selectTextClickButton);
 		editButton.setVisibility(View.VISIBLE);
 		editButton.setText("日历");
@@ -93,14 +101,11 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 						lastid = adapter.getItemId(lastVisiblePosition)+"";
 						isLoadMore = true;//分页加载方式刷新
 						getData();
-
 					}
 				}
 			}
-
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				
 			}
 		});
 
