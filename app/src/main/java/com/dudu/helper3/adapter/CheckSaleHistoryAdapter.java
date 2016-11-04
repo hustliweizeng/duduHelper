@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.Util;
@@ -14,6 +15,7 @@ import com.dudu.helper3.javabean.CheckSaleHistoryBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,6 +28,7 @@ public class CheckSaleHistoryAdapter extends BaseAdapter {
 
 	private final Context context;
 	private List<CheckSaleHistoryBean.DataBean.OrderBean> list = new ArrayList<>();
+	private HashMap<Integer,String> titleList = new HashMap<>();
 	private List<CheckSaleHistoryBean.DataBean> data;
 
 	public CheckSaleHistoryAdapter(Context context) {
@@ -45,7 +48,7 @@ public class CheckSaleHistoryAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		return 0;
+		return Long.parseLong(list.get(position).getId());
 	}
 
 	@Override
@@ -58,7 +61,16 @@ public class CheckSaleHistoryAdapter extends BaseAdapter {
 		}else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.checkhistory_title.setText(data.get(0).getDate());//显示日期
+		
+		for (int pos :titleList.keySet()){//遍历集合找到指定位置的标题
+			if (pos == position){//显示标题
+				holder.checkhistory_title.setVisibility(View.VISIBLE);
+				holder.checkhistory_title.setText(titleList.get(pos));//显示日期
+			}else {//隐藏标题
+				holder.checkhistory_title.setVisibility(View.GONE);
+			}
+		}
+		
 		holder.checkhistory_name.setText(list.get(position).getSubject());
 		holder.checkhistory_id.setText("核销码: "+list.get(position).getCode());
 		holder.checkhistory_date.setText("核销时间: "+Util.DateForomate3(list.get(position).getUsed_time()));//unix转换日期
@@ -69,24 +81,32 @@ public class CheckSaleHistoryAdapter extends BaseAdapter {
 			holder.checkhistory_img.setTag(imgPath);//重新设置tag
 			ImageLoader.getInstance().displayImage(list.get(position).getThumb(),holder.checkhistory_img);//显示图片
 		}
-		
-		
+	
 		return convertView;
 	}
 
 	public void add(List<CheckSaleHistoryBean.DataBean> data) {
 		this.data = data;
+		int i = 0;
 		if (data != null && data.size() > 0) {
 			//循环加入数据到列表
 			for (CheckSaleHistoryBean.DataBean item : data) {
+				titleList.put(i,item.getDate());//把标题的位置和日期加入到集合中
 				for (CheckSaleHistoryBean.DataBean.OrderBean item1 : item.getOrder()) {
 					list.add(item1);
-
+					i++;
 				}
 			}
 
+		}else {
+			Toast.makeText(context,"当前没有要显示的数据",Toast.LENGTH_SHORT).show();
 		}
 
+	}
+
+	public void clear() {
+		list.clear();
+		titleList.clear();
 	}
 
 	public static class ViewHolder {

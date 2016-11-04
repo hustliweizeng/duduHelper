@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.VertifyVipHistoryAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
@@ -40,11 +41,12 @@ public class VipVertifyHistoryActivity extends BaseActivity  {
 		initHeadView("验证记录", true, false, 0);
 		adapter = new VertifyVipHistoryAdapter(this);
 		initView();
+		siwpeRefresh.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+		siwpeRefresh.setRefreshing(true);
 		initData();
 	}
 
 	private void initData() {
-
 		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_VIP_HISTORY, "get", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
@@ -70,6 +72,12 @@ public class VipVertifyHistoryActivity extends BaseActivity  {
 					e.printStackTrace();
 				}
 			}
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				siwpeRefresh.setRefreshing(false);
+			}
 		});
 		
 		
@@ -80,9 +88,9 @@ public class VipVertifyHistoryActivity extends BaseActivity  {
 		listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(adapter);
 		siwpeRefresh = (SwipeRefreshLayout) findViewById(R.id.siwpeRefresh);
-		siwpeRefresh.setOnClickListener(new View.OnClickListener() {
+		siwpeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
-			public void onClick(View v) {
+			public void onRefresh() {
 				initData();
 			}
 		});

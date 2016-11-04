@@ -3,8 +3,10 @@ package com.dudu.helper3.Activity.CheckSellAcitivty;
 import android.app.ActionBar;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.CheckSaleHistoryAdapter;
 import com.dudu.helper3.adapter.MoneyHistoryAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
@@ -45,6 +48,9 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 	private CalendarView calendar;
 	private TextView tv_msg;
 	private int titleHight;
+	private String lastid = "";
+	private SwipeRefreshLayout swiperefresh;
+	private boolean isLoadMore;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +60,12 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 		adapter = new CheckSaleHistoryAdapter(this);
 		//初始化当天日期
 		format = new SimpleDateFormat("yyyy-MM-dd");
-		downDate1 = format.format(new Date());
+		//downDate1 = format.format(new Date());
 		downDate1 = "";
-		LogUtil.d("核销记录", downDate1);
 		initHeadView("核销记录", true, false, 0);
 		initView();
+		swiperefresh.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+		swiperefresh.setRefreshing(true);
 		getData(); 
 
 	}
@@ -66,6 +73,7 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 
 	private void initView() {
 		tv_msg = (TextView) findViewById(R.id.tv_msg);
+		swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 		editButton = (Button) this.findViewById(R.id.selectTextClickButton);
 		editButton.setVisibility(View.VISIBLE);
 		editButton.setText("日历");
@@ -76,6 +84,25 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 			}
 		});
 		lv_checckmoneyhisory = (ListView) findViewById(R.id.lv_checckmoneyhisory);
+		lv_checckmoneyhisory.setOnScrollListener(new AbsListView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {//此方法当滑动的时候调用
+				if(scrollState == SCROLL_STATE_IDLE){//滑动完毕之后
+					int lastVisiblePosition = view.getLastVisiblePosition();
+					if (lastVisiblePosition == adapter.getCount()-1){//如果到最后一个条目，请求数据加载下一页
+						lastid = adapter.getItemId(lastVisiblePosition)+"";
+						isLoadMore = true;//分页加载方式刷新
+						getData();
+
+					}
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				
+			}
+		});
 
 	}
 
@@ -107,8 +134,8 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 			@Override
 			public void OnItemClick(Date selectedStartDate, Date selectedEndDate, Date downDate) {
 				//获取view中的按下日期，准备请求数据
-				downDate1 = format.format(downDate);
-				//清空集合
+				downDate1 = format.format(downDate);//设置指定日期
+				isLoadMore = false;//重新刷新
 				getData();
 				LogUtil.d("收银流水", downDate1);
 				//更新标题的日期
@@ -118,15 +145,13 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 			}
 		});
 	}
-
 	/**
 	 * 异步请求数据
 	 */
 	private void getData() {
-		ColorDialog.showRoundProcessDialog(context, R.layout.loading_process_dialog_color);
 		RequestParams param = new RequestParams();
 		param.add("date", downDate1);
-		param.add("lastid", "0");
+		param.add("lastid", lastid);
 		HttpUtils.getConnection(context, param, ConstantParamPhone.GET_VERTTIFY_HISTROY, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
@@ -140,8 +165,18 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 					if ("SUCCESS".equalsIgnoreCase(code)) {
 						//数据请求成功
 						CheckSaleHistoryBean historyBean = new Gson().fromJson(s, CheckSaleHistoryBean.class);
-						adapter.add(historyBean.getData());
-						tv_msg.setVisibility(View.GONE);
+						if (isLoadMore ){//说明是分页加载
+							adapter.add(historyBean.getData());//增加数据
+						}else {//请求新的日期
+							adapter.clear();
+							if (historyBean.getData()!=null&&historyBean.getData().size()>0){//
+								adapter.add(historyBean.getData());//清空数据再添加数据
+								tv_msg.setVisibility(View.GONE);
+
+							}else {
+								tv_msg.setVisibility(View.VISIBLE);
+							}
+						}
 					} else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -152,19 +187,19 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 					e.printStackTrace();
 				}
 			}
-
 			@Override
 			public void onFinish() {
 				super.onFinish();
 				//数据请求成功后弹窗消失
-				ColorDialog.dissmissProcessDialog();
 				lv_checckmoneyhisory.setVisibility(View.VISIBLE);
 				//数据解析成功后，展示列表
 				lv_checckmoneyhisory.setAdapter(adapter);
+				swiperefresh.setRefreshing(false);
 
 			}
 		});
 	}
+	
 
 
 }
