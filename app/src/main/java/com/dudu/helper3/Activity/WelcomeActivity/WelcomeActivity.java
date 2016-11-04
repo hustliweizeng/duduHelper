@@ -121,7 +121,6 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 						}
 					}
 				});
-				
 			}
 			else
 			{
@@ -156,7 +155,29 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
   		fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(),FragmentViewlists,null,null);
   		viewPager.setAdapter(fragmentAdapter);
   		viewPager.setOffscreenPageLimit(3);
-    	
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				//
+				if (position == 2){
+					linearLayout.setVisibility(View.GONE);
+					LogUtil.d("pos1",position+"");
+				}else{
+					linearLayout.setVisibility(View.VISIBLE);
+					LogUtil.d("pos2",position+"");
+				}
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+
+			}
+		});
     }
   
     /** 
@@ -179,7 +200,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
         //定义小圆点数量
         points = new ImageView[3];
   
-        // 循环取得小点图片  
+        // 循环取得小点图片  ,设置监听事件
         for (int i = 0; i < 3; i++) {  
             // 得到一个LinearLayout下面的每一个子元素  
             points[i] = (ImageView) linearLayout.getChildAt(i);  
@@ -221,7 +242,14 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
     @Override  
     public void onPageSelected(int position) {  
         // 设置底部小点选中状态  
-        setCurDot(position);  
+        setCurDot(position);
+		if (position == 2){
+			linearLayout.setVisibility(View.GONE);
+			LogUtil.d("pos1",position+"");
+		}else{
+			linearLayout.setVisibility(View.VISIBLE);
+			LogUtil.d("pos2",position+"");
+		}
     }  
   
     /** 
