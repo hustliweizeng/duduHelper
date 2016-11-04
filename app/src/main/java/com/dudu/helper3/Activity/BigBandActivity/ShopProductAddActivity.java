@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -227,7 +228,7 @@ public class ShopProductAddActivity extends BaseActivity
 		productYuanPriceEditText.setText(data.getPrice());
 		productNowPriceEditText.setText(data.getCurrent_price());
 		productKuCunNumEditText.setText(data.getStock());
-		ed_explain.setText(data.getExplain());
+		ed_explain.setText(Html.fromHtml(data.getExplain()));
 		productDetaliTextView.setText(data.getExplain());
 		//设置配送方式
 		String delivery = data.getDelivery();

@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.KeyEvent;
@@ -135,7 +136,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 										tv_circle_shop.setText(data.getArea_name());
 										phoneNumText.setText(data.getContact());
 										ed_location_shop.setText(data.getAddress());
-										ed_discription.setText(data.getDescription());
+										ed_discription.setText(Html.fromHtml(data.getDescription()));
 										//初始化行业和商圈id
 										circle_id = Integer.parseInt(data.getArea());
 										category_id = Integer.parseInt(data.getCategory());

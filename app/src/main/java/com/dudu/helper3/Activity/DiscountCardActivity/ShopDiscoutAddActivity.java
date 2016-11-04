@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.MotionEvent;
@@ -149,8 +150,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		productKuCunNumEditText.setText(data.getStock());
 		tv_startTime_shop_product.setText(data.getUpshelf());
 		tv_endTime_shop_product.setText(data.getDownshelf());
-		ed_info.setText(data.getExplain());
-		
+		ed_info.setText(Html.fromHtml(data.getExplain()));
 	}
 					
 	//提交修改的信息

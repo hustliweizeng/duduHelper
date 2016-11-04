@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.MotionEvent;
@@ -265,7 +266,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         String description = info.getDescription();
         //用正则表达式去除数据中的html数据
         String simple = "^<.*$/>";
-        ed_des_shop_info.setText(description);
+        ed_des_shop_info.setText(Html.fromHtml(description));
         //初始化商圈id和行业id
         circle_id = Integer.parseInt(info.getArea());
         category_id = Integer.parseInt(info.getCategory());

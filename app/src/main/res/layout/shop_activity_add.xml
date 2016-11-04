@@ -273,7 +273,7 @@
                 <LinearLayout
                     android:id="@+id/changeaddressrel"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:background="@drawable/view_selector"
                     android:gravity="center_vertical" >
 
