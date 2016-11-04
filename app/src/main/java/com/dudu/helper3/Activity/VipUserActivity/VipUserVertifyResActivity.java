@@ -168,7 +168,7 @@ public class VipUserVertifyResActivity extends BaseActivity implements View.OnCl
 				ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 				String id = getIntent().getStringExtra("id");
 				LogUtil.d("id",id);
-				HttpUtils.getConnection(context, null, ConstantParamPhone.USE_VIP+id+"/use", "post", new TextHttpResponseHandler() {
+				HttpUtils.getConnection(context, null, ConstantParamPhone.USE_VIP+id+"/use", "get", new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 						Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();

@@ -156,7 +156,6 @@ public class ShopMineFragment extends Fragment {
     private void initFragemntView() {
         RelativeLayout getCashButtonRel = (RelativeLayout) MineFragmentView.findViewById(R.id.getCashButtonRel);
         final LinearLayout viewById = (LinearLayout) MineFragmentView.findViewById(R.id.lin1);
-        final RelativeLayout viewById1 = (RelativeLayout) MineFragmentView.findViewById(R.id.rel2);
         final RelativeLayout mineheadRelLine = (RelativeLayout) MineFragmentView.findViewById(R.id.mineheadRelLine);
         final RelativeLayout helpRel = (RelativeLayout) MineFragmentView.findViewById(R.id.helpRel);
         //关于我们
@@ -240,6 +239,7 @@ public class ShopMineFragment extends Fragment {
             tv_frozen_num_mine.setText(sp.getString("frozenMoney", ""));
             //显示今日收入
             earnMoneyTextView.setText(sp.getString("todayIncome", "") + "↑");
+            LogUtil.d("shouru",sp.getString("todayIncome", ""));
             //可提现金额
             getCashMoneyTextView.setText(sp.getString("useableMoney", ""));
             //初始化手机号码

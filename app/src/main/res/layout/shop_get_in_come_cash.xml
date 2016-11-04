@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/getcashmoneyedit"
                 android:layout_marginLeft="16dp"
-                android:text="¥"
+                android:text="￥"
                 android:textColor="@color/text_dark_color"
                 android:textSize="18sp" />
 

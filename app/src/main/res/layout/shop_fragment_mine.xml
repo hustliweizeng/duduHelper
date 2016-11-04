@@ -99,10 +99,11 @@
                 android:background="@color/bg_white_color"
                 android:orientation="vertical" >
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rel2"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:orientation="horizontal"
                     android:background="@drawable/view_selector"
                     android:gravity="center_vertical" >
 
@@ -114,27 +115,27 @@
                         android:text="今日收入"
                         android:textColor="@color/text_color_dark"
                         android:textSize="16sp" />
-
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/earnMoneyTextView"
+                        android:text="￥"
+                        android:textColor="@color/text_red_color"
+                        android:textSize="16sp" />
                     <TextView
                         android:id="@+id/earnMoneyTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="17dp"
+                        android:layout_marginRight="16dp"
                         android:text="0↑"
                         android:textColor="@color/text_red_color"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/textView1"
-                        android:layout_alignBottom="@+id/textView1"
-                        android:layout_toLeftOf="@+id/earnMoneyTextView"
-                        android:text="¥"
-                        android:textColor="@color/text_red_color"
-                        android:textSize="12sp" />
-                </RelativeLayout>
+                    
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"

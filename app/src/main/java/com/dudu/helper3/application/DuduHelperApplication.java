@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
@@ -32,6 +33,15 @@ public class DuduHelperApplication extends Application
 	{
 		// TODO Auto-generated method stub
 		super.onCreate();
+		/**
+		 * buggly自动更新功能
+		 */
+		CrashReport.initCrashReport(getApplicationContext(), "510ff77a7a", false);
+		Bugly.init(getApplicationContext(), "510ff77a7a", false);
+
+
+
+
 		CrashReport.initCrashReport(getApplicationContext(), "510ff77a7a", false);
 		initImageLoader(getApplicationContext());
 		mPushAgent = PushAgent.getInstance(this);

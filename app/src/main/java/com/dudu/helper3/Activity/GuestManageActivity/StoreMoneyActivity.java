@@ -191,6 +191,7 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				LogUtil.d("fail", "fff");
+				Toast.makeText(context,"服务器异常，请稍后再试",Toast.LENGTH_SHORT).show();
 				throwable.printStackTrace();
 			}
 			@Override
@@ -244,7 +245,6 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 			public void onFinish() {
 				super.onFinish();
 				Toast.makeText(context,"充值成功",Toast.LENGTH_SHORT);
-				finish();//结束当前页面
 			}
 		});
 

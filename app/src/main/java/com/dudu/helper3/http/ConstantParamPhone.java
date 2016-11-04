@@ -10,9 +10,9 @@ public class ConstantParamPhone
 		
 	}
 	//版本号，通过判断版本号兼容老版本
-    public static String VERSION="2.3.1";
+    public static String VERSION="3.1";
 //	public static String IP="https://business.duduapp.net/api";
-	public static String IP="http://business.dev.duduapp.net/api";
+	public static String IP="http://www.dolife.me";
     
 //    public static String IP="http://dev.dolife.me/api/app";
 //    public static String SUCCESS = "SUCCESS";
@@ -83,7 +83,7 @@ public class ConstantParamPhone
 	 * 新接口地址
      */
     //public static final String USER_LOGIN = "/user/login";
-    public static final String BASE_URL = "http://dev.dolife.me";
+    public static final String BASE_URL = "http://www.dolife.me";//"http://dev.dolife.me";
     public static final String SUCCESS = "SUCCESS";
     public static final String FAIL = "FAIL";
 

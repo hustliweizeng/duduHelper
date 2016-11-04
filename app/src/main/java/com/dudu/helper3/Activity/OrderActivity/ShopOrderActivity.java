@@ -201,6 +201,8 @@ public class ShopOrderActivity extends BaseActivity
 			{
 				orderallswipeLayout.setRefreshing(false);
 				//ColorDialog.dissmissProcessDialog();
+				loading_progressBar.setVisibility(View.INVISIBLE);
+				loading_text.setText("");
 			}
 		});
 		//设置适配器
