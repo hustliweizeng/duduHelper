@@ -36,13 +36,9 @@ public class DuduHelperApplication extends Application
 		/**
 		 * buggly自动更新功能
 		 */
-		CrashReport.initCrashReport(getApplicationContext(), "510ff77a7a", false);
+		//CrashReport.initCrashReport(getApplicationContext(), "510ff77a7a", false);
 		Bugly.init(getApplicationContext(), "510ff77a7a", false);
 
-
-
-
-		CrashReport.initCrashReport(getApplicationContext(), "510ff77a7a", false);
 		initImageLoader(getApplicationContext());
 		mPushAgent = PushAgent.getInstance(this);
 		UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler()

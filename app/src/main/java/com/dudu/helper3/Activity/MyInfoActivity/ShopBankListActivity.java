@@ -270,6 +270,7 @@ public class ShopBankListActivity extends BaseActivity
 		getCodeedit = (EditText) view.findViewById(R.id.getCodeedit);
 		//提现的金额
 		getcashmoneyedit = (EditText) view.findViewById(R.id.getcashmoneyedit);
+		getcashmoneyedit.setHint(sp.getString("useableMoney", ""));//设置可体现金额
 		//确认提现按钮
 		loginbutton = (Button) view.findViewById(R.id.loginbutton);
 		btnGetmess = (Button) view.findViewById(R.id.btnGetmess);

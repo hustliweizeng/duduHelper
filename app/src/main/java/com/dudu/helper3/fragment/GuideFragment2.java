@@ -15,14 +15,12 @@ public class GuideFragment2 extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) 
 	{
-		// TODO Auto-generated method stub
 		OrderFragmentView= inflater.inflate(R.layout.fragment_guide2, null);
 		return OrderFragmentView;
 	}
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) 
 	{
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 	}
 

@@ -18,17 +18,8 @@ import com.dudu.helper3.Activity.CheckSellAcitivty.CheckSaleDetailActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.CashHistoryActivity.ShopMoneyRecordListActivity;
 import com.dudu.helper3.R;
-import com.dudu.helper3.http.ConstantParamPhone;
-import com.dudu.helper3.http.HttpUtils;
-import com.dudu.helper3.widget.ColorDialog;
 import com.dudu.helper3.widget.MyKeyBoard;
 import com.example.qr_codescan.MipcaActivityCapture;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class ShopGetInComeCashActivity extends BaseActivity
 {
@@ -49,7 +40,12 @@ public class ShopGetInComeCashActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_get_in_come_cash);
-		initHeadView("核销", true, true, R.drawable.icon_historical);
+		String name = getIntent().getStringExtra("name");
+		if (!TextUtils.isEmpty(name) &&"getMoney".equals(name) ){
+			initHeadView("收款", true, true, R.drawable.icon_historical);
+		}else {
+			initHeadView("核销", true, true, R.drawable.icon_historical);
+		}
 		if(getIntent().getStringExtra("action")!=null)
 		{
 			action = getIntent().getStringExtra("action");
@@ -156,7 +152,6 @@ public class ShopGetInComeCashActivity extends BaseActivity
 			//判断如果是提交按钮
 			public void onSubmit()
 			{
-				// TODO Auto-generated method stub
 				//跳转到其他页面
 				if(action.equals("getcashcode"))
 				{
@@ -188,7 +183,7 @@ public class ShopGetInComeCashActivity extends BaseActivity
 				else
 				{
 					//请求网络数据，进入收款二维码页面
-					initData();
+					enterNextPage();
 				}
 			}
 
@@ -219,75 +214,21 @@ public class ShopGetInComeCashActivity extends BaseActivity
 			}
 		});
 	}
-	//
-	private void initData()
-	{
-		if(TextUtils.isEmpty(getcashmoneyedit.getText().toString()))
-		{
-			Toast.makeText(ShopGetInComeCashActivity.this, "请填写收款金额", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if(Double.parseDouble(getcashmoneyedit.getText().toString())<0.01)
-		{
-			Toast.makeText(ShopGetInComeCashActivity.this, "收款金额必须大于0.01元", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if(Double.parseDouble(getcashmoneyedit.getText().toString())>100000)
-		{
-			Toast.makeText(ShopGetInComeCashActivity.this, "单笔金额不能超过100000", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		//请求网络数据
-		ColorDialog.showRoundProcessDialog(ShopGetInComeCashActivity.this,R.layout.loading_process_dialog_color);
-		RequestParams params = new RequestParams();
-		params.add("fee",getcashmoneyedit.getText().toString());
-		params.add("body","nihao");
-		HttpUtils.getConnection(context,params, ConstantParamPhone.CREATE_PAYMENT_ORDER, "post",new TextHttpResponseHandler()
-		{
 
-			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
-			{
-				Toast.makeText(ShopGetInComeCashActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
-			}
-			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2)
-			{
-				try {
-					JSONObject object = new JSONObject(arg2);
-					String code =  object.getString("code");
-					if ("SUCCESS".equalsIgnoreCase(code)){
-						//数据请求成功
-							/*"id": "20160906154048306",
-								"time_create": "1473147648",
-								"code": "SUCCESS",
-								"msg": "OK"*/
-						orderId = object.getString("id");
-						//进入（扫码收款页面）
-						Intent intent=new Intent(context,MipcaActivityCapture.class);
-						intent.putExtra("price",getcashmoneyedit.getText().toString());
-						intent.putExtra("id",orderId);
-						intent.putExtra("action","income");
-						startActivity(intent);
-
-					}else {
-						//数据请求失败
-						String msg = object.getString("msg");
-						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				
-
-			}
-			@Override
-			public void onFinish()
-			{
-				// TODO Auto-generated method stub
-				ColorDialog.dissmissProcessDialog();
-			}
-		});
+	/**
+	 * 价格信息传递到下一页
+	 */
+	private void enterNextPage() {
+		String price = getcashmoneyedit.getText().toString();
+		if (TextUtils.isEmpty(price)){
+			Toast.makeText(context,"金额输入为空",Toast.LENGTH_SHORT).show();
+		}
+		Intent intent = new Intent(context,MipcaActivityCapture.class);
+		intent.putExtra("price",price);
+		intent.putExtra("action","income");
+		startActivity(intent);
 	}
+	//
+	
 
 }

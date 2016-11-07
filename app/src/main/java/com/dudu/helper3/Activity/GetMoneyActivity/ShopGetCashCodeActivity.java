@@ -2,6 +2,7 @@ package com.dudu.helper3.Activity.GetMoneyActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,11 +39,14 @@ public class ShopGetCashCodeActivity extends BaseActivity
     private LinearLayout getCashButton;
     private TextView getCashInputText;
 	private CreateCashPic data;
+	private TimeCount time;
+	private TextView tv_content;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+		time = new TimeCount(30000,5000);
 		setContentView(R.layout.shop_get_cash_code);
 		initHeadView("收款", true,true, R.drawable.icon_historical);
 		//获取传递过来的二维码和价格
@@ -97,18 +101,21 @@ public class ShopGetCashCodeActivity extends BaseActivity
 				super.onFinish();
 				ColorDialog.dissmissProcessDialog();
 				//数据请求成功后展示数据
-				initView();
+				setData();
 			}
 		});
 		
 	}
 
-	private void initView() {
-		
+	private void setData() {
+		tv_content = (TextView) findViewById(R.id.tv_content);
 		getCashButton = (LinearLayout) this.findViewById(R.id.getCashButton);//扫码收款
 		ImageCode = (ImageView) this.findViewById(R.id.imageCashCodeImg);
-		ImageAware imageAware = new ImageViewAware(ImageCode, false);
-		imageLoader.displayImage(data.getQrcode(), imageAware);//用imageloader设置二维码图片
+		//对二维码图片做非空判断
+		if (data !=null && !TextUtils.isEmpty(data.getQrcode())){
+			ImageAware imageAware = new ImageViewAware(ImageCode, false);
+			imageLoader.displayImage(data.getQrcode(), imageAware);//用imageloader设置二维码图片
+		}
 		cashMoneyText = (TextView) this.findViewById(R.id.cashMoneyText);
 		cashMoneyText.setText("￥ " + money);//设置收款金额
 		getCashButton.setOnClickListener(new OnClickListener() {
@@ -118,6 +125,77 @@ public class ShopGetCashCodeActivity extends BaseActivity
 				finish();
 			}
 		});//扫码收款页面跳转(因为当前页面入口只有扫码付款，所以，返回上一个界面就行)
+		time.start();//开始计时
 	}
 
+	/**
+	 * 计时器
+	 */
+	class TimeCount extends CountDownTimer
+	{
+		public TimeCount(long millisInFuture, long countDownInterval)
+		{
+			super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+		}
+		@Override
+		public void onFinish()
+		{
+			//计时完毕时触发
+			//Toast.makeText(context,"付款超时",Toast.LENGTH_SHORT).show();
+			tv_content.setText("付款超时!");
+		}
+		@Override
+		public void onTick(long millisUntilFinished)
+		{
+			//计时过程显示
+			requetResult();
+			//Toast.makeText(context,"正在等待付款结果",Toast.LENGTH_SHORT).show();
+			tv_content.setText("正在等待付款结果...");
+		}
+	}
+
+	private void requetResult() {
+		RequestParams params = new RequestParams();
+		params.add("id",data.getId() );
+		HttpUtils.getConnection(context,params,ConstantParamPhone.GET_PAYMENT_RESULT, "get",new TextHttpResponseHandler()
+		{
+			@Override
+			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
+			{
+				Toast.makeText(context, "网络不给力呀", Toast.LENGTH_SHORT).show();
+			}
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, String arg2)
+			{
+				LogUtil.d("res",arg2);
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						tv_content.setText("付款成功！");
+						time.cancel();//取消及时
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						//Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFinish()
+			{
+			}
+		});
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		time.cancel();
+	}
 }

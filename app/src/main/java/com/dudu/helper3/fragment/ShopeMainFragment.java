@@ -141,6 +141,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			case R.id.getCashRelBtn:
 				//进入收款页面
 				intent =new Intent(getActivity(),ShopGetInComeCashActivity.class);
+				intent.putExtra("name","getMoney");
 				break;
 			case R.id.getHexiaoRelBtn:
 				//核销

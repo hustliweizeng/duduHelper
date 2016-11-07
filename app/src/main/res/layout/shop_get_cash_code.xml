@@ -38,17 +38,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="56.00"
             android:textColor="@color/text_dark_color"
             android:textSize="32sp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="让用户使用微信扫一扫，完成付款"
             android:textColor="@color/text_gray_color"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout

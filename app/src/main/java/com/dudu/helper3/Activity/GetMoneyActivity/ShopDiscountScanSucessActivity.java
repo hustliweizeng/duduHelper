@@ -129,7 +129,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 		//初始化结果码
 		if(!TextUtils.isEmpty(getIntent().getStringExtra("result")))
 		{
-			auth_code=getIntent().getStringExtra("result");
+			auth_code=getIntent().getStringExtra("result");//获取二维码
 		}
 		else
 		{
@@ -290,7 +290,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
         });
 	}
 	
-	//请求扫码支付接口
+	//请求刷卡支付接口
 	private void getInComeResult() 
 	{
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
@@ -316,10 +316,8 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 						//设置成功的图片
 						imageCashCodeImg.setImageResource(R.drawable.icon_pay_sucess);
 					}else {
-						//数据请求失败
-						String msg = object.getString("msg");
-						LogUtil.d("fail",s);
-						Toast.makeText(context,s,Toast.LENGTH_LONG).show();
+						//说明用户需要数据付款密码，需要请求服务器获取订单状态
+						time.start();//开始计时查询订单结果
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -336,14 +334,11 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 	//查询订单
 	private void selectOrderStatus() 
 	{
-		// TODO Auto-generated method stub
-		result.setText("正在查询支付结果");
+		result.setText("正在等待支付结果");
 		RequestParams params = new RequestParams();
 		params.add("id",id );
-		params.add("code", this.share.getString("token", ""));
-        HttpUtils.getConnection(context,params,ConstantParamPhone.GET_SCAN_ORDER, "get",new TextHttpResponseHandler()
+        HttpUtils.getConnection(context,params,ConstantParamPhone.GET_PAYMENT_RESULT, "get",new TextHttpResponseHandler()
 		{
-
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
 			{
@@ -352,15 +347,38 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
+				LogUtil.d("res",arg2);
+				try {
+				JSONObject object = new JSONObject(arg2);
+				String code =  object.getString("code");
+				if ("SUCCESS".equalsIgnoreCase(code)){
+					//数据请求成功
+					time.cancel();//取消及时
+					result.setText("收款完成");
+				}else {
+					//数据请求失败
+					String msg = object.getString("msg");
+					//Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+				
 			}
 			
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 			}
 		});
 	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		time.cancel();
+	}
+
 	//设置失败结果
 	private void setFailResult(String string) 
 	{
@@ -472,7 +490,6 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 		public void onFinish() 
 		{
 			//计时完毕时触发
-			//selectOrderStatus();
 			setFailResult("支付超时，请稍后查询收款状态");
 		}
 		@Override

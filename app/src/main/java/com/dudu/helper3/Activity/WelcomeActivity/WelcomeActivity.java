@@ -165,7 +165,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			public void onPageSelected(int position) {
 				//
 				if (position == 2){
-					linearLayout.setVisibility(View.GONE);
+					linearLayout.setVisibility(View.INVISIBLE);
 					LogUtil.d("pos1",position+"");
 				}else{
 					linearLayout.setVisibility(View.VISIBLE);

@@ -22,14 +22,12 @@ public class GuideFragment4 extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) 
 	{
-		// TODO Auto-generated method stub
 		OrderFragmentView= inflater.inflate(R.layout.fragment_guide4, null);
 		return OrderFragmentView;
 	}
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) 
 	{
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		enterButton=(Button) OrderFragmentView.findViewById(R.id.enterButton);
 		enterButton.setOnClickListener(new OnClickListener() 
@@ -37,12 +35,12 @@ public class GuideFragment4 extends Fragment
 			@Override
 			public void onClick(View arg0) 
 			{
-				// TODO Auto-generated method stub
 				Intent intent=new Intent(getActivity(),LoginActivity.class);
 				startActivity(intent);
 				getActivity().finish();
 			}
 		});
+		//getActivity().findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);//隐藏小远点
 	}
 
 }

@@ -36,9 +36,11 @@ import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.javabean.VipDetailBean;
+import com.dudu.helper3.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.mining.app.zxing.camera.CameraManager;
 import com.mining.app.zxing.decoding.CaptureActivityHandler;
@@ -89,11 +91,63 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_capture);
 		//通过其他界面跳转过来携带的参数
-		orderId = getIntent().getStringExtra("id");
 		price = getIntent().getStringExtra("price");
 		action = getIntent().getStringExtra("action");
 
 		initHeadView();
+	}
+
+	/**
+	 * 请求支付订单
+	 */
+	private void requestOrder(final  String restring)
+	{
+		
+		//请求网络数据
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		RequestParams params = new RequestParams();
+		params.add("fee",price);
+		params.add("body","嘟嘟科技");
+		HttpUtils.getConnection(context,params, ConstantParamPhone.CREATE_PAYMENT_ORDER, "post",new TextHttpResponseHandler()
+		{
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
+			{
+				Toast.makeText(context, "网络不给力呀", Toast.LENGTH_SHORT).show();
+			}
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, String arg2)
+			{
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						orderId = object.getString("id");//生成订单号
+						//进入（扫码收款页面）
+						Intent intent = null;
+						intent = new Intent(MipcaActivityCapture.this,ShopDiscountScanSucessActivity.class);
+						intent.putExtra("price", price);
+						intent.putExtra("id",orderId);
+						intent.putExtra("result", restring);
+						startActivity(intent);
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+			}
+			@Override
+			public void onFinish()
+			{
+				ColorDialog.dissmissProcessDialog();
+			}
+		});
 	}
 
 	private void initHeadView() {
@@ -257,15 +311,12 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 					Toast.LENGTH_SHORT).show();
 			finish();
 		} else {
-			//进入扫码成功页面
+			//扫描成功
 			Intent intent = null;
-			if (action.equals("income")) 
+			if (action.equals("income")) //收款页面
 			{
-				intent = new Intent(MipcaActivityCapture.this,ShopDiscountScanSucessActivity.class);
-				intent.putExtra("price", price);
-				intent.putExtra("id",orderId);
-				intent.putExtra("result", resultString);
-				
+				requestOrder(resultString);//获取订单号并把扫描结果传递给服务器
+				return;
 			}else {
 				if ("vip".equals(action)){
 					//进入核销结果页面-请求网络处理核销结果
