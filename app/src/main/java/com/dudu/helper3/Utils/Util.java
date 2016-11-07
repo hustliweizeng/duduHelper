@@ -132,7 +132,7 @@ public class Util
     //获取当前年月日
     public static String DateForomate3(String date)
     {
-        return new SimpleDateFormat("yyyy年MM月dd日").format(new Date(Long.parseLong(date)));
+        return new SimpleDateFormat("yyyy年MM月dd日").format(new Date(Long.parseLong(date)*1000));
     }
     
     //MD5加密
