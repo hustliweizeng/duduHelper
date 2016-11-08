@@ -25,6 +25,7 @@ import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.javabean.LoginBean;
+import com.dudu.helper3.javabean.ShopCheckListBean;
 import com.dudu.helper3.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
@@ -233,10 +234,10 @@ public class LoginActivity extends BaseActivity
 				//保存用户名和密码到本地
 				sp.edit().putString("loginname",username.getText().toString().trim())
 				.putString("password",Util.md5(password.getText().toString().trim()))		
-				.commit();		
+				.commit();	
 				
-				String url = ConstantParamPhone.USER_LOGIN;
-		        HttpUtils.getConnection(context, params,url,"POST",new TextHttpResponseHandler()
+				String url = ConstantParamPhone.USER_LOGIN;//调用切换门店信息
+		        HttpUtils.getConnection(context, params,url+sp.getString("shopid",""),"POST",new TextHttpResponseHandler()
 				{
 					@Override
 					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
@@ -249,66 +250,24 @@ public class LoginActivity extends BaseActivity
 					@Override
 					public void onSuccess(int arg0, Header[] arg1, String arg2)
 					{
-						LogUtil.d("login",arg2);
+						try {
+							JSONObject object = new JSONObject(arg2);
+							String code =  object.getString("code");
+							if ("SUCCESS".equalsIgnoreCase(code)){
+								//数据请求成功
+								ShopCheckListBean data = new Gson().fromJson(arg2, ShopCheckListBean.class);
+								startActivity();
 
-						LoginBean loginBean = new Gson().fromJson(arg2,LoginBean.class);
-						//判断返回状态是否成功
-						if (ConstantParamPhone.SUCCESS.equalsIgnoreCase(loginBean.getCode())){
-							
-							//判断手机绑定没有
-							if (TextUtils.isEmpty(loginBean.getUser().getMobile())){
-								Toast.makeText(context,"当前账号未绑定，请先绑定手机号",Toast.LENGTH_LONG).show();
-								startActivity(new Intent(context,LoginBindPhoneActivity.class));
-								finish();
-								return;//不能进入了
-							}
-							requestStatus();//请求店铺状态
-							//对bean的数据做非空判断
-							String isshopuser = loginBean.getUser().getIsshopuser();
-							boolean isManager = true;
-							if ("1".equals(isshopuser)){
-								isManager = false;
-								LogUtil.d("manager","false");
-							}
-							if ("0".equals(isshopuser)) {
-								isManager = true;
-							}
-								
-							//1.通过sp保存用户信息
-							SharedPreferences.Editor edit = sp.edit();
-							edit.putString("username", loginBean.getUser().getName())
-							.putString("nickename", loginBean.getUser().getNickname())//手动添加
-							.putString("mobile", loginBean.getUser().getMobile())
-							.putString("shopid",loginBean.getShop().getId())		//店铺id
-							//2.存储商店信息
-							.putString("id", loginBean.getShop().getId())
-							.putString("shopLogo", loginBean.getShop().getLogo())
-							.putString("shopName", loginBean.getShop().getName())
-							//3.储存今日状态
-							.putString("todayIncome", loginBean.getTodaystat().getIncome())
-							//4.存储总计状态
-							.putString("frozenMoney", loginBean.getTotalstat().getFreezemoney())
-							.putString("useableMoney", loginBean.getTotalstat().getUsablemoney())
-							//储存店员状态
-							.putBoolean("isManager", isManager)
-							//储存统计信息
-							.putString("totalVistor",loginBean.getTotalstat().getVisitor())
-							.putString("totalBuyer",loginBean.getTotalstat().getBuyer())
-							.putString("totalOrder",loginBean.getTotalstat().getOrder())
-							.putString("totalIncome",loginBean.getTotalstat().getIncome())
-							.putString("totalTrade",loginBean.getTotalstat().getTrade())
-							.putBoolean("isManager",isManager)
-							//在后台处理
-							.apply();
-							//跳转到主页
-							
 
-							startActivity(new Intent(context, MainActivity.class));
-							finish();
-
-						}else if (ConstantParamPhone.FAIL.equalsIgnoreCase(loginBean.getCode())){
-							Toast.makeText(LoginActivity.this,"用户名或者密码不正确",Toast.LENGTH_LONG).show();
+							}else {
+								//数据请求失败
+								String msg = object.getString("msg");
+								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
 						}
+						
 
 					}
 					@Override

@@ -23,6 +23,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ShopSettingActivity extends BaseActivity implements OnClickListener
 {
@@ -33,6 +35,8 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 	private RelativeLayout mendianRel;
 	private RelativeLayout memberRel;
 	private Button logoutButton;
+	private RelativeLayout select_shop;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -59,6 +63,8 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 		shopEditRel.setOnClickListener(this);
 		passwordEditRel = (RelativeLayout) this.findViewById(R.id.passwordEditRel);
 		passwordEditRel.setOnClickListener(this);
+		select_shop = (RelativeLayout) findViewById(R.id.select_shop);
+		select_shop.setOnClickListener(this);
 	}
 	
 	//设置数据
@@ -82,6 +88,9 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 		Intent intent = null;
 		switch (v.getId())
 		{
+			case R.id.select_shop://选择分店店铺
+				startActivityForResult(new Intent(context,ChangeShopActivity.class),20);
+				return;
 			case R.id.changePhoneNumRel:
 				//绑定手机号页面
 				intent=new Intent(ShopSettingActivity.this,ShopRebindPhoneSteponeActivity.class);
@@ -136,6 +145,45 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 				break;
 		}
 		startActivity(intent);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 20){
+			String id = data.getStringExtra("id");
+			if (!TextUtils.isEmpty(id)){//当返回数据不为空时，请求切换页面
+				HttpUtils.getConnection(context, null, ConstantParamPhone.SWITCH_SHOP, "get", new TextHttpResponseHandler() {
+					@Override
+					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+						Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+
+					}
+
+					@Override
+					public void onSuccess(int i, Header[] headers, String s) {
+						try {
+							JSONObject object = new JSONObject(s);
+							String code =  object.getString("code");
+							if ("SUCCESS".equalsIgnoreCase(code)){
+								//数据请求成功
+
+
+							}else {
+								//数据请求失败
+								String msg = object.getString("msg");
+								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
+			}
+		}
+		
+		
 	}
 
 	/**

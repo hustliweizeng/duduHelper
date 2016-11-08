@@ -85,7 +85,7 @@ public class SummoryModuleAdapter extends BaseAdapter {
 				break;
 		}
 		holder.tv_name_other.setText(name);
-		holder.tv_price_other.setText(list.get(position).getFee());
+		holder.tv_price_other.setText("￥"+list.get(position).getFee());
 		return convertView;
 	}
 

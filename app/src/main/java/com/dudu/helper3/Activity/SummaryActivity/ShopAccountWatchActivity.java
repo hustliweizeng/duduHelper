@@ -3,6 +3,10 @@ package com.dudu.helper3.Activity.SummaryActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,6 +105,7 @@ public class ShopAccountWatchActivity extends BaseActivity
 						List<SummoryDetaiBean.TradeModulesBean> trade_modules = data.getTrade_modules();
 						//把数据放到适配器
 						adapter.addAll(trade_modules);
+						setListViewHeightBasedOnChildren(lv_datas);//设置listview的高度（固定）
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -140,5 +145,27 @@ public class ShopAccountWatchActivity extends BaseActivity
 		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
 		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem);
 		wheelIndicatorView.startItemsAnimation();
+	}
+
+	/**
+	 * 动态设置listview的高度
+	 * @param listView
+	 */
+	public static void setListViewHeightBasedOnChildren(ListView listView) {
+		if(listView == null) return;
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+		int totalHeight = 0;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
 	}
 }

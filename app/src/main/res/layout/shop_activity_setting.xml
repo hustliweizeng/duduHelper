@@ -10,11 +10,51 @@
     <include
         android:id="@+id/head"
         layout="@layout/activity_head" />
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/select_shop"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/view_selector"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/icon_shop"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_marginLeft="17dp"
+            android:src="@drawable/ic_change" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+            android:layout_toRightOf="@+id/icon_shop"
+            android:text="切换门店"
+            android:textColor="@color/text_dark_color"
+            android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
+            android:layout_toLeftOf="@+id/icon_arr0"
+            android:text="更换店铺"
+            android:textColor="@color/text_middledark_color"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/icon_arr0"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/icon_arrow" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:background="@color/bg_white_color"
         android:orientation="vertical" >
 
@@ -182,7 +222,7 @@
         android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="切换门店"
+        android:text="退出登陆"
         android:background="@drawable/btn_white_bg"
         android:textColor="@color/text_dark_color"
         android:textSize="16sp" />

@@ -223,7 +223,12 @@ public class ShopBankListActivity extends BaseActivity
 						//Toast.makeText(context,"加载成功",Toast.LENGTH_LONG).show();
 						Gson gson = new Gson();
 						bean1 = gson.fromJson(arg2, BankCardListBean.class);
-						memberAdapter.addAll(bean1.getData());
+						if (bean1.getData()!=null &&bean1.getData().size()>0){
+							memberAdapter.addAll(bean1.getData());
+
+						}else {
+							Toast.makeText(context,"您还没有绑定银行卡信息，请先绑定银行卡！",Toast.LENGTH_SHORT).show();
+						}
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");

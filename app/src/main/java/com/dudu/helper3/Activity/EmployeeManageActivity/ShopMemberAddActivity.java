@@ -53,13 +53,13 @@ public class ShopMemberAddActivity extends BaseActivity
 		if(memberDataBean!=null)
 		{
 			title="修改店员账号";
-			url = ConstantParamPhone.GET_USER_DETAIL+memberDataBean.getId();
-			initData();
+			url = ConstantParamPhone.GET_USER_DETAIL+memberDataBean.getId();//修改店员
+			initData();//请求详情
 		}
 		else
 		{
 			title="添加店员账号";
-			url = ConstantParamPhone.ADD_USER;
+			url = ConstantParamPhone.ADD_USER;//新增店员
 		}
 		initHeadView(title, true, false, 0);
 	}
@@ -68,7 +68,6 @@ public class ShopMemberAddActivity extends BaseActivity
 
 	private void initView() 
 	{
-		// TODO Auto-generated method stub
 		memberShopTextView = (TextView) this.findViewById(R.id.memberShopTextView);
 		memberShopTextView.setOnClickListener(new OnClickListener() 
 		{
@@ -90,8 +89,7 @@ public class ShopMemberAddActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
-				upDateData();
+				upDateData();//提交信息
 			}
 		});
 	}
@@ -126,8 +124,8 @@ public class ShopMemberAddActivity extends BaseActivity
 								membercount.setText(dataBean.getName());
 							}
 							//密码马赛克
-							memberpassword.setText("****");
-							memberShopTextView.setText(dataBean.getShop_name());
+							memberpassword.setText("******");
+							memberShopTextView.setText(dataBean.getShop_id());
 						}
 					}else {
 						//数据请求失败

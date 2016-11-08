@@ -332,8 +332,10 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 			LinearLayout val = (LinearLayout) entry.getValue();
 			EditText ed_high = (EditText) val.findViewById(R.id.ed_high);
 			EditText ed_low = (EditText) val.findViewById(R.id.ed_low);
-			params.put("limit[price][" + Float.parseFloat(ed_high.getText().toString().trim()) + "]", Float.parseFloat(ed_high.getText().toString().trim()));
-			params.put("limit[usable][" + Float.parseFloat(ed_low.getText().toString().trim()) + "]", Float.parseFloat(ed_low.getText().toString().trim()));
+			if (!TextUtils.isEmpty(ed_high.getText().toString().trim()) && !TextUtils.isEmpty(ed_low.getText().toString().trim())){
+				params.put("limit[price][" + Float.parseFloat(ed_high.getText().toString().trim()) + "]", Float.parseFloat(ed_high.getText().toString().trim()));
+				params.put("limit[usable][" + Float.parseFloat(ed_low.getText().toString().trim()) + "]", Float.parseFloat(ed_low.getText().toString().trim()));
+			}
 		}
 		
 		

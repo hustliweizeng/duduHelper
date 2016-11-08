@@ -93,11 +93,11 @@ public class MemberAdapter extends BaseAdapter
 		{
 			if(!TextUtils.isEmpty(list.get(position).getName()))
 			{
-				viewHolder.membercount.setText("账号："+list.get(position).getName());
+				viewHolder.membercount.setText("账号："+list.get(position).getShop_name());
 			}
 			if(!TextUtils.isEmpty(list.get(position).getShop_name()))
 			{
-				viewHolder.membername.setText("姓名："+list.get(position).getShop_name());
+				viewHolder.membername.setText("姓名："+list.get(position).getName());
 			}
 			if(!TextUtils.isEmpty(list.get(position).getId()))
 			{

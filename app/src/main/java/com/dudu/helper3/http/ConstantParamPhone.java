@@ -86,6 +86,7 @@ public class ConstantParamPhone
     public static final String BASE_URL = "http://www.dolife.me";//"http://dev.dolife.me";
     public static final String SUCCESS = "SUCCESS";
     public static final String FAIL = "FAIL";
+    public static final String SWITCH_SHOP = "/api/app/user/store/";
 
     //红包
     public static final String USER_LOGIN = "/api/app/user/login";//用户登录接口

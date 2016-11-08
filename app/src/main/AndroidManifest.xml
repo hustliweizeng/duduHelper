@@ -144,6 +144,7 @@
         <activity android:name=".Activity.VipUserActivity.VipUserVertifyActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".Activity.ShopManageActivity.ShopStatusActivity"/>
+        <activity android:name=".Activity.MyInfoActivity.ChangeShopActivity"/>
         <activity android:name=".Activity.VipUserActivity.VipUserVertifyResActivity"/>
         <activity android:name=".Activity.VipUserActivity.VipVertifyHistoryActivity"/>
         <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.NewActivityMsgActivity"/>
