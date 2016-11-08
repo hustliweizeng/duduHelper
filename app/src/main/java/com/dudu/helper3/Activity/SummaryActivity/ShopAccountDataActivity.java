@@ -39,7 +39,9 @@ public class ShopAccountDataActivity extends BaseActivity
 	//波浪助手
 	private WaveHelper mWaveHelper;
 	private WaveView waveView;
-	
+	private TextView all_trade;
+	private TextView all_income;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,7 +62,12 @@ public class ShopAccountDataActivity extends BaseActivity
 		mWaveHelper = new WaveHelper(waveView,5000,0.2f);
 		waveView.setShapeType(WaveView.ShapeType.SQUARE);
 		waveView.setWaveColor(Color.parseColor("#03ffffff"),Color.parseColor("#07ffffff"));
-		 
+
+		//总交易额
+		all_trade = (TextView) findViewById(R.id.allIncomeTextView);
+		//总收入
+		all_income = (TextView) findViewById(R.id.allFeeTextView);
+		
 		
 		orderNumText=(TextView) this.findViewById(R.id.orderNumText);
 		fangkeNumText=(TextView) this.findViewById(R.id.fangkeNumText);
@@ -105,10 +112,12 @@ public class ShopAccountDataActivity extends BaseActivity
 			}
 		});
 		//设置统计数据
-		fangkeNumText.setText(sp.getString("totalVistor","0"));
-		buyerNumText.setText(sp.getString("totalBuyer","0"));
-		orderNumText.setText(sp.getString("totalOrder","0"));
-		
+		fangkeNumText.setText(sp.getString("totalVistor","0"));//访客
+		buyerNumText.setText(sp.getString("totalBuyer","0"));//买家
+		orderNumText.setText(sp.getString("totalOrder","0"));//订单
+
+		all_trade.setText(sp.getString("totalTrade",""));//总交易额
+		all_income.setText(sp.getString("totalIncome",""));//总收入
 	}
 	//选择日期,调用系统主题
     @SuppressLint("InlinedApi") 

@@ -231,6 +231,7 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 
 						// 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
 						api.sendReq(req);
+						finish();//结束当前页面
 					} else {
 						Log.d("PAY_GET", "返回错误" + json.getString("retmsg"));
 						Toast.makeText(context, "返回错误" + json.getString("retmsg"), Toast.LENGTH_SHORT).show();

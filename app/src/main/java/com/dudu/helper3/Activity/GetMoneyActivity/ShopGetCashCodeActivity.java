@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.helper3.Activity.MainActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.CashHistoryActivity.ShopMoneyRecordListActivity;
 import com.dudu.helper3.R;
@@ -41,12 +42,14 @@ public class ShopGetCashCodeActivity extends BaseActivity
 	private CreateCashPic data;
 	private TimeCount time;
 	private TextView tv_content;
+	private TextView tv_btn;
+	private ImageView iv_btn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		time = new TimeCount(30000,5000);
+		time = new TimeCount(60000,3000);
 		setContentView(R.layout.shop_get_cash_code);
 		initHeadView("收款", true,true, R.drawable.icon_historical);
 		//获取传递过来的二维码和价格
@@ -109,8 +112,13 @@ public class ShopGetCashCodeActivity extends BaseActivity
 
 	private void setData() {
 		tv_content = (TextView) findViewById(R.id.tv_content);
-		getCashButton = (LinearLayout) this.findViewById(R.id.getCashButton);//扫码收款
-		ImageCode = (ImageView) this.findViewById(R.id.imageCashCodeImg);
+		//按钮文字
+		tv_btn = (TextView) findViewById(R.id.tv_btn);
+		//按钮图片
+		iv_btn = (ImageView) findViewById(R.id.iv_btn);
+		
+		getCashButton = (LinearLayout) this.findViewById(R.id.getCashButton);//刷卡收款按钮
+		ImageCode = (ImageView) this.findViewById(R.id.imageCashCodeImg);//二维码图片
 		//对二维码图片做非空判断
 		if (data !=null && !TextUtils.isEmpty(data.getQrcode())){
 			ImageAware imageAware = new ImageViewAware(ImageCode, false);
@@ -119,12 +127,12 @@ public class ShopGetCashCodeActivity extends BaseActivity
 		cashMoneyText = (TextView) this.findViewById(R.id.cashMoneyText);
 		cashMoneyText.setText("￥ " + money);//设置收款金额
 		getCashButton.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				finish();
+				finish();//返回上一页
 			}
-		});//扫码收款页面跳转(因为当前页面入口只有扫码付款，所以，返回上一个界面就行)
+		});
+		//扫码收款页面跳转(因为当前页面入口只有扫码付款，所以，返回上一个界面就行)
 		time.start();//开始计时
 	}
 
@@ -175,6 +183,15 @@ public class ShopGetCashCodeActivity extends BaseActivity
 						//数据请求成功
 						tv_content.setText("付款成功！");
 						time.cancel();//取消及时
+						tv_btn.setText("回到首页");
+						iv_btn.setVisibility(View.GONE);
+						getCashButton.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								finish();
+								startActivity(new Intent(context, MainActivity.class));
+							}
+						});
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");

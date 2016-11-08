@@ -88,7 +88,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_discount_scan_sucess);
 		initHeadView("扫码收款", true, false, 0);
-		time = new TimeCount(30000, 5000);//构造CountDownTimer对象
+		time = new TimeCount(60000, 3000);//构造CountDownTimer对象
 		initFilter();
 		initView();
 		initViewData();
