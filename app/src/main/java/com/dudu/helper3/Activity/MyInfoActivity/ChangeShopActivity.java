@@ -26,6 +26,8 @@ import com.google.gson.Gson;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * @author
@@ -72,6 +74,7 @@ public class ChangeShopActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {//返回的时候确认选择
 				String checkedId = adapter.getCheckedId();
+				LogUtil.d("checkid",checkedId);
 				if (!TextUtils.isEmpty(checkedId)){
 					switchShop(checkedId);
 				}
@@ -85,22 +88,16 @@ public class ChangeShopActivity extends BaseActivity {
 		});
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		String checkedId = adapter.getCheckedId();
-		if (!TextUtils.isEmpty(checkedId)){
-			switchShop(checkedId);
 
-		}
-	}
-
+	/**
+	 * 请求网路切换门店
+	 * @param checkedId
+	 */
 	private void switchShop(String checkedId) {
-		if(!TextUtils.isEmpty(checkedId)){
+		if(TextUtils.isEmpty(checkedId)){
 			Toast.makeText(context,"您没有选择店铺！",Toast.LENGTH_SHORT).show();
 			return; 
 		}
-			
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		String url = ConstantParamPhone.SWITCH_SHOP;//调用切换门店信息
 		HttpUtils.getConnection(context, null,url+checkedId,"get",new TextHttpResponseHandler()
@@ -109,8 +106,6 @@ public class ChangeShopActivity extends BaseActivity {
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 			{
 				arg3.printStackTrace();
-				Toast.makeText(context, arg2, Toast.LENGTH_LONG).show();
-
 			}
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2)
@@ -138,7 +133,6 @@ public class ChangeShopActivity extends BaseActivity {
 					if ("0".equals(isshopuser)) {
 						isManager = true;
 					}
-
 					//1.通过sp保存用户信息
 					SharedPreferences.Editor edit = sp.edit();
 					edit.putString("username", loginBean.getUser().getName())
@@ -168,7 +162,6 @@ public class ChangeShopActivity extends BaseActivity {
 					//跳转到主页
 					startActivity(new Intent(context, MainActivity.class));
 					finish();
-
 				}else if (ConstantParamPhone.FAIL.equalsIgnoreCase(loginBean.getCode())){
 					Toast.makeText(context,"用户名或者密码不正确",Toast.LENGTH_LONG).show();
 				}
@@ -181,5 +174,6 @@ public class ChangeShopActivity extends BaseActivity {
 			}
 		});
 	}
+	
 	
 }

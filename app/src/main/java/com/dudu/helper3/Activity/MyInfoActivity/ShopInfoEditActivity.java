@@ -14,13 +14,16 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -157,16 +160,12 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         btn_subimt_shop_info = (Button) findViewById(R.id.btn_subimt_shop_info);
         ed_scroll = (ScrollView) findViewById(R.id.ed_scroll);
         //设置文本编辑的上下滚动事件
-        ed_scroll.setOnTouchListener(new View.OnTouchListener() {
+       ed_scroll.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_UP:
                         //请求父控件不干涉，也就是我处理
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-                return false;
+                        v.getParent().getParent().requestDisallowInterceptTouchEvent(true);
+                return true;
             }
         });
 
@@ -179,6 +178,8 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         rl_shopcircle_shop_info.setOnClickListener(this);
         rl_opentime_shop_info.setOnClickListener(this);
         iv_img_shop_info.setOnClickListener(this);
+      
+        
     }
     //初始化数据
     private void initData() {

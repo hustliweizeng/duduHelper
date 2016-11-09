@@ -99,7 +99,6 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 						//数据请求成功
 						InfoBean infoBean = new Gson().fromJson(s, InfoBean.class);
 						
-						requestStatus();
 						String isshopuser = infoBean.getUser().getIsshopuser();
 						boolean isManager = false;
 						if ("1".equals(isshopuser)){
@@ -164,39 +163,4 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 	}
 	
 
-	/**
-	 * 获取客户管理是否开启
-	 */
-	public void requestStatus(){
-		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_GUEST_ISOPEN, "GET", new TextHttpResponseHandler() {
-			@Override
-			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
-			}
-			@Override
-			public void onSuccess(int i, Header[] headers, String s) {
-				LogUtil.d("res",s);
-				try {
-					JSONObject object = new JSONObject(s);
-					String code =  object.getString("code");
-					if ("SUCCESS".equalsIgnoreCase(code)){
-						//数据请求成功
-						if (object.getString("status").equals("1")){
-							shopIsoPen = true;
-						}else{
-							shopIsoPen = false;
-						}
-						sp.edit().putBoolean("shopstatus", shopIsoPen).commit();
-					}else {
-						//数据请求失败
-						String msg = object.getString("msg");
-						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-		});
-	}
 }

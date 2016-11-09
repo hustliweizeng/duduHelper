@@ -231,7 +231,12 @@ public class MainActivity extends BaseActivity
 			//进入个人中心
 			case R.id.shopelin:
 				editButton.setVisibility(View.GONE);
-				initHeadView("个人中心", false, true, R.drawable.icon_settings);
+				boolean isManager = sp.getBoolean("isManager", false);
+				if (isManager){
+					initHeadView("个人中心", false, true, R.drawable.icon_settings);
+				}else {
+					initHeadView("个人中心", false, false, 0);
+				}
 				order_icon.setImageResource(R.drawable.icon_shouye);
 				order_text.setTextColor(order_text.getResources().getColor(R.color.head_color));
 				sell_icon.setImageResource(R.drawable.icon_xiaoxi);

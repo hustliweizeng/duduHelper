@@ -1,29 +1,37 @@
 package com.dudu.helper3.fragment;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.helper3.Activity.MyInfoActivity.ChangeShopActivity;
 import com.dudu.helper3.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.helper3.Activity.MainActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Activity.MyInfoActivity.ShopBankListActivity;
 import com.dudu.helper3.Activity.MyInfoActivity.ShopSettingActivity;
 import com.dudu.helper3.Activity.MyInfoActivity.WebPageActivity;
+import com.dudu.helper3.Utils.CleanAppCache;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.Utils.Util;
+import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.javabean.InfoBean;
@@ -54,13 +62,13 @@ public class ShopMineFragment extends Fragment {
 
     private View MineFragmentView;
 
-    private DisplayImageOptions options;
     protected ImageLoader imageLoader = ImageLoader.getInstance();
-    private BluetoothAdapter bluetoothAdapter;
-    private String methord;
-    private RelativeLayout getCashButtonRel;
     private SharedPreferences sp;
     private ImageView mineImageHead;
+    private SwipeRefreshLayout swiperefresh;
+    private LinearLayout ll_manager_status;
+    private Button logoutButton;
+    private RelativeLayout select_shop;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,7 +100,9 @@ public class ShopMineFragment extends Fragment {
         MobclickAgent.onPageStart("MineFragment");
         //返回页面时，重新加载数据
         LogUtil.d("info","reload");
-        //requetConnetion();
+        swiperefresh.setProgressViewOffset(false, 0, Util.dip2px(getActivity(), 24));//第一次启动时刷新
+        swiperefresh.setRefreshing(true);
+        requetConnetion();
         
     }
     private void requetConnetion()
@@ -113,7 +123,6 @@ public class ShopMineFragment extends Fragment {
                     if ("SUCCESS".equalsIgnoreCase(code)){
                         //数据请求成功
                         InfoBean infoBean = new Gson().fromJson(s, InfoBean.class);
-
                         //保存用户信息
                         //1.通过sp保存用户信息
                         SharedPreferences.Editor edit = sp.edit();
@@ -131,7 +140,6 @@ public class ShopMineFragment extends Fragment {
                                 .putString("useableMoney",infoBean.getTotalstat().getUsablemoney())
                                 //在后台处理
                                 .apply();
-                        LogUtil.d("welcome",s);
                     }else {
                         //数据请求失败
                         String msg = object.getString("msg");
@@ -147,15 +155,65 @@ public class ShopMineFragment extends Fragment {
                 super.onFinish();
                 //更新数据
                 initFragemntView();
+                swiperefresh.setRefreshing(false);
             }
         });
 
     }
+  
 
     //初始化页面显示
     private void initFragemntView() {
+        ll_manager_status = (LinearLayout) MineFragmentView.findViewById(R.id.ll_manager_status);//今日状态
+        logoutButton = (Button) MineFragmentView.findViewById(R.id.logoutButton);//退出
+        logoutButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialog.showDialog(getActivity(), "  退出登录将清空用户信息，是否退出",true, true, "取消","确定", new OnClickListener()
+                        {
+                            @Override
+                            //取消退出
+                            public void onClick(View v)
+                            {
+                                MyDialog.cancel();
+                            }
+                        },
+                        new OnClickListener()
+                        {
+                            @Override
+                            //确认退出
+                            public void onClick(View v)
+                            {
+                                sp.edit().clear().commit();
+                                CleanAppCache.cleanApplicationData(getActivity());
+                                DuduHelperApplication.getInstance().exit();
+                                requestLogOut();
+                            }
+                        });
+            }
+        });
+        select_shop = (RelativeLayout) MineFragmentView.findViewById(R.id.select_shop);//选择店铺
+        select_shop.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ChangeShopActivity.class));
+            }
+        });
+        final boolean isManager = sp.getBoolean("isManager", false);
+        if (!isManager){
+            ll_manager_status.setVisibility(View.GONE);
+            logoutButton.setVisibility(View.VISIBLE);
+            select_shop.setVisibility(View.VISIBLE);
+        }else {
+            logoutButton.setVisibility(View.GONE);
+            select_shop.setVisibility(View.GONE);
+            ll_manager_status.setVisibility(View.VISIBLE);
+        }
+
+
         RelativeLayout getCashButtonRel = (RelativeLayout) MineFragmentView.findViewById(R.id.getCashButtonRel);
         final LinearLayout viewById = (LinearLayout) MineFragmentView.findViewById(R.id.lin1);
+        swiperefresh = (SwipeRefreshLayout) MineFragmentView.findViewById(R.id.swiperefresh);
         final RelativeLayout mineheadRelLine = (RelativeLayout) MineFragmentView.findViewById(R.id.mineheadRelLine);
         final RelativeLayout helpRel = (RelativeLayout) MineFragmentView.findViewById(R.id.helpRel);
         //关于我们
@@ -199,8 +257,11 @@ public class ShopMineFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ShopSettingActivity.class);
-                startActivity(intent);
+                if(isManager){
+                    Intent intent = new Intent(getActivity(), ShopSettingActivity.class);
+                    startActivity(intent);
+
+                }
             }
         });
         //帮助中心按钮
@@ -274,9 +335,6 @@ public class ShopMineFragment extends Fragment {
                                         Toast.makeText(getActivity(), "没有更新", Toast.LENGTH_SHORT).show();
                                     }
                                     break;
-                                //				        case UpdateStatus.NoneWifi: // none wifi
-                                //				            Toast.makeText(mContext, "没有wifi连接， 只在wifi下更新", Toast.LENGTH_SHORT).show();
-                                //				            break;
                                 case UpdateStatus.Timeout: // time out
                                     Toast.makeText(getActivity(), "超时", Toast.LENGTH_SHORT).show();
                                     break;
@@ -350,6 +408,25 @@ public class ShopMineFragment extends Fragment {
                 ColorDialog.dissmissProcessDialog();
             }
         }
+    }
+
+    /**
+     * 联网请求退出
+     */
+    private void requestLogOut() {
+        RequestParams params = new RequestParams();
+
+        HttpUtils.getConnection(getActivity(), params, ConstantParamPhone.LOG_OUT, "post", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+
+            }
+
+            @Override
+            public void onSuccess(int i, Header[] headers, String s) {
+                Toast.makeText(getActivity(),"已经退出当前账户，请重新登陆",Toast.LENGTH_LONG).show();
+            }
+        });
     }
     
    

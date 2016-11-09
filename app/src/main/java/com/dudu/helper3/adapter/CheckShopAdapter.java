@@ -34,9 +34,8 @@ public class CheckShopAdapter extends BaseAdapter {
 	public CheckShopAdapter(Context context) {
 		this.context = context;
 	}
-
+	int chechedPos = -1;
 	List<ShopCheckListBean.ListBean> list = new ArrayList<>();
-	public  HashMap<Integer,Boolean> checkList = new HashMap<>();
 
 	public void addAll(List<ShopCheckListBean.ListBean> data) {
 		if (data!=null &&data.size()>0){
@@ -85,19 +84,16 @@ public class CheckShopAdapter extends BaseAdapter {
 				holder.shopimage.setTag(dataBean.getLogo());//保存第一张图片地址作为tag标记
 				ImageLoader.getInstance().displayImage(dataBean.getLogo(),holder.shopimage);
 			}
-			
 		}
 		
 		/**
 		 * 设置按钮状态
 		 */
-		if (checkList.size()>0 &&checkList.get(position)!=null){//集合有数据时并且当前位置不是null
-			if (checkList.get(position)){
-				holder.iv_check.setImageResource(R.drawable.icon_xuanze_sel);
-			}else {
-				holder.iv_check.setImageResource(R.drawable.icon_xuanze);
-			}
-
+		if (position == chechedPos){
+			holder.iv_check.setImageResource(R.drawable.icon_xuanze_sel);
+		}
+		else {
+			holder.iv_check.setImageResource(R.drawable.icon_xuanze);
 		}
 		return convertView;
 	}
@@ -107,31 +103,16 @@ public class CheckShopAdapter extends BaseAdapter {
 	 * @param position
 	 */
 	public void setCheckedShop(int position){
-		LogUtil.d("size",checkList.size()+"");
-		if (checkList.size()>0 ){
-			if (checkList.containsKey(position)){//修改状态
-				LogUtil.d("status","change"+position);
-				checkList.put(position,false);
-			}else {//切换门店
-				checkList.clear();//每次选择前清空数据
-				LogUtil.d("status","add"+position);
-				checkList.put(position,true);//把该位置添加到集合中
-			}
+		if (position != chechedPos){
+			chechedPos = position;//新选择的条目
 		}else {
-			LogUtil.d("status","new"+position);
-			checkList.put(position,true);//把该位置添加到集合中
+			//修改的条目
+			chechedPos = -1;//设置为不选中
 		}
 		notifyDataSetChanged();
 	}
 	public String getCheckedId() {
-		String itemId = null;
-		for (Integer pos :checkList.keySet()){
-			itemId = list.get(pos).getId();
-			if (!TextUtils.isEmpty(itemId)) {
-				break;
-			}
-		}
-		return  itemId;	
+		return  list.get(chechedPos).getId();	//返回选中的id
 	}
 
 	public static class ViewHolder {
