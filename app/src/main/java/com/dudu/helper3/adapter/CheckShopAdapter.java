@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.helper3.R;
+import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.javabean.ShopCheckListBean;
 import com.dudu.helper3.javabean.ShopListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -33,10 +35,18 @@ public class CheckShopAdapter extends BaseAdapter {
 		this.context = context;
 	}
 
-	List<ShopListBean.DataBean> list = new ArrayList<>();
-	HashMap<Integer,Boolean> checkList = new HashMap<>();
-	
+	List<ShopCheckListBean.ListBean> list = new ArrayList<>();
+	public  HashMap<Integer,Boolean> checkList = new HashMap<>();
 
+	public void addAll(List<ShopCheckListBean.ListBean> data) {
+		if (data!=null &&data.size()>0){
+			list = data;
+			notifyDataSetChanged();
+		}else {
+			Toast.makeText(context,"没有门店信息",Toast.LENGTH_SHORT).show();
+		}
+
+	}
 
 	@Override
 	public int getCount() {
@@ -44,7 +54,7 @@ public class CheckShopAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public ShopListBean.DataBean getItem(int position) {
+	public ShopCheckListBean.ListBean getItem(int position) {
 		return list.get(position);
 	}
 
@@ -63,61 +73,56 @@ public class CheckShopAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		ShopListBean.DataBean dataBean = list.get(position);
+		ShopCheckListBean.ListBean dataBean = list.get(position);
 		holder.name.setText(dataBean.getName());
 		holder.month_trade.setText(dataBean.getTrade_month());
 		holder.total_trade.setText(dataBean.getTrade_history());
 		/**
 		 * 给图片设置tag显示
 		 */
-		if (dataBean.getImages()!=null && dataBean.getImages().size()>0){//图片做非空判断
-			if ( !holder.shopimage.getTag().equals(dataBean.getImages().get(0))){//只要tag不一致就说明是不同的位置
-				holder.shopimage.setTag(dataBean.getImages().get(0));//保存第一张图片地址作为tag标记
-				ImageLoader.getInstance().displayImage(dataBean.getImages().get(0),holder.shopimage);
+		if (dataBean.getLogo()!=null){//图片做非空判断
+			if ( !dataBean.getLogo().equals(holder.shopimage.getTag())){//只要tag不一致就说明是不同的位置
+				holder.shopimage.setTag(dataBean.getLogo());//保存第一张图片地址作为tag标记
+				ImageLoader.getInstance().displayImage(dataBean.getLogo(),holder.shopimage);
 			}
 			
 		}
-		//设定条目点击时间
-		holder.ll_check.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (checkList.size()>0 ){
-					if (checkList.containsKey(position)){//修改状态
-						checkList.put(position,false);
-					}else {//切换门店
-						checkList.clear();//每次选择前清空数据
-						checkList.put(position,true);//把该位置添加到集合中
-					}
-				}else {
-					checkList.put(position,true);//把该位置添加到集合中
-				}
-				notifyDataSetChanged();
-			}
-		});
+		
 		/**
-		 * 设置按钮
+		 * 设置按钮状态
 		 */
-		if (checkList.get(position)){
-			holder.iv_check.setImageResource(R.drawable.icon_xuanze_sel);
+		if (checkList.size()>0 &&checkList.get(position)!=null){//集合有数据时并且当前位置不是null
+			if (checkList.get(position)){
+				holder.iv_check.setImageResource(R.drawable.icon_xuanze_sel);
+			}else {
+				holder.iv_check.setImageResource(R.drawable.icon_xuanze);
+			}
+
+		}
+		return convertView;
+	}
+
+	/**
+	 * 设置选中的条目
+	 * @param position
+	 */
+	public void setCheckedShop(int position){
+		LogUtil.d("size",checkList.size()+"");
+		if (checkList.size()>0 ){
+			if (checkList.containsKey(position)){//修改状态
+				LogUtil.d("status","change"+position);
+				checkList.put(position,false);
+			}else {//切换门店
+				checkList.clear();//每次选择前清空数据
+				LogUtil.d("status","add"+position);
+				checkList.put(position,true);//把该位置添加到集合中
+			}
 		}else {
-			holder.iv_check.setImageResource(R.drawable.icon_xuanze);
+			LogUtil.d("status","new"+position);
+			checkList.put(position,true);//把该位置添加到集合中
 		}
-		
-		
-
-
-		return null;
+		notifyDataSetChanged();
 	}
-
-	public void addAll(List<ShopListBean.DataBean> data) {
-		if (data!=null &&data.size()>0){
-			list = data;
-			notifyDataSetChanged();
-		}
-		Toast.makeText(context,"没有门店信息",Toast.LENGTH_SHORT).show();
-		
-	}
-
 	public String getCheckedId() {
 		String itemId = null;
 		for (Integer pos :checkList.keySet()){

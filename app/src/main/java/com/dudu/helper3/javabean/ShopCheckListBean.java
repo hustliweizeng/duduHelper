@@ -1,5 +1,6 @@
 package com.dudu.helper3.javabean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * @date 2016/11/8
  */
 
-public class ShopCheckListBean {
+public class ShopCheckListBean implements Serializable{
 
 	private String code;
 	private String msg;
@@ -38,7 +39,7 @@ public class ShopCheckListBean {
 		this.list = list;
 	}
 
-	public static class ListBean {
+	public static class ListBean implements  Serializable{
 		private String id;
 		private String name;
 		private String logo;

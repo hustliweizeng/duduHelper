@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.helper3.Activity.MyInfoActivity.ChangeShopActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.MainActivity;
 import com.dudu.helper3.R;
@@ -237,28 +238,29 @@ public class LoginActivity extends BaseActivity
 				.commit();	
 				
 				String url = ConstantParamPhone.USER_LOGIN;//调用切换门店信息
-		        HttpUtils.getConnection(context, params,url+sp.getString("shopid",""),"POST",new TextHttpResponseHandler()
+		        HttpUtils.getConnection(context, params,url,"POST",new TextHttpResponseHandler()
 				{
 					@Override
 					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 					{
 						arg3.printStackTrace();
-
 						Toast.makeText(LoginActivity.this, arg2, Toast.LENGTH_LONG).show();
 
 					}
 					@Override
 					public void onSuccess(int arg0, Header[] arg1, String arg2)
 					{
+						LogUtil.d("ss",arg2);
 						try {
 							JSONObject object = new JSONObject(arg2);
 							String code =  object.getString("code");
 							if ("SUCCESS".equalsIgnoreCase(code)){
 								//数据请求成功
 								ShopCheckListBean data = new Gson().fromJson(arg2, ShopCheckListBean.class);
-								startActivity();
-
-
+								sp.edit().putString("shopList",arg2).commit();//保存店铺列表信息
+								Intent intent = new Intent(context, CheckShopActivity.class);
+								intent.putExtra("data",data);
+								startActivity(intent);//到店铺选择页面
 							}else {
 								//数据请求失败
 								String msg = object.getString("msg");
@@ -267,8 +269,6 @@ public class LoginActivity extends BaseActivity
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
-						
-
 					}
 					@Override
 					public void onFinish()

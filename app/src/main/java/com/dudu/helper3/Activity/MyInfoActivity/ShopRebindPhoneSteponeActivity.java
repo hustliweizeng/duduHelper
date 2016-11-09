@@ -123,7 +123,9 @@ public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 							return;
 						}else {
 							Toast.makeText(context,"原手机已解绑，重新输入新手机号",Toast.LENGTH_LONG).show();
-							startActivity(new Intent(context,LoginBindPhoneActivity.class));
+							Intent intent = new Intent(context, LoginBindPhoneActivity.class);
+							intent.putExtra("type","info");
+							startActivity(intent);
 							finish();
 						}
 					}else {

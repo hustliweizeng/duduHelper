@@ -6,30 +6,26 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.helper3.Activity.MainActivity;
-import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.helper3.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
-import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.CheckShopAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.javabean.LoginBean;
-import com.dudu.helper3.javabean.ShopListBean;
+import com.dudu.helper3.javabean.ShopCheckListBean;
 import com.dudu.helper3.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * @author
@@ -42,68 +38,69 @@ public class ChangeShopActivity extends BaseActivity {
 	private SwipeRefreshLayout siwpeRefresh;
 	private CheckShopAdapter adapter;
 	private ImageButton backButton;
+	private boolean shopIsoPen;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_change_shop);
 		adapter = new CheckShopAdapter(context);
-		
-		
 		initView();
-		initHeadView("门店切换",true,false,0);
-		siwpeRefresh.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
-		siwpeRefresh.setRefreshing(true);
+//		siwpeRefresh.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+//		siwpeRefresh.setRefreshing(true);
 		initData();
-		
-
 	}
 
+	/**
+	 * 获取店铺列表信息
+	 */
 	private void initData() {
-		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SHOPABLE, "get", new TextHttpResponseHandler() {
-			@Override
-			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
-			}
-			@Override
-			public void onSuccess(int i, Header[] headers, String s) {
-
-				try {
-					JSONObject object = new JSONObject(s);
-					String code =  object.getString("code");
-					if ("SUCCESS".equalsIgnoreCase(code)){
-						//数据请求成功
-						ShopListBean data = new Gson().fromJson(s, ShopListBean.class);
-						adapter.addAll(data.getData());
-						
-
-					}else {
-						//数据请求失败
-						String msg = object.getString("msg");
-						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		String shopList = sp.getString("shopList", "");
+		LogUtil.d("listres",shopList);
+		ShopCheckListBean shopCheckListBean = new Gson().fromJson(shopList, ShopCheckListBean.class);
+		if (shopCheckListBean!=null && shopCheckListBean.getList()!=null){
+			adapter.addAll(shopCheckListBean.getList());
+		}
 	}
 
 	private void initView() {
 		listview = (ListView) findViewById(R.id.listview);
+		listview.setAdapter(adapter);
 		siwpeRefresh = (SwipeRefreshLayout) findViewById(R.id.siwpeRefresh);
 		backButton = (ImageButton) findViewById(R.id.backButton);
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v) {//返回的时候确认选择
 				String checkedId = adapter.getCheckedId();
-				switchShop(checkedId);
+				if (!TextUtils.isEmpty(checkedId)){
+					switchShop(checkedId);
+				}
 			}
 		});
-				
+		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				adapter.setCheckedShop(position);//设置选中条目
+			}
+		});
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		String checkedId = adapter.getCheckedId();
+		if (!TextUtils.isEmpty(checkedId)){
+			switchShop(checkedId);
+
+		}
 	}
 
 	private void switchShop(String checkedId) {
+		if(!TextUtils.isEmpty(checkedId)){
+			Toast.makeText(context,"您没有选择店铺！",Toast.LENGTH_SHORT).show();
+			return; 
+		}
+			
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		String url = ConstantParamPhone.SWITCH_SHOP;//调用切换门店信息
 		HttpUtils.getConnection(context, null,url+checkedId,"get",new TextHttpResponseHandler()
@@ -169,8 +166,6 @@ public class ChangeShopActivity extends BaseActivity {
 							//在后台处理
 							.apply();
 					//跳转到主页
-
-
 					startActivity(new Intent(context, MainActivity.class));
 					finish();
 

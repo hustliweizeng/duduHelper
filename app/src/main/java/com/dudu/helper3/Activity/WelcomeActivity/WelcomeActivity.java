@@ -292,10 +292,10 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 	 */
 	private void requetConnetion()
 	{
-		RequestParams params = new RequestParams();
+		String shopid = sp.getString("shopid", "");
 		//请求网络连接之前，设置保存cookie，
-		url = ConstantParamPhone.GET_USER_INFO;
-		HttpUtils.getConnection(context, params, url, "POST", new TextHttpResponseHandler() {
+		url = ConstantParamPhone.CHECK_SHOP;
+		HttpUtils.getConnection(context, null, url+shopid, "get", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络故障，请重试",Toast.LENGTH_LONG).show();
@@ -369,6 +369,10 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			}
 		});
 	}
+
+	/**
+	 * 获取客户管理是否开启
+	 */
 	public void requestStatus(){
 		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_GUEST_ISOPEN, "GET", new TextHttpResponseHandler() {
 			@Override

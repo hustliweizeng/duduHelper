@@ -105,6 +105,7 @@ public class ConstantParamPhone
     public static final String  CHANGE_PWD_BYSMS ="/api/app/user/changepwdbycode";//通过验证码修改密码
     public static final String  CHANGE_PWD_BYPWD = "/api/app/user/changepwdbypwd";//通过旧密码修改
     public static final String  LOG_OUT = "/api/app/user/logout";//退出登录
+    public static final String  CHECK_SHOP = "/api/app/user/store/";//d选择店铺
 
 
     //银行卡相关接口

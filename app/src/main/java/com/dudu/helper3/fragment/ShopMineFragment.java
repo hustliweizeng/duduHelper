@@ -92,15 +92,15 @@ public class ShopMineFragment extends Fragment {
         MobclickAgent.onPageStart("MineFragment");
         //返回页面时，重新加载数据
         LogUtil.d("info","reload");
-        requetConnetion();
+        //requetConnetion();
         
     }
     private void requetConnetion()
     {
-        RequestParams params = new RequestParams();
+        String shopid = sp.getString("shopid", "");
         //请求网络连接之前，设置保存cookie，
-        String url = ConstantParamPhone.GET_USER_INFO;
-        HttpUtils.getConnection(getActivity(), params, url, "POST", new TextHttpResponseHandler() {
+        String url = ConstantParamPhone.CHECK_SHOP;
+        HttpUtils.getConnection(getActivity(), null, url+shopid, "get", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
                 Toast.makeText(getActivity(),"网络故障，请重试",Toast.LENGTH_LONG).show();

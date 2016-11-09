@@ -144,6 +144,7 @@
         <activity android:name=".Activity.VipUserActivity.VipUserVertifyActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".Activity.ShopManageActivity.ShopStatusActivity"/>
+        <activity android:name=".Activity.WelcomeActivity.CheckShopActivity"/>
         <activity android:name=".Activity.MyInfoActivity.ChangeShopActivity"/>
         <activity android:name=".Activity.VipUserActivity.VipUserVertifyResActivity"/>
         <activity android:name=".Activity.VipUserActivity.VipVertifyHistoryActivity"/>
@@ -489,6 +490,7 @@
         </activity>
         <activity
             android:name="com.dudu.helper3.Activity.MyInfoActivity.ShopSettingActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_shop_setting" >
         </activity>
         <activity

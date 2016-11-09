@@ -62,19 +62,8 @@ public class MainActivity extends BaseActivity
 		Log.d("hello","hello");
 
 		setContentView(R.layout.activity_main);
-		initHeadView("", false,false, 0);
+		initHeadView(sp.getString("shopName",""), false,false, 0);
 		DuduHelperApplication.getInstance().addActivity(this);
-		
-		//开启友盟推送
-//		if(mPushAgent==null)
-//		{
-//			mPushAgent = PushAgent.getInstance(this);
-//			//sdk开启通知声音
-//			mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
-//			mPushAgent.enable();
-//			String device_token = mPushAgent.getRegistrationId();
-//			
-//		}
 		
 		//统计app启动次数
 		//mPushAgent.onAppStart();
@@ -214,7 +203,7 @@ public class MainActivity extends BaseActivity
 			switch (v.getId()) {
 			//进入首页
 			case R.id.mainlin:
-				initHeadView("", false,false,0);
+				initHeadView(sp.getString("shopName",""), false,false, 0);
 				editButton.setVisibility(View.GONE);
 				order_icon.setImageResource(R.drawable.icon_shouye_sel);
 				order_text.setTextColor(order_text.getResources().getColor(R.color.text_color));

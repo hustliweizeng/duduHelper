@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dudu.helper3.Activity.MainActivity;
+import com.dudu.helper3.Activity.MyInfoActivity.ShopSettingActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
@@ -41,6 +43,7 @@ public class LoginBindPhoneActivity extends BaseActivity
 	}
 
 	private void initView() {
+		
 		userPhoneEditText = (EditText) this.findViewById(R.id.userPhoneEditText);
 		messageCodeEditText = (EditText) this.findViewById(R.id.messageCodeEditText);
 		btnGetmess = (Button) this.findViewById(R.id.btnGetmess);
@@ -104,7 +107,15 @@ public class LoginBindPhoneActivity extends BaseActivity
 							if ("SUCCESS".equalsIgnoreCase(code)){
 								//数据请求成功
 								Toast.makeText(context,"手机绑定成功",Toast.LENGTH_SHORT).show();
-								startActivity(new Intent(context,LoginActivity.class));
+								//startActivity(new Intent(context,MainActivity.class));//绑定成功以后 结束当前页面
+								String type = getIntent().getStringExtra("type");
+								if ("info".equals(type)){
+									//跳转到主页
+									startActivity(new Intent(context,ShopSettingActivity.class));
+								}else {
+									startActivity(new Intent(context,MainActivity.class));
+								}
+								sp.edit().putString("mobile",userPhoneEditText.getText().toString().trim()).commit();//每次保存完手机号就保存到本地
 								finish();
 							}else {
 								//数据请求失败
@@ -116,6 +127,11 @@ public class LoginBindPhoneActivity extends BaseActivity
 						}
 					}
 
+					@Override
+					public void onFinish() {
+						super.onFinish();
+						ColorDialog.dissmissProcessDialog();
+					}
 				});
 			}
 		});

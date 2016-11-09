@@ -1,6 +1,7 @@
 package com.dudu.helper3.Activity.MyInfoActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,15 +11,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.helper3.Activity.MainActivity;
+import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
+import com.dudu.helper3.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.Activity.EmployeeManageActivity.ShopMemberListActivity;
 import com.dudu.helper3.Activity.ShopManageActivity.ShopListManagerActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.CleanAppCache;
+import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.application.DuduHelperApplication;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
+import com.dudu.helper3.javabean.InfoBean;
 import com.dudu.helper3.widget.MyDialog;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -36,9 +43,10 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 	private RelativeLayout memberRel;
 	private Button logoutButton;
 	private RelativeLayout select_shop;
+	private boolean shopIsoPen;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_activity_setting);
@@ -46,14 +54,14 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 		initView();
 		initData();
 	}
-    
+
 	//加载视图
-	private void initView() 
+	private void initView()
 	{
 		logoutButton = (Button) this.findViewById(R.id.logoutButton);
 		logoutButton.setOnClickListener(this);
 		mendianRel = (RelativeLayout) this.findViewById(R.id.mendianRel);
-		mendianRel.setOnClickListener(this); 
+		mendianRel.setOnClickListener(this);
 		memberRel = (RelativeLayout) this.findViewById(R.id.memberRel);
 		memberRel.setOnClickListener(this);
 		changePhoneNumRel = (RelativeLayout) this.findViewById(R.id.changePhoneNumRel);
@@ -66,14 +74,14 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 		select_shop = (RelativeLayout) findViewById(R.id.select_shop);
 		select_shop.setOnClickListener(this);
 	}
-	
+
 	//设置数据
-	private void initData() 
+	private void initData()
 	{
 		String mobile = sp.getString("mobile","");
 		if(!TextUtils.isEmpty(mobile))
 		{
-		   phoneNumText.setText(mobile);
+			phoneNumText.setText(mobile);
 		}
 		else
 		{
@@ -82,14 +90,14 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 	}
 
 	@Override
-	public void onClick(View v) 
+	public void onClick(View v)
 	{
 		boolean isManager = sp.getBoolean("isManager", false);
 		Intent intent = null;
 		switch (v.getId())
 		{
 			case R.id.select_shop://选择分店店铺
-				startActivityForResult(new Intent(context,ChangeShopActivity.class),20);
+				startActivity(new Intent(context,ChangeShopActivity.class));
 				return;
 			case R.id.changePhoneNumRel:
 				//绑定手机号页面
@@ -118,73 +126,36 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 				}
 				break;
 			case R.id.logoutButton:
-                MyDialog.showDialog(ShopSettingActivity.this, "  退出登录将清空用户信息，是否退出",true, true, "取消","确定", new OnClickListener() 
-                {
-					@Override
-					//取消退出
-					public void onClick(View v) 
-					{
-						MyDialog.cancel();
-					}
-				}, 
-				new OnClickListener() 
-				{
-					@Override
-					//确认退出
-					public void onClick(View v) 
-					{
-						sp.edit().clear().commit();
-						CleanAppCache.cleanApplicationData(context);
-						DuduHelperApplication.getInstance().exit();
-						requestLogOut();
+				MyDialog.showDialog(ShopSettingActivity.this, "  退出登录将清空用户信息，是否退出",true, true, "取消","确定", new OnClickListener()
+						{
+							@Override
+							//取消退出
+							public void onClick(View v)
+							{
+								MyDialog.cancel();
+							}
+						},
+						new OnClickListener()
+						{
+							@Override
+							//确认退出
+							public void onClick(View v)
+							{
+								sp.edit().clear().commit();
+								CleanAppCache.cleanApplicationData(context);
+								DuduHelperApplication.getInstance().exit();
+								requestLogOut();
 
-					}
-				});
-                return;
+							}
+						});
+				return;
 			default:
 				break;
 		}
 		startActivity(intent);
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 20){
-			String id = data.getStringExtra("id");
-			if (!TextUtils.isEmpty(id)){//当返回数据不为空时，请求切换页面
-				HttpUtils.getConnection(context, null, ConstantParamPhone.SWITCH_SHOP, "get", new TextHttpResponseHandler() {
-					@Override
-					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-						Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 
-					}
-
-					@Override
-					public void onSuccess(int i, Header[] headers, String s) {
-						try {
-							JSONObject object = new JSONObject(s);
-							String code =  object.getString("code");
-							if ("SUCCESS".equalsIgnoreCase(code)){
-								//数据请求成功
-
-
-							}else {
-								//数据请求失败
-								String msg = object.getString("msg");
-								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-				});
-				
-			}
-		}
-		
-		
-	}
 
 	/**
 	 * 联网请求退出
