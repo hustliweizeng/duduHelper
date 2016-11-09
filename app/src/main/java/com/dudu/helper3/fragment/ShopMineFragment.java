@@ -214,6 +214,12 @@ public class ShopMineFragment extends Fragment {
         RelativeLayout getCashButtonRel = (RelativeLayout) MineFragmentView.findViewById(R.id.getCashButtonRel);
         final LinearLayout viewById = (LinearLayout) MineFragmentView.findViewById(R.id.lin1);
         swiperefresh = (SwipeRefreshLayout) MineFragmentView.findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requetConnetion();
+            }
+        });
         final RelativeLayout mineheadRelLine = (RelativeLayout) MineFragmentView.findViewById(R.id.mineheadRelLine);
         final RelativeLayout helpRel = (RelativeLayout) MineFragmentView.findViewById(R.id.helpRel);
         //关于我们

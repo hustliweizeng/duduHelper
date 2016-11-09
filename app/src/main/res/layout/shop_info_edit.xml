@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.dudu.helper3.Activity.MyInfoActivity.ShopInfoEditActivity" >
     <include layout="@layout/activity_head"/>
-    <com.dudu.helper3.widget.OverScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -364,7 +364,7 @@
                 android:textColor="#fff"
                 android:textSize="16sp" />
         </LinearLayout>
-    </com.dudu.helper3.widget.OverScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <include
         android:id="@+id/head"
