@@ -369,8 +369,10 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                 Intent intent1 = new Intent(context,ShopImageViewBrower.class);
                 //把网络数据传输过去
                 listSource = new ArrayList<String>();
-                for (String img:pics){
-                    listSource.add(img);
+                if (pics!=null ){
+                    for (String img:pics){
+                        listSource.add(img);
+                    }
                 }
                 intent1.putStringArrayListExtra("imageList", listSource);
                 intent1.putExtra("type",5);
@@ -535,15 +537,22 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                            }
                            //修改数据源
                            pics= imgs =picsPath;
-                           imageLoader.displayImage(picsPath[0],iv_img_shop_info);
-                           tv_imgNum_shop_info.setText("相册有"+picsPath.length+"张图片");
+                           if (picsPath !=null &&picsPath.length>0){
+                               imageLoader.displayImage(picsPath[0],iv_img_shop_info);
+                               tv_imgNum_shop_info.setText("相册有"+picsPath.length+"张图片");
+                           }else {
+                               iv_img_shop_info.setImageResource(R.drawable.ic_defalut);//设置成默认图片
+                               tv_imgNum_shop_info.setText("相册有"+0+"张图片");//设置成0张
+                           }
                            ColorDialog.dissmissProcessDialog();
                            //Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
                        }
                    }
                    break;
            } 
-       }
+       }else {
+            Toast.makeText(context,"您没有选择图片",Toast.LENGTH_SHORT).show();
+        }
        
 
     }

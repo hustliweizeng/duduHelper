@@ -357,16 +357,4 @@ public class CashSellActivity extends BaseActivity
 		});
 	}
 	
-//	@Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        switch (requestCode) {
-//		case SCANNIN_GREQUEST_CODE:
-//			if(resultCode == RESULT_OK){
-//				Bundle bundle = data.getExtras();
-//				Toast.makeText(CashSellActivity.this, bundle.getString("result"), Toast.LENGTH_LONG).show();
-//			}
-//			break;
-//		}
-//    }	
 }

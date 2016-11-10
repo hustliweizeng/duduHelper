@@ -195,7 +195,7 @@ public class RedbagMsgListBean implements Serializable{
 
 		public static class RedPacketInfoBean implements  Serializable{
 			private String money;
-			private HashMap<String,String> limit;
+			private Object limit;
 			private String life;
 
 			public String getMoney() {
@@ -206,11 +206,11 @@ public class RedbagMsgListBean implements Serializable{
 				this.money = money;
 			}
 
-			public HashMap<String,String> getLimit() {
+			public Object getLimit() {
 				return limit;
 			}
 
-			public void setLimit(HashMap<String,String> limit) {
+			public void setLimit(Object limit) {
 				this.limit = limit;
 			}
 

@@ -112,7 +112,13 @@ public class CheckShopAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	public String getCheckedId() {
-		return  list.get(chechedPos).getId();	//返回选中的id
+		if (chechedPos != -1){
+			return  list.get(chechedPos).getId();	//返回选中的id
+		}else {
+			return  null;
+		}
+
+		
 	}
 
 	public static class ViewHolder {

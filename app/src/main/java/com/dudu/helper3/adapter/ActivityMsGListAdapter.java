@@ -52,7 +52,7 @@ public class ActivityMsGListAdapter extends RecyclerView.Adapter {
 		myholder.msg_send.setText("/"+listBean.getSend_num());
 		myholder.msg_receive.setText(listBean.getSucceed_num());
 		int fail = Integer.parseInt(listBean.getSend_num()) - Integer.parseInt(listBean.getSucceed_num());
-		myholder.msg_fail.setText(fail+"");
+		myholder.msg_fail.setText(fail+"");//失败人数
 		
 	}
 

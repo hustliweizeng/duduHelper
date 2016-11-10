@@ -28,8 +28,11 @@ public class ShopCategoryAdapter extends BaseAdapter
     }
     public void addAll(List<ShopCategoryBean.DataBean> list)
     {
-    	this.list.addAll(list);
-    	notifyDataSetChanged();
+	    if(list!=null){
+		    this.list.addAll(list);
+		    notifyDataSetChanged();
+	    }
+		    
     }
 	@Override
 	public int getCount() 

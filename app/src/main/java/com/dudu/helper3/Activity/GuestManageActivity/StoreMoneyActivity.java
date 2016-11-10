@@ -63,7 +63,7 @@ import java.util.TreeMap;
  * @date 2016/9/23
  */
 
-public class StoreMoneyActivity extends BaseActivity implements View.OnClickListener, IWXAPIEventHandler {
+public class StoreMoneyActivity extends BaseActivity implements View.OnClickListener {
 	private TextView redbage_check;
 	private TextView activity_check;
 	private EditText ed_num;
@@ -231,7 +231,6 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 
 						// 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
 						api.sendReq(req);
-						finish();//结束当前页面
 					} else {
 						Log.d("PAY_GET", "返回错误" + json.getString("retmsg"));
 						Toast.makeText(context, "返回错误" + json.getString("retmsg"), Toast.LENGTH_SHORT).show();
@@ -270,28 +269,7 @@ public class StoreMoneyActivity extends BaseActivity implements View.OnClickList
 
 	private IWXAPI api;
 
-	//支付成功以后回调
-	@Override
-	public void onReq(BaseReq baseReq) {
-	}
-
-	@Override
-	public void onResp(BaseResp baseResp) {
-		Log.d("res", "onPayFinish, errCode = " + baseResp.errCode);
-		if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-			Log.d("tag", "onPayFinish,errCode=" + baseResp.toString());
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("支付成功");
-			builder.show();
-		}
-	}
-
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		setIntent(intent);
-		api.handleIntent(intent, this);
-	}
+	
 
 
 

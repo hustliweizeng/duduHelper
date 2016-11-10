@@ -92,6 +92,7 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 			}
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("ssss",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");

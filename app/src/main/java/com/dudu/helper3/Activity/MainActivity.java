@@ -88,11 +88,13 @@ public class MainActivity extends BaseActivity
 			Toast.makeText(context,"再按一次退出",Toast.LENGTH_SHORT).show();
 		}else {
 			//第二次点击
-			if (System.currentTimeMillis()-firtTime>1000){
+			if (System.currentTimeMillis()-firtTime<2000){
 				DuduHelperApplication application = (DuduHelperApplication) getApplication();
 				application.exit();
 				LogUtil.d("time",System.currentTimeMillis()-firtTime+"'");
 				isFirst = true;
+			}else {
+				isFirst = false;
 			}
 		}
 		

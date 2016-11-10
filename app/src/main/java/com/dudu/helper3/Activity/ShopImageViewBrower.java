@@ -303,8 +303,14 @@ public class ShopImageViewBrower extends BaseActivity
 			intent = new Intent(context, EditRedbag2Activity.class);
 		}
 		//传递数据
-		intent.putExtra("pics", (Serializable) uplodImgs);
-		setResult(RESULT_OK,intent);
+		//返回数据之前做非空判断
+		if (uplodImgs !=null ){
+			intent.putExtra("pics", (Serializable) uplodImgs);
+			setResult(RESULT_OK,intent);//成功
+		}else {
+			setResult(RESULT_CANCELED,intent);//取消
+		}
+		
 		super.onBackPressed();
 
 	}

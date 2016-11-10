@@ -48,8 +48,6 @@ public class ChangeShopActivity extends BaseActivity {
 		setContentView(R.layout.activity_change_shop);
 		adapter = new CheckShopAdapter(context);
 		initView();
-//		siwpeRefresh.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
-//		siwpeRefresh.setRefreshing(true);
 		initData();
 	}
 
@@ -74,9 +72,10 @@ public class ChangeShopActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {//返回的时候确认选择
 				String checkedId = adapter.getCheckedId();
-				LogUtil.d("checkid",checkedId);
-				if (!TextUtils.isEmpty(checkedId)){
+				if (!TextUtils.isEmpty(checkedId)){//非空判断
 					switchShop(checkedId);
+				}else {
+					finish();//空的时候结束当前页面
 				}
 			}
 		});
