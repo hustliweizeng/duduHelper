@@ -158,16 +158,7 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
         iv_img_shop_info = (ImageView) findViewById(R.id.iv_img_shop_info);
         tv_imgNum_shop_info = (TextView) findViewById(R.id.tv_imgNum_shop_info);
         btn_subimt_shop_info = (Button) findViewById(R.id.btn_subimt_shop_info);
-        //ed_scroll = (ScrollView) findViewById(R.id.ed_scroll);
-        //设置文本编辑的上下滚动事件
-      /* ed_scroll.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                        //请求父控件不干涉，也就是我处理
-                        v.getParent().getParent().requestDisallowInterceptTouchEvent(true);
-                return true;
-            }
-        });*/
+       
 
         backButton.setOnClickListener(this);
         selectClickButton.setOnClickListener(this);

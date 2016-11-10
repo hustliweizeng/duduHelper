@@ -177,11 +177,11 @@ public class ShopMemberAddActivity extends BaseActivity
 			}
 			//新增页面
 		}else {
-			params.add("name",membername.getText().toString());
+			params.add("name",membercount.getText().toString());
 			params.add("shop_id",shop_id);
 		}
 		params.add("plaintextPassword",memberpassword.getText().toString().trim());
-		params.add("nickname",membername.getText().toString().trim());
+		params.add("nickname",membername.getText().toString().trim());//账号
         HttpUtils.getConnection(context,params,url, "post",new TextHttpResponseHandler(){
 
 			@Override

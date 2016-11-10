@@ -237,6 +237,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 					return;
 				}
 				break;
+			//会员管理
 			case R.id.vip_manager:
 				if(isVipOpen){
 					intent =new Intent(getActivity(),VipUserVertifyActivity.class);
@@ -275,6 +276,8 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 						isVipOpen = false;
 						//数据请求失败
 						vipMsg = object.getString("msg");
+						LogUtil.d("vip",vipMsg);
+						
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -307,6 +310,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 								
 						//数据请求失败
 						wuZhemsg = object.getString("msg");
+						LogUtil.d("wuzhe",wuZhemsg);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -341,6 +345,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 						//数据请求失败
 						msg = object.getString("msg");//会员日提醒
 						//Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+						LogUtil.d("msg",msg);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
