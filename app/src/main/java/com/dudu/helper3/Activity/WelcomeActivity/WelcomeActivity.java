@@ -98,7 +98,6 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 						startActivity(new Intent(context,LoginActivity.class));
 						finish();
 					}
-
 					@Override
 					public void onSuccess(int i, Header[] headers, String s) {
 						try {
