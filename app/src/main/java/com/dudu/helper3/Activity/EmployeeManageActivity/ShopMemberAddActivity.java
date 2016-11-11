@@ -125,7 +125,7 @@ public class ShopMemberAddActivity extends BaseActivity
 							}
 							//密码马赛克
 							memberpassword.setText("******");
-							memberShopTextView.setText(dataBean.getShop_id());
+							memberShopTextView.setText(dataBean.getShop_name());
 						}
 					}else {
 						//数据请求失败

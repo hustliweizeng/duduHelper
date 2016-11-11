@@ -91,13 +91,13 @@ public class MemberAdapter extends BaseAdapter
 		}
 		if(list.size()!=0)
 		{
-			if(!TextUtils.isEmpty(list.get(position).getName()))
+			if(!TextUtils.isEmpty(list.get(position).getShop_name()))//店铺名称
 			{
-				viewHolder.membercount.setText("账号："+list.get(position).getShop_name());
+				viewHolder.membercount.setText(list.get(position).getShop_name());
 			}
-			if(!TextUtils.isEmpty(list.get(position).getShop_name()))
+			if(!TextUtils.isEmpty(list.get(position).getName()))//账号
 			{
-				viewHolder.membername.setText("姓名："+list.get(position).getName());
+				viewHolder.membername.setText(list.get(position).getName());
 			}
 			if(!TextUtils.isEmpty(list.get(position).getId()))
 			{

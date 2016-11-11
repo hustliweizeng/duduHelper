@@ -228,9 +228,6 @@ public class LoginActivity extends BaseActivity
 				RequestParams params = new RequestParams();
 				params.add("username", username.getText().toString().trim());
 				params.add("password", Util.md5(password.getText().toString().trim()));
-				String umeng_token = getSharedPreferences("umeng_token",MODE_PRIVATE).getString("token","");
-				params.add("umeng_token",umeng_token);
-				params.setContentEncoding("UTF-8");
 				LogUtil.d("welcome","usernmae="+username.getText().toString().trim()+"paswword="+Util.md5(password.getText().toString().trim()));
 				//保存用户名和密码到本地
 				sp.edit().putString("loginname",username.getText().toString().trim())
@@ -245,7 +242,6 @@ public class LoginActivity extends BaseActivity
 					{
 						arg3.printStackTrace();
 						Toast.makeText(LoginActivity.this, arg2, Toast.LENGTH_LONG).show();
-
 					}
 					@Override
 					public void onSuccess(int arg0, Header[] arg1, String arg2)

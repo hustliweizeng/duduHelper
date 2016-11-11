@@ -88,12 +88,9 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			//如果登陆保存过用户数据,直接请问网络
 			if(!TextUtils.isEmpty(sp.getString("username", "")))
 			{
-				//直接登录
 				RequestParams params = new RequestParams();
 				params.add("username",sp.getString("loginname",""));
 				params.add("password",sp.getString("password",""));
-				String umeng_token = getSharedPreferences("umeng_token",MODE_PRIVATE).getString("token","");
-				params.add("umeng_token",umeng_token);
 				HttpUtils.getConnection(context, params, ConstantParamPhone.USER_LOGIN, "post", new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
@@ -115,6 +112,8 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 								//数据请求失败
 								String msg = object.getString("msg");
 								Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+								startActivity(new Intent(context,LoginActivity.class));
+								finish();
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -272,7 +271,6 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
         }  
         viewPager.setCurrentItem(position);  
     }  
-  
     /** 
      * 设置当前的小点的位置 
      */  
@@ -283,10 +281,8 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
         }  
         points[positon].setEnabled(false);  
         points[currentIndex].setEnabled(true);  
-  
         currentIndex = positon;  
     }
-
 	/**
 	 * 请问网络连接，通过cookie请求数据（cookie超时以后，需要重新登陆）
 	 */
@@ -342,6 +338,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
                         //4.存储总计状态
                         .putString("frozenMoney",infoBean.getTotalstat().getFreezemoney())
                         .putString("useableMoney",infoBean.getTotalstat().getUsablemoney())
+		                 .putString("uncheckPrice",infoBean.getTotalstat().getUnverificationmoney())
 		                //访客信息
 		                 .putString("totalVistor",infoBean.getTotalstat().getVisitor())
 		                 .putString("totalBuyer",infoBean.getTotalstat().getBuyer())
@@ -357,6 +354,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
                     }else {
                         //数据请求失败
                         String msg = object.getString("msg");
+	                    LogUtil.d("welcome",msg);
                         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 	                    //跳转到登陆页面
 	                    startActivity(new Intent(context,LoginActivity.class));

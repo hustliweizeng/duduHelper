@@ -133,7 +133,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 				break;
 			case R.id.backButton:
 				onBackPressed();
-				Toast.makeText(context,"点击了返回按钮",Toast.LENGTH_SHORT).show();
+				//Toast.makeText(context,"点击了返回按钮",Toast.LENGTH_SHORT).show();
 				break;
 			case  R.id.tv_submit:
 				//确定按钮

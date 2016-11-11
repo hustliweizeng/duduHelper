@@ -69,6 +69,7 @@ public class ShopMineFragment extends Fragment {
     private LinearLayout ll_manager_status;
     private Button logoutButton;
     private RelativeLayout select_shop;
+    private TextView tv_uncheckPrice;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -143,13 +144,12 @@ public class ShopMineFragment extends Fragment {
                     }else {
                         //数据请求失败
                         String msg = object.getString("msg");
-                        Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -242,6 +242,7 @@ public class ShopMineFragment extends Fragment {
         final OverScrollView mineScrollview = (OverScrollView) MineFragmentView.findViewById(R.id.mineScrollview);
         //银行卡页面
         final RelativeLayout bankCardRel = (RelativeLayout) MineFragmentView.findViewById(R.id.bankCardRel);
+        tv_uncheckPrice = (TextView) MineFragmentView.findViewById(R.id.tv_uncheckPrice);//未核销金额
 
         //提现按钮
         getCashButtonRel.setOnClickListener(new OnClickListener() {
@@ -309,6 +310,7 @@ public class ShopMineFragment extends Fragment {
             LogUtil.d("shouru",sp.getString("todayIncome", ""));
             //可提现金额
             getCashMoneyTextView.setText(sp.getString("useableMoney", ""));
+            tv_uncheckPrice.setText(sp.getString("uncheckPrice",""));
             //初始化手机号码
             shopePhoneTextView.setText(sp.getString("mobile",""));
         }

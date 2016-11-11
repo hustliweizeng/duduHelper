@@ -72,7 +72,6 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 			}
 		});
 	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -81,13 +80,14 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 				break;
 		}
 	}
-	private void checkShop(String id)
+	private void checkShop(final String id)
 	{
-		RequestParams params = new RequestParams();
 		//请求网络连接之前，设置保存cookie，
-		HttpUtils.getConnection(context, params, ConstantParamPhone.CHECK_SHOP+id, "get", new TextHttpResponseHandler() {
+		HttpUtils.getConnection(context, null, ConstantParamPhone.CHECK_SHOP+id, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+				throwable.printStackTrace();
+				LogUtil.d("ssss","fail="+id+"======="+headers.toString());
 				Toast.makeText(context,"网络故障，请重试",Toast.LENGTH_LONG).show();
 			}
 			@Override
@@ -113,7 +113,6 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 						//保存用户信息
 						//1.通过sp保存用户信息
 						SharedPreferences.Editor edit = sp.edit();
-						
 						edit.putString("username",infoBean.getUser().getName())
 								.putString("nickename",infoBean.getUser().getNickname())//手动添加
 								.putString("shopid",infoBean.getShop().getId())		//店铺id        
@@ -126,6 +125,7 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 								//4.存储总计状态
 								.putString("frozenMoney",infoBean.getTotalstat().getFreezemoney())
 								.putString("useableMoney",infoBean.getTotalstat().getUsablemoney())
+								.putString("uncheckPrice",infoBean.getTotalstat().getUnverificationmoney())
 								//访客信息
 								.putString("totalVistor",infoBean.getTotalstat().getVisitor())
 								.putString("totalBuyer",infoBean.getTotalstat().getBuyer())

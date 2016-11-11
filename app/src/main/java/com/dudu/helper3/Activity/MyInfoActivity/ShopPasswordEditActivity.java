@@ -290,9 +290,6 @@ public class ShopPasswordEditActivity extends BaseActivity
 
 					Toast.makeText(context,"修改成功，请重新登陆",Toast.LENGTH_LONG).show();
 					startActivity(new Intent(context,LoginActivity.class));
-					//退出所有界面
-					DuduHelperApplication application = (DuduHelperApplication)getApplication();
-					application.exit();
 
 				}else {
 					//数据请求失败

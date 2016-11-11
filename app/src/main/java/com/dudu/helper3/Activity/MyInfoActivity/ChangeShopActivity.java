@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.helper3.Activity.MainActivity;
+import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.helper3.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
@@ -147,6 +148,7 @@ public class ChangeShopActivity extends BaseActivity {
 							//4.存储总计状态
 							.putString("frozenMoney", loginBean.getTotalstat().getFreezemoney())
 							.putString("useableMoney", loginBean.getTotalstat().getUsablemoney())
+							.putString("uncheckPrice",loginBean.getTotalstat().getUnverificationmoney())
 							//储存店员状态
 							.putBoolean("isManager", isManager)
 							//储存统计信息
@@ -162,6 +164,8 @@ public class ChangeShopActivity extends BaseActivity {
 					startActivity(new Intent(context, MainActivity.class));
 					finish();
 				}else if (ConstantParamPhone.FAIL.equalsIgnoreCase(loginBean.getCode())){
+					startActivity(new Intent(context, LoginActivity.class));
+					finish();
 					Toast.makeText(context,"用户名或者密码不正确",Toast.LENGTH_LONG).show();
 				}
 

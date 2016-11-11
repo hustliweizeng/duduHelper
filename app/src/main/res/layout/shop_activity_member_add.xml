@@ -135,6 +135,7 @@
             android:layout_height="50dp"
             android:background="@null"
             android:gravity="right|center_vertical"
+            android:textColor="@color/text_color_dark"
             android:hint="请选择店铺"
             android:textSize="14dp" />
         <ImageView 

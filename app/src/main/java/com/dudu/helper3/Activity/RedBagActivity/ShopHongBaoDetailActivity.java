@@ -141,7 +141,7 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 						//设置使用金额
 						wheelIndicatorView.setItemsLineWidth(Util.dip2px(context, 2));
 						WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem
-								(Float.parseFloat(hongbaoBean.getUsed_money())/Float.parseFloat(hongbaoBean.getSend_money()), Color.parseColor("#ff5400"),Util.dip2px(context, 6));
+								(Float.parseFloat(hongbaoBean.getUsed_money())/Float.parseFloat(hongbaoBean.getSend_money()), Color.parseColor("#ff5400"),Util.dip2px(context, 4));
 						//设置领取金额
 						WheelIndicatorItem walkingActivityIndicatorItem = new WheelIndicatorItem
 								(Float.parseFloat(hongbaoBean.getSend_money())/Float.parseFloat(hongbaoBean.getTotal()), Color.parseColor("#3dd6bc"),Util.dip2px(context, 4));
@@ -161,7 +161,7 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 						wheelIndicatorView2.setItemsLineWidth(Util.dip2px(context, 2));
 						//设置红包使用数
 						WheelIndicatorItem hongbaoGetIndicatorItem = new WheelIndicatorItem
-								(Float.parseFloat(hongbaoBean.getUsed_num())/Float.parseFloat(hongbaoBean.getSend_num()), Color.parseColor("#ff5400"),Util.dip2px(context, 6));
+								(Float.parseFloat(hongbaoBean.getUsed_num())/Float.parseFloat(hongbaoBean.getSend_num()), Color.parseColor("#ff5400"),Util.dip2px(context, 4));
 						//设置红包领取数
 						WheelIndicatorItem hongbaoUseIndicatorItem = new WheelIndicatorItem
 								(Float.parseFloat(hongbaoBean.getSend_num())/Float.parseFloat(hongbaoBean.getNum()), Color.parseColor("#3dd6bc"),Util.dip2px(context, 4));

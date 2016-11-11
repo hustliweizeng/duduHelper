@@ -150,6 +150,16 @@ public class InfoBean {
         private String usablemoney;
         private String visitor;
 
+        public String getUnverificationmoney() {
+            return unverificationmoney;
+        }
+
+        public void setUnverificationmoney(String unverificationmoney) {
+            this.unverificationmoney = unverificationmoney;
+        }
+
+        private String unverificationmoney;
+
         public String getBuyer() {
             return buyer;
         }

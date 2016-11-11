@@ -11,6 +11,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.tencent.bugly:symtabfileuploader:latest.release'
     }
 }
 

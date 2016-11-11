@@ -204,6 +204,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="18dp"
                                 android:text="0"
+                                android:textStyle="bold"
                                 android:textColor="@color/text_red_color"
                                 android:textSize="20sp" />
 
@@ -214,6 +215,42 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="6dp"
                                 android:text="可提现金额"
+                                android:textColor="@color/text_color_light"
+                                android:textSize="14dp" />
+
+                            <View
+                                android:layout_width="0.5dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:background="@color/list_divide" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_uncheckPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/view_selector"
+                            android:clickable="true" >
+
+                            <TextView
+                                android:id="@+id/tv_uncheckPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="18dp"
+                                android:textStyle="bold"
+                                android:text="0"
+                                android:textColor="@color/text_green_color"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_uncheckPrice"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="6dp"
+                                android:text="未核销金额"
                                 android:textColor="@color/text_color_light"
                                 android:textSize="14dp" />
 
@@ -236,7 +273,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:text="0"
-                                android:textColor="@color/text_color_light"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_dark_color"
                                 android:textSize="20sp" />
                             <TextView
                                 android:layout_width="wrap_content"

@@ -147,9 +147,13 @@ public class LoginBean {
 		private String trade;
 		private String usablemoney;
 		private String visitor;
-
+		private String unverificationmoney;
 		public String getBuyer() {
 			return buyer;
+		}
+
+		public void setUnverificationmoney(String unverificationmoney) {
+			this.unverificationmoney = unverificationmoney;
 		}
 
 		public void setBuyer(String buyer) {
@@ -210,6 +214,10 @@ public class LoginBean {
 
 		public void setVisitor(String visitor) {
 			this.visitor = visitor;
+		}
+
+		public String getUnverificationmoney() {
+			return unverificationmoney;
 		}
 	}
 

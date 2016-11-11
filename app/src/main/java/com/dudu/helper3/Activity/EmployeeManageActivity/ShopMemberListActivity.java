@@ -146,18 +146,14 @@ public class ShopMemberListActivity extends BaseActivity {
             public void onFinish() {
                 // TODO Auto-generated method stub
                 memberListswipeLayout.setRefreshing(false);
-               // ColorDialog.dissmissProcessDialog();
             }
         });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
         //清空adapter数据
         memberAdapter.clear();
-        //loadMoreView.setVisibility(View.GONE);
-       // ColorDialog.showRoundProcessDialog(this, R.layout.loading_process_dialog_color);
         initData();
     }
 

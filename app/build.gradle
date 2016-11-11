@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'bugly'
+
+bugly {
+    appId = '510ff77a7a' // 注册时分配的App ID
+    appKey = '74471481-09a5-4539-8cec-aeb7042a49ef' // 注册时分配的App Key
+}
 android {
     signingConfigs {
         config {
@@ -71,4 +77,5 @@ dependencies {
 
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.0.0
     compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+   
 }
