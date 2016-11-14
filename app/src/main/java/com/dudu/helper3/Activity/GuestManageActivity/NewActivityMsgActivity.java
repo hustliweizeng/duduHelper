@@ -114,7 +114,7 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 			return;
 		}
 		String members = "";
-		if (checkedIDs!=null& checkedIDs.size()>0){
+		if (checkedIDs!=null&& checkedIDs.size()>0){
 			LogUtil.d("update",checkedIDs.toString());
 			members = checkedIDs.toString();
 		}else {

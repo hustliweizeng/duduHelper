@@ -20,17 +20,14 @@ import com.dudu.helper3.adapter.RedbagMsgListAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.javabean.RedbagMsgListBean;
-import com.dudu.helper3.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-
 /**
  * @author
  * @version 1.0
@@ -59,26 +56,24 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 		refresh_msg.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
 		refresh_msg.setRefreshing(true);
 	}
-
 	@Override
 	public void onResume() {
 		super.onResume();
-		initData();
+		initData(1);
 		LogUtil.d("resume","resume");
 	}
 
-	private void initData() {
+	private void initData(int pageNum) {
 		
 		RequestParams params = new RequestParams();
 		params.put("type_id","2");//红包的typeid是2
-		params.put("page",page);
+		params.put("page",pageNum);
 		params.put("size",size);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SEND_RECORD, "post", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
 				LogUtil.d("res",s);
@@ -90,7 +85,6 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 						redbagMsgListBean = new Gson().fromJson(s, RedbagMsgListBean.class);
 						tv_send_num.setText(redbagMsgListBean.getTotal_red_packet());
 						if (!TextUtils.isEmpty(redbagMsgListBean.getTotal_promote_consumer())){
-
 							tv_create_money.setText(redbagMsgListBean.getTotal_promote_consumer());
 						} 
 						List<RedbagMsgListBean.ListBean> list = redbagMsgListBean.getList();
@@ -99,7 +93,6 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 						}else {
 							//Toast.makeText(context,"当前没有已发送的红包通知",Toast.LENGTH_SHORT).show();
 						}
-
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -109,7 +102,6 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 					e.printStackTrace();
 				}
 			}
-
 			@Override
 			public void onFinish() {
 				super.onFinish();
@@ -117,7 +109,6 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 				//请求结束后隐藏
 			}
 		});
-		
 	}
 
 	private void initView() {
@@ -129,10 +120,9 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 		refresh_msg.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				initData();
+				initData(1);
 			}
 		});
-		
 		submitbtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -159,11 +149,10 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 					isBottom = recyclerView.canScrollVertically(RecyclerView.VERTICAL);//每次判断是否在底部
 					//说明滑到底部
 					if (isBottom){
-						//page++;
-						//initData();
+						page++;
+						initData(page);
 						LogUtil.d("more","loadmore");
 					}
-
 				}
 			}
 		});

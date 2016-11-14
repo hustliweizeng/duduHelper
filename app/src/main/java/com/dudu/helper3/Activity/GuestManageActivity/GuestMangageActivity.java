@@ -118,6 +118,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		user_list = (RecyclerView) findViewById(R.id.user_list);
 		refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_guest_magager);
 		send_message_guest_manage.setOnClickListener(this);
+		user_list.setLayoutManager(new LinearLayoutManager(this));
 		//上啦刷新按钮
 		refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override

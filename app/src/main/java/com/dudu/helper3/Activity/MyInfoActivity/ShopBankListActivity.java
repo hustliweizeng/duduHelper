@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
@@ -232,6 +233,8 @@ public class ShopBankListActivity extends BaseActivity
 						//数据请求失败
 						String msg = object.getString("msg");
 						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						startActivity(new Intent(context, LoginActivity.class));
+						finish();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

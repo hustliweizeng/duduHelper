@@ -92,9 +92,8 @@ public class MainActivity extends BaseActivity
 				DuduHelperApplication application = (DuduHelperApplication) getApplication();
 				application.exit();
 				LogUtil.d("time",System.currentTimeMillis()-firtTime+"'");
-				isFirst = true;
 			}else {
-				isFirst = false;
+				isFirst = true;//时间大于2秒后重新计算
 			}
 		}
 		

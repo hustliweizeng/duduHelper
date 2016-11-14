@@ -108,7 +108,6 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 		if (!"detail".equals(type)) {
 			//新建店铺
 			return;
-
 		} else {
 			//店铺详情页面
 			//请求店铺详情

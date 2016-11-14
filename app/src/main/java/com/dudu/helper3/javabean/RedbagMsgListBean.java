@@ -120,7 +120,6 @@ public class RedbagMsgListBean implements Serializable{
 		private String red_packet_id;
 		private String end_time;
 		private RedPacketInfoBean red_packet_info;
-
 		public String getStatus() {
 			return status;
 		}

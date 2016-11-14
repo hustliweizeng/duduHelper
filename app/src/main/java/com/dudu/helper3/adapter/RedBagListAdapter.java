@@ -108,20 +108,21 @@ public class RedBagListAdapter extends BaseAdapter {
 			.displayer(new FadeInBitmapDisplayer(100))
 			//图片缩放设置
 			.build();
-
-
+		/**
+		 * 防止图片错位思路：
+		 * 先为每个条目设置tag，然后加载图片时候判断tag和网络图片是否一致：一致时加载，否则不加载
+		 */
+		String imagepath = data.getLogo();
+		holder.iv_logo.setTag(imagepath);//初始化tag标签
+		String tag = (String) holder.iv_logo.getTag();
 		//商品图片
-		if(!TextUtils.isEmpty(list.get(position).getLogo()))
+		if(!TextUtils.isEmpty(imagepath))//判断当前位置有没有图片
 		{
-			String imagepath = list.get(position).getLogo();
-			//当前logo的地址和view存的tag地址不一样时（一样时说明在复用），不一样说明是2个holder
-			//设置tag就是来区分复用的converview
-			if(!imagepath.equals(holder.iv_logo.getTag()))
-			{
-				//设置tag，这样图片加载时就不会跳了
-				holder.iv_logo.setTag(imagepath);
-				ImageLoader.getInstance().displayImage(list.get(position).getLogo(),holder.iv_logo,opt);
+			if (tag!=null && tag.equals(imagepath)){//d当前位置标签和网络地址一致
+				ImageLoader.getInstance().displayImage(imagepath,holder.iv_logo,opt);
 			}
+		}else {//当前位置没有图片，显示默认图片
+			holder.iv_logo.setImageResource(R.drawable.ic_rb_def);
 		}
 
 		holder.tv_sold.setText("已领:"+ data.getUsed_num());

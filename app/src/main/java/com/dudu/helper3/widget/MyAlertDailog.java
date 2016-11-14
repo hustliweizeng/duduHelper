@@ -2,6 +2,7 @@ package com.dudu.helper3.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -11,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dudu.helper3.R;
+
+import java.util.List;
 
 /**
  * Created by lwz on 2016/8/26.
@@ -57,7 +60,9 @@ public class MyAlertDailog {
             }
         });
 
+
     }
+
     //谁有数据，谁提供接口对外暴露
     private    static  OnItemClickListentner listentner;
     public interface OnItemClickListentner{

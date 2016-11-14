@@ -4,11 +4,15 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 
+import com.dudu.helper3.Utils.LogUtil;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
+
+import java.util.Locale;
 
 /**
  * Created by lwz on 2016/8/17.
@@ -32,7 +36,15 @@ public class HttpUtils {
 		myCookieStore = new PersistentCookieStore(mContext);
 		client.setCookieStore(myCookieStore);
 		//获取本地user_agent;
-		String defaultUserAgent = WebSettings.getDefaultUserAgent(mContext);
+		String defaultUserAgent = null;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			defaultUserAgent = WebSettings.getDefaultUserAgent(mContext);
+		}else {
+			WebView view = new WebView(mContext);
+			defaultUserAgent = view.getSettings().getUserAgentString();
+			/*String userAgent = System.getProperty( "http.agent" );
+			LogUtil.d("ua1",userAgentString+"=="+userAgent);*/
+		}
 		if (isWifiAvailable(mContext)){
 			client.addHeader("NETTYPE","WIFI");
 			//LogUtil.d("WIFI","ON");
@@ -72,4 +84,5 @@ public class HttpUtils {
 			return false;
 		}
 	}
+
 }

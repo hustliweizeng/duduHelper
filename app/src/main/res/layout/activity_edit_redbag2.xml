@@ -6,7 +6,6 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
-
     <LinearLayout
         android:id="@+id/relayout_mytitle"
         android:layout_width="match_parent"
@@ -24,7 +23,7 @@
             android:src="@drawable/nav_btn_fanhui" />
 
         <TextView
-            
+
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -183,7 +182,7 @@
 
 
                 </LinearLayout>
-            
+
 
             </LinearLayout>
 
@@ -440,8 +439,8 @@
                         android:textColor="@color/text_dark_color"
                         android:layout_alignParentRight="true"
                         />
-                    
-                  
+
+
 
                 </RelativeLayout>
                 <View
@@ -480,9 +479,9 @@
                     android:background="@drawable/edite_white"
                     android:layout_marginBottom="16dp"
                     />
-                
+
                 </RelativeLayout>
-                
+
                 <RelativeLayout
                     android:layout_width="100dp"
                     android:layout_height="75dp"
@@ -491,7 +490,7 @@
                     android:clickable="true"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-        
+
                     >
 
                     <TextView
@@ -535,6 +534,8 @@
 
         </LinearLayout>
     </ScrollView>
+
+
 
 
 </LinearLayout>

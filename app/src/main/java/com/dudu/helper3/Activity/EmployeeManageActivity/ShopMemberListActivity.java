@@ -54,7 +54,6 @@ public class ShopMemberListActivity extends BaseActivity {
     @SuppressLint("ResourceAsColor")
     @SuppressWarnings("deprecation")
     private void initView() {
-        // TODO Auto-generated method stub
         editButton = (Button) this.findViewById(R.id.selectTextClickButton);
         editButton.setText("添加");
         editButton.setVisibility(View.VISIBLE);
@@ -62,7 +61,6 @@ public class ShopMemberListActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent intent = new Intent(ShopMemberListActivity.this, ShopMemberAddActivity.class);
                 startActivityForResult(intent, 1);
             }
@@ -74,7 +72,6 @@ public class ShopMemberListActivity extends BaseActivity {
 
             @Override
             public void onRefresh() {
-                // TODO Auto-generated method stub
                 memberAdapter.clear();
                 initData();
             }
@@ -89,21 +86,18 @@ public class ShopMemberListActivity extends BaseActivity {
         footView = LayoutInflater.from(this).inflate(R.layout.activity_listview_foot, null);
         loading_progressBar = (ProgressBar) footView.findViewById(R.id.loading_progressBar);
         loading_text = (TextView) footView.findViewById(R.id.loading_text);
-        // TODO Auto-generated method stub
         reloadButton = (Button) this.findViewById(R.id.reloadButton);
         //数据重载按钮
         reloadButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 initData();
             }
         });
         memberList.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO Auto-generated method stub
                 Intent intent = new Intent(ShopMemberListActivity.this, ShopMemberAddActivity.class);
                 intent.putExtra("detail", memberAdapter.getItem(position));
                 startActivityForResult(intent, 1);

@@ -335,18 +335,19 @@ public class ProductAdapter extends BaseAdapter
 			}
 			
 		}
-
-
+		String imagepath = list.get(position).getThumbnail();
+		viewHolder.productImage.setTag(imagepath);
+		String tag = (String) viewHolder.productImage.getTag();
 		//商品图片
-		if(!TextUtils.isEmpty(list.get(position).getThumbnail()))
+		if(!TextUtils.isEmpty(imagepath))
 		{
-			String imagepath = list.get(position).getThumbnail();
-			if(!imagepath.equals(viewHolder.productImage.getTag()))
+			if(tag!=null && imagepath.equals(tag))
 			{
 				//设置tag，这样图片加载时就不会跳了
-				viewHolder.productImage.setTag(imagepath);
 				imageLoader.displayImage(list.get(position).getThumbnail(),viewHolder.productImage, options);
 			}
+		}else {
+			viewHolder.productImage.setImageResource(R.drawable.ic_defalut);
 		}
 
 

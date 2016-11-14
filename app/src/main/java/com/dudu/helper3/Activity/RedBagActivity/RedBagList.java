@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -21,6 +22,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.helper3.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
@@ -168,7 +170,14 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 		AsyncHttpClient client = new AsyncHttpClient();
 		PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
 		client.setCookieStore(myCookieStore);
-		String defaultUserAgent = WebSettings.getDefaultUserAgent(context);
+		String defaultUserAgent = null;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			defaultUserAgent = WebSettings.getDefaultUserAgent(context);
+		}else {
+			WebView view = new WebView(this);
+			defaultUserAgent = view.getSettings().getUserAgentString();
+		}
+
 		if (isWifiAvailable(context)){
 			client.addHeader("NETTYPE","WIFI");
 		}else {
@@ -202,6 +211,8 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 						//数据请求失败
 						String msg = object.getString("msg");
 						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						startActivity(new Intent(context, LoginActivity.class));
+						finish();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -270,6 +281,8 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 						//数据请求失败
 						String msg = object.getString("msg");
 						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						startActivity(new Intent(context, LoginActivity.class));
+						finish();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

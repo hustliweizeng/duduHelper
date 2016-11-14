@@ -81,9 +81,15 @@ public class ShopAdapterAdapter extends BaseAdapter
 		viewHolder.totalTrade.setText(" ￥"+dataBean.getTrade_history());
 		viewHolder.month_trade.setText(" ￥"+dataBean.getTrade_month());
 		viewHolder.name.setText(dataBean.getName());
+		String imgUrl = dataBean.getImages().get(0);
+		viewHolder.shopimage.setTag(imgUrl);
+
+
 		if (dataBean.getImages()!=null && dataBean.getImages().size()>0){
 			//显示图片之前检查大小
-			ImageLoader.getInstance().displayImage(dataBean.getImages().get(0),viewHolder.shopimage);
+			if (viewHolder.shopimage.getTag()!=null && viewHolder.shopimage.getTag().equals(imgUrl)){
+				ImageLoader.getInstance().displayImage(dataBean.getImages().get(0),viewHolder.shopimage);
+			}
 		}
 		return convertView;
 	}

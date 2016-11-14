@@ -38,7 +38,7 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 
 	public void addAll(List<RedbagMsgListBean.ListBean> list) {
 		if (list!=null && list.size()>0){
-			this.list = list;
+			this.list.addAll(list);
 			LogUtil.d("ok","条目数:"+list.size());
 			notifyDataSetChanged();
 		}
