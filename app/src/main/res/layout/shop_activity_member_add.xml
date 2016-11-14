@@ -134,6 +134,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@null"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:gravity="right|center_vertical"
             android:textColor="@color/text_color_dark"
             android:hint="请选择店铺"

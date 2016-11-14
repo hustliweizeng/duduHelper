@@ -38,7 +38,6 @@ public class ActivityMsGListAdapter extends RecyclerView.Adapter {
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = View.inflate(mContext, R.layout.item_activity_msg, null);
 		MyHolder holder = new MyHolder(view);
-
 		return holder;
 	}
 
@@ -53,6 +52,7 @@ public class ActivityMsGListAdapter extends RecyclerView.Adapter {
 		myholder.msg_receive.setText(listBean.getSucceed_num());
 		int fail = Integer.parseInt(listBean.getSend_num()) - Integer.parseInt(listBean.getSucceed_num());
 		myholder.msg_fail.setText(fail+"");//失败人数
+		myholder.tv_date.setText(listBean.getCreated_at());
 		
 	}
 
@@ -69,6 +69,7 @@ public class ActivityMsGListAdapter extends RecyclerView.Adapter {
 		private TextView msg_receive;
 		private TextView msg_send;
 		private TextView msg_fail;
+		private TextView tv_date;
 
 		public MyHolder(View itemView) {
 			super(itemView);
@@ -77,6 +78,7 @@ public class ActivityMsGListAdapter extends RecyclerView.Adapter {
 			msg_receive = (TextView) itemView.findViewById(R.id.msg_receive);
 			msg_send = (TextView) itemView.findViewById(R.id.msg_send);
 			msg_fail = (TextView) itemView.findViewById(R.id.msg_fail);
+			tv_date = (TextView)itemView.findViewById(R.id.tv_date);
 		}
 	}
 }

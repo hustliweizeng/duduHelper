@@ -103,7 +103,6 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 
 	//初始化页面详情
 	private void initData() {
-		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		shopId = getIntent().getStringExtra("shopId");
 		String type = getIntent().getStringExtra("source");
 		if (!"detail".equals(type)) {
@@ -113,6 +112,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 		} else {
 			//店铺详情页面
 			//请求店铺详情
+			ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 			HttpUtils.getConnection(context, null,
 					ConstantParamPhone.GET_SHOP_DETAIL + shopId, "get", new TextHttpResponseHandler() {
 						@Override

@@ -103,20 +103,14 @@
                 android:textSize="16dp"
                 android:textColor="@color/text_dark_color"
                 />
-            <TextView
-                
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:gravity="right"
-                android:text="满"/>
+            
 
             <EditText
                 
                 android:id="@+id/ed_requirement"
-                android:layout_width="30dp"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center|right"
                 android:layout_height="match_parent"
                 android:inputType="number"
                 android:textSize="16dp"
@@ -125,12 +119,7 @@
                 
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:layout_marginRight="16dp"
-                android:text="元可用"/>
+           
 
         </LinearLayout>
         <View

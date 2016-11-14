@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
 import com.dudu.helper3.Utils.LogUtil;
+import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.http.ConstantParamPhone;
 import com.dudu.helper3.http.HttpUtils;
 import com.dudu.helper3.javabean.CheckTicketBean;
@@ -56,7 +57,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activiy_check_sale);
-		initHeadView("优惠券核销",true,false,0);
+		initHeadView("券码核销",true,false,0);
 		initView();
 		initData();
 	}
@@ -122,7 +123,9 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 					tv_user_check_sale.setText(info.getMember_name());
 					tv_mobile_check_sale.setText(info.getMobile());
 					tv_username_check_sale.setText(info.getName());
-					tv_gettime_check_sale.setText(info.getCreated_time());
+					if (!TextUtils.isEmpty(info.getCreated_time())){
+						tv_gettime_check_sale.setText(Util.DateForomate3(info.getCreated_time()));
+					}
 					btn_subimit.setText("确认核销");
 					tv_check_status_check_sale.setText("该优惠券可核销");
 					tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.text_black_color));

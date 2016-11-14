@@ -50,7 +50,6 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 	private int titleHight;
 	private String lastid = "";
 	private SwipeRefreshLayout swiperefresh;
-	private boolean isLoadMore;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,6 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 		adapter = new CheckSaleHistoryAdapter(this);
 		//初始化当天日期
 		format = new SimpleDateFormat("yyyy-MM-dd");
-		//downDate1 = format.format(new Date());
 		downDate1 = "";
 		initHeadView("核销记录", true, false, 0);
 		initView();
@@ -92,7 +90,7 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 			}
 		});
 		lv_checckmoneyhisory = (ListView) findViewById(R.id.lv_checckmoneyhisory);
-		lv_checckmoneyhisory.setOnScrollListener(new AbsListView.OnScrollListener() {
+		/*lv_checckmoneyhisory.setOnScrollListener(new AbsListView.OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {//此方法当滑动的时候调用
 				if(scrollState == SCROLL_STATE_IDLE){//滑动完毕之后
@@ -107,7 +105,7 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			}
-		});
+		});*/
 
 	}
 
@@ -140,7 +138,7 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 			public void OnItemClick(Date selectedStartDate, Date selectedEndDate, Date downDate) {
 				//获取view中的按下日期，准备请求数据
 				downDate1 = format.format(downDate);//设置指定日期
-				isLoadMore = false;//重新刷新
+				//isLoadMore = false;//重新刷新
 				getData();
 				LogUtil.d("收银流水", downDate1);
 				//更新标题的日期
@@ -156,7 +154,7 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 	private void getData() {
 		RequestParams param = new RequestParams();
 		param.add("date", downDate1);
-		param.add("lastid", lastid);
+		param.add("lastid", "");
 		HttpUtils.getConnection(context, param, ConstantParamPhone.GET_VERTTIFY_HISTROY, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
@@ -170,17 +168,12 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 					if ("SUCCESS".equalsIgnoreCase(code)) {
 						//数据请求成功
 						CheckSaleHistoryBean historyBean = new Gson().fromJson(s, CheckSaleHistoryBean.class);
-						if (isLoadMore ){//说明是分页加载
-							adapter.add(historyBean.getData());//增加数据
-						}else {//请求新的日期
-							adapter.clear();
-							if (historyBean.getData()!=null&&historyBean.getData().size()>0){//
-								adapter.add(historyBean.getData());//清空数据再添加数据
-								tv_msg.setVisibility(View.GONE);
-
-							}else {
-								tv_msg.setVisibility(View.VISIBLE);
-							}
+						adapter.clear();
+						if (historyBean.getData()!=null&&historyBean.getData().size()>0){//
+							adapter.add(historyBean.getData());//清空数据再添加数据
+							tv_msg.setVisibility(View.GONE);
+						}else {
+							tv_msg.setVisibility(View.VISIBLE);
 						}
 					} else {
 						//数据请求失败

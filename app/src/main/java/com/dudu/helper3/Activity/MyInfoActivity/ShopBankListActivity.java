@@ -198,7 +198,6 @@ public class ShopBankListActivity extends BaseActivity
 	//请求银行卡列表信息
 	private void initData() 
 	{
-		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
 		RequestParams params = new RequestParams();
@@ -243,7 +242,6 @@ public class ShopBankListActivity extends BaseActivity
 			{
 				memberListswipeLayout.setRefreshing(false);
 				loading_progressBar.setVisibility(View.GONE);
-				ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}

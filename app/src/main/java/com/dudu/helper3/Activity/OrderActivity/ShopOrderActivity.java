@@ -315,7 +315,6 @@ public class ShopOrderActivity extends BaseActivity
 					reftype=2;
 					if(!reffinish)
 					{
-						
 						//再次请求加载数据的时候，需要上一页最后条目的id，以及这次刷新的数量
 						initData();
 					}

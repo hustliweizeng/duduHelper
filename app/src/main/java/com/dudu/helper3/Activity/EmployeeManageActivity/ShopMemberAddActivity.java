@@ -1,5 +1,6 @@
 package com.dudu.helper3.Activity.EmployeeManageActivity;
 
+import org.apache.commons.lang.text.StrBuilder;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,15 +20,21 @@ import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopMemberAddActivity extends BaseActivity 
@@ -40,7 +47,8 @@ public class ShopMemberAddActivity extends BaseActivity
 	private ShopUserBean.DataBean memberDataBean;
 	private TextView memberShopTextView;
 	private String url;
-	private String shop_id;
+	private ShopListSelectAdapter adapter;
+	private ShopListBean data;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -48,8 +56,9 @@ public class ShopMemberAddActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_activity_member_add);
 		memberDataBean=(ShopUserBean.DataBean) getIntent().getSerializableExtra("detail");
+		requestShopList();//请求店铺列表
 		initView();
-		
+
 		if(memberDataBean!=null)
 		{
 			title="修改店员账号";
@@ -68,6 +77,7 @@ public class ShopMemberAddActivity extends BaseActivity
 
 	private void initView() 
 	{
+		adapter = new ShopListSelectAdapter(context, R.layout.item_circle_multi_select);
 		memberShopTextView = (TextView) this.findViewById(R.id.memberShopTextView);
 		memberShopTextView.setOnClickListener(new OnClickListener() 
 		{
@@ -75,7 +85,13 @@ public class ShopMemberAddActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				//弹出店铺列表
-				showShopListPopWindow();
+				if(data!=null){
+					showCategorySelctor(data.getData(),"选择店铺（可多选）");
+				}else {
+					Toast.makeText(context,"没有请求到店铺数据",Toast.LENGTH_SHORT).show();
+				}
+
+
 			}
 
 		});
@@ -93,6 +109,11 @@ public class ShopMemberAddActivity extends BaseActivity
 			}
 		});
 	}
+	List<String> shopIds = new ArrayList<>();
+
+	/**
+	 * 获取员工详情
+	 */
 	private void initData() 
 	{
 		ColorDialog.showRoundProcessDialog(ShopMemberAddActivity.this,R.layout.loading_process_dialog_color);
@@ -126,6 +147,12 @@ public class ShopMemberAddActivity extends BaseActivity
 							//密码马赛克
 							memberpassword.setText("******");
 							memberShopTextView.setText(dataBean.getShop_name());
+							//选择的店铺id
+							if (dataBean.getShops()!=null && dataBean.getShops().size()>0){
+								for ( ShopUserDetaiBean.DataBean.ShopsBean item : dataBean.getShops()){
+									shopIds.add(item.getId());
+								}
+							}
 						}
 					}else {
 						//数据请求失败
@@ -168,17 +195,19 @@ public class ShopMemberAddActivity extends BaseActivity
 		//如果是修改界面
 		if(memberDataBean!=null)
 		{
-			//如果修改了所属店铺
-			if (shop_id!=null){
-				params.add("shop_id",shop_id);
+			//没修改还用之前数据
+			if (checkedIds!=null &&checkedIds.size()>0){
+				params.add("shop_id",checkedIds.toString());//已修改数据
 			}else {
-				//没修改还用之前数据
-				params.add("shop_id",memberDataBean.getId());
+				params.add("shop_id",shopIds.toString());//没有修改数据
+				LogUtil.d("id_old",shopIds.toString());
 			}
+			
 			//新增页面
 		}else {
-			params.add("name",membercount.getText().toString());
-			params.add("shop_id",shop_id);
+			params.add("name",membercount.getText().toString());//账号名称
+			params.add("shop_id",checkedIds.toString());
+			LogUtil.d("id_new",checkedIds.toString());
 		}
 		params.add("plaintextPassword",memberpassword.getText().toString().trim());
 		params.add("nickname",membername.getText().toString().trim());//账号
@@ -211,14 +240,13 @@ public class ShopMemberAddActivity extends BaseActivity
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
 	}
 	
 	//店铺列表弹窗
-	private void showShopListPopWindow() 
+	private void requestShopList() 
 	{
 		//请求网络数据获取店铺信息/api/app/shop_user/shops
 		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SHOPABLE, "GET", new TextHttpResponseHandler() {
@@ -234,8 +262,7 @@ public class ShopMemberAddActivity extends BaseActivity
 					String code = object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)) {
 						//数据请求成功
-						ShopListBean data = new Gson().fromJson(s, ShopListBean.class);
-						showCategorySelctor(data.getData(), "选择店铺");
+						data = new Gson().fromJson(s, ShopListBean.class);
 					} else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -248,20 +275,55 @@ public class ShopMemberAddActivity extends BaseActivity
 		});
 		
 	}
+	List<String> checkedIds = new ArrayList<>();
+	List<String> checkedNames = new ArrayList<>();
 				//显示行业选择框
 	private void showCategorySelctor(final List<ShopListBean.DataBean> category, final String title) {
-		ShopListSelectAdapter adapter = new ShopListSelectAdapter(context,R.layout.item_circle_select);
 		adapter.addAll(category);
-		LogUtil.d("adapter",adapter.getCount()+"");
-		MyAlertDailog.show(context,title,adapter );
+		/*if (shopIds!=null &&checkedIds.size()>0){//已经选择的列表
+			
+		}*/
+		final AlertDialog dailog = new AlertDialog.Builder(context).create();
+		dailog.show();
+		//获取window之前必须先show
+		Window window = dailog.getWindow();
+		window.setContentView(R.layout.alertdailog_multi_choose);
+		TextView tv_title_alertdailog = (TextView) window.findViewById(R.id.tv_title_alertdailog);
+		ListView lv_alertdailog = (ListView) window.findViewById(R.id.lv_alertdailog);
+		ImageView iv_canle_alertdailog = (ImageView) window.findViewById(R.id.iv_canle_alertdailog);
+
+		tv_title_alertdailog.setText(title);
+		lv_alertdailog.setAdapter(adapter);
+		
+		LogUtil.d("adapter", adapter.getCount()+"");
 		//通过接口回调，确认选择的条目，并展示出来
-		MyAlertDailog.setOnItemClickListentner(new MyAlertDailog.OnItemClickListentner() {
+		lv_alertdailog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void Onclick(int poistion) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				String itemId = adapter.getItemId(position)+"";
+				String name = category.get(position).getName();
+				if (checkedIds.contains(itemId)){
+					checkedIds.remove(itemId);
+					checkedNames.remove(name);
+				}else {
+					checkedIds.add(itemId);
+					checkedNames.add(name);
+				}
 				//设置选中店铺
-				memberShopTextView.setText(category.get(poistion).getName());
-				//设置选中的行业id
-				shop_id = Integer.parseInt(category.get(poistion).getId())+"";
+				if (checkedIds!=null){
+					memberShopTextView.setText(checkedNames.toString());
+					LogUtil.d("ids",checkedIds.toString()+"=="+checkedNames.toString());
+				}else {
+					memberShopTextView.setHint("请选择所属店铺");
+				}
+				adapter.setcheckedId(position+"");
+			}
+
+		});
+		iv_canle_alertdailog.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dailog.dismiss();
 			}
 		});
 

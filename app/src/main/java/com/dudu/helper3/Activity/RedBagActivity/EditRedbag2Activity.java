@@ -182,7 +182,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 				isPlus = !isPlus;
 				break;
 			case R.id.iv_pic:
-				//进入选择相册页面
+				/*//进入选择相册页面
 				Intent intent1 = new Intent(this, ShopImageViewBrower.class);
 				if(uplodImgs!=null &&uplodImgs.size()>0){
 					//当再次进入相册编辑时，显示之前选择的相册
@@ -190,7 +190,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 				}
 				intent1.putExtra("type",8);
 				startActivityForResult(intent1, 8);
-				break;
+				break;*/
 			case R.id.iv_logo:
 				//进入logo裁剪页面
 				Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
@@ -262,15 +262,16 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 							.displayer(new RoundedBitmapDisplayer(Util.dip2px(EditRedbag2Activity.this,80))).build());
 					//子线程上传图片，上传完毕handler告诉主线程
 					String imgPath = ViewUtils.getRealFilePath(EditRedbag2Activity.this,urilocal);
-					ViewUtils.setOnFinishListner(new ViewUtils.OnFinishListner() {
+					ViewUtils.setOnFinishListner(new ViewUtils.OnFinishListner() {//异步上传获取地址
 						@Override
 						public void onFinish(String url) {
 							uploadPicPath = url;
+							ImageLoader.getInstance().displayImage(url,iv_pic);
 						}
 					});
 					ViewUtils.uploadImg(EditRedbag2Activity.this,imgPath);
 					
-					LogUtil.d("logo", uploadPicPath);
+					//LogUtil.d("logo", uploadPicPath);
 					break;
 			}
 		}
@@ -354,7 +355,11 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		params.put("lower_money",low);
 		params.put("upper_money",high);
 		params.put("life",ed_life);
-		params.put("logo",sp.getString("shopLogo",""));
+		if(uploadPicPath!=null ){
+			params.put("logo",uploadPicPath);
+		}else {
+			params.put("logo",sp.getString("shopLogo","1"));
+		}
 		params.put("rules",ed_rule.getText().toString().trim());
 		params.put("range[]","1");
 
@@ -367,8 +372,8 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			LinearLayout val = (LinearLayout) entry.getValue();
 			EditText ed_high = (EditText) val.findViewById(R.id.ed_high);
 			EditText ed_low = (EditText) val.findViewById(R.id.ed_low);
-			params.put("limit[price][" + Integer.parseInt(ed_high.getText().toString().trim()) + "]", Integer.parseInt(ed_high.getText().toString().trim()));
-			params.put("limit[usable][" + Integer.parseInt(ed_low.getText().toString().trim()) + "]", Integer.parseInt(ed_low.getText().toString().trim()));
+			params.put("limit[price][" +ed_high.getText().toString().trim() + "]", ed_high.getText().toString().trim());
+			params.put("limit[usable][" + ed_low.getText().toString().trim() + "]", ed_low.getText().toString().trim());
 		}
 
 		if (uplodImgs!=null &&uplodImgs.size()>0){

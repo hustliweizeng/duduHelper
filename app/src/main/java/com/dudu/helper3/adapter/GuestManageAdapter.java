@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 
 import com.dudu.helper3.R;
+import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.javabean.GuestListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -32,13 +33,14 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 	}
 	public void addAll(List<GuestListBean.GuestDetails> list){
 		if (list!=null){
-			this.list = list;
+			LogUtil.d("moredata",list.size()+"");
+			this.list.addAll(list);
 			notifyDataSetChanged();
 		}
 	}
 	@Override
 	//把view封装成holder，自动复用
-	public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {//根据不同的类型加载不同的布局
 		View view = View.inflate(context, R.layout.item_guest,null);
 		MyViewHolder holder = new MyViewHolder(view);
 		return holder;
@@ -77,7 +79,5 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 			tv_date = (TextView) itemView.findViewById(R.id.tv_date_item_guest);
 		}
 	}
-	
-	
 	
 }

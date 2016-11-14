@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/bg_alertdailog">
+        <TextView
+            android:id="@+id/tv_title_alertdailog"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="分类选择"
+            android:textSize="16dp"
+            android:textColor="@color/text_black_color"
+            android:gravity="center"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:src="@color/text_hint_color"/>
+        <ListView
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:id="@+id/lv_alertdailog"
+            android:layout_width="match_parent"
+            android:divider="@color/text_hint_color"
+            android:dividerHeight="0.5dp"
+            android:footerDividersEnabled="false"
+            android:layout_height="350dp"></ListView>
+
+
+
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_canle_alertdailog"
+        android:layout_marginTop="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/ll"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/icon_cancle"/>
+
+</RelativeLayout>

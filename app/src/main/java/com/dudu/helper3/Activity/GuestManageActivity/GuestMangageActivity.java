@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
+import com.dudu.helper3.Utils.LogUtil;
 import com.dudu.helper3.Utils.Util;
 import com.dudu.helper3.adapter.GuestManageAdapter;
 import com.dudu.helper3.http.ConstantParamPhone;
@@ -43,6 +45,8 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 	int num = 10;
 	public GuestListBean guestList;
 	private GuestManageAdapter adapter;
+	private int lastVisibleItem;
+	private int maxPage;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -54,24 +58,26 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		
 		refreshLayout.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
 		refreshLayout.setRefreshing(true);
-		initData();
-
+		initData(1);
 	}
 
-	private void initData() {
+	/**
+	 * 请求列表信息
+	 */
+	private void initData(int pageNum) {
 		user_list.setLayoutManager(new LinearLayoutManager(this));
 		user_list.setAdapter(adapter);
 		RequestParams params = new RequestParams();
-		params.put("page",page);
+		params.put("page",pageNum);
 		params.put("size",num);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_GUEST_LIST, "POST", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",page+"=="+s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
@@ -84,6 +90,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 						if (guestList.getList()!= null &&guestList.getList().size()>0){
 							adapter.addAll(guestList.getList());
 						}
+						maxPage = Integer.parseInt(guestList.getPage_info().getCount_page());
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -115,13 +122,38 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				initData();
+				initData(1);
 			}
-			
+		});
+		/**
+		 * 下拉加载更多
+		 */
+		user_list.setOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+				super.onScrollStateChanged(recyclerView, newState);
+				if (newState == RecyclerView.SCROLL_STATE_IDLE  &&lastVisibleItem ==adapter.getItemCount()-1){//当滑动停止的时候
+					if (page <maxPage){
+						page++;
+						initData(page);
+						Toast.makeText(context,"正在加载",Toast.LENGTH_SHORT).show();
+						LogUtil.d("load",page+"");
+						user_list.scrollToPosition(adapter.getItemCount()-1);//滚到最后一个
+					}else {
+						Toast.makeText(context,"没有更多的数据",Toast.LENGTH_SHORT).show();
+					}
+				}
+			}
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {//动态刷新最后一个可见的条目
+				super.onScrolled(recyclerView, dx, dy);
+				RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+				LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;//转换为线性布局
+				lastVisibleItem = linearManager.findLastVisibleItemPosition();
+				LogUtil.d("pos",lastVisibleItem+"");
+			}
 		});
 		
 	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {

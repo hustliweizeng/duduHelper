@@ -1,5 +1,7 @@
 package com.dudu.helper3.javabean;
 
+import java.util.List;
+
 /**
  * @author
  * @version 1.0
@@ -43,6 +45,7 @@ public class ShopUserDetaiBean {
 		private String nickname;
 		private String shop_id;
 		private String shop_name;
+		private List<ShopsBean> shops;
 
 		public String getId() {
 			return id;
@@ -82,6 +85,35 @@ public class ShopUserDetaiBean {
 
 		public void setShop_name(String shop_name) {
 			this.shop_name = shop_name;
+		}
+
+		public List<ShopsBean> getShops() {
+			return shops;
+		}
+
+		public void setShops(List<ShopsBean> shops) {
+			this.shops = shops;
+		}
+
+		public static class ShopsBean {
+			private String id;
+			private String name;
+
+			public String getId() {
+				return id;
+			}
+
+			public void setId(String id) {
+				this.id = id;
+			}
+
+			public String getName() {
+				return name;
+			}
+
+			public void setName(String name) {
+				this.name = name;
+			}
 		}
 	}
 }
