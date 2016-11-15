@@ -15,7 +15,7 @@ android {
             keyAlias 'dudu'
         }
     }
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.dudu.helper3"
@@ -29,14 +29,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-
     defaultConfig {
         ndk {
             //设置支持的SO库架构
             abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
-    
+    useLibrary 'org.apache.http.legacy'
     
 }
 android {
@@ -50,7 +49,7 @@ allprojects { gradle.projectsEvaluated { tasks.withType(JavaCompile) { options.c
 dependencies {
     compile 'com.jakewharton:butterknife:8.3.0'
     apt 'com.jakewharton:butterknife-compiler:8.3.0'
-    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
     compile 'com.google.code.gson:gson:2.3.1'
     compile files('libs/android-async-http-1.4.8.jar')
     compile files('libs/com.umeng.message_v2.7.0.jar')
@@ -63,10 +62,10 @@ dependencies {
     compile files('libs/umeng-update-v2.6.0.1.jar')
     compile files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
     compile files('libs/badgeview.jar')
-    compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
@@ -78,4 +77,5 @@ dependencies {
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.0.0
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+    compile 'com.kyleduo.switchbutton:library:1.4.4'
 }

@@ -127,7 +127,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 						tv_gettime_check_sale.setText(Util.DateForomate3(info.getCreated_time()));
 					}
 					btn_subimit.setText("确认核销");
-					tv_check_status_check_sale.setText("该优惠券可核销");
+					tv_check_status_check_sale.setText("该券码可核销");
 					tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.text_black_color));
 				}
 				break;
@@ -135,7 +135,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 				LogUtil.d("status","核销成功");
 				btn_subimit.setText("继续核销");
 				Toast.makeText(context,"核销成功!",Toast.LENGTH_SHORT).show();
-				tv_check_status_check_sale.setText("该优惠券可核销");
+				tv_check_status_check_sale.setText("该券码可核销");
 				tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.text_remind));
 				finish();//结束当前y
 				
@@ -153,7 +153,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 				tv_gettime_check_sale.setText(info.getCreated_time());
 				btn_subimit.setText("重新输入");
 				iv_check_status_check_sale.setImageResource(R.drawable.icon_checked);
-				tv_check_status_check_sale.setText("该优惠券已使用");
+				tv_check_status_check_sale.setText("该券码已使用");
 				tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.erro_status));
 				break;
 
@@ -161,7 +161,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 				LogUtil.d("status","不存在");
 				btn_subimit.setText("重新输入");
 				iv_check_status_check_sale.setImageResource(R.drawable.icon_fail);
-				tv_check_status_check_sale.setText("该核销码不存在");
+				tv_check_status_check_sale.setText("该券码不存在");
 				tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.erro_status));
 				//隐藏下面的所有内容
 				ll_content_check_sale.setVisibility(View.GONE);
@@ -190,13 +190,13 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 		//判断是否过期
 		if (expiredTime !=0){
 			if (System.currentTimeMillis() > expiredTime*1000){//
-				Toast.makeText(context,"该优惠券已过期",Toast.LENGTH_SHORT).show();
+				Toast.makeText(context,"该券码已过期",Toast.LENGTH_SHORT).show();
 			}
 		}
 		//判断是否用过
 		if(usedTime!=null){
 			if (!"0".equals(usedTime)){
-				Toast.makeText(context,"优惠券已经使用过了",Toast.LENGTH_SHORT).show();
+				Toast.makeText(context,"券码已经使用过了",Toast.LENGTH_SHORT).show();
 				ticketStatus =3;
 			}else {
 				ticketStatus = 1;//可以使用
@@ -281,7 +281,6 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 						finish();
 						break;
 				}
-				
 				break;
 		}
 	}

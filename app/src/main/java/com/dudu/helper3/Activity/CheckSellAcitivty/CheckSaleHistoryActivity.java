@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class CheckSaleHistoryActivity extends BaseActivity {
@@ -50,12 +52,16 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 	private int titleHight;
 	private String lastid = "";
 	private SwipeRefreshLayout swiperefresh;
+	private Date currentDate;
+	private Calendar calenderUtil;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//手动测量并记录标题栏的高度
 		setContentView(R.layout.shop_money_record_list);
+		currentDate = new Date(System.currentTimeMillis());
+		calenderUtil = Calendar.getInstance();
 		adapter = new CheckSaleHistoryAdapter(this);
 		//初始化当天日期
 		format = new SimpleDateFormat("yyyy-MM-dd");
@@ -118,11 +124,10 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 
 		if (popupWindow == null) {
 			//每次都new的话一些数据会遗失
-			popupWindow = new PopupWindow(view, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+			popupWindow = new PopupWindow(view, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
 			//当前日期,第一次初始化
 			calendarCenter = (TextView) view.findViewById(R.id.calendarCenter);
-			calendarCenter.setText(new SimpleDateFormat("yyyy年MM月dd日").format(new Date()));
-			calener = (CalendarView) view.findViewById(R.id.calendar);
+			calendarCenter.setText(new SimpleDateFormat("yyyy年MM月").format(new Date()));
 		}
 		popupWindow.setFocusable(true);
 		popupWindow.setOutsideTouchable(true);
@@ -141,12 +146,38 @@ public class CheckSaleHistoryActivity extends BaseActivity {
 				//isLoadMore = false;//重新刷新
 				getData();
 				LogUtil.d("收银流水", downDate1);
-				//更新标题的日期
-				calendarCenter.setText(new SimpleDateFormat("yyyy年MM月dd日").format(downDate));
 				//弹窗收回，请求数据
 				popupWindow.dismiss();
 			}
 		});
+		/**
+		 * 切换月份
+		 */
+
+		final ImageButton calendarLeft = (ImageButton) view.findViewById(R.id.calendarLeft);
+		calendarLeft.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				calendar.clickLeftMonth();
+				calenderUtil.setTime(currentDate);
+				calenderUtil.add(Calendar.MONTH, -1);
+				currentDate = calenderUtil.getTime();
+				calendarCenter.setText(new SimpleDateFormat("yyyy年MM月").format(currentDate));
+			}
+		});
+		ImageButton calendarRight = (ImageButton) view.findViewById(R.id.calendarRight);
+		calendarRight.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				calenderUtil.setTime(currentDate);
+				calenderUtil.add(Calendar.MONTH, 1);
+				currentDate = calenderUtil.getTime();
+				calendarCenter.setText(new SimpleDateFormat("yyyy年MM月").format(currentDate));
+				calendar.clickRightMonth();
+			}
+		});
+		
+		
 	}
 	/**
 	 * 异步请求数据

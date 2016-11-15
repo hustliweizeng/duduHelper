@@ -39,7 +39,7 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 	private Button submitbtn;
 	private ActivityMsGListAdapter adapter;
 	private  int page = 1;
-	private  int sise = 2;
+	private  int sise = 10;
 	private int lastVisibleItemPosition;
 
 	@Override
@@ -55,8 +55,10 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 	@Override
 	public void onResume() {
 		super.onResume();
+		adapter.clear();
 		initData(1);
 	}
+	
 	private void initData(int pageNum) {
 		RequestParams params = new RequestParams();
 		params.put("type_id","1");//红包的typeid是2
@@ -75,18 +77,10 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
-						boolean isEmpty;
 						ActivityMsgBean activityMsgBean = new Gson().fromJson(s, ActivityMsgBean.class);
 						List<ActivityMsgBean.ListBean> list = activityMsgBean.getList();
 						if (list!=null &&list.size()>0){
 							adapter.addAll(list);
-							recycleview_list.setAdapter(adapter);//每次请求数据之后设置
-							isEmpty = false;
-						}else {
-							isEmpty = true;
-						}
-						if(onLoadFinishi!=null){
-							onLoadFinishi.LoadfFinish(isEmpty);
 						}
 					}else {
 						//数据请求失败
@@ -107,16 +101,6 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 		
 	}
 
-	/**
-	 * 加载完成的回调监听
-	 */
-	public  interface OnLoadFinishi{
-		void LoadfFinish(boolean isEmpty);
-	};
-	public  OnLoadFinishi onLoadFinishi;
-	public void  setOnLoadFinishi(OnLoadFinishi onLoadFinishi){
-		this.onLoadFinishi = onLoadFinishi;
-	}
 
 	private void initView() {
 		recycleview_list = (RecyclerView) findViewById(R.id.recycleview_list);
@@ -126,9 +110,12 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 		swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
+				adapter.clear();
 				initData(1);
 			}
 		});
+		recycleview_list.setAdapter(adapter);//每次请求数据之后设置
+		
 		recycleview_list.setLayoutManager(new LinearLayoutManager(this));
 		recycleview_list.setOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
@@ -137,7 +124,9 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 				//滑动停止以后
 				if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItemPosition+1 == recyclerView.getChildCount()){
 					page++;
+					LogUtil.d("page","num ="+page);
 					initData(page);
+					
 				}
 			}
 			@Override

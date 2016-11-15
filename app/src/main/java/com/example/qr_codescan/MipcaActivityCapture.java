@@ -107,7 +107,7 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("fee",price);
-		params.add("body","嘟嘟科技");
+		params.add("body",sp.getString("shopName",""));
 		HttpUtils.getConnection(context,params, ConstantParamPhone.CREATE_PAYMENT_ORDER, "post",new TextHttpResponseHandler()
 		{
 
@@ -199,7 +199,6 @@ public class MipcaActivityCapture extends BaseActivity implements Callback {
 					Intent intent = new Intent(MipcaActivityCapture.this,ShopGetInComeCashActivity.class);
 					intent.putExtra("action", "hexiao");
 					startActivity(intent);
-
 				}
 			}
 			}

@@ -42,9 +42,10 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 	private Button submitbtn;
 	private RedbagMsgListAdapter adapter;
 	private  int page = 1;
-	private  int size = 10;
+	private  int size = 5;
 	private RedbagMsgListBean redbagMsgListBean;
 	private boolean isBottom;
+	private int lastVisibleItemPosition;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -60,6 +61,7 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 		initData(1);
+		adapter.clear();
 		LogUtil.d("resume","resume");
 	}
 
@@ -120,6 +122,7 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 		refresh_msg.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
+				adapter.clear();
 				initData(1);
 			}
 		});
@@ -144,16 +147,20 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 				super.onScrollStateChanged(recyclerView, newState);
 				//滑动停止以后
-				if (newState == RecyclerView.SCROLL_STATE_IDLE){
+				if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItemPosition+1 == adapter.getItemCount()){
 					//获取是否在底部
-					isBottom = recyclerView.canScrollVertically(RecyclerView.VERTICAL);//每次判断是否在底部
 					//说明滑到底部
-					if (isBottom){
 						page++;
 						initData(page);
 						LogUtil.d("more","loadmore");
-					}
 				}
+			}
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+				RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+				LinearLayoutManager manager= (LinearLayoutManager)layoutManager;
+				lastVisibleItemPosition = manager.findLastVisibleItemPosition();
 			}
 		});
 	}

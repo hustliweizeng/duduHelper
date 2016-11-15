@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dudu.helper3.Activity.MyInfoActivity.MsgSettingActivity;
 import com.dudu.helper3.Activity.MyInfoActivity.ShopSettingActivity;
 import com.dudu.helper3.BaseActivity;
 import com.dudu.helper3.R;
@@ -256,7 +257,7 @@ public class MainActivity extends BaseActivity
 	public void RightButtonClick() 
 	{
 		super.RightButtonClick();
-		Intent intent=new Intent(this,ShopSettingActivity.class);
+		Intent intent=new Intent(this,MsgSettingActivity.class);
 		startActivity(intent);
 	}
 

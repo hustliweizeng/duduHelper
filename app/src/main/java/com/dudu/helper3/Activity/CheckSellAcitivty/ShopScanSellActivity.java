@@ -24,7 +24,7 @@ public class ShopScanSellActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_scan_sell);
-		initHeadView("该优惠券可核销", true, false, 0);
+		initHeadView("券码核销", true, false, 0);
 		initView();
 	}
 

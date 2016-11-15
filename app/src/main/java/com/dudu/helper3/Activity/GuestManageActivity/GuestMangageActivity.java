@@ -58,6 +58,12 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		
 		refreshLayout.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
 		refreshLayout.setRefreshing(true);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		adapter.clear();
 		initData(1);
 	}
 
@@ -100,7 +106,6 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 					e.printStackTrace();
 				}
 			}
-
 			@Override
 			public void onFinish() {
 				super.onFinish();
@@ -123,6 +128,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
+				adapter.clear();
 				initData(1);
 			}
 		});
@@ -137,11 +143,8 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 					if (page <maxPage){
 						page++;
 						initData(page);
-						Toast.makeText(context,"正在加载",Toast.LENGTH_SHORT).show();
+						user_list.scrollToPosition(0);
 						LogUtil.d("load",page+"");
-						user_list.scrollToPosition(adapter.getItemCount()-1);//滚到最后一个
-					}else {
-						Toast.makeText(context,"没有更多的数据",Toast.LENGTH_SHORT).show();
 					}
 				}
 			}

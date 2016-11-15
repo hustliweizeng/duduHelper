@@ -217,11 +217,11 @@ public class ShopOrderDetailActivity extends BaseActivity
 		//电话
 		orderPhoneTextView.setText(orderData.getMobile());
 		//订单金额
-		orderFeeTextView.setText(orderData.getFee());
+		orderFeeTextView.setText(orderData.getTotal_fee());
 		//折扣金额
 		orderdiscountTextView.setText(orderData.getDiscount_shop_fee());
 		//总额
-		totalPriceTextView.setText(orderData.getTotal_fee());
+		totalPriceTextView.setText(orderData.getFee());
 		
 	}
 

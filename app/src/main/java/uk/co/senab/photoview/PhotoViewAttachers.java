@@ -336,7 +336,7 @@ public class PhotoViewAttachers implements IPhotoViews, View.OnTouchListener,
 
     @Override
     public float getScale() {
-        return FloatMath.sqrt((float) Math.pow(getValue(mSuppMatrix, Matrix.MSCALE_X), 2) + (float) Math.pow(getValue(mSuppMatrix, Matrix.MSKEW_Y), 2));
+        return Math.abs((float) Math.pow(getValue(mSuppMatrix, Matrix.MSCALE_X), 2) + (float) Math.pow(getValue(mSuppMatrix, Matrix.MSKEW_Y), 2));
     }
 
     @Override

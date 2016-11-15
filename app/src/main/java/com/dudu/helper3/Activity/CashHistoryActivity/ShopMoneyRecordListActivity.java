@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ShopMoneyRecordListActivity extends BaseActivity {
@@ -38,7 +40,6 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 	private Button editButton;
 	private PopupWindow popupWindow;
 	private TextView calendarCenter;
-	private CalendarView calener;
 	private ListView lv_checckmoneyhisory;
 	private MoneyHistoryAdapter adapter;
 	private String downDate1;
@@ -47,12 +48,16 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 	private TextView tv_msg;
 	private int titleHight;
 	private SwipeRefreshLayout swiperefresh;
+	private Date currentDate;
+	private Calendar calenderUtil;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//手动测量并记录标题栏的高度
 		setContentView(R.layout.shop_money_record_list);
+		currentDate = new Date(System.currentTimeMillis());
+		calenderUtil = Calendar.getInstance();
 		adapter = new MoneyHistoryAdapter(this);
 		//初始化当天日期
 		format = new SimpleDateFormat("yyyy-MM-dd");
@@ -89,18 +94,18 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 	/**
 	 * 下拉弹出
 	 */
+	
 	private void getDataPopWindow() {
 		LayoutInflater layoutInflater = (LayoutInflater) ShopMoneyRecordListActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.shop_data_popwindow, null);
-
-		if (popupWindow == null) {
+		if (popupWindow == null) {//初始化日期显示
 			//每次都new的话一些数据会遗失
-			popupWindow = new PopupWindow(view, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+			popupWindow = new PopupWindow(view, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
 			//当前日期,第一次初始化
-			calendarCenter = (TextView) view.findViewById(R.id.calendarCenter);
-			calendarCenter.setText(new SimpleDateFormat("yyyy年MM月dd日").format(new Date()));
-			calener = (CalendarView) view.findViewById(R.id.calendar);
+			calendarCenter = (TextView) view.findViewById(R.id.calendarCenter);//日期的对象
+			calendarCenter.setText(new SimpleDateFormat("yyyy年MM月").format(new Date()));
 		}
+		popupWindow.setTouchable(true);
 		popupWindow.setFocusable(true);
 		popupWindow.setOutsideTouchable(true);
 		// 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
@@ -118,11 +123,35 @@ public class ShopMoneyRecordListActivity extends BaseActivity {
 				//清空集合
 				getData();
 				LogUtil.d("收银流水", downDate1);
-				//更新标题的日期
-				calendarCenter.setText(new SimpleDateFormat("yyyy年MM月dd日").format(downDate));
 				//弹窗收回，请求数据
 				popupWindow.dismiss();
 
+			}
+		});
+		/**
+		 * 切换月份
+		 */
+		
+		final ImageButton calendarLeft = (ImageButton) view.findViewById(R.id.calendarLeft);
+		calendarLeft.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				calendar.clickLeftMonth();
+				calenderUtil.setTime(currentDate);
+				calenderUtil.add(Calendar.MONTH, -1);
+				currentDate = calenderUtil.getTime();
+				calendarCenter.setText(new SimpleDateFormat("yyyy年MM月").format(currentDate));
+			}
+		});
+		ImageButton calendarRight = (ImageButton) view.findViewById(R.id.calendarRight);
+		calendarRight.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				calenderUtil.setTime(currentDate);
+				calenderUtil.add(Calendar.MONTH, 1);
+				currentDate = calenderUtil.getTime();
+				calendarCenter.setText(new SimpleDateFormat("yyyy年MM月").format(currentDate));
+				calendar.clickRightMonth();
 			}
 		});
 	}

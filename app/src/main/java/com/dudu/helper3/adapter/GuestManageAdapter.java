@@ -1,10 +1,12 @@
 package com.dudu.helper3.adapter;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -48,19 +50,40 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 	//填写数据
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		MyViewHolder myholder = (MyViewHolder) holder;
+		final  MyViewHolder myholder = (MyViewHolder) holder;
 		GuestListBean.GuestDetails data = list.get(position);
 		ImageLoader.getInstance().displayImage(data.getAvatar(),myholder.iv_photo);
 		myholder.tv_consume_price.setText(data.getTotal_consumption());
 		myholder.tv_consume_conut.setText(data.getTotal_num());
 		myholder.tv_date.setText(data.getLast_consumption_time());
 		myholder.tv_name.setText(data.getNickname());
+		if (position == list.size()-1 && position>5){
+			myholder.footview.setVisibility(View.VISIBLE);
+			CountDownTimer timer = new CountDownTimer(2000, 2000) {
+				@Override
+				public void onTick(long millisUntilFinished) {
+				}
+				@Override
+				public void onFinish() {
+					myholder.footview.setVisibility(View.GONE);
+				}
+			};
+			timer.start();
+			
+		}else {
+			myholder.footview.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
 	public int getItemCount() {
 		return list.size();
 	}
+
+	public void clear() {
+		list.clear();
+	}
+
 	//封装holder
 	public class MyViewHolder extends  RecyclerView.ViewHolder{
 		//通过构造方法绑定findview
@@ -69,7 +92,7 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 		TextView tv_consume_price;
 		TextView tv_consume_conut;
 		TextView tv_date;
-		
+		LinearLayout footview;
 		public MyViewHolder(View itemView) {
 			super(itemView);
 			iv_photo = (ImageView) itemView.findViewById(R.id.iv_item_guest);
@@ -77,6 +100,7 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 			tv_consume_price = (TextView) itemView.findViewById(R.id.tv_totalprice_item_guest);
 			tv_consume_conut = (TextView) itemView.findViewById(R.id.tv_count_item_guest);
 			tv_date = (TextView) itemView.findViewById(R.id.tv_date_item_guest);
+			footview = (LinearLayout) itemView.findViewById(R.id.footview);
 		}
 	}
 	

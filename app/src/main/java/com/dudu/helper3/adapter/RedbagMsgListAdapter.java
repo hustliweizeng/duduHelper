@@ -1,6 +1,7 @@
 package com.dudu.helper3.adapter;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.dudu.helper3.javabean.RedbagMsgListBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
+import java.util.logging.Handler;
 
 /**
  * @author
@@ -47,7 +50,7 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		MyViewHolder holder1 = (MyViewHolder) holder;
+		final  MyViewHolder holder1 = (MyViewHolder) holder;
 		RedbagMsgListBean.ListBean listBean = list.get(position);
 		if (listBean!=null){
 			holder1.tv_date.setText(listBean.getCreated_at());
@@ -66,19 +69,36 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 				holder1.tv_status.setVisibility(View.GONE);
 			}
 			//如果是最后一条
-			if (position == list.size()-1 &&position >10){
+			if (position == list.size()-1 &&position >3){
 				//添加脚布局
 				holder1.footview.setVisibility(View.VISIBLE);
+				LogUtil.d("foot","pos="+position);
+				 CountDownTimer timer = new CountDownTimer(2000, 2000) {
+					@Override
+					public void onTick(long millisUntilFinished) {
+					}
+					@Override
+					public void onFinish() {
+						holder1.footview.setVisibility(View.GONE);
+					}
+				};
+				timer.start();
+
 			}else {
 				holder1.footview.setVisibility(View.GONE);
 			}
 			
 		}
 	}
+	
 
 	@Override
 	public int getItemCount() {
 		return list.size();
+	}
+
+	public void clear() {
+		list.clear();
 	}
 
 	class MyViewHolder extends RecyclerView.ViewHolder {

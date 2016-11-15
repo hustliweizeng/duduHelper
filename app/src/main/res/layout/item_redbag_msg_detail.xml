@@ -191,7 +191,7 @@
             android:layout_margin="17dp"
             android:visibility="gone"
             android:text="加载中..."
-            android:textColor="@color/text_color_light"
+            android:textColor="@color/text_dark_color"
             android:textSize="14dp" />
     </LinearLayout>
 
