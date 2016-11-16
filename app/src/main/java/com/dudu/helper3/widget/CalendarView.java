@@ -53,12 +53,12 @@ public class CalendarView extends View implements View.OnTouchListener
         super(context, attrs);
         init();
     }
-
+    
     private void init() {
         curDate = selectedStartDate = selectedEndDate = today = new Date();
         calendar = Calendar.getInstance();
         calendar.setTime(curDate);
-        surface = new Surface();
+        surface = new Surface();//初始化surface
         surface.density = getResources().getDisplayMetrics().density;
         setBackgroundColor(surface.bgColor);
         setOnTouchListener(this);
@@ -66,15 +66,9 @@ public class CalendarView extends View implements View.OnTouchListener
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        surface.width = getResources().getDisplayMetrics().widthPixels;
-        surface.height = (int) (getResources().getDisplayMetrics().heightPixels*3/9);
-        //		if (View.MeasureSpec.getMode(widthMeasureSpec) == View.MeasureSpec.EXACTLY) {
-        //			surface.width = View.MeasureSpec.getSize(widthMeasureSpec);
-        //		}
-        //		if (View.MeasureSpec.getMode(heightMeasureSpec) == View.MeasureSpec.EXACTLY) {
-        //			surface.height = View.MeasureSpec.getSize(heightMeasureSpec);
-        //		}
-        widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(surface.width,View.MeasureSpec.EXACTLY);
+        surface.width = getResources().getDisplayMetrics().widthPixels;//控件宽度
+        surface.height = (int) (getResources().getDisplayMetrics().heightPixels*3/9);//控件高度
+        widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(surface.width,View.MeasureSpec.EXACTLY);//制定测量规则
         heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(surface.height,View.MeasureSpec.EXACTLY);
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -96,27 +90,6 @@ public class CalendarView extends View implements View.OnTouchListener
     {
         Log.d(TAG, "onDraw");
         // 画框
-        //canvas.drawPath(surface.boxPath, surface.borderPaint);
-        // 年月
-        //		String monthText = getYearAndmonth();
-        //		float textWidth = surface.monthPaint.measureText(monthText);
-        //		canvas.drawText(monthText, (surface.width - textWidth) / 2f,
-        //				surface.monthHeight * 3 / 4f, surface.monthPaint);
-        //		 //上一月/下一月
-        //		canvas.drawPath(surface.preMonthBtnPath, surface.monthChangeBtnPaint);
-        //		canvas.drawPath(surface.nextMonthBtnPath, surface.monthChangeBtnPaint);
-
-        // 星期
-        //		float weekTextY = surface.monthHeight + surface.weekHeight * 3 / 4f;
-        // 星期背景
-        //		surface.cellBgPaint.setColor(surface.textColor);
-        //		canvas.drawRect(surface.weekHeight, surface.width, surface.weekHeight, surface.width, surface.cellBgPaint);
-        //		for (int i = 0; i < surface.weekText.length; i++)
-        //		{
-        //			float weekTextX = i* surface.cellWidth+ (surface.cellWidth - surface.weekPaint.measureText(surface.weekText[i])) / 2f;
-        //			canvas.drawText(surface.weekText[i], weekTextX, weekTextY,surface.weekPaint);
-        //		}
-
         // 计算日期
         calculateDate();
         // 按下状态，选择状态背景色
@@ -392,22 +365,6 @@ public class CalendarView extends View implements View.OnTouchListener
     //设置点下的日期颜色和当前日期
     private void setSelectedDateByCoor(float x, float y)
     {
-        // change month
-        //		if (y < surface.monthHeight) {
-        //			// pre month
-        //			if (x < surface.monthChangeWidth) {
-        //				calendar.setTime(curDate);
-        //				calendar.add(Calendar.MONTH, -1);
-        //				curDate = calendar.getTime();
-        //			}
-        //			// next month
-        //			else if (x > surface.width - surface.monthChangeWidth) {
-        //				calendar.setTime(curDate);
-        //				calendar.add(Calendar.MONTH, 1);
-        //				curDate = calendar.getTime();
-        //			}
-        //		}
-        // cell click down
         if (y > surface.monthHeight + surface.weekHeight)
         {
             int m = (int) (Math.floor(x / surface.cellWidth) + 1);
@@ -455,7 +412,7 @@ public class CalendarView extends View implements View.OnTouchListener
 
 
                 break;
-            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_UP://手指抬起以后
                 if (downDate != null)
                 {
                     if(isSelectMore)
@@ -590,40 +547,6 @@ public class CalendarView extends View implements View.OnTouchListener
             datePaint.setTextSize(cellTextSize);
             //设置粗体
             datePaint.setTypeface(Typeface.DEFAULT_BOLD);
-
-            //			boxPath = new Path();
-            //			//boxPath.addRect(0, 0, width, height, Direction.CW);
-            //			//boxPath.moveTo(0, monthHeight);
-            //			boxPath.rLineTo(width, 0);
-            //			boxPath.moveTo(0, monthHeight + weekHeight);
-            //			boxPath.rLineTo(width, 0);
-            //			for (int i = 1; i < 6; i++)
-            //			{
-            //				boxPath.moveTo(0, monthHeight + weekHeight + i * cellHeight);
-            //				boxPath.rLineTo(width, 0);
-            //				boxPath.moveTo(i * cellWidth, monthHeight);
-            //				boxPath.rLineTo(0, height - monthHeight);
-            //			}
-            //			boxPath.moveTo(6 * cellWidth, monthHeight);
-            //			boxPath.rLineTo(0, height - monthHeight);
-
-            //preMonthBtnPath = new Path();
-            //int btnHeight = (int) (monthHeight * 0.6f);
-            //preMonthBtnPath.moveTo(monthChangeWidth / 2f, monthHeight / 2f);
-            //preMonthBtnPath.rLineTo(btnHeight / 2f, -btnHeight / 2f);
-            //preMonthBtnPath.rLineTo(0, btnHeight);
-            //preMonthBtnPath.close();
-            //nextMonthBtnPath = new Path();
-            //nextMonthBtnPath.moveTo(width - monthChangeWidth / 2f,
-            //		monthHeight / 2f);
-            //nextMonthBtnPath.rLineTo(-btnHeight / 2f, -btnHeight / 2f);
-            //nextMonthBtnPath.rLineTo(0, btnHeight);
-            //nextMonthBtnPath.close();
-            //			monthChangeBtnPaint = new Paint();
-            //			monthChangeBtnPaint.setAntiAlias(true);
-            //			monthChangeBtnPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-            //			monthChangeBtnPaint.setColor(btnColor);
-
             cellBgPaint = new Paint();
             cellBgPaint.setAntiAlias(true);
             cellBgPaint.setStyle(Paint.Style.FILL);

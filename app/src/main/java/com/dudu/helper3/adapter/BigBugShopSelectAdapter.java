@@ -128,14 +128,15 @@ public class BigBugShopSelectAdapter extends BaseAdapter {
 	}
 
 	public void setCheckedIds(ArrayList<String> data) {
-		checkedIds = data;
-		for (int i = 0;i<list.size() ;i++){
-			if (data.contains(list.get(i).getId())){
-				checkedPos.add(i+"");
+		if(data!=null &&data.size()>0){
+			checkedIds = data;
+			for (int i = 0;i<list.size() ;i++){
+				if (data.contains(list.get(i).getId())){
+					checkedPos.add(i+"");
+				}
 			}
+			notifyDataSetChanged();
 		}
-		notifyDataSetChanged();
-		
 	}
 
 	public static class ViewHolder {

@@ -256,7 +256,6 @@
             android:label="@string/title_activity_product_info_edit" >
         </activity>
 
-        <service android:name="com.dudu.helper3.service.UpdateService" />
         <service
             android:name="com.umeng.update.net.DownloadingService"
             android:process=":DownloadingService" >
