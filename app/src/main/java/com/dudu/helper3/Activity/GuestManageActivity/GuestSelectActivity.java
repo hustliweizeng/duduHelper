@@ -41,22 +41,34 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 	private GuestListCheckAdapter adapter;
 	private int page = 1;
 	private int num = 10;
+	private boolean isEnd = false;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		LogUtil.d("res","success");
 		setContentView(R.layout.activity_guest_select);
-		adapter = new GuestListCheckAdapter(this);
+		adapter = new GuestListCheckAdapter(this);//监听适配器是否滚到了最后
+		adapter.setOnLoadMore(new GuestListCheckAdapter.OnLoadMore() {
+			@Override
+			public void loadMore() {
+				if (!isEnd){
+					page++;
+					LogUtil.d("initdata",page+"'");
+					initData(page);
+				}else {
+					Toast.makeText(context,"已经加载到最后",Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 		//设置客户列表,从静态变量那里直接获取
-
 		initView();
-		initData();
+		initData(1);
 	}
 
-	private void initData() {
+	private void initData(int mPage) {
 		RequestParams params = new RequestParams();
-		params.put("page",page);
+		params.put("page",mPage);
 		params.put("size",num);
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_GUEST_LIST, "POST", new TextHttpResponseHandler() {
 			@Override
@@ -74,6 +86,8 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 						GuestListBean guestList = new Gson().fromJson(s, GuestListBean.class);
 						if (guestList.getList()!= null &&guestList.getList().size()>0){
 							adapter.addGuests(guestList.getList());
+						}else {
+							isEnd = true;//已经到了底部
 						}
 					}else {
 						//数据请求失败

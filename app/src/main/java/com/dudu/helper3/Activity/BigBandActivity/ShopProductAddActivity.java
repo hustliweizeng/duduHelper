@@ -134,7 +134,6 @@ public class ShopProductAddActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_product_add);
 		initHeadView("详情编辑",true, false, 0);
-		DuduHelperApplication.getInstance().addActivity(this);
 		//页面类别category；
 		category=getIntent().getStringExtra("category");
 		LogUtil.d("Category",category);

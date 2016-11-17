@@ -101,5 +101,9 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/list_divide"/>
+    <include 
+        android:id="@+id/foot"
+        android:visibility="gone"
+        layout="@layout/activity_listview_foot"/>
 
 </LinearLayout>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
+    android:background="@color/head_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.dudu.duduhelper.ShopCouponDetailActivity" >
@@ -15,6 +15,7 @@
     <com.dudu.helper3.widget.OverScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/bg_color"
         android:layout_above="@+id/foot"
         android:layout_below="@+id/head"
         android:fillViewport="true" >

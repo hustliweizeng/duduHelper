@@ -1,10 +1,12 @@
 package com.dudu.helper3.adapter;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dudu.helper3.R;
@@ -60,7 +62,7 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 	}
 	public void addGuests (List<GuestListBean.GuestDetails> guestList){
 		if (guestList!=null & guestList.size()>0){
-			this.guestList = guestList;
+			this.guestList.addAll(guestList);
 			LogUtil.d("ok","size="+guestList.size());
 			notifyDataSetChanged();
 		}
@@ -76,7 +78,7 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 		
-		Myholder myholder = (Myholder)holder;
+		final Myholder myholder = (Myholder)holder;
 		if (list.contains(position+"")){
 			myholder.iv_ischeck.setImageResource(R.drawable.select_check);
 		}else {
@@ -89,7 +91,36 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 		myholder.tv_count_item_guest.setText(guestDetails.getTotal_num());
 		myholder.tv_totalprice_item_guest.setText(guestDetails.getTotal_consumption());
 		myholder.tv_date_item_guest.setText(guestDetails.getLast_consumption_time());
+		if (position == guestList.size()-1){//如果是最后一个条目
+			myholder.foot.setVisibility(View.VISIBLE);
+			if (mOnLoadMore!=null){//加载更多数据
+				mOnLoadMore.loadMore();
+				LogUtil.d("LoadMore",position+"'");
+			}
+			CountDownTimer timer = new CountDownTimer(2000, 2000) {
+				@Override
+				public void onTick(long millisUntilFinished) {
+				}
+				@Override
+				public void onFinish() {
+					myholder.foot.setVisibility(View.GONE);
+				}
+			};
+			timer.start();
+		}else {
+			LogUtil.d("content",position+"=="+guestList.size());
+			myholder.foot.setVisibility(View.GONE);
+		}
 	}
+	public  interface  OnLoadMore{
+		public  void loadMore();
+	}
+	private    OnLoadMore mOnLoadMore;
+	public  void setOnLoadMore(OnLoadMore onLoadMore){
+		mOnLoadMore = onLoadMore;
+	}
+	
+	
 
 	@Override
 	public int getItemCount() {
@@ -103,6 +134,7 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 		private TextView tv_totalprice_item_guest;
 		private TextView tv_count_item_guest;
 		private TextView tv_date_item_guest;
+		private LinearLayout foot;
 		OnItemClickListner listener;
 		//复选框状态,默认是不选择
 		private  boolean isChekcked = false;
@@ -120,6 +152,7 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 			tv_totalprice_item_guest = (TextView) itemView.findViewById(R.id.tv_totalprice_item_guest);
 			tv_count_item_guest = (TextView) itemView.findViewById(R.id.tv_count_item_guest);
 			tv_date_item_guest = (TextView) itemView.findViewById(R.id.tv_date_item_guest);
+			foot = (LinearLayout) itemView.findViewById(R.id.foot);
 		}
 
 		@Override

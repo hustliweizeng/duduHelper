@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
+    android:background="@color/head_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.dudu.duduhelper.com.dudu.helper3.Activity.DiscountCardActivity.ShopDiscoutAddActivity" >
@@ -15,6 +15,7 @@
         android:id="@+id/mineScrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/bg_color"
         android:layout_above="@+id/saveProductbutton"
         android:layout_below="@id/head"
         android:fillViewport="true" >

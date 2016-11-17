@@ -50,7 +50,6 @@ public class CashSellActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cashyouhui_sell);
 		initHeadView("优惠券核销", true, false,R.drawable.icon_historical);
-		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 		
 	}

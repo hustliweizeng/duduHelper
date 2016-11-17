@@ -121,7 +121,6 @@ public class shopProductListActivity extends BaseActivity
 		category=getIntent().getStringExtra("category");
 		
 		//全屏显示的对话框进度条
-		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 		swipe_product_list.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
 		swipe_product_list.setRefreshing(true);

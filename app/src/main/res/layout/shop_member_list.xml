@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
+    android:background="@color/head_color"
     android:fitsSystemWindows="true"
     tools:context="com.dudu.duduhelper.ShopMemberListActivity"
     android:paddingBottom="12dp">
@@ -13,6 +13,7 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/memberListswipeLayout"
+        android:background="@color/bg_color"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/head">

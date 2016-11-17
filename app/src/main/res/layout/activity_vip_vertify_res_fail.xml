@@ -54,7 +54,7 @@
                         android:textColor="@color/text_color_yellow"
                         android:textSize="18dp"
                         android:layout_marginBottom="20dp"
-                        android:text="该优惠券核销成功"/>
+                        android:text="该会员卡验证失败"/>
 
 
                 </LinearLayout>

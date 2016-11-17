@@ -81,11 +81,10 @@ public class ShopAdapterAdapter extends BaseAdapter
 		viewHolder.totalTrade.setText(" ￥"+dataBean.getTrade_history());
 		viewHolder.month_trade.setText(" ￥"+dataBean.getTrade_month());
 		viewHolder.name.setText(dataBean.getName());
-		String imgUrl = dataBean.getImages().get(0);
-		viewHolder.shopimage.setTag(imgUrl);
-
-
+		String imgUrl;
 		if (dataBean.getImages()!=null && dataBean.getImages().size()>0){
+			imgUrl = dataBean.getImages().get(0);//获取之前一顶要做非空判断
+			viewHolder.shopimage.setTag(imgUrl);
 			//显示图片之前检查大小
 			if (viewHolder.shopimage.getTag()!=null && viewHolder.shopimage.getTag().equals(imgUrl)){
 				ImageLoader.getInstance().displayImage(dataBean.getImages().get(0),viewHolder.shopimage);

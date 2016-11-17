@@ -47,7 +47,6 @@ public class CashSellScanSucessActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cash_sell_scan_sucess);
 		initHeadView("优惠券核销", true, false,R.drawable.icon_historical);
-		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 		initData();
 	}

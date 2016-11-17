@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity
 
 		setContentView(R.layout.activity_main);
 		initHeadView(sp.getString("shopName",""), false,false, 0);
-		DuduHelperApplication.getInstance().addActivity(this);
 		
 		//统计app启动次数
 		//mPushAgent.onAppStart();

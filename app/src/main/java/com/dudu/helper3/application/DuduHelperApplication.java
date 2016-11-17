@@ -111,7 +111,10 @@ public class DuduHelperApplication extends Application
 	// add Activity
 	public void addActivity(Activity activity)
 	{
-		mList.add(activity);
+		if(!mList.contains(activity)){
+			mList.add(activity);
+		}
+			
 		//LogUtil.d("activityNum:",""+mList.size());
 	}
 
