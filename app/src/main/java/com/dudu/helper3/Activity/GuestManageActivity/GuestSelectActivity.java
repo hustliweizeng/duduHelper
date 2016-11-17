@@ -51,13 +51,15 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 		adapter = new GuestListCheckAdapter(this);//监听适配器是否滚到了最后
 		adapter.setOnLoadMore(new GuestListCheckAdapter.OnLoadMore() {
 			@Override
-			public void loadMore() {
+			public boolean loadMore() {
 				if (!isEnd){
 					page++;
 					LogUtil.d("initdata",page+"'");
 					initData(page);
+					return  true;
 				}else {
-					Toast.makeText(context,"已经加载到最后",Toast.LENGTH_SHORT).show();
+					//Toast.makeText(context,"已经加载到最后",Toast.LENGTH_SHORT).show();
+					return false;
 				}
 			}
 		});

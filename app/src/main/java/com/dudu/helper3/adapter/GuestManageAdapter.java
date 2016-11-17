@@ -93,6 +93,7 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 		TextView tv_consume_conut;
 		TextView tv_date;
 		LinearLayout footview;
+		TextView loading_text;
 		public MyViewHolder(View itemView) {
 			super(itemView);
 			iv_photo = (ImageView) itemView.findViewById(R.id.iv_item_guest);
@@ -101,6 +102,7 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 			tv_consume_conut = (TextView) itemView.findViewById(R.id.tv_count_item_guest);
 			tv_date = (TextView) itemView.findViewById(R.id.tv_date_item_guest);
 			footview = (LinearLayout) itemView.findViewById(R.id.footview);
+			loading_text = (TextView) itemView.findViewById(R.id.loading_text);
 		}
 	}
 	

@@ -2,6 +2,7 @@ package com.dudu.helper3.adapter;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 
 	//是否全选
 	private boolean isAll = false;
+	private boolean isEnd;
 
 	public GuestListCheckAdapter(Context context) {
 		mContext = context;
@@ -94,16 +96,22 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 		if (position == guestList.size()-1){//如果是最后一个条目
 			myholder.foot.setVisibility(View.VISIBLE);
 			if (mOnLoadMore!=null){//加载更多数据
-				mOnLoadMore.loadMore();
+				isEnd = mOnLoadMore.loadMore();
 				LogUtil.d("LoadMore",position+"'");
 			}
-			CountDownTimer timer = new CountDownTimer(2000, 2000) {
+			CountDownTimer timer = new CountDownTimer(2000, 2000) {//利用计时器等待请求数据返回结果
 				@Override
 				public void onTick(long millisUntilFinished) {
 				}
 				@Override
 				public void onFinish() {
-					myholder.foot.setVisibility(View.GONE);
+					if (isEnd){
+						myholder.foot.setVisibility(View.GONE);
+					}else {
+						myholder.loading_text.setText("已经加载到底部");
+						SystemClock.sleep(1000);
+						myholder.foot.setVisibility(View.GONE);
+					}
 				}
 			};
 			timer.start();
@@ -113,7 +121,7 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 		}
 	}
 	public  interface  OnLoadMore{
-		public  void loadMore();
+		public  boolean loadMore();
 	}
 	private    OnLoadMore mOnLoadMore;
 	public  void setOnLoadMore(OnLoadMore onLoadMore){
@@ -135,6 +143,7 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 		private TextView tv_count_item_guest;
 		private TextView tv_date_item_guest;
 		private LinearLayout foot;
+		private TextView loading_text;
 		OnItemClickListner listener;
 		//复选框状态,默认是不选择
 		private  boolean isChekcked = false;
@@ -153,6 +162,8 @@ public class GuestListCheckAdapter extends RecyclerView.Adapter {
 			tv_count_item_guest = (TextView) itemView.findViewById(R.id.tv_count_item_guest);
 			tv_date_item_guest = (TextView) itemView.findViewById(R.id.tv_date_item_guest);
 			foot = (LinearLayout) itemView.findViewById(R.id.foot);
+			loading_text = (TextView) itemView.findViewById(R.id.loading_text);
+			
 		}
 
 		@Override
