@@ -252,6 +252,7 @@ public class ShopMineFragment extends Fragment {
                 if (!sp.getBoolean("isManager",false)){
                     Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
                     return;
+                    
                 }else {
                     Intent intent = new Intent(getActivity(), ShopBankListActivity.class);
                     intent.putExtra("action", "tixian");
