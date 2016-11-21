@@ -61,6 +61,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+
 public class ShopProductAddActivity extends BaseActivity
 {
 	private String category;
