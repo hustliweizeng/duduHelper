@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.dudu.helper3"
+          package="com.dudu.duduhelper"
           android:versionCode="25"
           android:versionName="3.1" >
     <uses-sdk
@@ -74,9 +74,9 @@
     <!--保存资源到SD卡-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    
+
     <application
-        android:name="com.dudu.helper3.application.DuduHelperApplication"
+        android:name="com.dudu.duduhelper.application.DuduHelperApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -108,11 +108,11 @@
             </intent-filter>
         </service>
         <activity
-            android:name="com.dudu.helper3.Activity.WelcomeActivity.LoginActivity"
+            android:name="com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MainActivity"
+            android:name="com.dudu.duduhelper.Activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"
@@ -122,21 +122,21 @@
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name="com.dudu.helper3.wxapi.WXPayEntryActivity"
+        <activity android:name="com.dudu.duduhelper.wxapi.WXPayEntryActivity"
                   android:exported="true"
                   android:screenOrientation="portrait"/>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.PayResultActivity"/>
-        <activity android:name="com.dudu.helper3.Activity.RedBagActivity.EditRedbag2Activity"
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.PayResultActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.RedBagActivity.EditRedbag2Activity"
                   android:windowSoftInputMode="adjustUnspecified|stateHidden"
             />
         <activity android:name=".Activity.MyInfoActivity.MsgSettingActivity"/>
         <activity
-            android:name="com.dudu.helper3.Activity.CheckSellAcitivty.CashSellActivity"
+            android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.CashSellActivity"
             android:label="@string/title_activity_cash_sell" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.RedBagActivity.EditRedbag1Activity"/>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.GuestSelectActivity"/>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.RedbagMsgDetail"/>
+        <activity android:name="com.dudu.duduhelper.Activity.RedBagActivity.EditRedbag1Activity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.GuestSelectActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.RedbagMsgDetail"/>
         <activity
             android:name="com.example.qr_codescan.MipcaActivityCapture"
             android:configChanges="orientation|keyboardHidden"
@@ -145,67 +145,67 @@
             android:launchMode="singleTask">
         </activity>
         <activity android:name=".Activity.VipUserActivity.VipUserVertifyActivity"
-            android:launchMode="singleTask"/>
+                  android:launchMode="singleTask"/>
         <activity android:name=".Activity.ShopManageActivity.ShopStatusActivity"/>
         <activity android:name=".Activity.WelcomeActivity.CheckShopActivity"/>
         <activity android:name=".Activity.MyInfoActivity.ChangeShopActivity"/>
         <activity android:name=".Activity.VipUserActivity.VipUserVertifyResActivity"/>
         <activity android:name=".Activity.VipUserActivity.VipVertifyHistoryActivity"/>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.NewActivityMsgActivity"/>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.NewRedbagMsgActivity"/>
-        <activity android:name="com.dudu.helper3.Activity.BigBandActivity.ShopSelectActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.NewActivityMsgActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.NewRedbagMsgActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.BigBandActivity.ShopSelectActivity"/>
         <activity
-            android:name="com.dudu.helper3.Activity.CheckSellAcitivty.CashSellScanSucessActivity"
+            android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.CashSellScanSucessActivity"
             android:label="@string/title_activity_cash_sell_scan_sucess" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.CreateActivityMsg"/>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.CreateRedbagmsgActivity"/>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.StoreMoneyActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.CreateActivityMsg"/>
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.CreateRedbagmsgActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.StoreMoneyActivity"/>
         <activity
-            android:name="com.dudu.helper3.Activity.CheckSellAcitivty.CashSellScanFailActivity"
+            android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.CashSellScanFailActivity"
             android:label="@string/title_activity_cash_sell_scan_fail" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.SendMessageActivity"
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.SendMessageActivity"
                   android:launchMode="singleTask"/>
-        <activity android:name="com.dudu.helper3.Activity.GuestManageActivity.GuestMangageActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.GuestManageActivity.GuestMangageActivity"/>
         <activity
-            android:name="com.dudu.helper3.Activity.CheckSellAcitivty.MemberSellActivity"
+            android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.MemberSellActivity"
             android:label="@string/title_activity_member_sell" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.CheckSellAcitivty.CheckSaleHistoryActivity"/>
-        <activity android:name="com.dudu.helper3.Activity.CheckSellAcitivty.CheckSaleDetailActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.CheckSaleHistoryActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.CheckSaleDetailActivity"/>
         <activity
-            android:name="com.dudu.helper3.Activity.OrderActivity.ShopOrderDetailActivity"
+            android:name="com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity"
             android:label="@string/title_activity_order_detail" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.SettingActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.WelcomeActivity.ForgetPasswordActivity"/>
+        <activity android:name="com.dudu.duduhelper.Activity.WelcomeActivity.ForgetPasswordActivity"/>
         <activity
-            android:name="com.dudu.helper3.Activity.WelcomeActivity.ForgetPwdCertifyMobileActivity"
+            android:name="com.dudu.duduhelper.Activity.WelcomeActivity.ForgetPwdCertifyMobileActivity"
             android:label="@string/title_activity_bind_phone" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.ShopRebindPhoneSteponeActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.ShopRebindPhoneSteponeActivity"
             android:label="@string/title_activity_rebind_phone_stepone" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.GetCashActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.GetCashActivity"
             android:label="@string/title_activity_get_cash" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.GetCashHistoryListActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.GetCashHistoryListActivity"
             android:label="@string/title_activity_get_cash_history_list" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.BigBandActivity.ShopProductAddActivity"
+            android:name="com.dudu.duduhelper.Activity.BigBandActivity.ShopProductAddActivity"
             android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_product_add" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.DiscountCardActivity.CouponAddActivity"
+            android:name="com.dudu.duduhelper.Activity.DiscountCardActivity.CouponAddActivity"
             android:label="@string/title_activity_product_add" >
         </activity>
         <activity
@@ -213,46 +213,46 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.SummaryActivity.ShopAccountDataActivity"
+            android:name="com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountDataActivity"
             android:label="@string/title_activity_account_data" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.CheckSellAcitivty.MemberSellStepTwoActivity"
+            android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.MemberSellStepTwoActivity"
             android:label="@string/title_activity_get_cash_history_list" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.CheckSellAcitivty.MemberSellScanSucessActivity"
+            android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.MemberSellScanSucessActivity"
             android:label="@string/title_activity_product_add" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.CheckSellAcitivty.GiftSellActivity"
+            android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.GiftSellActivity"
             android:label="@string/title_activity_gift_sell" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.CheckSellAcitivty.GiftSellScanSucessActivity"
+            android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.GiftSellScanSucessActivity"
             android:label="@string/title_activity_gift_sell" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.ShopUserBankInfoActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.ShopUserBankInfoActivity"
             android:label="@string/title_activity_user_bank_info" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.MyInfoActivity.UserBankInfoConfirmActivity" >
+        <activity android:name="com.dudu.duduhelper.Activity.MyInfoActivity.UserBankInfoConfirmActivity" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.UserBankSelectActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.UserBankSelectActivity"
             android:label="@string/title_activity_user_bank_select" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.WelcomeActivity.LoginBindPhoneActivity"
+            android:name="com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity"
             android:label="@string/title_activity_user_bank_select" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.BigBandActivity.shopProductListActivity"
+            android:name="com.dudu.duduhelper.Activity.BigBandActivity.shopProductListActivity"
             android:launchMode="singleTask"
             android:label="@string/title_activity_product_list" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.BigBandActivity.ProductInfoEditActivity"
+            android:name="com.dudu.duduhelper.Activity.BigBandActivity.ProductInfoEditActivity"
             android:label="@string/title_activity_product_info_edit" >
         </activity>
 
@@ -266,7 +266,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.WelcomeActivity.WelcomeActivity"
+            android:name="com.dudu.duduhelper.Activity.WelcomeActivity.WelcomeActivity"
             android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -276,42 +276,42 @@
 
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.WelcomeActivity.LoadingActivity"
+            android:name="com.dudu.duduhelper.Activity.WelcomeActivity.LoadingActivity"
             android:label="@string/title_activity_loading" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.OrderActivity.SearchActivity"
+            android:name="com.dudu.duduhelper.Activity.OrderActivity.SearchActivity"
             android:label="@string/title_activity_search" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.WebPageActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.WebPageActivity"
             android:label="@string/title_activity_web_page" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.GetMoneyActivity.ShopGetInComeCashActivity"
+            android:name="com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetInComeCashActivity"
             android:label="@string/title_activity_get_in_come_cash" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.RedBagActivity.RedBagList"/>
+        <activity android:name="com.dudu.duduhelper.Activity.RedBagActivity.RedBagList"/>
         <activity
-            android:name="com.dudu.helper3.wxapi.WXEntryActivity"
+            android:name="com.dudu.duduhelper.wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/title_activity_get_in_come_cash_code_image" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.CashHistoryActivity.GetInComeActivity"
+            android:name="com.dudu.duduhelper.Activity.CashHistoryActivity.GetInComeActivity"
             android:label="@string/title_activity_get_in_come" >
         </activity>
 
         <activity
-            android:name="com.dudu.helper3.Activity.PrinterActivity.ShopSearchBlueToothActivity"
+            android:name="com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity"
             android:label="@string/title_activity_search_blue_tooth" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.DiscountCardActivity.ShopCouponDetailActivity"
+            android:name="com.dudu.duduhelper.Activity.DiscountCardActivity.ShopCouponDetailActivity"
             android:label="@string/title_activity_coupon_detail" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.DiscountCardActivity.CouponSellHistoryActivity"
+            android:name="com.dudu.duduhelper.Activity.DiscountCardActivity.CouponSellHistoryActivity"
             android:label="@string/title_activity_coupon_sell_history" >
         </activity>
         <!-- 友盟推送 -->
@@ -423,35 +423,35 @@
             android:exported="false" />
         -->
         <activity
-            android:name="com.dudu.helper3.Activity.DiscountCardActivity.CouponSellDetailActivity"
+            android:name="com.dudu.duduhelper.Activity.DiscountCardActivity.CouponSellDetailActivity"
             android:label="@string/title_activity_coupon_sell_detail" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.EmployeeManageActivity.ShopMemberListActivity"
+            android:name="com.dudu.duduhelper.Activity.EmployeeManageActivity.ShopMemberListActivity"
             android:label="@string/title_activity_member_list" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.EmployeeManageActivity.ShopMemberAddActivity"
+            android:name="com.dudu.duduhelper.Activity.EmployeeManageActivity.ShopMemberAddActivity"
             android:label="@string/title_activity_member_add" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.fiveDiscountActivity.DiscountSellActivity"
+            android:name="com.dudu.duduhelper.Activity.fiveDiscountActivity.DiscountSellActivity"
             android:label="@string/title_activity_discount_sell" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.fiveDiscountActivity.DiscountSellResultActivity"
+            android:name="com.dudu.duduhelper.Activity.fiveDiscountActivity.DiscountSellResultActivity"
             android:label="@string/title_activity_discount_sell_result" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.GetMoneyActivity.ShopDiscountScanSucessActivity"
+            android:name="com.dudu.duduhelper.Activity.GetMoneyActivity.ShopDiscountScanSucessActivity"
             android:label="@string/title_activity_discount_scan_sucess" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.RedBagActivity.ShopHongBaoDetailActivity"
+            android:name="com.dudu.duduhelper.Activity.RedBagActivity.ShopHongBaoDetailActivity"
             android:hardwareAccelerated="false"
             android:label="@string/title_activity_hong_bao_detail" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.RedBagActivity.ShopHongBaoAddActivity"
+        <activity android:name="com.dudu.duduhelper.Activity.RedBagActivity.ShopHongBaoAddActivity"
                   android:windowSoftInputMode="stateUnchanged">
         </activity>
         <activity
@@ -459,27 +459,27 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.RedBagActivity.ShopHongbaoHistoryListActivity"
+            android:name="com.dudu.duduhelper.Activity.RedBagActivity.ShopHongbaoHistoryListActivity"
             android:label="@string/title_activity_hongbao_history_list" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.RedBagActivity.ShopHongbaoHistoryDetailActivity"
+            android:name="com.dudu.duduhelper.Activity.RedBagActivity.ShopHongbaoHistoryDetailActivity"
             android:label="@string/title_activity_hongbao_history_detail" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.OrderActivity.ShopOrderActivity"
+            android:name="com.dudu.duduhelper.Activity.OrderActivity.ShopOrderActivity"
             android:label="@string/title_activity_shop_order" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.GetMoneyActivity.ShopGetCashCodeActivity"
+            android:name="com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetCashCodeActivity"
             android:label="@string/title_activity_shop_get_cash_code" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.CheckSellAcitivty.ShopScanSellActivity"
+            android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.ShopScanSellActivity"
             android:label="@string/title_activity_shop_scan_sell" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.SummaryActivity.ShopAccountWatchActivity"
+            android:name="com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountWatchActivity"
             android:label="@string/title_activity_shop_account_watch" >
         </activity>
         <!--<activity-->
@@ -487,57 +487,57 @@
         <!--android:label="@string/title_activity_shop_search_blue_tooth" >-->
         <!--</activity>-->
         <activity
-            android:name="com.dudu.helper3.Activity.BigBandActivity.ShopProductDetailActivity"
+            android:name="com.dudu.duduhelper.Activity.BigBandActivity.ShopProductDetailActivity"
             android:label="" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.ShopSettingActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.ShopSettingActivity"
             android:launchMode="singleTask"
             android:label="@string/title_activity_shop_setting" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.ShopInfoEditActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.ShopInfoEditActivity"
             android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_shop_info_edit" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.GetMoneyActivity.ShopGetCashhistoryListActivity"
+            android:name="com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetCashhistoryListActivity"
             android:label="@string/title_activity_shop_get_cash" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.ShopBankListActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.ShopBankListActivity"
             android:label="@string/title_activity_shop_bank_list" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.ShopManageActivity.ShopListManagerActivity"
+            android:name="com.dudu.duduhelper.Activity.ShopManageActivity.ShopListManagerActivity"
             android:label="@string/title_activity_shop_manager" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.ShopManageActivity.ShopAddActivity"
+            android:name="com.dudu.duduhelper.Activity.ShopManageActivity.ShopAddActivity"
             android:windowSoftInputMode="stateUnchanged"
             android:label="@string/title_activity_shop_add" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MessageCentreActivity.MessageCenterListActivity"
+            android:name="com.dudu.duduhelper.Activity.MessageCentreActivity.MessageCenterListActivity"
             android:label="@string/title_activity_message_center_list" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.DiscountCardActivity.ShopDiscoutAddActivity"
+        <activity android:name="com.dudu.duduhelper.Activity.DiscountCardActivity.ShopDiscoutAddActivity"
                   android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.dudu.helper3.Activity.ShopImageViewBrower"
+            android:name="com.dudu.duduhelper.Activity.ShopImageViewBrower"
             android:label="@string/title_activity_shop_image_view_brower" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.MyInfoActivity.ShopPasswordEditActivity"
+            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.ShopPasswordEditActivity"
             android:label="@string/title_activity_password_edit" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.MyInfoActivity.ShopUserBankInfoEditActivity" >
+        <activity android:name="com.dudu.duduhelper.Activity.MyInfoActivity.ShopUserBankInfoEditActivity" >
         </activity>
         <activity
-            android:name="com.dudu.helper3.Activity.CashHistoryActivity.ShopMoneyRecordListActivity"
+            android:name="com.dudu.duduhelper.Activity.CashHistoryActivity.ShopMoneyRecordListActivity"
             android:label="@string/title_activity_shop_money_record_list" >
         </activity>
-        <activity android:name="com.dudu.helper3.Activity.RedBagActivity.CreateRedBagActivity"
+        <activity android:name="com.dudu.duduhelper.Activity.RedBagActivity.CreateRedBagActivity"
                   android:label=".CreateRedBagActivity"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

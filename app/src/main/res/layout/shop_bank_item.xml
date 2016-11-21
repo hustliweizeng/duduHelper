@@ -15,7 +15,7 @@
         android:padding="16dp" >
         
      
-    <com.dudu.helper3.widget.CircleImageView
+    <com.dudu.duduhelper.widget.CircleImageView
         android:id="@+id/banklogoImg"
         android:layout_width="40dp"
         android:layout_height="40dp"

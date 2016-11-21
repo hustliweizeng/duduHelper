@@ -14,7 +14,7 @@
 
   
 
-    <com.dudu.helper3.widget.OverScrollView
+    <com.dudu.duduhelper.widget.OverScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -81,7 +81,7 @@
                  android:background="#fff"
                  android:gravity="center_horizontal" >
  
-                 <com.dudu.helper3.widget.WheelIndicatorView
+                 <com.dudu.duduhelper.widget.WheelIndicatorView
                      android:id="@+id/wheel_indicator_view"
                      android:layout_width="116dp"
                      android:layout_height="116dp"
@@ -102,7 +102,7 @@
                      android:gravity="center_horizontal"
                      android:orientation="vertical" >
  
-                     <com.dudu.helper3.widget.risenumbertextview.RiseNumberTextView
+                     <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
                          android:id="@+id/sendMoneyText"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                      android:gravity="center_horizontal"
                      android:orientation="vertical" >
  
-                     <com.dudu.helper3.widget.risenumbertextview.RiseNumberTextView
+                     <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
                          android:id="@+id/getMoneyText"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
                      android:gravity="center_horizontal"
                      android:orientation="vertical" >
  
-                     <com.dudu.helper3.widget.risenumbertextview.RiseNumberTextView
+                     <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
                          android:id="@+id/useMoneyText"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
                  android:background="#fff"
                  android:gravity="center_horizontal" >
  
-                 <com.dudu.helper3.widget.WheelIndicatorView
+                 <com.dudu.duduhelper.widget.WheelIndicatorView
                      android:id="@+id/wheel_indicator_view2"
                      android:layout_width="116dp"
                      android:layout_height="116dp"
@@ -204,7 +204,7 @@
                      android:gravity="center_horizontal"
                      android:orientation="vertical" >
  
-                     <com.dudu.helper3.widget.risenumbertextview.RiseNumberTextView
+                     <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
                          android:id="@+id/totalHongbaoText"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
                      android:gravity="center_horizontal"
                      android:orientation="vertical" >
  
-                     <com.dudu.helper3.widget.risenumbertextview.RiseNumberTextView
+                     <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
                          android:id="@+id/getHongbaoText"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
@@ -252,7 +252,7 @@
                      android:gravity="center_horizontal"
                      android:orientation="vertical" >
  
-                     <com.dudu.helper3.widget.risenumbertextview.RiseNumberTextView
+                     <com.dudu.duduhelper.widget.risenumbertextview.RiseNumberTextView
                          android:id="@+id/useHongbaoText"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
@@ -274,7 +274,7 @@
                  android:layout_width="match_parent"
                  android:layout_height="50dp" />
          </LinearLayout>
-     </com.dudu.helper3.widget.OverScrollView>
+     </com.dudu.duduhelper.widget.OverScrollView>
 
 
     <Button

@@ -11,7 +11,7 @@
         android:id="@+id/head"
         layout="@layout/activity_head" />
 
-    <com.dudu.helper3.widget.OverScrollView
+    <com.dudu.duduhelper.widget.OverScrollView
         android:id="@+id/friendscrollview"
         android:background="@color/bg_color"
         android:layout_width="match_parent"
@@ -249,6 +249,6 @@
                 android:textColor="#fff"
                 android:textSize="16sp" />
         </LinearLayout>
-    </com.dudu.helper3.widget.OverScrollView>
+    </com.dudu.duduhelper.widget.OverScrollView>
 
 </LinearLayout>

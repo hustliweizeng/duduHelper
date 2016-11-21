@@ -58,7 +58,7 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <com.dudu.helper3.widget.WaveView
+        <com.dudu.duduhelper.widget.WaveView
             android:id="@+id/wave"
             android:layout_width="match_parent"
             android:layout_height="198dp"

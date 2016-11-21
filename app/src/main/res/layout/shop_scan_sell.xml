@@ -45,7 +45,7 @@
 
                 <!-- 进度 -->
 
-                <com.dudu.helper3.widget.ConfirmView
+                <com.dudu.duduhelper.widget.ConfirmView
                     android:id="@+id/confirm_view"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
@@ -53,7 +53,7 @@
 
                 <!-- 小圆点 -->
 
-                <com.dudu.helper3.widget.DilatingDotsProgressBar
+                <com.dudu.duduhelper.widget.DilatingDotsProgressBar
                     android:id="@+id/progress"
                     android:layout_width="20dp"
                     android:layout_height="20dp"

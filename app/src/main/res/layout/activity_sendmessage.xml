@@ -14,7 +14,7 @@
         android:background="@color/head_color"
         android:orientation="vertical" >
 
-        <com.dudu.helper3.widget.WheelIndicatorTongjiView
+        <com.dudu.duduhelper.widget.WheelIndicatorTongjiView
             android:id="@+id/wheel_indicator_view"
             android:layout_width="200dp"
             android:layout_height="200dp"

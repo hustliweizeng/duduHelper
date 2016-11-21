@@ -68,7 +68,7 @@
                 android:textColor="@color/text_touming_color"
                 android:textSize="18sp" />
         </LinearLayout>
-        <com.dudu.helper3.widget.WaveView
+        <com.dudu.duduhelper.widget.WaveView
             android:id="@+id/wave2"
             android:visibility="visible"
             android:layout_width="match_parent"

@@ -18,7 +18,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
     defaultConfig {
-        applicationId "com.dudu.helper3"
+        applicationId "com.dudu.duduhelper"
         minSdkVersion 14
         targetSdkVersion 22
         multiDexEnabled true

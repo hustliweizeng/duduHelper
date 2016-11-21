@@ -11,7 +11,7 @@
         android:id="@id/head"
         layout="@layout/activity_head" />
 
-    <com.dudu.helper3.widget.OverScrollView
+    <com.dudu.duduhelper.widget.OverScrollView
         android:id="@+id/mineScrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -494,7 +494,7 @@
             </RelativeLayout>
 
         </LinearLayout>
-    </com.dudu.helper3.widget.OverScrollView>
+    </com.dudu.duduhelper.widget.OverScrollView>
 
     <TextView
         android:id="@+id/textToumingView"

@@ -12,7 +12,7 @@
         android:id="@id/head"
         layout="@layout/activity_head" />
 
-   <com.dudu.helper3.widget.OverScrollView
+   <com.dudu.duduhelper.widget.OverScrollView
         android:id="@+id/mineScrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -267,6 +267,6 @@
                 android:background="@drawable/view_selector"
                 android:textColor="@color/text_red_color"/>
         </LinearLayout>
-    </com.dudu.helper3.widget.OverScrollView>
+    </com.dudu.duduhelper.widget.OverScrollView>
 
 </LinearLayout>

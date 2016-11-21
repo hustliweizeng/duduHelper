@@ -23,7 +23,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import com.dudu.helper3.R;
+import com.dudu.duduhelper.R;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;

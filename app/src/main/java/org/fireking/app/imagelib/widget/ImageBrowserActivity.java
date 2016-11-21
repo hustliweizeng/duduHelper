@@ -8,7 +8,7 @@ import org.fireking.app.imagelib.transformer.DepthPageTransformer;
 import org.fireking.app.imagelib.view.PhotoTextView;
 import org.fireking.app.imagelib.view.ScrollViewPager;
 
-import com.dudu.helper3.R;
+import com.dudu.duduhelper.R;
 
 
 import android.content.Intent;

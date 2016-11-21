@@ -20,9 +20,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.dudu.helper3.R;
-import com.dudu.helper3.widget.SmoothCheckBox;
-import com.dudu.helper3.widget.SmoothCheckBox.OnCheckedChangeListener;
+import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.widget.SmoothCheckBox;
+import com.dudu.duduhelper.widget.SmoothCheckBox.OnCheckedChangeListener;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
