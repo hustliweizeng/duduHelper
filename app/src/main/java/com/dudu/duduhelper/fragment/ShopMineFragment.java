@@ -1,5 +1,6 @@
 package com.dudu.duduhelper.fragment;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -70,6 +71,7 @@ public class ShopMineFragment extends Fragment {
     private Button logoutButton;
     private RelativeLayout select_shop;
     private TextView tv_uncheckPrice;
+    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,11 +83,13 @@ public class ShopMineFragment extends Fragment {
     //当绑定的activity创建的时候
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getActivity() != null) {
+        context = getActivity();
+        if (context != null) {
             //获取本地的个人信息
-            sp = ((MainActivity) getActivity()).sp;
+            sp = ((MainActivity) context).sp;
         }
         initFragemntView();
+        
     }
 
 
@@ -101,7 +105,7 @@ public class ShopMineFragment extends Fragment {
         MobclickAgent.onPageStart("MineFragment");
         //返回页面时，重新加载数据
         LogUtil.d("info","reload");
-        swiperefresh.setProgressViewOffset(false, 0, Util.dip2px(getActivity(), 24));//第一次启动时刷新
+        swiperefresh.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
         swiperefresh.setRefreshing(true);
         requetConnetion();
         
@@ -111,10 +115,10 @@ public class ShopMineFragment extends Fragment {
         String shopid = sp.getString("shopid", "");
         //请求网络连接之前，设置保存cookie，
         String url = ConstantParamPhone.CHECK_SHOP;
-        HttpUtils.getConnection(getActivity(), null, url+shopid, "get", new TextHttpResponseHandler() {
+        HttpUtils.getConnection(context, null, url+shopid, "get", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-                Toast.makeText(getActivity(),"网络故障，请重试",Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"网络故障，请重试",Toast.LENGTH_LONG).show();
             }
             @Override
             public void onSuccess(int i, Header[] headers, String s) {
@@ -144,7 +148,7 @@ public class ShopMineFragment extends Fragment {
                     }else {
                         //数据请求失败
                         String msg = object.getString("msg");
-                        //Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -169,7 +173,7 @@ public class ShopMineFragment extends Fragment {
         logoutButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyDialog.showDialog(getActivity(), "  退出登录将清空用户信息，是否退出",true, true, "取消","确定", new OnClickListener()
+                MyDialog.showDialog(context, "  退出登录将清空用户信息，是否退出",true, true, "取消","确定", new OnClickListener()
                         {
                             @Override
                             //取消退出
@@ -185,7 +189,7 @@ public class ShopMineFragment extends Fragment {
                             public void onClick(View v)
                             {
                                 sp.edit().clear().commit();
-                                CleanAppCache.cleanApplicationData(getActivity());
+                                CleanAppCache.cleanApplicationData(context);
                                 DuduHelperApplication.getInstance().exit();
                                 requestLogOut();
                             }
@@ -196,7 +200,7 @@ public class ShopMineFragment extends Fragment {
         select_shop.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ChangeShopActivity.class));
+                startActivity(new Intent(context, ChangeShopActivity.class));
             }
         });
         final boolean isManager = sp.getBoolean("isManager", false);
@@ -250,11 +254,11 @@ public class ShopMineFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!sp.getBoolean("isManager",false)){
-                    Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
                     return;
                     
                 }else {
-                    Intent intent = new Intent(getActivity(), ShopBankListActivity.class);
+                    Intent intent = new Intent(context, ShopBankListActivity.class);
                     intent.putExtra("action", "tixian");
                     startActivity(intent);
                 }
@@ -266,7 +270,7 @@ public class ShopMineFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(isManager){
-                    Intent intent = new Intent(getActivity(), ShopSettingActivity.class);
+                    Intent intent = new Intent(context, ShopSettingActivity.class);
                     startActivity(intent);
 
                 }
@@ -277,8 +281,8 @@ public class ShopMineFragment extends Fragment {
 
             @Override
             public void onClick(View arg0) {
-                if (getActivity() != null) {
-                    Intent intent = new Intent(getActivity(), WebPageActivity.class);
+                if (context != null) {
+                    Intent intent = new Intent(context, WebPageActivity.class);
                     intent.putExtra("action", "help");
                     startActivity(intent);
                 }
@@ -289,8 +293,8 @@ public class ShopMineFragment extends Fragment {
 
             @Override
             public void onClick(View arg0) {
-                if (getActivity() != null) {
-                    Intent intent = new Intent(getActivity(), WebPageActivity.class);
+                if (context != null) {
+                    Intent intent = new Intent(context, WebPageActivity.class);
                     intent.putExtra("action", "about");
                     startActivity(intent);
                 }
@@ -298,7 +302,7 @@ public class ShopMineFragment extends Fragment {
         });
 
         //初始化个人信息，通过三级缓存？不需要，登陆以后自动保存信息，所以sp必然有数据
-        if (getActivity() != null) {
+        if (context != null) {
             shopeNameTextView.setText(sp.getString("shopName", ""));
             //防止imageLoader闪动
             ImageAware imageAware = new ImageViewAware(mineImageHead, false);
@@ -320,7 +324,7 @@ public class ShopMineFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WXEntryActivity.class);
+                Intent intent = new Intent(context, WXEntryActivity.class);
                 intent.putExtra("type", ConstantParamPhone.GET_CASHIER_CODE);
                 startActivity(intent);
             }
@@ -330,28 +334,28 @@ public class ShopMineFragment extends Fragment {
 
             @Override
             public void onClick(View arg0) {
-                if (getActivity() != null) {
+                if (context != null) {
                     UmengUpdateAgent.setUpdateAutoPopup(false);
                     UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
                         @Override
                         public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
                             switch (updateStatus) {
                                 case UpdateStatus.Yes: // has update
-                                    UmengUpdateAgent.showUpdateDialog(getActivity(), updateInfo);
+                                    UmengUpdateAgent.showUpdateDialog(context, updateInfo);
                                     break;
                                 case UpdateStatus.No: // has no update
-                                    if (getActivity() != null) {
-                                        Toast.makeText(getActivity(), "没有更新", Toast.LENGTH_SHORT).show();
+                                    if (context != null) {
+                                        Toast.makeText(context, "没有更新", Toast.LENGTH_SHORT).show();
                                     }
                                     break;
                                 case UpdateStatus.Timeout: // time out
-                                    Toast.makeText(getActivity(), "超时", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "超时", Toast.LENGTH_SHORT).show();
                                     break;
                             }
                         }
 
                     });
-                    UmengUpdateAgent.update(getActivity());
+                    UmengUpdateAgent.update(context);
                 }
             }
         });
@@ -376,15 +380,15 @@ public class ShopMineFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!sp.getBoolean("isManager",false)){
-                    Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
                     return;
                 }else {
                     if (TextUtils.isEmpty(sp.getString("mobile", ""))) {
-                        MyDialog.showDialog(getActivity(), "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener() {
+                        MyDialog.showDialog(context, "尚未绑定手机号，是否绑定手机号", true, true, "确定", "取消", new OnClickListener() {
 
                             @Override
                             public void onClick(View arg0) {
-                                Intent intent = new Intent(getActivity(), LoginBindPhoneActivity.class);
+                                Intent intent = new Intent(context, LoginBindPhoneActivity.class);
                                 startActivity(intent);
                             }
                         }, new OnClickListener() {
@@ -396,7 +400,7 @@ public class ShopMineFragment extends Fragment {
                         });
                     } else {
                         //进入银行卡页面
-                        Intent intent = new Intent(getActivity(), ShopBankListActivity.class);
+                        Intent intent = new Intent(context, ShopBankListActivity.class);
                         intent.putExtra("action", "banklist");
                         startActivity(intent);
                         //
@@ -411,9 +415,9 @@ public class ShopMineFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            if (resultCode == getActivity().RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
 
-            } else if (resultCode == getActivity().RESULT_CANCELED) {
+            } else if (resultCode == Activity.RESULT_CANCELED) {
                 ColorDialog.dissmissProcessDialog();
             }
         }
@@ -425,7 +429,7 @@ public class ShopMineFragment extends Fragment {
     private void requestLogOut() {
         RequestParams params = new RequestParams();
 
-        HttpUtils.getConnection(getActivity(), params, ConstantParamPhone.LOG_OUT, "post", new TextHttpResponseHandler() {
+        HttpUtils.getConnection(context, params, ConstantParamPhone.LOG_OUT, "post", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 
@@ -433,7 +437,7 @@ public class ShopMineFragment extends Fragment {
 
             @Override
             public void onSuccess(int i, Header[] headers, String s) {
-                Toast.makeText(getActivity(),"已经退出当前账户，请重新登陆",Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"已经退出当前账户，请重新登陆",Toast.LENGTH_LONG).show();
             }
         });
     }

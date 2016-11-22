@@ -6,9 +6,11 @@
               android:fitsSystemWindows="true"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <include
         android:id="@+id/head"
         layout="@layout/activity_head" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -80,7 +80,7 @@ public class BankListAdapter extends BaseAdapter
 		//设置数据非空判断
 		if(list.size()!=0)
 		{	//设置银行名称
-			if(!TextUtils.isEmpty(data.getBank_name()))
+			if(!TextUtils.isEmpty(data.getBank_key()))
 			{
 				viewHolder.bankNameText.setText(data.getBank_key());
 			}

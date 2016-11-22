@@ -87,7 +87,7 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				throwable.printStackTrace();
-				LogUtil.d("ssss","fail="+id+"======="+headers.toString());
+				//LogUtil.d("ssss","fail="+id+"======="+headers.toString());
 				Toast.makeText(context,"网络故障，请重试",Toast.LENGTH_LONG).show();
 			}
 			@Override

@@ -64,9 +64,9 @@ public class ShopAccountDataActivity extends BaseActivity
 		waveView.setWaveColor(Color.parseColor("#03ffffff"),Color.parseColor("#07ffffff"));
 
 		//总交易额
-		all_trade = (TextView) findViewById(R.id.allIncomeTextView);
+		all_trade = (TextView) findViewById(R.id.allFeeTextView);
 		//总收入
-		all_income = (TextView) findViewById(R.id.allFeeTextView);
+		all_income = (TextView) findViewById(R.id.allIncomeTextView);
 		
 		
 		orderNumText=(TextView) this.findViewById(R.id.orderNumText);

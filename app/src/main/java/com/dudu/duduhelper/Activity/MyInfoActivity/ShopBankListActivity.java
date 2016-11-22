@@ -236,7 +236,7 @@ public class ShopBankListActivity extends BaseActivity
 						startActivity(new Intent(context, LoginActivity.class));
 						finish();
 					}
-				} catch (JSONException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

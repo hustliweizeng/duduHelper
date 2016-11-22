@@ -46,9 +46,13 @@ public final class CameraManager {
   private static final int MAX_FRAME_WIDTH = 480;
   private static final int MAX_FRAME_HEIGHT = 360;
 
-  private static CameraManager cameraManager;
+  private static CameraManager cameraManager;//单例模式
 
   static final int SDK_INT; // Later we can use Build.VERSION.SDK_INT
+
+  /**
+   * 静态代码块，初始化sdk版本信息
+   */
   static {
     int sdkInt;
     try {
@@ -96,16 +100,15 @@ public final class CameraManager {
     return cameraManager;
   }
 
-  private CameraManager(Context context) {
+  /**
+   * 构造方法
+   * @param context
+	 */
+  private CameraManager(Context context) {  
 
     this.context = context;
     this.configManager = new CameraConfigurationManager(context);
 
-    // Camera.setOneShotPreviewCallback() has a race condition in Cupcake, so we use the older
-    // Camera.setPreviewCallback() on 1.5 and earlier. For Donut and later, we need to use
-    // the more efficient one shot callback, as the older one can swamp the system and cause it
-    // to run out of memory. We can't use SDK_INT because it was introduced in the Donut SDK.
-    //useOneShotPreviewCallback = Integer.parseInt(Build.VERSION.SDK) > Build.VERSION_CODES.CUPCAKE;
     useOneShotPreviewCallback = Integer.parseInt(Build.VERSION.SDK) > 3; // 3 = Cupcake
 
     previewCallback = new PreviewCallback(configManager, useOneShotPreviewCallback);
@@ -132,12 +135,6 @@ public final class CameraManager {
       }
       configManager.setDesiredCameraParameters(camera);
 
-      //FIXME
- //     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-      //�Ƿ�ʹ��ǰ��
-//      if (prefs.getBoolean(PreferencesActivity.KEY_FRONT_LIGHT, false)) {
-//        FlashlightManager.enableFlashlight();
-//      }
       FlashlightManager.enableFlashlight();
     }
   }
@@ -213,60 +210,30 @@ public final class CameraManager {
 
   /**
    * Calculates the framing rect which the UI should draw to show the user where to place the
-   * barcode. This target helps with alignment as well as forces the user to hold the device
+   * barcode.（条形码） This target helps with alignment（队列） as well as forces the user to hold the device
    * far enough away to ensure the image will be in focus.
    *
    * @return The rectangle to draw on screen in window coordinates.
+   * 设置二维码窗口位置和大小
    */
   public Rect getFramingRect() {
-	DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+	DisplayMetrics metrics = context.getResources().getDisplayMetrics();//返回当前屏幕信息-分辨率，只读
     Point screenResolution = configManager.getScreenResolution();
     if (framingRect == null) {
       if (camera == null) {
         return null;
       }
       //int width = screenResolution.x * 3 / 4;
-      int width = (int)(metrics.widthPixels * 0.64);
-      
-//      if (width < MIN_FRAME_WIDTH) {
-//        width = MIN_FRAME_WIDTH;
-//      } else if (width > MAX_FRAME_WIDTH) {
-//        width = MAX_FRAME_WIDTH;
-//      }
+      int width = (int)(metrics.widthPixels * 0.64);//屏幕宽度
       int height = (int)(width);
-      //int height = screenResolution.y * 3 / 4;
-//      if (height < MIN_FRAME_HEIGHT) {
-//        height = MIN_FRAME_HEIGHT;
-//      } else if (height > MAX_FRAME_HEIGHT) {
-//        height = MAX_FRAME_HEIGHT;
-//      }
-      int leftOffset = (screenResolution.x - width) / 2;
+      //int leftOffset = (screenResolution.x - width) / 2;//实际的宽度
+      int leftOffset = (metrics.widthPixels - width) / 2;//系统的宽度
       int topOffset = Util.dip2px(context, 86);
-      framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
+      framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);//设置左上右下几个点的位置
       Log.d(TAG, "Calculated framing rect: " + framingRect);
     }
     return framingRect;
   }
-//  public Rect getFramingRect() {  
-//	  Point screenResolution = configManager.getScreenResolution();  
-//	  if (framingRect == null) {  
-//	    if (camera == null) {  
-//	      return null;  
-//	    }  
-//	      
-//	  //修改之后    
-//	  int width = screenResolution.x * 7 / 10;  
-//	  int height = screenResolution.y * 7 / 10;  
-//	    
-//	  int leftOffset = (screenResolution.x - width) / 2;  
-//	  int topOffset = (screenResolution.y - height) / 3;  
-//	  framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);  
-//	      
-//	      
-//	    Log.d(TAG, "Calculated framing rect: " + framingRect);  
-//	  }  
-//	  return framingRect;  
-//	}  
 
   /**
    * Like {@link #getFramingRect} but coordinates are in terms of the preview frame,
@@ -277,11 +244,6 @@ public final class CameraManager {
       Rect rect = new Rect(getFramingRect());
       Point cameraResolution = configManager.getCameraResolution();
       Point screenResolution = configManager.getScreenResolution();
-      //modify here
-//      rect.left = rect.left * cameraResolution.x / screenResolution.x;
-//      rect.right = rect.right * cameraResolution.x / screenResolution.x;
-//      rect.top = rect.top * cameraResolution.y / screenResolution.y;
-//      rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
       rect.left = rect.left * cameraResolution.y / screenResolution.x;
       rect.right = rect.right * cameraResolution.y / screenResolution.x;
       rect.top = rect.top * cameraResolution.x / screenResolution.y;
@@ -299,18 +261,6 @@ public final class CameraManager {
    *         so they can be drawn in screen coordinates.
    */
   /*
-  public Point[] convertResultPoints(ResultPoint[] points) {
-    Rect frame = getFramingRectInPreview();
-    int count = points.length;
-    Point[] output = new Point[count];
-    for (int x = 0; x < count; x++) {
-      output[x] = new Point();
-      output[x].x = frame.left + (int) (points[x].getX() + 0.5f);
-      output[x].y = frame.top + (int) (points[x].getY() + 0.5f);
-    }
-    return output;
-  }
-   */
 
   /**
    * A factory method to build the appropriate LuminanceSource object based on the format

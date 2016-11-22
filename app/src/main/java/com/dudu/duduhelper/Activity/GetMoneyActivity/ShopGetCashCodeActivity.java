@@ -156,7 +156,9 @@ public class ShopGetCashCodeActivity extends BaseActivity
 		public void onTick(long millisUntilFinished)
 		{
 			//计时过程显示
-			requetResult();
+			if (data!=null){//当获取到结果时再开始请求结果
+				requetResult();
+			}
 			//Toast.makeText(context,"正在等待付款结果",Toast.LENGTH_SHORT).show();
 			tv_content.setText("正在等待付款结果...");
 		}

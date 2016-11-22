@@ -32,7 +32,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="6dp"
             android:layout_toRightOf="@id/banklogoImg"
-            android:text="徐大孬儿"
             android:textColor="@color/text_white_color"
             android:textSize="18sp" />
 
@@ -52,7 +51,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/bankCardNumhead"
             android:layout_toRightOf="@+id/bankCardNumhead"
-            android:text="5568"
             android:layout_marginLeft="10dp"
             android:textColor="@color/text_white_color"
             android:textSize="24sp" />
@@ -70,13 +68,14 @@
 
         <TextView
             android:id="@+id/bankCardUsername"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textView1"
             android:layout_alignBottom="@+id/textView1"
             android:layout_toRightOf="@+id/textView1"
             android:layout_marginLeft="10dp"
-            android:text="徐大孬儿"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/text_white_color"
             android:textSize="16sp" />
 

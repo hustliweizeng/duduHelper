@@ -66,6 +66,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	private String msg;
 	private String wuZhemsg;
 	private String vipMsg;
+	private Context context;
 
 	@Override
 	@Nullable
@@ -79,6 +80,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) 
 	{
+		context = getActivity();
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		initFragmentView();
@@ -143,58 +145,58 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 		{
 			case R.id.orderBtnLin:
 				//订单按钮
-				intent.setClass(getActivity(), ShopOrderActivity.class);
+				intent.setClass(context, ShopOrderActivity.class);
 				break;
 			case R.id.getCashRelBtn:
 				//进入收款页面
-				intent =new Intent(getActivity(),ShopGetInComeCashActivity.class);
+				intent =new Intent(context,ShopGetInComeCashActivity.class);
 				intent.putExtra("name","getMoney");
 				break;
 			case R.id.getHexiaoRelBtn:
 				//核销
-				intent =new Intent(getActivity(),MipcaActivityCapture.class);
+				intent =new Intent(context,MipcaActivityCapture.class);
 				intent.putExtra("action", "hexiao");
 				break;
 			case R.id.getCountBtn:
 				//统计
 				if (isManager){
-					intent = new Intent(getActivity(), ShopAccountDataActivity.class);
+					intent = new Intent(context, ShopAccountDataActivity.class);
 				}else {
-					Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+					Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
 					return;
 				}
 				break;
 			case R.id.configPrintBtn:
 				//打印机
-			    intent = new Intent(getActivity(),ShopSearchBlueToothActivity.class);
+			    intent = new Intent(context,ShopSearchBlueToothActivity.class);
 			    break;
 			case R.id.dapaibuyBtn:
 				//大牌抢购
-				intent =new Intent(getActivity(),shopProductListActivity.class);
+				intent =new Intent(context,shopProductListActivity.class);
 				intent.putExtra("category", "bigband");
 			    break;
 			case R.id.youhuiBtn:
 				//优惠券
-				intent =new Intent(getActivity(),shopProductListActivity.class);
+				intent =new Intent(context,shopProductListActivity.class);
 				intent.putExtra("category", "discount");
 			    break;
 			case R.id.hongbaoBtn:
 				//红包
 				if (isManager){
-					startActivity(new Intent(getActivity(),RedBagList.class));
+					startActivity(new Intent(context,RedBagList.class));
 				}else {
-					Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+					Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
 					return;
 				}
 			    return;
 			case R.id.wuzheBtn:
 				//五折验证
 				if (isWuzheOpen){
-					intent =new Intent(getActivity(),DiscountSellActivity.class);
+					intent =new Intent(context,DiscountSellActivity.class);
 					intent.putExtra("action", "wuzhe");
 				}else {
 					if (!TextUtils.isEmpty(wuZhemsg)){
-						Toast.makeText(getActivity(),wuZhemsg,Toast.LENGTH_SHORT).show();
+						Toast.makeText(context,wuZhemsg,Toast.LENGTH_SHORT).show();
 					}
 					return;
 				}
@@ -202,37 +204,37 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			case R.id.memberBtn:
 				//员工管理
 				if (isManager){
-					intent =new Intent(getActivity(),ShopMemberListActivity.class);
+					intent =new Intent(context,ShopMemberListActivity.class);
 				}else {
-					Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+					Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
 					return;
 				}
 			    break;
 			case R.id.shopmanagerBtn:
 				//门店管理
 				if (isManager){
-					intent =new Intent(getActivity(),ShopListManagerActivity.class);
+					intent =new Intent(context,ShopListManagerActivity.class);
 				}else {
-					Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+					Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
 					return;
 				}
 				break;
 			//账单流水
 			case R.id.moneyRecordLinButton:
-				intent =new Intent(getActivity(),ShopMoneyRecordListActivity.class);
+				intent =new Intent(context,ShopMoneyRecordListActivity.class);
 				break;
 			case R.id.guest_manager:
 				//客户管理
 				if (shopIsoPen){//模块是否开启
 					if(isManager){//员工权限
-						intent = new  Intent(getActivity(), GuestMangageActivity.class);
+						intent = new  Intent(context, GuestMangageActivity.class);
 					}else {
-						Toast.makeText(getActivity(),"您没有管理权限",Toast.LENGTH_SHORT).show();
+						Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
 						return;
 					}
 				}else {
 					if (!TextUtils.isEmpty(msg)){
-						Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+						Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
 					}
 					return;
 				}
@@ -240,11 +242,11 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			//会员管理
 			case R.id.vip_manager:
 				if(isVipOpen){
-					intent =new Intent(getActivity(),VipUserVertifyActivity.class);
+					intent =new Intent(context,VipUserVertifyActivity.class);
 					startActivity(intent);
 				}else {
 					if (!TextUtils.isEmpty(vipMsg)){
-						Toast.makeText(getActivity(),vipMsg,Toast.LENGTH_SHORT).show();
+						Toast.makeText(context,vipMsg,Toast.LENGTH_SHORT).show();
 					}
 					return;
 				}
@@ -259,10 +261,10 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	 * 验证会员管理模块
 	 */
 	private void requestVipStatus() {
-		HttpUtils.getConnection(getActivity(), null, ConstantParamPhone.GET_VIP_ISOPEN, "get", new TextHttpResponseHandler() {
+		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_VIP_ISOPEN, "get", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				//Toast.makeText(getActivity(),"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+				//Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
@@ -290,10 +292,10 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	 * 五折卡是否开通
 	 */
 	private void requestStatus() {
-		HttpUtils.getConnection(getActivity(), null, ConstantParamPhone.CHECK_CARD, "post", new TextHttpResponseHandler() {
+		HttpUtils.getConnection(context, null, ConstantParamPhone.CHECK_CARD, "post", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-			//	Toast.makeText(getActivity(),"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+			//	Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
 
 			@Override
@@ -322,10 +324,10 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	 * 获取客户管理是否开启
 	 */
 	public void requestGusetStatus(){
-		HttpUtils.getConnection(getActivity(), null, ConstantParamPhone.GET_GUEST_ISOPEN, "GET", new TextHttpResponseHandler() {
+		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_GUEST_ISOPEN, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				//Toast.makeText(getActivity(),"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+				//Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
@@ -344,7 +346,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 						shopIsoPen = false;
 						//数据请求失败
 						msg = object.getString("msg");//会员日提醒
-						//Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+						//Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 						LogUtil.d("msg",msg);
 					}
 				} catch (JSONException e) {

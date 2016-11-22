@@ -48,6 +48,7 @@ public class VipUserVertifyResActivity extends BaseActivity implements View.OnCl
 	private TextView tv_content;
 	private Button btn_sub;
 
+	
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -71,6 +72,7 @@ public class VipUserVertifyResActivity extends BaseActivity implements View.OnCl
 				break;
 			default:
 				Toast.makeText(context, "服务器返回异常，请稍后再试", Toast.LENGTH_SHORT).show();
+				
 				break;
 		}
 	}
@@ -116,6 +118,8 @@ public class VipUserVertifyResActivity extends BaseActivity implements View.OnCl
 				}
 				break;
 			case USE_SUCCESS:
+				tv_res_other.setText("使用成功");
+				tv_res_other.setTextColor(getResources().getColor(R.color.text_green_color));
 				tv_content.setText("该会员卡当日将不可在本店继续使用");
 				iv_res_other.setImageResource(R.drawable.icon_success);
 				iv_res_other.setImageResource(R.drawable.icon_success);
@@ -186,8 +190,6 @@ public class VipUserVertifyResActivity extends BaseActivity implements View.OnCl
 								res = USE_SUCCESS;
 								initLayout();//重新加载布局
 								initView();
-								initData();//重新设置数据
-
 							}else {
 								//数据请求失败
 								String msg = object.getString("msg");
@@ -201,6 +203,7 @@ public class VipUserVertifyResActivity extends BaseActivity implements View.OnCl
 					@Override
 					public void onFinish() {
 						super.onFinish();
+						initData();//重新设置数据
 						ColorDialog.dissmissProcessDialog();
 					}
 				});
