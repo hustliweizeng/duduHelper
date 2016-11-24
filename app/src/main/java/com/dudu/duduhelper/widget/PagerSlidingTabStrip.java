@@ -40,6 +40,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dudu.duduhelper.R;
+
 /**
  *	滑动指示器pstsindicatorcolor颜色
  *	在视图的底部的全宽度的线pstsunderlinecolor颜色

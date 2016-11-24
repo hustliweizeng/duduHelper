@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.MainActivity;
+import com.dudu.duduhelper.R;
 
 public class LoadingActivity extends BaseActivity {
 

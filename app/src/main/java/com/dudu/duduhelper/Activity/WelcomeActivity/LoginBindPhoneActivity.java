@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.Activity.MyInfoActivity.ShopSettingActivity;
 import com.dudu.duduhelper.BaseActivity;
+import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
