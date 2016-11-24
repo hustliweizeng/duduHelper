@@ -74,9 +74,11 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 			//如果登陆保存过用户数据,直接请问网络
 			if(!TextUtils.isEmpty(sp.getString("username", "")))
 			{
+				String umeng_token = sp.getString("umeng_token", "");
 				RequestParams params = new RequestParams();
 				params.add("username",sp.getString("loginname",""));
 				params.add("password",sp.getString("password",""));
+				params.add("umeng_token",umeng_token);
 				HttpUtils.getConnection(context, params, ConstantParamPhone.USER_LOGIN, "post", new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -43,10 +44,10 @@ public class DuduHelperApplication extends Application
 				//保存友盟的token信息
 				SharedPreferences sp = getSharedPreferences("userconig",MODE_PRIVATE);
 				sp.edit().putString("umeng_token",deviceToken).commit();
+				LogUtil.d("token",deviceToken);
 			}
 			@Override
 			public void onFailure(String s, String s1) {
-
 			}
 		});
 		
@@ -57,32 +58,8 @@ public class DuduHelperApplication extends Application
 		 */
 		//CrashReport.initCrashReport(getApplicationContext(), "510ff77a7a", false);
 		Bugly.init(getApplicationContext(), "510ff77a7a", false);
-
 		initImageLoader(getApplicationContext());
-		UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler()
-		{
-			@Override
-			public void launchApp(Context arg0, com.umeng.message.entity.UMessage arg1) 
-			{
-				super.launchApp(arg0, arg1);
-				//为什么要加getInstance,如果不加默认获取的不是已经实例化的application,所以获取的getPushNot为空，所以也就回调不到当前activity
-				try 
-				{
-					for (Activity activity : getInstance().mList) 
-					{
-						if (activity != null&&!activity.getClass().getName().equals("com.dudu.duduhelper.MainActivity"))
-							activity.finish();
-					}
-				} 
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-				getInstance().getPushNot.getPushCallback();
-				
-			};
-			
-		};
+		
 	}
 	
 	public synchronized static DuduHelperApplication getInstance() 

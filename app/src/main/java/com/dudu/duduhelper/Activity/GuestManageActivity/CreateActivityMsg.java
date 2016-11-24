@@ -56,6 +56,7 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 		super.onResume();
 		adapter.clear();
 		initData(1);
+		page =1;
 	}
 	
 	private void initData(int pageNum) {
@@ -111,6 +112,7 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 			public void onRefresh() {
 				adapter.clear();
 				initData(1);
+				page =1;
 			}
 		});
 		recycleview_list.setAdapter(adapter);//每次请求数据之后设置
@@ -125,7 +127,6 @@ public class CreateActivityMsg extends BaseActivity implements View.OnClickListe
 					page++;
 					LogUtil.d("page","num ="+page);
 					initData(page);
-					
 				}
 			}
 			@Override

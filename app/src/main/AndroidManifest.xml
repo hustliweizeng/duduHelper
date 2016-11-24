@@ -176,6 +176,7 @@
         <activity android:name="com.dudu.duduhelper.Activity.CheckSellAcitivty.CheckSaleDetailActivity"/>
         <activity
             android:name="com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_order_detail" >
         </activity>
         <activity

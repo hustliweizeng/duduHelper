@@ -59,8 +59,9 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		initData(1);
 		adapter.clear();
+		initData(1);
+		page =1;
 		LogUtil.d("resume","resume");
 	}
 
@@ -123,6 +124,7 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 			public void onRefresh() {
 				adapter.clear();
 				initData(1);
+				page =1;
 			}
 		});
 		submitbtn.setOnClickListener(new View.OnClickListener() {

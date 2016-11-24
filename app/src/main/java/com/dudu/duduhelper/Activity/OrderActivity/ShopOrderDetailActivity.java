@@ -2,6 +2,8 @@ package com.dudu.duduhelper.Activity.OrderActivity;
 
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -28,9 +30,11 @@ import com.gprinter.command.EscCommand;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import android.app.Notification;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -43,6 +47,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.gprinter.command.EscCommand.ENABLE;
 import com.dudu.duduhelper.R;
+import com.umeng.message.UmengMessageHandler;
+import com.umeng.message.entity.UMessage;
+
 public class ShopOrderDetailActivity extends BaseActivity 
 {
 	private TextView orderNumTextView;
@@ -84,9 +91,27 @@ public class ShopOrderDetailActivity extends BaseActivity
 		LogUtil.d("id",id);
 		orderDetailAdapter=new OrderDetailAdapter(this);
 		initView();
+
+	}
+
+	/**
+	 * 获取传送过来的参数
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+		Bundle bun = getIntent().getExtras();
+		if (bun != null) {
+			Set<String> keySet = bun.keySet();
+			for (String key : keySet) {
+				String value = bun.getString(key);
+				id = value;
+				LogUtil.d("recivew=id",value);
+				
+			}
+		}
 		initData();
 	}
-	
 
 	private void initData() 
 	{
@@ -99,7 +124,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络错误，稍后再试",Toast.LENGTH_SHORT).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
 				try {
@@ -108,7 +132,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						LogUtil.d("detail",s);
 						orderData  = new Gson().fromJson(s,OrderDetailBean.class).getData();
-						
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");

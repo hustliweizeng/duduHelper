@@ -107,7 +107,6 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 			Toast.makeText(this, "请编辑标题", Toast.LENGTH_SHORT).show();
 			return;
 		}
-
 		String content = ed_content.getText().toString().trim();
 		if (TextUtils.isEmpty(content)) {
 			Toast.makeText(this, "content不能为空", Toast.LENGTH_SHORT).show();
@@ -119,6 +118,7 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 		String members = "";
 		if (isAll){
 			members = "select_all_member";
+			LogUtil.d("all","updapte");
 		}else {
 			if (checkedIDs!=null&& checkedIDs.size()>0){
 				LogUtil.d("update",checkedIDs.toString());
@@ -168,12 +168,6 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 				}
 			}
 		});
-		
-		
-		
-		
-
-
 	}
 
 	@Override
@@ -186,6 +180,7 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 			 */
 			if (isAll){
 				tv_guest_num.setText("全部");
+				LogUtil.d("all","true");
 			}else {
 				ArrayList<CharSequence> list = data.getCharSequenceArrayListExtra("list");
 				ArrayList<CharSequence> ids = data.getCharSequenceArrayListExtra("ids");

@@ -62,6 +62,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		super.onResume();
 		adapter.clear();
 		initData(1);
+		page =1;
 	}
 
 	/**
@@ -127,6 +128,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 			public void onRefresh() {
 				adapter.clear();
 				initData(1);
+				page =1;
 			}
 		});
 		/**

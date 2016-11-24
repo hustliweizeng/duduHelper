@@ -221,6 +221,8 @@ public class LoginActivity extends BaseActivity
 				//请求联网时，主线程显示进度条
 				ColorDialog.showRoundProcessDialog(LoginActivity.this,R.layout.loading_process_dialog_color);
 				RequestParams params = new RequestParams();
+				String umeng_token = sp.getString("umeng_token", "");
+				params.add("umeng_token",umeng_token);
 				params.add("username", username.getText().toString().trim());
 				params.add("password", Util.md5(password.getText().toString().trim()));
 				LogUtil.d("welcome","usernmae="+username.getText().toString().trim()+"paswword="+Util.md5(password.getText().toString().trim()));

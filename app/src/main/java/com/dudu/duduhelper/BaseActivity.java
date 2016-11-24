@@ -33,7 +33,6 @@ public class BaseActivity extends FragmentActivity
 	public String FORCE_UPDATE="";
 	public String url ="";
 	public RelativeLayout relayout_mytitle;
-	public static String  umeng_token = "dudu";
 
 	@Override
 	protected void onCreate(Bundle arg0) 

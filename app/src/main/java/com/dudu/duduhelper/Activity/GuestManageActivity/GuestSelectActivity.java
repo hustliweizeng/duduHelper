@@ -146,6 +146,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 				//全选
 				adapter.addAll();
 				isAll = true;
+				LogUtil.d("check",isAll+"");
 				break;
 			case R.id.backButton:
 				onBackPressed();
@@ -156,6 +157,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 				Intent intent = new Intent();
 				intent.putCharSequenceArrayListExtra("list",adapter.getList());
 				intent.putCharSequenceArrayListExtra("ids",adapter.getIds());
+				intent.putExtra("isAll",isAll);
 				setResult(2,intent);
 				finish();
 				break;
@@ -168,6 +170,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 		intent.putCharSequenceArrayListExtra("list",adapter.getList());
 		intent.putCharSequenceArrayListExtra("ids",adapter.getIds());
 		intent.putExtra("isAll",isAll);
+		LogUtil.d("isall",isAll+"");
 		setResult(2,intent);
 		super.onBackPressed();
 	}

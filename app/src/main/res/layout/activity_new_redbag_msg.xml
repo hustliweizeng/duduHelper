@@ -113,6 +113,7 @@
                 android:gravity="center|right"
                 android:layout_height="match_parent"
                 android:inputType="number"
+                android:layout_marginRight="16dp"
                 android:textSize="16dp"
                 android:background="@null"
                 android:textColor="@color/text_dark_color"
