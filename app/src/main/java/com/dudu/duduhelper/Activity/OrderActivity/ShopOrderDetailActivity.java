@@ -1,5 +1,10 @@
 package com.dudu.duduhelper.Activity.OrderActivity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +17,11 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.baidu.tts.auth.AuthInfo;
+import com.baidu.tts.client.SpeechError;
+import com.baidu.tts.client.SpeechSynthesizer;
+import com.baidu.tts.client.SpeechSynthesizerListener;
+import com.baidu.tts.client.TtsMode;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.Utils.LogUtil;
@@ -24,6 +34,7 @@ import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.OrderDetailBean;
 import com.dudu.duduhelper.javabean.OrderStatusBean;
 import com.dudu.duduhelper.javabean.SelectorBean;
+import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
 import com.gprinter.command.EscCommand;
@@ -37,10 +48,12 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,7 +63,7 @@ import com.dudu.duduhelper.R;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.entity.UMessage;
 
-public class ShopOrderDetailActivity extends BaseActivity 
+public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynthesizerListener
 {
 	private TextView orderNumTextView;
 	private TextView orderSourceTextView;
@@ -79,19 +92,24 @@ public class ShopOrderDetailActivity extends BaseActivity
 	private Button btn_print;
 	private RelativeLayout rl_address;
 	private TextView address;
-
+	private boolean isNetNotification;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+		initialEnv();//第一次的时候需要创建本地语音包
 		setContentView(R.layout.shop_order_detail);
 		initHeadView("订单详情",true, false,0);
 		id = getIntent().getLongExtra("id",0)+"";
 		LogUtil.d("id",id);
 		orderDetailAdapter=new OrderDetailAdapter(this);
 		initView();
-
+	}
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
 	}
 
 	/**
@@ -105,9 +123,12 @@ public class ShopOrderDetailActivity extends BaseActivity
 			Set<String> keySet = bun.keySet();
 			for (String key : keySet) {
 				String value = bun.getString(key);
-				id = value;
-				LogUtil.d("recivew=id",value);
-				
+				if(!TextUtils.isEmpty(value)){//做非空判断
+					LogUtil.d("value",value);
+					id = value;
+					isNetNotification =true;//设置成网络订单推送
+					startActivity(new Intent(this,ShopOrderDetailActivity.class));
+				}
 			}
 		}
 		initData();
@@ -118,6 +139,7 @@ public class ShopOrderDetailActivity extends BaseActivity
 		if (TextUtils.isEmpty(id)){
 			return;
 		}
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_ORDER_DETAIL+id, "GET", new TextHttpResponseHandler() {
 			@Override
@@ -144,7 +166,22 @@ public class ShopOrderDetailActivity extends BaseActivity
 			@Override
 			public void onFinish() {
 				super.onFinish();
+				ColorDialog.dissmissProcessDialog();
 				fillData();
+				/**
+				 * 判断是否是从网络获取的数据
+				 */
+				if (isNetNotification){
+					startTTS();//获取到数据后开启百度语音服务
+					//判断是否开启自动打印
+					if (sp.getBoolean("isAutoPrintOpen",false)){
+						LogUtil.d("auto_print","true");
+						OpenBlueTooth();//打开蓝牙
+					}else {
+						LogUtil.d("auto_print","false");
+					}
+					isNetNotification = false;//播放完毕后设置
+				}
 			}
 		});
 	}
@@ -227,11 +264,11 @@ public class ShopOrderDetailActivity extends BaseActivity
 		
 		
 		
-		if (content.equals("已支付") &&orderSourceTextView.getText().equals("大牌抢购")){
+		/*if (content.equals("已支付") &&orderSourceTextView.getText().equals("大牌抢购")){
 			//设置核销按钮可见
-			enterButton.setVisibility(View.VISIBLE);
-			noButton.setVisibility(View.VISIBLE);
-		}
+			//enterButton.setVisibility(View.VISIBLE);
+			//noButton.setVisibility(View.VISIBLE);
+		}*/
 		//下单时间
 		order_create_time.setText(Util.DataConVertMint(orderData.getTime()));
 		//联系人
@@ -448,11 +485,15 @@ public class ShopOrderDetailActivity extends BaseActivity
 	            outputStream.write(bytes, 0, bytes.length);    
                 outputStream.flush();  
                 Toast.makeText(ShopOrderDetailActivity.this, "打印成功！", Toast.LENGTH_LONG).show();
+	            enterButton.setClickable(true);
+	            enterButton.setPressed(false);
             }
             catch (Exception e)
             {    
                 Toast.makeText(ShopOrderDetailActivity.this, "打印失败！", Toast.LENGTH_LONG).show();  
 	            LogUtil.d("erro",e.toString());
+	            enterButton.setClickable(true);
+	            enterButton.setPressed(false);
             }    
         }
 		else 
@@ -496,8 +537,11 @@ public class ShopOrderDetailActivity extends BaseActivity
     protected void onDestroy() 
     {
     	//关闭蓝牙的输出流
-    	super.onDestroy();
-    	try
+	    super.onDestroy();
+	    if (mSpeechSynthesizer!=null){
+		    this.mSpeechSynthesizer.release();
+	    }
+	    try
     	{
 			outputStream.close();
 			bluetoothSocket.close();
@@ -570,5 +614,150 @@ public class ShopOrderDetailActivity extends BaseActivity
 			}
 		}
     }
+
+	/**
+	 * 百度语音服务
+	 */
+
+	private SpeechSynthesizer mSpeechSynthesizer;
+	private String mSampleDirPath;
+	private static final String SAMPLE_DIR_NAME = "baiduTTS";
+	private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
+	private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
+
+
+	/**
+	 * 把语音文件拷到sd卡
+	 */
+	private void initialEnv() {
+		if (mSampleDirPath == null) {
+			String sdcardPath = Environment.getExternalStorageDirectory().toString();
+			mSampleDirPath = sdcardPath + "/" + SAMPLE_DIR_NAME;
+		}
+		makeDir(mSampleDirPath);//创建目录
+		/**
+		 * 复制资料到sd卡
+		 */
+		copyFromAssetsToSdcard(false, SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
+		copyFromAssetsToSdcard(false, TEXT_MODEL_NAME, mSampleDirPath + "/" + TEXT_MODEL_NAME);
+	}
+
+	private void makeDir(String dirPath) {
+		File file = new File(dirPath);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+	}
+
+	/**
+	 * 将sample工程需要的资源文件拷贝到SD卡中使用（授权文件为临时授权文件，请注册正式授权）
+	 *
+	 * @param isCover 是否覆盖已存在的目标文件
+	 * @param source
+	 * @param dest
+	 */
+	private void copyFromAssetsToSdcard(boolean isCover, String source, String dest) {
+		File file = new File(dest);
+		if (isCover || (!isCover && !file.exists())) {
+			InputStream is = null;
+			FileOutputStream fos = null;
+			try {
+				is = getResources().getAssets().open(source);
+				String path = dest;
+				fos = new FileOutputStream(path);
+				byte[] buffer = new byte[1024];
+				int size = 0;
+				while ((size = is.read(buffer, 0, 1024)) >= 0) {
+					fos.write(buffer, 0, size);
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (fos != null) {
+					try {
+						fos.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				try {
+					if (is != null) {
+						is.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		LogUtil.d("copydata","success");
+	}
+	
+	// 初始化语音合成客户端并启动
+	private void startTTS() {
+		// 获取语音合成对象实例
+		mSpeechSynthesizer = SpeechSynthesizer.getInstance();
+		// 设置context
+		mSpeechSynthesizer.setContext(this);
+		// 设置语音合成状态监听器
+		mSpeechSynthesizer.setSpeechSynthesizerListener(this);
+		
+		// 文本模型文件路径 (离线引擎使用)
+		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/"
+				+ TEXT_MODEL_NAME);
+		// 声学模型文件路径 (离线引擎使用)
+		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/"
+				+ SPEECH_FEMALE_MODEL_NAME);
+		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");//女声
+		// 设置Mix模式的合成策略
+		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
+
+
+		// 设置在线语音合成授权，需要填入从百度语音官网申请的api_key和secret_key
+		mSpeechSynthesizer.setApiKey("HrLqNhkxXrH19aZ1KUA7A9iU", "ed3813a82ef96d20b61c05397a59a6b4");
+		// 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
+		mSpeechSynthesizer.setAppId("8943945");
+		// 设置Mix模式的合成策略
+		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
+		
+		// 判断授权信息是否正确，如果正确则初始化语音合成器并开始语音合成，如果失败则做错误处理
+		AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
+		if (authInfo.isSuccess()) {
+			mSpeechSynthesizer.initTts(TtsMode.MIX);//初始化语音合成器，混合模式
+			mSpeechSynthesizer.speak("您有一笔新订单，订单号是"+orderData.getId()+"订单金额是:"+orderData.getFee());
+			LogUtil.d("yuyin","sucess");
+		} else {
+			// 授权失败
+			Toast.makeText(context,"语言合成失败",Toast.LENGTH_SHORT).show();
+			LogUtil.d("yuyin","fail");
+		}
+	}
+	public void onError(String arg0, SpeechError arg1) {
+		// 监听到出错，在此添加相关操作
+	}
+	public void onSpeechFinish(String arg0) {
+		// 监听到播放结束，在此添加相关操作
+		LogUtil.d("voice","end");
+	}
+	public void onSpeechProgressChanged(String arg0, int arg1) {
+		// 监听到播放进度有变化，在此添加相关操作
+	}
+	public void onSpeechStart(String arg0) {
+		// 监听到合成并播放开始，在此添加相关操作
+		LogUtil.d("voice","play");
+		
+	}
+	public void onSynthesizeDataArrived(String arg0, byte[] arg1, int arg2) {
+		// 监听到有合成数据到达，在此添加相关操作
+		LogUtil.d("voice","arrive");
+	}
+	public void onSynthesizeFinish(String arg0) {
+		// 监听到合成结束，在此添加相关操作
+		
+	}
+	public void onSynthesizeStart(String arg0) {
+		// 监听到合成开始，在此添加相关操作
+	}
 	
 }

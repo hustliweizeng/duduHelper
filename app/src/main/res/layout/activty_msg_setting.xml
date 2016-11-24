@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
             android:layout_marginRight="10dp"
-            app:kswBackColor="@color/btn_color"
+            app:kswTintColor="@color/btn_color"
             app:kswThumbColor="@color/bg_white_color"
             android:layout_height="wrap_content"/>
         
@@ -55,32 +55,6 @@
             android:gravity="center_vertical|right"
             android:layout_marginRight="10dp"
             app:kswThumbColor="@color/bg_white_color"
-            app:kswBackColor="@color/btn_color"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:background="@color/bg_white_color"
-        android:gravity="center_vertical"
-        android:layout_height="50dp">
-        <TextView
-            android:drawableLeft="@drawable/ic_ding"
-            android:drawablePadding="10dp"
-            android:paddingLeft="10dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="震动提示"
-            android:textSize="16dp"
-            />
-        <com.kyleduo.switchbutton.SwitchButton
-            android:id="@+id/btn_ding"
-            android:layout_width="wrap_content"
-            android:gravity="center_vertical|right"
-            android:layout_marginRight="10dp"
-            app:kswThumbColor="@color/bg_white_color"
             app:kswTintColor="@color/btn_color"
             android:layout_height="wrap_content"/>
 
@@ -92,7 +66,36 @@
         android:gravity="center_vertical"
         android:layout_height="50dp">
         <TextView
-            android:drawableLeft="@drawable/ic_ding"
+            android:drawableLeft="@drawable/ic_bing"
+            android:drawablePadding="10dp"
+            android:paddingLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="震动提示"
+            android:textSize="16dp"
+            />
+
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/btn_ding"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical|right"
+            android:layout_marginRight="10dp"
+            app:kswThumbColor="@color/bg_white_color"
+            app:kswTintColor="@color/btn_color"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        
+        android:layout_marginTop="13dp"
+        android:layout_width="match_parent"
+        android:background="@color/bg_white_color"
+        android:gravity="center_vertical"
+        android:layout_height="50dp">
+        <TextView
+            android:drawableLeft="@drawable/ic_auto_print"
             android:drawablePadding="10dp"
             android:paddingLeft="10dp"
             android:layout_width="0dp"
@@ -107,6 +110,7 @@
             android:gravity="center_vertical|right"
             android:layout_marginRight="10dp"
             app:kswThumbColor="@color/bg_white_color"
+            app:kswTintColor="@color/btn_color"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>

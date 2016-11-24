@@ -1,10 +1,13 @@
 package com.dudu.duduhelper.application;
+import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.R;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -18,6 +21,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.entity.UMessage;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -50,6 +54,21 @@ public class DuduHelperApplication extends Application
 			public void onFailure(String s, String s1) {
 			}
 		});
+		/**
+		 * 设置推送消息后到达指定页面
+		 */
+		UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
+			@Override
+			public void dealWithCustomAction(Context context, UMessage msg) {
+				Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+				Intent intent =new Intent(DuduHelperApplication.this, ShopOrderDetailActivity.class);
+				intent.putExtra("id",msg.custom);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//因为是从服务启动的，所以要设置
+				startActivity(intent);//跳转到订单详情页面
+				LogUtil.d("switch","跳转到详情");
+			}
+		};
+		mPushAgent.setNotificationClickHandler(notificationClickHandler);//设置监听回调
 		
 		
 		
