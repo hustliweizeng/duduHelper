@@ -26,7 +26,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -38,9 +37,7 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.ShopImageViewBrower;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
-import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
@@ -60,7 +57,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
+import com.dudu.duduhelper.R;
 
 public class ShopProductAddActivity extends BaseActivity
 {

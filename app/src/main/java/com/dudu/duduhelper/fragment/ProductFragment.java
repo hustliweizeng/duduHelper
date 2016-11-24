@@ -1,7 +1,6 @@
 package com.dudu.duduhelper.fragment;
 
 import com.dudu.duduhelper.Activity.BigBandActivity.shopProductListActivity;
-import com.dudu.duduhelper.R;
 import com.umeng.analytics.MobclickAgent;
 
 import android.content.Intent;
@@ -13,7 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
+import com.dudu.duduhelper.R;
 public class ProductFragment extends Fragment 
 {
 	private View ProductFragmentView;

@@ -13,10 +13,11 @@ android {
             keyPassword '123456'
             storePassword '880119'
             keyAlias 'dudu'
+            
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "23.0.2"
     defaultConfig {
         applicationId "com.dudu.duduhelper"
         minSdkVersion 14
@@ -78,4 +79,6 @@ dependencies {
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
     compile 'com.kyleduo.switchbutton:library:1.4.4'
+    
+    compile project(':PushSDK')
 }

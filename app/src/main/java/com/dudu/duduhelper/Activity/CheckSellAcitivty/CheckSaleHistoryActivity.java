@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -14,17 +13,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.CheckSaleHistoryAdapter;
-import com.dudu.duduhelper.adapter.MoneyHistoryAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
-import com.dudu.duduhelper.javabean.CashHistoryBean;
 import com.dudu.duduhelper.javabean.CheckSaleHistoryBean;
 import com.dudu.duduhelper.widget.CalendarView;
-import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -36,7 +31,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
+import com.dudu.duduhelper.R;
 public class CheckSaleHistoryActivity extends BaseActivity {
 	//编辑按钮
 	private Button editButton;

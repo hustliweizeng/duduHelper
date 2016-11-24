@@ -2,18 +2,15 @@ package com.dudu.duduhelper.Activity.GuestManageActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.GuestManageAdapter;
@@ -27,7 +24,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0

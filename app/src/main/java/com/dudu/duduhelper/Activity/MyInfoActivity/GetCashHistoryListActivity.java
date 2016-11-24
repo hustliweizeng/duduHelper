@@ -8,12 +8,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.GetCashHistoryAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.CashHistoryBean;
-import com.dudu.duduhelper.bean.CashHistoryDataBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.GetCashHistoryBean;
@@ -25,10 +22,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.dudu.duduhelper.R;
 public class GetCashHistoryListActivity extends BaseActivity {
 	private GetCashHistoryAdapter getCashHistoryAdapter;
 	private ListView cashHistoryListView;

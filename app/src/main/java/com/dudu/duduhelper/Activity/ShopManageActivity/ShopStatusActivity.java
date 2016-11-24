@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -21,21 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountDataActivity;
 import com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountWatchActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.javabean.ShopListBean;
 import com.dudu.duduhelper.widget.WaveHelper;
 import com.dudu.duduhelper.widget.WaveView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0

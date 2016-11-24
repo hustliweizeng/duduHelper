@@ -17,9 +17,8 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Checkable;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
-
+import com.dudu.duduhelper.R;
 
 
 /*

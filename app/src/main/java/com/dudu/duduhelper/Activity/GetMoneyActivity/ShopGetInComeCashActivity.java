@@ -17,10 +17,9 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Activity.CheckSellAcitivty.CheckSaleDetailActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.CashHistoryActivity.ShopMoneyRecordListActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.widget.MyKeyBoard;
 import com.example.qr_codescan.MipcaActivityCapture;
-
+import com.dudu.duduhelper.R;
 public class ShopGetInComeCashActivity extends BaseActivity
 {
 

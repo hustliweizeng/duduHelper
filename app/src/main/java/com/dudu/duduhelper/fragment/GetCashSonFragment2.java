@@ -5,7 +5,6 @@ import org.apache.http.Header;
 import com.dudu.duduhelper.Activity.CashHistoryActivity.GetInComeActivity;
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.GetCashAdapter;
 import com.dudu.duduhelper.bean.GetCashBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -37,7 +36,7 @@ import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
+import com.dudu.duduhelper.R;
 public class GetCashSonFragment2 extends Fragment 
 {
 	private String type;

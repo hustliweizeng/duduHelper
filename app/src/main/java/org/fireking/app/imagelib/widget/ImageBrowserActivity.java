@@ -8,8 +8,6 @@ import org.fireking.app.imagelib.transformer.DepthPageTransformer;
 import org.fireking.app.imagelib.view.PhotoTextView;
 import org.fireking.app.imagelib.view.ScrollViewPager;
 
-import com.dudu.duduhelper.R;
-
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class ImageBrowserActivity extends FragmentActivity implements
 		OnPageChangeListener, OnClickListener {
 

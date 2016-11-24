@@ -1,7 +1,6 @@
 package com.dudu.duduhelper.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,17 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.ShopCheckListBean;
-import com.dudu.duduhelper.javabean.ShopListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-
+import com.dudu.duduhelper.R;
 
 /**
  * @author

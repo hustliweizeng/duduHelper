@@ -27,13 +27,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.dudu.duduhelper.R;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.mining.app.zxing.camera.CameraManager;
 import com.mining.app.zxing.view.ViewfinderResultPointCallback;
-
+import com.dudu.duduhelper.R;
 /**
  * This class handles all the messaging which comprises the state machine for capture.
  */

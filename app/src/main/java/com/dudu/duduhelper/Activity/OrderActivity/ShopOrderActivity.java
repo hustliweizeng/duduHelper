@@ -26,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
@@ -46,7 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 public class ShopOrderActivity extends BaseActivity 
 {
 	//状态选择器的显示信息

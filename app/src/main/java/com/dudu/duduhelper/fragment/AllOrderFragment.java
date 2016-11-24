@@ -1,5 +1,5 @@
 package com.dudu.duduhelper.fragment;
-
+import com.dudu.duduhelper.R;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.bean.OrderBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;

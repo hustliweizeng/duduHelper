@@ -6,12 +6,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.javabean.Modules;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0

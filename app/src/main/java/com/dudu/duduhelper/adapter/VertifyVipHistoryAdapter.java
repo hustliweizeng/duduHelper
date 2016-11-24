@@ -1,27 +1,21 @@
 package com.dudu.duduhelper.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.Activity.RedBagActivity.EditRedbag2Activity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.VipCertifyHistoryBean;
-import com.google.android.gms.appindexing.Thing;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0

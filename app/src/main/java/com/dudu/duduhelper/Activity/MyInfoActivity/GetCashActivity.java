@@ -6,7 +6,6 @@ import org.apache.http.Header;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -31,7 +30,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class GetCashActivity extends BaseActivity implements TextWatcher
 {
 	private EditText getCashEditText;

@@ -14,9 +14,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.dudu.duduhelper.R;
-
 public class DilatingDotsProgressBar extends View {
     public static final String TAG = DilatingDotsProgressBar.class.getSimpleName();
     public static final double START_DELAY_FACTOR = 0.35;

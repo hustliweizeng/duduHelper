@@ -1,7 +1,6 @@
 package com.dudu.duduhelper.Activity.RedBagActivity;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -30,7 +29,7 @@ import android.widget.Toast;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class ShopHongBaoDetailActivity extends BaseActivity 
 {
 	private WheelIndicatorView wheelIndicatorView;

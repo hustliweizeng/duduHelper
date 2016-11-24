@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.bean.OrderBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -37,7 +36,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
-
+import com.dudu.duduhelper.R;
 public class NewOrderFragment extends Fragment 
 {
 	private View NewOrderFragment; 

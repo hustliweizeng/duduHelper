@@ -5,9 +5,8 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.MsgOperationAdapter;
-
+import com.dudu.duduhelper.R;
 public class MessageCenterListActivity extends BaseActivity 
 {
 

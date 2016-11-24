@@ -4,7 +4,6 @@ import org.apache.http.Header;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.CouponHistoryBean;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -23,7 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class CouponSellDetailActivity extends BaseActivity 
 {
 	private TextView couponname;

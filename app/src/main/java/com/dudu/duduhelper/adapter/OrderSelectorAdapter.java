@@ -9,12 +9,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.javabean.SelectorBean;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 /**
  * 订单筛选列表选择器
  */

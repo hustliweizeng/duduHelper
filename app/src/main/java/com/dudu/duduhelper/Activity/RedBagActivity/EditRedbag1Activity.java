@@ -23,14 +23,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.widget.SystemBarTintManager;
 import com.umeng.message.PushAgent;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
+import com.dudu.duduhelper.R;
 /**
  * Created by lwz on 2016/8/19.
  */

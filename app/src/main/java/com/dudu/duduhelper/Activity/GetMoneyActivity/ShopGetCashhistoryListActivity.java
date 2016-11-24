@@ -5,7 +5,6 @@ import org.apache.http.Header;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.CashHistoryActivity.GetInComeActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.GetCashAdapter;
 import com.dudu.duduhelper.bean.GetCashBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -34,7 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
-
+import com.dudu.duduhelper.R;
 public class ShopGetCashhistoryListActivity extends BaseActivity 
 {
 	

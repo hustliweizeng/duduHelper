@@ -3,7 +3,6 @@ package com.dudu.duduhelper.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.GetHongBaoHistDataBean;
 
 import android.content.Context;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.dudu.duduhelper.R;
 public class ShopListAdapter extends BaseAdapter 
 {
 	private Context context;

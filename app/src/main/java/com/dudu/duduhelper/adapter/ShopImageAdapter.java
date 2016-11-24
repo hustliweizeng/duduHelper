@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.widget.SmoothCheckBox;
 import com.dudu.duduhelper.widget.SmoothCheckBox.OnCheckedChangeListener;
@@ -18,7 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 public class ShopImageAdapter extends BaseAdapter
 {
 	

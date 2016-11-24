@@ -4,7 +4,6 @@ package com.dudu.duduhelper.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 
 import android.bluetooth.BluetoothDevice;
@@ -14,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
+import com.dudu.duduhelper.R;
 public class DeviceAdapter extends BaseAdapter
 {
 	private Context context;
@@ -27,9 +26,11 @@ public class DeviceAdapter extends BaseAdapter
     public void addItem(BluetoothDevice device)
     {
 	    if (device!=null){
-		    list.add(device);
-		    notifyDataSetChanged();
-			LogUtil.d("add",device.getAddress());
+		    if(!list.contains(device)){//当前设备不在列表
+			    list.add(device);
+			    notifyDataSetChanged();
+			    LogUtil.d("add",device.getAddress());
+		    }
 	    }
 	    
     }

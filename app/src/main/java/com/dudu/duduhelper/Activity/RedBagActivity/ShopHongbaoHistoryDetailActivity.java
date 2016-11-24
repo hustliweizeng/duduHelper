@@ -1,14 +1,12 @@
 package com.dudu.duduhelper.Activity.RedBagActivity;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.bean.GetHongBaoHistDataBean;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.RedBagHitsoryBean;
 
 import android.os.Bundle;
 import android.widget.TextView;
-
+import com.dudu.duduhelper.R;
 public class ShopHongbaoHistoryDetailActivity extends BaseActivity 
 {
 	private RedBagHitsoryBean.DataBean hongbao;

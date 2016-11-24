@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.fireking.app.imagelib.entity.ImageBean;
 
-import com.dudu.duduhelper.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -17,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
+import com.dudu.duduhelper.R;
 public class SendShaiShaiAdapter extends BaseAdapter {
 	private Context context;
 	private ViewHolder viewHolder;

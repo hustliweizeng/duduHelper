@@ -1,6 +1,6 @@
 package com.dudu.duduhelper.Activity.DiscountCardActivity;
 
-
+import com.dudu.duduhelper.R;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -37,7 +37,6 @@ import android.widget.Toast;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.BigBandActivity.ProductInfoEditActivity;
 import com.dudu.duduhelper.Activity.ShopImageViewBrower;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -210,7 +209,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 
 		
 		
-		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		ColorDialog.showRoundProcessDialog(context, R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.put("op","save");
 		params.add("id",data.getId());

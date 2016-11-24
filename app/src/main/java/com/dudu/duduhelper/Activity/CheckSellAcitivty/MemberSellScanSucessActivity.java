@@ -5,7 +5,6 @@ import org.apache.http.Header;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.MemberSellBean;
 import com.dudu.duduhelper.bean.ResponsBean;
@@ -29,7 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class MemberSellScanSucessActivity extends BaseActivity 
 {
 	private TextView ScanSellActissonTextView;

@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.CashHistoryActivity.ShopMoneyRecordListActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -30,7 +29,7 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class ShopGetCashCodeActivity extends BaseActivity 
 {
     private String money;

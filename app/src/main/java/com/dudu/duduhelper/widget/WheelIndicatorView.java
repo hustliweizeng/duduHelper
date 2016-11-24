@@ -17,9 +17,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
-
+import com.dudu.duduhelper.R;
 public class WheelIndicatorView extends View 
 {
 	private final static int ANGLE_INIT_OFFSET = -90;

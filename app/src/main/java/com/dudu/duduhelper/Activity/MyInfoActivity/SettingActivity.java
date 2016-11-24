@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.WelcomeActivity.ForgetPwdCertifyMobileActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.CleanAppCache;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
@@ -24,7 +23,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
-
+import com.dudu.duduhelper.R;
 public class SettingActivity extends BaseActivity 
 {
 	private RelativeLayout bind_phone_line;

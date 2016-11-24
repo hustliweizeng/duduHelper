@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.OrderListBean;
 import com.dudu.duduhelper.javabean.OrderStatusBean;
@@ -17,7 +16,7 @@ import com.dudu.duduhelper.javabean.SelectorBean;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 public class ShopOrderAdapter extends BaseAdapter 
 {
     private Context context;

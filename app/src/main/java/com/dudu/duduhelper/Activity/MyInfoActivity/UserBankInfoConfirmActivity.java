@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.widget.ColorDialog;
@@ -23,7 +22,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
-
+import com.dudu.duduhelper.R;
 public class UserBankInfoConfirmActivity extends BaseActivity {
 
 	private Button getPermessionbutton;

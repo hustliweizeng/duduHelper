@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -25,7 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0
@@ -42,6 +41,7 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 	private TextView tv_num_remind;
 	int max_num = 300;
 	private ArrayList<CharSequence> checkedIDs;
+	private boolean isAll;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -113,13 +113,20 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 			Toast.makeText(this, "content不能为空", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		/**
+		 * 判断是否是全选
+		 */
 		String members = "";
-		if (checkedIDs!=null&& checkedIDs.size()>0){
-			LogUtil.d("update",checkedIDs.toString());
-			members = checkedIDs.toString();
+		if (isAll){
+			members = "select_all_member";
 		}else {
-			Toast.makeText(context,"选择的用户数不能为0!",Toast.LENGTH_SHORT).show();
-			return;
+			if (checkedIDs!=null&& checkedIDs.size()>0){
+				LogUtil.d("update",checkedIDs.toString());
+				members = checkedIDs.toString();
+			}else {
+				Toast.makeText(context,"选择的用户数不能为0!",Toast.LENGTH_SHORT).show();
+				return;
+			}
 		}
 		String detail ="";
 		try {
@@ -132,7 +139,6 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-
 		RequestParams params = new RequestParams();
 		params.put("type_id","1");
 		params.put("members",members);
@@ -142,7 +148,6 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
 				LogUtil.d("res",s);
@@ -175,16 +180,23 @@ public class NewActivityMsgActivity extends BaseActivity implements View.OnClick
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode ==2){
-			ArrayList<CharSequence> list = data.getCharSequenceArrayListExtra("list");
-			ArrayList<CharSequence> ids = data.getCharSequenceArrayListExtra("ids");
-
-			if (list!=null ){
-				tv_guest_num.setText(list.size()+"人");
-				checkedList = list;
-			}
-			if (ids!=null){
-				checkedIDs = ids;
-				LogUtil.d("ids",ids.size()+"");
+			isAll = data.getBooleanExtra("isAll", false);
+			/**
+			 * 判断是否全选
+			 */
+			if (isAll){
+				tv_guest_num.setText("全部");
+			}else {
+				ArrayList<CharSequence> list = data.getCharSequenceArrayListExtra("list");
+				ArrayList<CharSequence> ids = data.getCharSequenceArrayListExtra("ids");
+				if (list!=null ){
+					tv_guest_num.setText(list.size()+"人");
+					checkedList = list;
+				}
+				if (ids!=null){
+					checkedIDs = ids;
+					LogUtil.d("ids",ids.size()+"");
+				}
 			}
 		}
 	}

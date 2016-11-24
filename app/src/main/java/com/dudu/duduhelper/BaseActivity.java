@@ -16,18 +16,10 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.widget.SystemBarTintManager;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
-import com.umeng.update.UmengDialogButtonListener;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UpdateStatus;
-
-import org.apache.commons.lang.StringUtils;
-import org.json.JSONObject;
 
 public class BaseActivity extends FragmentActivity 
 {
@@ -46,6 +38,7 @@ public class BaseActivity extends FragmentActivity
 	@Override
 	protected void onCreate(Bundle arg0) 
 	{
+		PushAgent.getInstance(context).onAppStart();//统计应用启动数据
 		//CrashReport.testJavaCrash();//测试bugly
 		context = this;
 		//把所有页面加到application
@@ -82,37 +75,7 @@ public class BaseActivity extends FragmentActivity
 			  System.out.println(haha);
 		  }
 		});*/
-		/**
-		 * 设置友盟更新
-		 */
-		UmengUpdateAgent.setUpdateOnlyWifi(false);
-		UmengUpdateAgent.update(this);
 		
-		
-		
-		if(StringUtils.isEmpty(FORCE_UPDATE)) 
-		{    
-            return;    
-        }    
-		UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() 
-		{
-			
-			@Override
-			public void onClick(int arg0) 
-			{
-				// TODO Auto-generated method stub
-				 switch (arg0) 
-				 {
-			        case UpdateStatus.Update:
-			            break;
-			        default:  
-		        	if(!FORCE_UPDATE.equals("0"))
-		        	{
-		        		DuduHelperApplication.getInstance().exit();
-		        	}
-		        }
-		    }
-		});
 	}
 	
 	//做版本兼容，

@@ -1,7 +1,6 @@
 package com.dudu.duduhelper.Activity.MyInfoActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,28 +10,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.Activity.MainActivity;
-import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.EmployeeManageActivity.ShopMemberListActivity;
 import com.dudu.duduhelper.Activity.ShopManageActivity.ShopListManagerActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.CleanAppCache;
-import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
-import com.dudu.duduhelper.javabean.InfoBean;
 import com.dudu.duduhelper.widget.MyDialog;
-import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class ShopSettingActivity extends BaseActivity implements OnClickListener
 {
 	private RelativeLayout changePhoneNumRel;

@@ -23,7 +23,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import com.dudu.duduhelper.R;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -33,7 +32,7 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.mining.app.zxing.camera.CameraManager;
 import com.mining.app.zxing.camera.PlanarYUVLuminanceSource;
-
+import com.dudu.duduhelper.R;
 final class DecodeHandler extends Handler {
 
   private static final String TAG = DecodeHandler.class.getSimpleName();

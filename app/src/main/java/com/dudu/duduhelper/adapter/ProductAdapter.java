@@ -1,6 +1,6 @@
 package com.dudu.duduhelper.adapter;
 
-
+import com.dudu.duduhelper.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.bean.HongbaoListBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;

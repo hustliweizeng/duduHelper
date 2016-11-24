@@ -21,7 +21,6 @@ import com.dudu.duduhelper.Activity.MyInfoActivity.ShopInfoEditActivity;
 import com.dudu.duduhelper.Activity.RedBagActivity.EditRedbag2Activity;
 import com.dudu.duduhelper.Activity.ShopManageActivity.ShopAddActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.ShopImageAdapter;
@@ -31,7 +30,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import com.dudu.duduhelper.R;
 /**
  * 选取图片的工具
  */

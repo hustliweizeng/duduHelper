@@ -31,7 +31,6 @@ import com.dudu.duduhelper.Activity.VipUserActivity.VipUserVertifyActivity;
 import com.dudu.duduhelper.Activity.VipUserActivity.VipUserVertifyResActivity;
 import com.dudu.duduhelper.Activity.VipUserActivity.VipVertifyHistoryActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -53,7 +52,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Vector;
-
+import com.dudu.duduhelper.R;
 /**
  * Initial the camera
  * 扫二维码收款页面

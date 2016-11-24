@@ -4,7 +4,6 @@ import org.apache.http.Header;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.CashSellBean;
 import com.dudu.duduhelper.bean.ResponsBean;
@@ -29,7 +28,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class GiftSellActivity extends BaseActivity 
 {
 	private Button scanbutton;
@@ -207,7 +206,6 @@ public class GiftSellActivity extends BaseActivity
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.dissmissProcessDialog();
 			}
 		});

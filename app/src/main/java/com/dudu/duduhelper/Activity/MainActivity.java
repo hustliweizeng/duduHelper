@@ -17,9 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.MyInfoActivity.MsgSettingActivity;
-import com.dudu.duduhelper.Activity.MyInfoActivity.ShopSettingActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.fragment.CopyOfOrderFragment;
@@ -28,7 +26,7 @@ import com.dudu.duduhelper.fragment.ShopMineFragment;
 import com.dudu.duduhelper.fragment.ShopeMainFragment;
 
 import java.util.LinkedList;
-
+import com.dudu.duduhelper.R;
 public class MainActivity extends BaseActivity 
 {
 

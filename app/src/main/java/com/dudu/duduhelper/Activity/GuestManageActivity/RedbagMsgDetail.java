@@ -1,19 +1,14 @@
 package com.dudu.duduhelper.Activity.GuestManageActivity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.javabean.RedbagMsgListBean;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0

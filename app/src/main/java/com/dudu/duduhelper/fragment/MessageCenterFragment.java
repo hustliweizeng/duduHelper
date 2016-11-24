@@ -13,10 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dudu.duduhelper.Activity.MessageCentreActivity.MessageCenterListActivity;
-import com.dudu.duduhelper.R;
 import com.jauker.widget.BadgeView;
 import com.umeng.analytics.MobclickAgent;
-
+import com.dudu.duduhelper.R;
 public class MessageCenterFragment extends Fragment implements OnClickListener
 {
 	private View MessageCenterFragmentView;

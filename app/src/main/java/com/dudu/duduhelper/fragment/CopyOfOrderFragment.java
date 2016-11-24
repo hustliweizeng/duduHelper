@@ -32,7 +32,6 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
@@ -53,7 +52,7 @@ import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 public class CopyOfOrderFragment extends Fragment {
 	private View OrderFragmentView;
 	private TextView orderType;

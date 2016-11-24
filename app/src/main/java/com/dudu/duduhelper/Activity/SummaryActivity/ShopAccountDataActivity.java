@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.widget.WaveHelper;
 import com.dudu.duduhelper.widget.WaveView;
@@ -25,7 +24,7 @@ import com.dudu.duduhelper.widget.WaveView;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
+import com.dudu.duduhelper.R;
 public class ShopAccountDataActivity extends BaseActivity 
 {
 	private LinearLayout startTimeRel;

@@ -7,14 +7,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.Activity.GuestManageActivity.CreateActivityMsg;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.ActivityMsgBean;
-
+import com.dudu.duduhelper.R;
 import java.util.ArrayList;
 import java.util.List;
 

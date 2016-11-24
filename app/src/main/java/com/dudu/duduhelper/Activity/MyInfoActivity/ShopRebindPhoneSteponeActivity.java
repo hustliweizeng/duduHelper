@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -25,7 +24,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class ShopRebindPhoneSteponeActivity extends BaseActivity {
 
 	private Button getPermessionbutton;

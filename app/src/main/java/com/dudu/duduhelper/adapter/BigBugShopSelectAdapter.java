@@ -1,7 +1,6 @@
 package com.dudu.duduhelper.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,17 +8,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.CheckableShopbean;
-import com.dudu.duduhelper.javabean.ShopListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.http.POST;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0

@@ -18,7 +18,6 @@ import android.widget.PopupWindow;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.ShopListAdapter;
 import com.dudu.duduhelper.bean.GetHongBaoHistBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -27,7 +26,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-
+import com.dudu.duduhelper.R;
 public class PopWindowList
 {
 	private PopupWindow popupWindow;

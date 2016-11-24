@@ -8,16 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.Utils.Util;
-import com.dudu.duduhelper.bean.CashHistoryDataBean;
 import com.dudu.duduhelper.javabean.GetCashHistoryBean;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 public class GetCashHistoryAdapter extends BaseAdapter 
 {
 	private ViewHolder viewHolder;

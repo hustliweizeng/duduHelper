@@ -32,12 +32,10 @@ import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.DiscountCardActivity.ShopCouponDetailActivity;
 import com.dudu.duduhelper.Activity.RedBagActivity.ShopHongBaoAddActivity;
 import com.dudu.duduhelper.Activity.RedBagActivity.ShopHongBaoDetailActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderSelectorAdapter;
 import com.dudu.duduhelper.adapter.ProductAdapter;
-import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.HongbaoListBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -49,7 +47,7 @@ import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-
+import com.dudu.duduhelper.R;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -830,6 +828,7 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
+				ColorDialog.dissmissProcessDialog();
 				try {
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
@@ -876,7 +875,7 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onFinish()
 			{
-				ColorDialog.dissmissProcessDialog();
+				
 			}
 		});
 	}

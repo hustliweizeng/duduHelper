@@ -8,7 +8,6 @@ import android.widget.ImageButton;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
-
 /**
  * Created by lwz on 2016/8/18.
  */

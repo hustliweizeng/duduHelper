@@ -3,8 +3,6 @@ package com.dudu.duduhelper.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.javabean.ShopListBean;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -14,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.dudu.duduhelper.R;
 public class ShopAdapterAdapter extends BaseAdapter 
 {
 	private Context context;
@@ -65,7 +63,7 @@ public class ShopAdapterAdapter extends BaseAdapter
 		if(convertView == null)
 		{
 			viewHolder = new ViewHolder();
-			convertView = View.inflate(context,R.layout.shop_manager_item, null);
+			convertView = View.inflate(context, R.layout.shop_manager_item, null);
 			viewHolder.shopimage = (ImageView) convertView.findViewById(R.id.shopimage);
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
 			viewHolder.totalTrade  = (TextView) convertView.findViewById(R.id.total_trade);

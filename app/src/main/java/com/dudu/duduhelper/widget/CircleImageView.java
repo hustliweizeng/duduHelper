@@ -2,9 +2,7 @@ package com.dudu.duduhelper.widget;
 
 
 
-
 import com.dudu.duduhelper.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;

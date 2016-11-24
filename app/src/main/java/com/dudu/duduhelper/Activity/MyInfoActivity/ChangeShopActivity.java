@@ -15,7 +15,6 @@ import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.CheckShopAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -27,9 +26,7 @@ import com.google.gson.Gson;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0

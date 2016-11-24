@@ -1,11 +1,11 @@
 package com.dudu.duduhelper.application;
-
+import com.dudu.duduhelper.R;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
-import com.dudu.duduhelper.R;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -13,8 +13,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.tencent.bugly.Bugly;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengNotificationClickHandler;
 
@@ -27,12 +27,31 @@ public class DuduHelperApplication extends Application
 	private static DuduHelperApplication instance;
 	private PushAgent mPushAgent;
 	private GetPushNot getPushNot;
-	
 	@Override
 	public void onCreate() 
 	{
-		// TODO Auto-generated method stub
 		super.onCreate();
+		/**
+		 * 注册推送服务
+		 */
+		PushAgent mPushAgent = PushAgent.getInstance(this);
+		//注册推送服务，每次调用register方法都会回调该接口
+		mPushAgent.register(new IUmengRegisterCallback() {
+			@Override
+			public void onSuccess(String deviceToken) {
+				//注册成功会返回device token
+				//保存友盟的token信息
+				SharedPreferences sp = getSharedPreferences("userconig",MODE_PRIVATE);
+				sp.edit().putString("umeng_token",deviceToken).commit();
+			}
+			@Override
+			public void onFailure(String s, String s1) {
+
+			}
+		});
+		
+		
+		
 		/**
 		 * buggly自动更新功能
 		 */
@@ -40,7 +59,6 @@ public class DuduHelperApplication extends Application
 		Bugly.init(getApplicationContext(), "510ff77a7a", false);
 
 		initImageLoader(getApplicationContext());
-		mPushAgent = PushAgent.getInstance(this);
 		UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler()
 		{
 			@Override
@@ -65,7 +83,6 @@ public class DuduHelperApplication extends Application
 			};
 			
 		};
-		mPushAgent.setNotificationClickHandler(notificationClickHandler);
 	}
 	
 	public synchronized static DuduHelperApplication getInstance() 

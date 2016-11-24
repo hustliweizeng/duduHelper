@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -23,7 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0
@@ -39,6 +38,7 @@ public class NewRedbagMsgActivity extends BaseActivity implements View.OnClickLi
 	private Button submitbtn;
 	private ArrayList<CharSequence> checkedList;
 	private ArrayList<CharSequence> checkedIDs =new ArrayList<>();
+	private boolean isAll;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -101,12 +101,16 @@ public class NewRedbagMsgActivity extends BaseActivity implements View.OnClickLi
 	
 		//封装用户id
 		String members = "";
-		if (checkedIDs!=null&& checkedIDs.size()>0){
-			LogUtil.d("update",checkedIDs.toString());
-			members = checkedIDs.toString();
+		if (isAll){
+			members = "select_all_member";
 		}else {
-			Toast.makeText(context,"选择的用户数不能为0!",Toast.LENGTH_SHORT).show();
-			return;
+			if (checkedIDs!=null&& checkedIDs.size()>0){
+				LogUtil.d("update",checkedIDs.toString());
+				members = checkedIDs.toString();
+			}else {
+				Toast.makeText(context,"选择的用户数不能为0!",Toast.LENGTH_SHORT).show();
+				return;
+			}
 		}
 		//封装内容
 		String detail ="";
@@ -159,13 +163,18 @@ public class NewRedbagMsgActivity extends BaseActivity implements View.OnClickLi
 		if (requestCode ==4){
 			ArrayList<CharSequence> list = data.getCharSequenceArrayListExtra("list");
 			ArrayList<CharSequence> ids = data.getCharSequenceArrayListExtra("ids");
-			if (list!=null ){
-				tv_guest_num.setText(list.size()+"人");
-				checkedList = list;
-			}
-			if (ids!=null){
-				checkedIDs = ids;
-				LogUtil.d("ids",ids.size()+"");
+			isAll = data.getBooleanExtra("isAll", false);
+			if (isAll){
+				tv_guest_num.setText("全部");
+			}else {
+				if (list!=null ){
+					tv_guest_num.setText(list.size()+"人");
+					checkedList = list;
+				}
+				if (ids!=null){
+					checkedIDs = ids;
+					LogUtil.d("ids",ids.size()+"");
+				}
 			}
 		}
 	}

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.FragmentAdapter;
 import com.dudu.duduhelper.widget.PagerSlidingTabStrip;
 
@@ -19,7 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import com.dudu.duduhelper.R;
 public class GetCashFragment extends Fragment 
 {
 	private View GetCashFragmentView;

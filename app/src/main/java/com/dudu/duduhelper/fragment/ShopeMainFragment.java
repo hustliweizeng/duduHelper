@@ -20,7 +20,6 @@ import com.dudu.duduhelper.Activity.CashHistoryActivity.ShopMoneyRecordListActiv
 import com.dudu.duduhelper.Activity.EmployeeManageActivity.ShopMemberListActivity;
 import com.dudu.duduhelper.Activity.GetMoneyActivity.ShopGetInComeCashActivity;
 import com.dudu.duduhelper.Activity.GuestManageActivity.GuestMangageActivity;
-import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderActivity;
 import com.dudu.duduhelper.Activity.RedBagActivity.RedBagList;
 import com.dudu.duduhelper.Activity.ShopManageActivity.ShopListManagerActivity;
@@ -28,11 +27,9 @@ import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
 import com.dudu.duduhelper.Activity.SummaryActivity.ShopAccountDataActivity;
 import com.dudu.duduhelper.Activity.VipUserActivity.VipUserVertifyActivity;
 import com.dudu.duduhelper.Activity.fiveDiscountActivity.DiscountSellActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
-import com.dudu.duduhelper.widget.ColorDialog;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.umeng.analytics.MobclickAgent;
@@ -40,7 +37,7 @@ import com.umeng.analytics.MobclickAgent;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class ShopeMainFragment extends Fragment implements OnClickListener
 {
 	private View MainFragmentView;

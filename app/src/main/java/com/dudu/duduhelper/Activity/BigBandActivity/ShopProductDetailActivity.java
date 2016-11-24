@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.widget.WheelIndicatorItem;
@@ -22,7 +21,7 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class ShopProductDetailActivity extends BaseActivity
 {
 	private Button editproductinfoButton;

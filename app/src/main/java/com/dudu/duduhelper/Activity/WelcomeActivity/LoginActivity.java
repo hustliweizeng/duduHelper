@@ -2,10 +2,8 @@ package com.dudu.duduhelper.Activity.WelcomeActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,16 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.Activity.MyInfoActivity.ChangeShopActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.Activity.MainActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
-import com.dudu.duduhelper.javabean.LoginBean;
 import com.dudu.duduhelper.javabean.ShopCheckListBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
@@ -246,6 +240,7 @@ public class LoginActivity extends BaseActivity
 					@Override
 					public void onSuccess(int arg0, Header[] arg1, String arg2)
 					{
+						ColorDialog.dissmissProcessDialog();
 						LogUtil.d("ss",arg2);
 						try {
 							JSONObject object = new JSONObject(arg2);
@@ -266,11 +261,7 @@ public class LoginActivity extends BaseActivity
 							e.printStackTrace();
 						}
 					}
-					@Override
-					public void onFinish()
-					{
-						ColorDialog.dissmissProcessDialog();
-					}
+					
 				});
 			}
 		});

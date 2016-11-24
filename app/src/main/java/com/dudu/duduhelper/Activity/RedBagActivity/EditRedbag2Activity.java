@@ -29,8 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.Activity.ShopImageViewBrower;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.Utils.ViewUtils;
@@ -56,7 +54,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
+import com.dudu.duduhelper.R;
 /**
  * Created by lwz on 2016/8/19.
  */

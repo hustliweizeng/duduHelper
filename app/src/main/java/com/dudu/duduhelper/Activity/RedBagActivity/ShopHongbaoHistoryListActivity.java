@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.RedBagHistoryAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -27,7 +26,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class ShopHongbaoHistoryListActivity extends BaseActivity {
 	private ListView hongbaoHistoryListView;
 	private SwipeRefreshLayout hongbaoHistoryswipeLayout;

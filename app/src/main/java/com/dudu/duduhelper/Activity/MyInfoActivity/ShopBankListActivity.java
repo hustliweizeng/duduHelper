@@ -32,13 +32,11 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.BankListAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BankCardListBean;
-import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.WaveHelper;
 import com.dudu.duduhelper.widget.WaveView;
 import com.google.gson.Gson;
@@ -46,9 +44,8 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class ShopBankListActivity extends BaseActivity 
 {
 	

@@ -5,14 +5,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.application.DuduHelperApplication;
-import com.dudu.duduhelper.bean.DiscountDataBean;
-import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.FiveDiscountBean;
-import com.dudu.duduhelper.widget.ColorDialog;
 import com.dudu.duduhelper.widget.MyDialog;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -25,9 +20,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.Serializable;
-
+import com.dudu.duduhelper.R;
 public class DiscountSellResultActivity extends BaseActivity 
 {
 	private FiveDiscountBean dataBean;

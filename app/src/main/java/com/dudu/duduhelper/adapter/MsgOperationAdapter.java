@@ -4,9 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
 import com.dudu.duduhelper.R;
-
 /**
  * Created by lwz on 2016/8/22.
  */
@@ -24,7 +22,7 @@ public class MsgOperationAdapter  extends BaseAdapter{
 	@Override
 	public View getView(int i, View converView, ViewGroup parent) {
 		if (converView == null){
-			converView = View.inflate(context,R.layout.item_msglist,null);
+			converView = View.inflate(context, R.layout.item_msglist,null);
 		}
 
 		return converView;

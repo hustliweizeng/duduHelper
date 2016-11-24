@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.BankProvinceListAdapter;
 import com.dudu.duduhelper.adapter.BankCityListAdapter;
@@ -27,7 +26,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class UserBankSelectActivity extends BaseActivity 
 {
 	private ListView cuserbankListView;

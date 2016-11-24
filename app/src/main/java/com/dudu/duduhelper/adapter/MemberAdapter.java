@@ -2,12 +2,11 @@ package com.dudu.duduhelper.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.javabean.ShopUserBean;
 import com.dudu.duduhelper.widget.ColorDialog;

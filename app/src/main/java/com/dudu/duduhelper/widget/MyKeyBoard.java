@@ -9,8 +9,6 @@ import android.widget.TextView;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
 
-
-
 public class MyKeyBoard implements OnClickListener
 {
 	private OnKeyBoardClickListener onMyKeyBoardClickListener=null;

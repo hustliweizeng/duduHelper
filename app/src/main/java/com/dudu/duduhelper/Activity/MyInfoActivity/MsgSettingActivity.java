@@ -1,10 +1,8 @@
 package com.dudu.duduhelper.Activity.MyInfoActivity;
 
 import android.os.Bundle;
-import android.widget.ListView;
-
-import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.BaseActivity;
 
 /**
  * @author

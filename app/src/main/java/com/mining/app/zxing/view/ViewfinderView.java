@@ -24,17 +24,14 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.dudu.duduhelper.R;
 import com.google.zxing.ResultPoint;
 import com.mining.app.zxing.camera.CameraManager;
-
+import com.dudu.duduhelper.R;
 /**
  * This view is overlaid on top of the camera preview. It adds the viewfinder
  * rectangle and partial transparency outside it, as well as the laser scanner

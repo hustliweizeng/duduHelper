@@ -11,7 +11,6 @@ import org.apache.http.Header;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.bean.GetCashDetailBean;
 import com.dudu.duduhelper.bean.SelectScanOrderBean;
 import com.dudu.duduhelper.Utils.Util;
@@ -47,7 +46,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class GetInComeActivity extends BaseActivity 
 {
 	private TextView payactiontext;
@@ -286,7 +285,6 @@ public class GetInComeActivity extends BaseActivity
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				if(flag)
 				{
 					ColorDialog.dissmissProcessDialog();
@@ -427,7 +425,6 @@ public class GetInComeActivity extends BaseActivity
 		@Override
 		public void onReceive(Context context, Intent intent) 
 		{
-			// TODO Auto-generated method stub
 			String action = intent.getAction(); 
 			if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action))
 			{

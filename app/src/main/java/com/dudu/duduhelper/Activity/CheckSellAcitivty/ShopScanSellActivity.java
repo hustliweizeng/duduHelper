@@ -1,7 +1,6 @@
 package com.dudu.duduhelper.Activity.CheckSellAcitivty;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.widget.ConfirmView;
 import com.dudu.duduhelper.widget.DilatingDotsProgressBar;
 
@@ -9,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
+import com.dudu.duduhelper.R;
 /**
  * 优惠券核销页面
  */

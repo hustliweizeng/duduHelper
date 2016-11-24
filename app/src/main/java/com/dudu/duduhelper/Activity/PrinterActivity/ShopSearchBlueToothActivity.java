@@ -28,13 +28,13 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.DeviceAdapter;
 
 import java.lang.reflect.Method;
 import java.util.Set;
-
+import java.util.UUID;
+import com.dudu.duduhelper.R;
 public class ShopSearchBlueToothActivity extends BaseActivity 
 {
 	private Button scanbutton;
@@ -243,7 +243,6 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				}
 				//开始搜索
 				bluetoothAdapter.startDiscovery();
-				
 			}
 		});
 		//设备列表
@@ -283,14 +282,16 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 
 				}else if(device.getBondState() == BluetoothDevice.BOND_BONDED){
 					//已经绑定了，就可以开始连接传输数据了
-					LogUtil.d("bond","bonde");
-					Toast.makeText(context,"已绑定",Toast.LENGTH_SHORT).show();
+					Toast.makeText(context,"已绑定",Toast.LENGTH_SHORT).show();//已配对的保存地址
+					sp.edit().putString("printId",device.getAddress()).commit();
+					//连接设备
 				}
 				
 				
 			}
 		});
 	}
+	private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private void initFilter() 
 	{
 		// 设置广播信息过滤      
@@ -340,6 +341,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 					{
 						LogUtil.d("bind",device1.getName()+"已经绑定");
 						Toast.makeText(ShopSearchBlueToothActivity.this,"配对成功", Toast.LENGTH_SHORT).show();
+						sp.edit().putString("printId",device1.getAddress()).commit();//已配对的保存地址，可能会覆盖，记录一个就够用了
 						//绑定成功后返回到详情页面
 						String orderDetail = getIntent().getStringExtra("source");
 						if (orderDetail!=null && orderDetail.equals("orderDetail")){

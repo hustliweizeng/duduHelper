@@ -1,12 +1,10 @@
 package com.dudu.duduhelper.Activity.EmployeeManageActivity;
 
-import org.apache.commons.lang.text.StrBuilder;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.ShopListSelectAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -15,7 +13,6 @@ import com.dudu.duduhelper.javabean.ShopListBean;
 import com.dudu.duduhelper.javabean.ShopUserBean;
 import com.dudu.duduhelper.javabean.ShopUserDetaiBean;
 import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyAlertDailog;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -36,7 +33,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 public class ShopMemberAddActivity extends BaseActivity 
 {
 	private EditText membername;

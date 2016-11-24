@@ -13,7 +13,6 @@ import org.fireking.app.imagelib.entity.ImageBean;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.Activity.BigBandActivity.ProductInfoEditActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.SendShaiShaiAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.CouponDetailBean;
@@ -51,7 +50,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class CouponAddActivity extends BaseActivity 
 {
 	private SendShaiShaiAdapter sendShaiShaiAdapter;

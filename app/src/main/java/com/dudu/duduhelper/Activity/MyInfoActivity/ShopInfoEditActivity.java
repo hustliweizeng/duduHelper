@@ -14,16 +14,12 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -32,7 +28,6 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.ShopImageViewBrower;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.Utils.ViewUtils;
@@ -62,7 +57,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 public class ShopInfoEditActivity extends BaseActivity implements View.OnClickListener {
     private ImageButton backButton;
     private ImageButton selectClickButton;

@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.GuestListCheckAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -26,7 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
+import com.dudu.duduhelper.R;
 
 /**
  * @author
@@ -42,6 +40,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 	private int page = 1;
 	private int num = 10;
 	private boolean isEnd = false;
+	private boolean isAll;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -146,6 +145,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 			case  R.id.tv_select_all:
 				//全选
 				adapter.addAll();
+				isAll = true;
 				break;
 			case R.id.backButton:
 				onBackPressed();
@@ -159,7 +159,6 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 				setResult(2,intent);
 				finish();
 				break;
-
 		}
 	}
 	//返回按钮
@@ -168,6 +167,7 @@ public class GuestSelectActivity extends BaseActivity implements View.OnClickLis
 		Intent intent = new Intent();
 		intent.putCharSequenceArrayListExtra("list",adapter.getList());
 		intent.putCharSequenceArrayListExtra("ids",adapter.getIds());
+		intent.putExtra("isAll",isAll);
 		setResult(2,intent);
 		super.onBackPressed();
 	}

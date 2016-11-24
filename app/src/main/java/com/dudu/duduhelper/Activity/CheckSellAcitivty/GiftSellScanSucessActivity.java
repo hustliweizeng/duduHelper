@@ -5,7 +5,6 @@ import org.apache.http.Header;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.CashSellBean;
 import com.dudu.duduhelper.bean.ResponsBean;
@@ -29,7 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class GiftSellScanSucessActivity extends BaseActivity 
 {
 	private TextView ScanSellActissonTextView;
@@ -46,7 +45,7 @@ public class GiftSellScanSucessActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cash_sell_scan_sucess);
-		initHeadView("礼品核销", true, false,R.drawable.icon_historical);
+		initHeadView("礼品核销", true, false, R.drawable.icon_historical);
 		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 		initData();

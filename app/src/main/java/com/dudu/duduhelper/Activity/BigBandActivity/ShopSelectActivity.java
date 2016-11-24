@@ -1,6 +1,5 @@
 package com.dudu.duduhelper.Activity.BigBandActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,14 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.BigBugShopSelectAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.CheckableShopbean;
-import com.dudu.duduhelper.javabean.ShopListBean;
 import com.google.gson.Gson;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -28,8 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0

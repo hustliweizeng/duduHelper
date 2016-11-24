@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dudu.duduhelper.Activity.OrderActivity.SearchActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.FragmentAdapter;
 import com.umeng.analytics.MobclickAgent;
 
@@ -24,7 +23,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
+import com.dudu.duduhelper.R;
 //带viewpager的订单界面，已经废弃
 public class OrderFragment extends Fragment 
 {

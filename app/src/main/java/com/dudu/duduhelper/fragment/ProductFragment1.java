@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import com.dudu.duduhelper.Activity.BigBandActivity.ShopProductAddActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.ProductAdapter;
 import com.dudu.duduhelper.adapter.ProductTypeAdapter;
 
@@ -38,7 +37,7 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class ProductFragment1 extends Fragment 
 {
 	private View ProductFragmentView;

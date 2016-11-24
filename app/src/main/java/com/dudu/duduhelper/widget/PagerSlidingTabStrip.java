@@ -17,8 +17,6 @@ package com.dudu.duduhelper.widget;
 
 import java.util.Locale;
 
-import com.dudu.duduhelper.R;
-
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -41,6 +39,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 /**
  *	滑动指示器pstsindicatorcolor颜色
  *	在视图的底部的全宽度的线pstsunderlinecolor颜色

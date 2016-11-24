@@ -20,12 +20,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.widget.SmoothCheckBox;
 import com.dudu.duduhelper.widget.SmoothCheckBox.OnCheckedChangeListener;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
-
+import com.dudu.duduhelper.R;
 public class PicSelectAdapter extends BaseAdapter {
 
 	Context context;

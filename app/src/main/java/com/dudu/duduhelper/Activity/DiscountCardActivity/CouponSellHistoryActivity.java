@@ -5,7 +5,6 @@ import org.apache.http.Header;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.Activity.OrderActivity.SearchActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.CouponSellHistoryAdapter;
 import com.dudu.duduhelper.bean.GetCouponSellBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -31,7 +30,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
+import com.dudu.duduhelper.R;
 public class CouponSellHistoryActivity extends BaseActivity 
 {
 	private SwipeRefreshLayout couponSellHistorySwipeLayout;

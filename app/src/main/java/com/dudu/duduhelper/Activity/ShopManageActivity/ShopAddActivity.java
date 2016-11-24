@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.ShopImageViewBrower;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.Utils.ViewUtils;
@@ -51,7 +50,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 public class ShopAddActivity extends BaseActivity implements View.OnClickListener {
 
 	private EditText ed_title_shop;

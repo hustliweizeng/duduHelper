@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
-
 public class MemberSellActivity extends BaseActivity 
 {
 	private EditText orderNameEditText;

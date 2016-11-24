@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.MainActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.FragmentAdapter;
 import com.dudu.duduhelper.adapter.ViewPagerAdapter;
@@ -28,7 +27,6 @@ import com.dudu.duduhelper.javabean.InfoBean;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 
 import org.apache.http.Header;
@@ -68,21 +66,8 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
-		//开启友盟推送
-		if(mPushAgent==null)
-		{
-			mPushAgent = PushAgent.getInstance(this);
-			//sdk开启通知声音
-			mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
-			mPushAgent.enable();
-			//获取设备id
-			device_token = mPushAgent.getRegistrationId();
-
-		}
-		//保存友盟的token信息
-		sp.edit().putString("umeng_token",device_token).commit();
-		//统计app启动次数
-		mPushAgent.onAppStart();
+	
+		
 		if(!sp.getBoolean("firstrun", true))
 		{
 			//如果登陆保存过用户数据,直接请问网络

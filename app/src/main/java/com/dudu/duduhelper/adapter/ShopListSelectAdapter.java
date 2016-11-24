@@ -7,14 +7,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.ShopListBean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
+import com.dudu.duduhelper.R;
 /**
  * @author
  * @version 1.0

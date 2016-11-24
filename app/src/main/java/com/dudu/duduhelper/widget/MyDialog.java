@@ -7,9 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.dudu.duduhelper.R;
-
 public class MyDialog 
 {
 	static AlertDialog dlg=null;

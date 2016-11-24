@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.MemberAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -29,7 +28,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class ShopMemberListActivity extends BaseActivity {
     private SwipeRefreshLayout memberListswipeLayout;
     private ListView memberList;

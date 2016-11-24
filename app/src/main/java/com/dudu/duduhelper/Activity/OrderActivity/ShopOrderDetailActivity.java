@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderDetailAdapter;
@@ -43,7 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.gprinter.command.EscCommand.ENABLE;
-
+import com.dudu.duduhelper.R;
 public class ShopOrderDetailActivity extends BaseActivity 
 {
 	private TextView orderNumTextView;
@@ -425,26 +424,20 @@ public class ShopOrderDetailActivity extends BaseActivity
 	            outputStream = bluetoothSocket.getOutputStream();
 	            outputStream.write(bytes, 0, bytes.length);    
                 outputStream.flush();  
-	            
-	            
                 Toast.makeText(ShopOrderDetailActivity.this, "打印成功！", Toast.LENGTH_LONG).show();
-                enterButton.setClickable(true);
-                enterButton.setPressed(false);
             }
             catch (Exception e)
             {    
                 Toast.makeText(ShopOrderDetailActivity.this, "打印失败！", Toast.LENGTH_LONG).show();  
 	            LogUtil.d("erro",e.toString());
-                enterButton.setClickable(true);
-                enterButton.setPressed(false);
             }    
         }
 		else 
 		{
             Toast.makeText(ShopOrderDetailActivity.this, "设备未连接，请重新连接！", Toast.LENGTH_SHORT).show();   
-            enterButton.setClickable(true);
-            enterButton.setPressed(false);
-        }    
+        }
+		enterButton.setClickable(true);
+		enterButton.setPressed(false);
 	}
 	
 	//绑定之后获取连接
@@ -467,7 +460,8 @@ public class ShopOrderDetailActivity extends BaseActivity
             } 
             catch (Exception e) 
             {    
-                Toast.makeText(this, "连接失败,请检查打印机是否开启！", Toast.LENGTH_LONG).show(); 
+	            e.printStackTrace();
+                Toast.makeText(this, "蓝牙小票机没有配对，请配对后再打印小票！", Toast.LENGTH_LONG).show(); 
                 enterButton.setClickable(true);
                 enterButton.setPressed(false);
                 return;
@@ -490,7 +484,6 @@ public class ShopOrderDetailActivity extends BaseActivity
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
     }
 	//打开蓝牙，打印信息
     public void OpenBlueTooth()
@@ -523,23 +516,34 @@ public class ShopOrderDetailActivity extends BaseActivity
 			{
 				btn_print.setClickable(false);
 				btn_print.setPressed(true);
-				//根据名称获取蓝牙地址
+				//根据名称获取蓝牙地址,已绑定的设备是个列表,需要循环遍历设备打印
 				for (BluetoothDevice item :bluetoothAdapter.getBondedDevices()){
-					if (item.getBondState() ==BluetoothDevice.BOND_BONDED ){
-						//当这个设备已经绑定时
+					if (item.getBondState() ==BluetoothDevice.BOND_BONDED  ){
+						//判断当前设备是否可用
+						//尝试链接看是否可用
+						try {
+							bluetoothSocket = item.createRfcommSocketToServiceRecord(uuid);
+							bluetoothSocket.connect();//尝试链接设备
+						} catch (Exception e) {
+							//e.printStackTrace();
+							LogUtil.d("next",item.getName());
+							continue;//继续下次循环
+						}
+						//当这个设备可用时
 						device = item;
-						break;
+						isConnection = true;
+						LogUtil.d("useable",device.getName()+"yes");
+						break;//跳出循环
 					}
 				}
-				LogUtil.d("bind",device.getName()+"yes");
-				getConnect();
+				sendPrint();//打印
 			}
 			else
 			{
 				//第一次连接，进入到搜索绑定页面
 				Intent intent=new Intent(ShopOrderDetailActivity.this,ShopSearchBlueToothActivity.class);
 				intent.putExtra("source","orderDetail");
-				startActivity(intent);
+				startActivityForResult(intent,2);
 			}
 		}
     }

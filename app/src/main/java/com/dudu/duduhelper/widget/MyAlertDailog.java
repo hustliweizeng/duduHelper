@@ -2,7 +2,6 @@ package com.dudu.duduhelper.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -10,11 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.dudu.duduhelper.R;
-
-import java.util.List;
-
 /**
  * Created by lwz on 2016/8/26.
  */

@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.SelectShopAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -21,7 +20,6 @@ import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.InfoBean;
 import com.dudu.duduhelper.javabean.ShopCheckListBean;
 import com.google.gson.Gson;
-import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;

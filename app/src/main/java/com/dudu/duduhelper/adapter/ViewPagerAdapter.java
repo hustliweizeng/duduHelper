@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-
+import com.dudu.duduhelper.R;
 
 public class ViewPagerAdapter extends PagerAdapter 
 {

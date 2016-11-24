@@ -1,7 +1,6 @@
 package com.dudu.duduhelper.Activity.DiscountCardActivity;
-
-import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.R;
+import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.widget.WheelIndicatorItem;

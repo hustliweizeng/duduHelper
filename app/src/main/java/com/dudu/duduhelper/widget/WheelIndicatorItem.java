@@ -22,12 +22,13 @@ public class WheelIndicatorItem
 
     public WheelIndicatorItem(float weight,int color,int width) 
     {
-        if (weight < 0 )
-            throw new IllegalArgumentException("weight value should be positive");
-
-        this.weight = weight;
-        this.color = color;
-        this.width=width;
+        if (weight < 0 ){
+            this.weight = - weight;
+        }else {
+            this.weight = weight;
+            this.color = color;
+            this.width=width;
+        }
     }
 
     public void setWeight(float weight) {

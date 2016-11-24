@@ -2,13 +2,10 @@ package com.dudu.duduhelper.Activity.VipUserActivity;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.VertifyVipHistoryAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -16,12 +13,10 @@ import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.VipCertifyHistoryBean;
 import com.google.gson.Gson;
 import com.loopj.android.http.TextHttpResponseHandler;
-
+import com.dudu.duduhelper.R;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * @author

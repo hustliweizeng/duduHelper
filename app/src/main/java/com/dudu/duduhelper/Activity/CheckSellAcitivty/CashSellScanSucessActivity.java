@@ -5,8 +5,6 @@ import org.apache.http.Header;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
-import com.dudu.duduhelper.R;
-import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.bean.CashSellBean;
 import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.Utils.Util;
@@ -29,7 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class CashSellScanSucessActivity extends BaseActivity 
 {
 	private TextView ScanSellActissonTextView;
@@ -46,7 +44,7 @@ public class CashSellScanSucessActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cash_sell_scan_sucess);
-		initHeadView("优惠券核销", true, false,R.drawable.icon_historical);
+		initHeadView("优惠券核销", true, false, R.drawable.icon_historical);
 		initView();
 		initData();
 	}
@@ -169,7 +167,6 @@ public class CashSellScanSucessActivity extends BaseActivity
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
@@ -280,7 +277,6 @@ public class CashSellScanSucessActivity extends BaseActivity
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.dissmissProcessDialog();
 			}
 		});

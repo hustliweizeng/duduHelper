@@ -16,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.adapter.SendShaiShaiAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
@@ -51,7 +50,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class ShopHongBaoAddActivity extends BaseActivity {
 	private SendShaiShaiAdapter sendShaiShaiAdapter;
 	private String id;

@@ -1,14 +1,12 @@
 package com.dudu.duduhelper.fragment;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,7 +23,6 @@ import android.widget.Toast;
 import com.dudu.duduhelper.Activity.MyInfoActivity.ChangeShopActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.duduhelper.Activity.MainActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Activity.MyInfoActivity.ShopBankListActivity;
 import com.dudu.duduhelper.Activity.MyInfoActivity.ShopSettingActivity;
 import com.dudu.duduhelper.Activity.MyInfoActivity.WebPageActivity;
@@ -44,20 +41,15 @@ import com.dudu.duduhelper.wxapi.WXEntryActivity;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
-import com.umeng.update.UpdateStatus;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 
 public class ShopMineFragment extends Fragment {
 
@@ -329,36 +321,7 @@ public class ShopMineFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        //版本更新按钮
-        relupdate.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                if (context != null) {
-                    UmengUpdateAgent.setUpdateAutoPopup(false);
-                    UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-                        @Override
-                        public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
-                            switch (updateStatus) {
-                                case UpdateStatus.Yes: // has update
-                                    UmengUpdateAgent.showUpdateDialog(context, updateInfo);
-                                    break;
-                                case UpdateStatus.No: // has no update
-                                    if (context != null) {
-                                        Toast.makeText(context, "没有更新", Toast.LENGTH_SHORT).show();
-                                    }
-                                    break;
-                                case UpdateStatus.Timeout: // time out
-                                    Toast.makeText(context, "超时", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                        }
-
-                    });
-                    UmengUpdateAgent.update(context);
-                }
-            }
-        });
+      
         //滑动监听按钮
         mineScrollview.setOverScrollTinyListener(new OverScrollTinyListener() {
             Boolean isDown = false;

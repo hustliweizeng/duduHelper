@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.DiscountCardActivity.CouponSellDetailActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.adapter.CouponSellHistoryAdapter;
 import com.dudu.duduhelper.adapter.ShopOrderAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
@@ -39,7 +38,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.dudu.duduhelper.R;
 public class SearchActivity extends BaseActivity 
 {
 	private ListView allOrderListView;

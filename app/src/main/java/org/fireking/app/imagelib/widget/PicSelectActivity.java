@@ -16,7 +16,6 @@ import org.fireking.app.imagelib.tools.NativeImageLoader.NativeImageCallBack;
 import org.fireking.app.imagelib.view.MyImageView;
 import org.fireking.app.imagelib.view.MyImageView.OnMeasureListener;
 
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 
 
@@ -51,7 +50,7 @@ import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 /**
  * 
  * @author fireking

@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.Activity.PrinterActivity.ShopSearchBlueToothActivity;
-import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -50,7 +49,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.dudu.duduhelper.R;
 public class ShopDiscountScanSucessActivity extends BaseActivity 
 {
 	private ConfirmView confirmView;
