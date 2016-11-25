@@ -51,11 +51,12 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 	private void initData() {
 		//数据传递之前 已经做了非空验证
 		String code = getIntent().getStringExtra("code");
-		
+		String mobile = getIntent().getStringExtra("mobile");
 		RequestParams params = new RequestParams();
 		params.put("code", code);
+		params.put("mobile", mobile);
 		params.put("password", ed_create_password_first.getText().toString().trim());
-		HttpUtils.getConnection(context, params, ConstantParamPhone.BIND_PHONE, "post", new TextHttpResponseHandler() {
+		HttpUtils.getConnection(context, params, ConstantParamPhone.FIX_PWD, "post", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context, "网络异常，稍后再试", Toast.LENGTH_LONG).show();
@@ -76,8 +77,6 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 						String msg = object.getString("msg");
 						Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
 						//结束当前页面到第一个页面
-						startActivity(new Intent(context,ForgetPasswordActivity.class));
-						finish();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -91,7 +90,7 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 		switch (v.getId()) {
 			case R.id.bt_submit_pwd:
 				submit();
-				initData();
+				
 				break;
 		}
 	}
@@ -106,13 +105,13 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 
 		String second = ed_create_password_second.getText().toString().trim();
 		if (TextUtils.isEmpty(second)) {
-			Toast.makeText(this, "再次输入新密码", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "请再次输入新密码", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (first.equalsIgnoreCase(second)){
+		if (!first.equalsIgnoreCase(second)){
 			Toast.makeText(this, "两次输入密码不一致", Toast.LENGTH_SHORT).show();
 			return;
 		}
-
+		initData();
 	}
 }

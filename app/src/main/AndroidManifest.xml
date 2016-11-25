@@ -113,10 +113,12 @@
             android:enabled="true"
             android:exported="true"
             >
+            
             <intent-filter>
                 <action android:name="com.gprinter.aidl.GpPrintService" />
             </intent-filter>
         </service>
+        <service android:name="com.dudu.duduhelper.UmengService.MyPushIntentService" />
         <activity
             android:name="com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity"
             android:label="@string/app_name" >

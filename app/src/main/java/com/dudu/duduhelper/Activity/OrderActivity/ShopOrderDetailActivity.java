@@ -68,7 +68,6 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 	private TextView orderNumTextView;
 	private TextView orderSourceTextView;
 	private TextView orderActionTextView;
-	private TextView orderPayTypeTextView;
 	private TextView orderNameTextView;
 	private TextView orderContrectTextView;
 	private TextView orderPhoneTextView;
@@ -93,6 +92,8 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 	private RelativeLayout rl_address;
 	private TextView address;
 	private boolean isNetNotification;
+	private boolean isTypeAutoPrint;//订单来源是否需要自动打印
+	private boolean isFinishing;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -102,9 +103,10 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		setContentView(R.layout.shop_order_detail);
 		initHeadView("订单详情",true, false,0);
 		id = getIntent().getLongExtra("id",0)+"";
-		LogUtil.d("id",id);
+		isNetNotification = getIntent().getBooleanExtra("isNetOrder",false);
 		orderDetailAdapter=new OrderDetailAdapter(this);
 		initView();
+		initData();
 	}
 	@Override
 	protected void onNewIntent(Intent intent) {
@@ -112,33 +114,12 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		setIntent(intent);
 	}
 
-	/**
-	 * 获取传送过来的参数
-	 */
-	@Override
-	public void onResume() {
-		super.onResume();
-		Bundle bun = getIntent().getExtras();
-		if (bun != null) {
-			Set<String> keySet = bun.keySet();
-			for (String key : keySet) {
-				String value = bun.getString(key);
-				if(!TextUtils.isEmpty(value)){//做非空判断
-					LogUtil.d("value",value);
-					id = value;
-					isNetNotification =true;//设置成网络订单推送
-					startActivity(new Intent(this,ShopOrderDetailActivity.class));
-				}
-			}
-		}
-		initData();
-	}
-
 	private void initData() 
 	{
 		if (TextUtils.isEmpty(id)){
 			return;
 		}
+		LogUtil.d("incomeID",id);
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_ORDER_DETAIL+id, "GET", new TextHttpResponseHandler() {
@@ -166,24 +147,39 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			@Override
 			public void onFinish() {
 				super.onFinish();
-				ColorDialog.dissmissProcessDialog();
 				fillData();
-				/**
-				 * 判断是否是从网络获取的数据
-				 */
-				if (isNetNotification){
-					startTTS();//获取到数据后开启百度语音服务
-					//判断是否开启自动打印
-					if (sp.getBoolean("isAutoPrintOpen",false)){
-						LogUtil.d("auto_print","true");
-						OpenBlueTooth();//打开蓝牙
-					}else {
-						LogUtil.d("auto_print","false");
-					}
-					isNetNotification = false;//播放完毕后设置
-				}
+				ColorDialog.dissmissProcessDialog();
+				
 			}
 		});
+	}
+
+	/**
+	 * 执行自动打印
+	 */
+	public  void setTypeAutoPrint(){
+		/**
+		 * 判断是否是从网络获取的数据,如果是的话自动打印
+		 */
+		//判断订单是否已完成
+		
+		if (isNetNotification){
+			//判断是否开启自动打印
+			startTTS();//获取到数据后开启百度语音服务
+			if (sp.getBoolean("isAutoPrintOpen",false)){
+				LogUtil.d("auto_print","true");
+				//如果打印过不再打印
+				if (sp.getBoolean("orderData.getId()",false)){
+					Toast.makeText(context,"已经打印过了",Toast.LENGTH_SHORT).show();
+				}else {
+					OpenBlueTooth();//打开蓝牙
+				}
+			}else {
+				Toast.makeText(context,"未开启自动打印",Toast.LENGTH_SHORT).show();
+				LogUtil.d("auto_print","false");
+			}
+			isNetNotification = false;//打印订单后关闭
+		}
 	}
 
 	private void fillData() {
@@ -191,10 +187,6 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			Toast.makeText(context,"没有要显示的数据",Toast.LENGTH_SHORT).show();
 			return;
 		}
-		//判断是否显示地址
-
-		
-
 		//设置店名
 		orderNameTextView.setText(orderData.getSubject());
 		int color = R.color.text_dark_color;
@@ -217,6 +209,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 				content = "已完成";
 				color = R.color.text_gray_color;
 				btn_print.setVisibility(View.VISIBLE);
+				isFinishing = true;
 				break;
 			case 4 :
 				content = "待发货";
@@ -252,6 +245,9 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		for (SelectorBean bean :source){
 			if (bean.id ==Integer.parseInt(orderData.getFrom())){
 				orderSourceTextView.setText(bean.name);
+				if (bean.id == 6 |bean.id== 9 |bean.id ==10 ){
+					isTypeAutoPrint = true;
+				}
 			}
 		}
 		if ("大牌抢购".equals(orderSourceTextView.getText())){
@@ -261,9 +257,6 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 				address.setText(address1);
 			}
 		}
-		
-		
-		
 		/*if (content.equals("已支付") &&orderSourceTextView.getText().equals("大牌抢购")){
 			//设置核销按钮可见
 			//enterButton.setVisibility(View.VISIBLE);
@@ -281,7 +274,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		orderdiscountTextView.setText(orderData.getDiscount_shop_fee());
 		//总额
 		totalPriceTextView.setText(orderData.getFee());
-		
+		setTypeAutoPrint();//执行自动打印
 	}
 
 
@@ -427,6 +420,8 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
                 esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);//设置打印左对齐
                 esc.addText("时间：   "+ Util.DataConVertMint(orderData.getTime())+"\n");   //  打印文字    
                 esc.addText("订单号：  "+orderData.getId()+"\n");   //  打印文字
+	            //记录订单号
+	            sp.edit().putBoolean("orderData.getId()",true).commit();//说明该订单已经打印
                 esc.addText("--------------------------------\n");   //  打印文字
                 esc.addText("名称");   //  打印文字
                 //设置距左边绝对位置
@@ -574,6 +569,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			startActivity(intent);
 			//开始搜索
 			bluetoothAdapter.startDiscovery();
+			Toast.makeText(context,"请手动打印小票，",Toast.LENGTH_SHORT).show();
 		}
 		//蓝牙已开启
 		else
@@ -725,7 +721,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
 		if (authInfo.isSuccess()) {
 			mSpeechSynthesizer.initTts(TtsMode.MIX);//初始化语音合成器，混合模式
-			mSpeechSynthesizer.speak("您有一笔新订单，订单号是"+orderData.getId()+"订单金额是:"+orderData.getFee());
+			mSpeechSynthesizer.speak("您有一笔新订单，订单金额是:"+orderData.getFee());
 			LogUtil.d("yuyin","sucess");
 		} else {
 			// 授权失败

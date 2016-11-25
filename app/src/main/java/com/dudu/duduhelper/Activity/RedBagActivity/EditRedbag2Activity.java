@@ -333,6 +333,10 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			Toast.makeText(this, "请输入红包数量", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		//随机金额大小判断
+		if (Long.parseLong(low) >= Long.parseLong(high)){
+			Toast.makeText(this,"最大金额不能小于最小金额",Toast.LENGTH_SHORT).show();
+		}
 
 
 
@@ -370,8 +374,20 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			LinearLayout val = (LinearLayout) entry.getValue();
 			EditText ed_high = (EditText) val.findViewById(R.id.ed_high);
 			EditText ed_low = (EditText) val.findViewById(R.id.ed_low);
-			params.put("limit[price][" +ed_high.getText().toString().trim() + "]", ed_high.getText().toString().trim());
-			params.put("limit[usable][" + ed_low.getText().toString().trim() + "]", ed_low.getText().toString().trim());
+			float money = Float.parseFloat(ed_high.getText().toString().trim());
+			float use = Float.parseFloat(ed_low.getText().toString().trim());
+			if (money!=0 &&use!=0){
+				if (money<use){
+					Toast.makeText(this,"使用条件填写错误",Toast.LENGTH_SHORT).show();
+					return;
+				}else {
+					params.put("limit[price][" +ed_high.getText().toString().trim() + "]", ed_high.getText().toString().trim());
+					params.put("limit[usable][" + ed_low.getText().toString().trim() + "]", ed_low.getText().toString().trim());
+				}
+			}else {
+				Toast.makeText(this,"使用条件填写错误",Toast.LENGTH_SHORT).show();
+				return;
+			}
 		}
 
 		if (uplodImgs!=null &&uplodImgs.size()>0){

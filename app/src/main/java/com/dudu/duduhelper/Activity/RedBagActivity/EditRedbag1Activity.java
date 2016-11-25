@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.widget.SystemBarTintManager;
 import com.umeng.message.PushAgent;
 
@@ -119,9 +121,17 @@ public class EditRedbag1Activity extends Activity implements View.OnClickListene
 		switch (view.getId()){
 			case R.id.btn_create_redbag1:
 				//传递参数到下一页
+				//非空判断
 				String title = ed_edit_redbag_title.getText().toString().trim();
 				if (TextUtils.isEmpty(title) ||TextUtils.isEmpty(startTime) ||TextUtils.isEmpty(endTime)){
 					Toast.makeText(this,"输入不完整",Toast.LENGTH_SHORT).show();
+					return;
+				}
+				long start = Util.Data2Unix(startTime);
+				long end = Util.Data2Unix(endTime);
+				//时间判断
+				if (start >=end){
+					Toast.makeText(this,"开始时间不能大于结束时间",Toast.LENGTH_SHORT).show();
 					return;
 				}
 				Intent intent = new Intent(this,EditRedbag2Activity.class);

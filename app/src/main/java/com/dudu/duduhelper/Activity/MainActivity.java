@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity
 	//Activity被回收导致fragment的getActivity为null的解决办法
 	// 加载视图
 	private void initView() {
-		editButton=(Button) this.findViewById(R.id.selectTextClickButton);
+		editButton = (Button) this.findViewById(R.id.selectTextClickButton);
 		selectClickButton = (ImageButton) this.findViewById(R.id.selectClickButton);
 		order_icon = (ImageView) this.findViewById(R.id.order_icon);
 		order_text = (TextView) this.findViewById(R.id.order_text);
@@ -124,28 +124,7 @@ public class MainActivity extends BaseActivity
 		fm = getSupportFragmentManager();
 		ft = fm.beginTransaction();
 		ft.add(R.id.FrameLayoutPager, createFragment(1)).commit();
-		
-		//当有新订单推送时获取回调函数，跳转到当前orderFragment
-        DuduHelperApplication.getInstance().setPushNot(new DuduHelperApplication.GetPushNot() 
-        {
 
-			@Override
-			public void getPushCallback() 
-			{
-				initHeadView("我的订单", false,true, R.drawable.icon_mysearch);
-				editButton.setVisibility(View.GONE);
-				// MainActivity.this.findViewById(R.id.head).setVisibility(View.VISIBLE);
-				order_icon.setImageResource(R.drawable.icon_dingdan_sel);
-				order_text.setTextColor(order_text.getResources().getColor(R.color.text_color));
-				sell_icon.setImageResource(R.drawable.icon_hexiao);
-				sell_text.setTextColor(sell_text.getResources().getColor(R.color.text_color_noselect));
-				mine_icon.setImageResource(R.drawable.icon_wode);
-				mine_text.setTextColor(mine_text.getResources().getColor(R.color.text_color_noselect));
-				ft = fm.beginTransaction();
-				ft.replace(R.id.FrameLayoutPager, createFragment(4)).commit();
-				orderFragment.setRefreshing();
-			}
-		});
 	}
 
 	/**

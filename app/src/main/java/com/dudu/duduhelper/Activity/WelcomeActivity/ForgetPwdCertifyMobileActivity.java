@@ -70,8 +70,7 @@ public class ForgetPwdCertifyMobileActivity extends BaseActivity implements OnCl
                 }
                 RequestParams params = new RequestParams();
                 params.put("mobile", mobileNum);
-                params.put("type","password");
-                HttpUtils.getConnection(context, params, ConstantParamPhone.GET_SMS_CONFIRM, "get", new TextHttpResponseHandler() {
+                HttpUtils.getConnection(context, params, ConstantParamPhone.FORGET_PWD, "get", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
                         Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
@@ -100,15 +99,15 @@ public class ForgetPwdCertifyMobileActivity extends BaseActivity implements OnCl
                 //提交按钮
                 if (TextUtils.isEmpty(messageCodeEditText.getText().toString().trim())){
                     Toast.makeText(context,"验证码不能为空",Toast.LENGTH_SHORT).show();
-                    break;
+                    return;
                 }
                 if (TextUtils.isEmpty(bindPhoneText.getText().toString().trim())){
                     Toast.makeText(context,"手机号码不能为空",Toast.LENGTH_SHORT).show();
-                    break;
+                    return;
                 }
                 if (!mobileNum.equals(bindPhoneText.getText().toString().trim())){
                     Toast.makeText(context,"手机号已更改，请输入原来手机号",Toast.LENGTH_SHORT).show();
-                    break;
+                    return;
                 }
                 //进入设置密码页面
                 Intent intent = new Intent(context,ForgetPasswordActivity.class);
@@ -126,7 +125,6 @@ public class ForgetPwdCertifyMobileActivity extends BaseActivity implements OnCl
     private void showResidueSeconds() {
         //显示倒计时按钮
         new CountDownTimer(60*1000,1000){
-
             @Override
             public void onTick(long lastTime) {
                 //倒计时执行的方法
@@ -137,7 +135,6 @@ public class ForgetPwdCertifyMobileActivity extends BaseActivity implements OnCl
                 btnGetmess.setBackgroundResource(R.drawable.btn_bg_hint);
                 LogUtil.d("lasttime","剩余时间:"+lastTime/1000);
             }
-
             @Override
             public void onFinish() {
                 btnGetmess.setClickable(true);

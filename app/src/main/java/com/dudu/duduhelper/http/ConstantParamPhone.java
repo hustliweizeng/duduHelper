@@ -87,6 +87,9 @@ public class ConstantParamPhone
     public static final String SUCCESS = "SUCCESS";
     public static final String FAIL = "FAIL";
     public static final String SWITCH_SHOP = "/api/app/user/store/";
+    
+    public static final String FORGET_PWD ="/api/app/tool/getpwdsms";//忘记密码发送验证码
+    public static final String FIX_PWD = "/api/app/user/getpassword";//重置密码
 
     //红包
     public static final String USER_LOGIN = "/api/app/user/login";//用户登录接口

@@ -3,12 +3,14 @@ import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.R;
 import android.app.Activity;
 import android.app.Application;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.widget.Toast;
 
+import com.dudu.duduhelper.UmengService.MyPushIntentService;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -20,6 +22,7 @@ import com.tencent.bugly.Bugly;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 
@@ -30,8 +33,6 @@ public class DuduHelperApplication extends Application
 {
 	private List<Activity> mList = new LinkedList<Activity>();
 	private static DuduHelperApplication instance;
-	private PushAgent mPushAgent;
-	private GetPushNot getPushNot;
 	@Override
 	public void onCreate() 
 	{
@@ -54,28 +55,12 @@ public class DuduHelperApplication extends Application
 			public void onFailure(String s, String s1) {
 			}
 		});
-		/**
-		 * 设置推送消息后到达指定页面
-		 */
-		UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
-			@Override
-			public void dealWithCustomAction(Context context, UMessage msg) {
-				Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
-				Intent intent =new Intent(DuduHelperApplication.this, ShopOrderDetailActivity.class);
-				intent.putExtra("id",msg.custom);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//因为是从服务启动的，所以要设置
-				startActivity(intent);//跳转到订单详情页面
-				LogUtil.d("switch","跳转到详情");
-			}
-		};
-		mPushAgent.setNotificationClickHandler(notificationClickHandler);//设置监听回调
-		
-		
+		//自定义处理消息,可以实现对推送消息的自定义行为
+		mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
 		
 		/**
 		 * buggly自动更新功能
 		 */
-		//CrashReport.initCrashReport(getApplicationContext(), "510ff77a7a", false);
 		Bugly.init(getApplicationContext(), "510ff77a7a", false);
 		initImageLoader(getApplicationContext());
 		
@@ -121,14 +106,11 @@ public class DuduHelperApplication extends Application
 
 		ImageLoader.getInstance().init(config);
 	}
-	// add Activity
 	public void addActivity(Activity activity)
 	{
 		if(!mList.contains(activity)){
 			mList.add(activity);
 		}
-			
-		//LogUtil.d("activityNum:",""+mList.size());
 	}
 
 	public void exit() 
@@ -151,15 +133,7 @@ public class DuduHelperApplication extends Application
 			System.exit(0);
 		}
 	}
+
 	
-	public interface GetPushNot
-	{
-		public void getPushCallback();
-	}
-	
-	public void setPushNot(GetPushNot getPushNot)
-	{
-		this.getPushNot=getPushNot;
-	}
 }
 
