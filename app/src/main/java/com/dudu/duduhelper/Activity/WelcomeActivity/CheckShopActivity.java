@@ -109,7 +109,16 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 							isManager = true;
 							LogUtil.d("manager","true");
 						}
-						//保存用户信息
+						//判断是否主店铺
+						String mainId = sp.getString("mainId","");//保存主店铺信息
+						String id = infoBean.getShop().getId();
+						LogUtil.d("mainid ",mainId);
+						LogUtil.d("id ",id);
+						if (mainId.equals(id)){
+							sp.edit().putBoolean("isMainShop",true).commit();
+						}else {
+							sp.edit().putBoolean("isMainShop",false).commit();
+						}
 						//1.通过sp保存用户信息
 						SharedPreferences.Editor edit = sp.edit();
 						edit.putString("username",infoBean.getUser().getName())

@@ -21,6 +21,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.tencent.bugly.Bugly;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
@@ -41,6 +42,7 @@ public class DuduHelperApplication extends Application
 		 * 注册推送服务
 		 */
 		PushAgent mPushAgent = PushAgent.getInstance(this);
+		mPushAgent.setDebugMode(true);//关闭debug模式
 		//注册推送服务，每次调用register方法都会回调该接口
 		mPushAgent.register(new IUmengRegisterCallback() {
 			@Override
@@ -55,8 +57,19 @@ public class DuduHelperApplication extends Application
 			public void onFailure(String s, String s1) {
 			}
 		});
+		mPushAgent.setDisplayNotificationNumber(3);
 		//自定义处理消息,可以实现对推送消息的自定义行为
 		mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
+		//客户端打开声音和震动
+		mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SERVER);
+		mPushAgent.setNotificaitonOnForeground(true);//应用在前台也显示通知
+		SharedPreferences sp = getSharedPreferences("userconig",Context.MODE_PRIVATE);
+		if(sp.getBoolean("isRemindOpen",false)){
+			mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//开启通知声音
+		}
+		if(sp.getBoolean("isRingOpen",false)){
+			mPushAgent.setNotificationPlayVibrate(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//开启震动
+		}
 		
 		/**
 		 * buggly自动更新功能
@@ -88,10 +101,9 @@ public class DuduHelperApplication extends Application
 				//.showImageOnLoading(R.drawable.icon_head)//加载时候显示的图片
 				.showImageForEmptyUri(R.drawable.ic_defalut)
 				.showImageOnFail(R.drawable.ic_defalut)
-				.cacheInMemory(true).considerExifParams(true)
-				.cacheOnDisc(true)
-				.bitmapConfig(Bitmap.Config.RGB_565)
-				.displayer(new FadeInBitmapDisplayer(100))
+				.considerExifParams(true)
+				.bitmapConfig(Bitmap.Config.RGB_565)//图片显示模式
+				.displayer(new FadeInBitmapDisplayer(500))//渐进显示动画
 				//图片缩放设置
 				.build();
 		//默认配置
@@ -129,7 +141,8 @@ public class DuduHelperApplication extends Application
 		}
 		finally 
 		{
-			MobclickAgent.onKillProcess(DuduHelperApplication.this);
+			LogUtil.d("logout","out");
+			android.os.Process.killProcess(android.os.Process.myPid());
 			System.exit(0);
 		}
 	}

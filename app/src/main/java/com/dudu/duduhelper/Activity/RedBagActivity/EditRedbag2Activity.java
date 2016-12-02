@@ -334,12 +334,9 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			return;
 		}
 		//随机金额大小判断
-		if (Long.parseLong(low) >= Long.parseLong(high)){
+		if (Float.parseFloat(low) > Float.parseFloat(high)){
 			Toast.makeText(this,"最大金额不能小于最小金额",Toast.LENGTH_SHORT).show();
 		}
-
-
-
 
 		title = getIntent().getStringExtra("title");
 		startTime = getIntent().getStringExtra("starTime");

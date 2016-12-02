@@ -63,7 +63,6 @@ public class ShopSelectActivity extends BaseActivity implements View.OnClickList
 	private void initData() {
 		swiperefresh.setRefreshing(true);
 		
-		
 		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_SHOPABLE, "get", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {

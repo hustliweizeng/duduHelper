@@ -37,7 +37,7 @@ public class ShopCouponDetailActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_activity_coupon_detail);
-		initHeadView("优惠券",true, true, R.drawable.icon_historical);//优惠券历史
+		initHeadView("优惠券",true, false, R.drawable.icon_historical);//优惠券历史
 		initView();
 		initData();
 	}
@@ -67,7 +67,6 @@ public class ShopCouponDetailActivity extends BaseActivity
 		couponVerify.withNumber(Float.parseFloat(coupon.getValidation_count()));
 		leftNumText.withNumber(Float.parseFloat(String.valueOf(Integer.parseInt(coupon.getSold()) -Integer.parseInt(coupon.getValidation_count()) )));
 		
-
 		couponSold.setDuration(1200);
 		couponVerify.setDuration(1200);
 		leftNumText.setDuration(1200);

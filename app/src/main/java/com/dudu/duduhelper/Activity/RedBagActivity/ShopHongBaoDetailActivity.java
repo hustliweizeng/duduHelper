@@ -48,12 +48,14 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions options;
 	private RedbagDetailBean data;
+	private boolean isMainShop;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_activity_hong_bao_detail);
+		isMainShop = sp.getBoolean("isMainShop",false);//是否主店铺
 		initView();
 		initData();
 	}
@@ -105,6 +107,11 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 				finish();
 			}
 		});
+		if (isMainShop){
+			editHongbaoBtn.setVisibility(View.VISIBLE);
+		}else {
+			editHongbaoBtn.setVisibility(View.GONE);
+		}
 	}
 	
 	private void initData() 

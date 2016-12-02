@@ -252,9 +252,14 @@ public class LoginActivity extends BaseActivity
 								//数据请求成功
 								ShopCheckListBean data = new Gson().fromJson(arg2, ShopCheckListBean.class);
 								sp.edit().putString("shopList",arg2).commit();//保存店铺列表信息
+								JSONObject shopInfo = new JSONObject(arg2).getJSONObject("shop");
+								sp.edit().putString("mainId",shopInfo.getString("id")).commit();//保存主店铺信息
+								LogUtil.d("main",shopInfo.getString("id"));
+								
 								Intent intent = new Intent(context, CheckShopActivity.class);
 								intent.putExtra("data",data);
 								startActivity(intent);//到店铺选择页面
+								finish();
 							}else {
 								//数据请求失败
 								String msg = object.getString("msg");
@@ -278,41 +283,10 @@ public class LoginActivity extends BaseActivity
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	/**
-	 * 判断店员管理是否可用
-	 */
-	public void requestStatus(){
-		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_GUEST_ISOPEN, "GET", new TextHttpResponseHandler() {
-			@Override
-			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
-			}
-			@Override
-			public void onSuccess(int i, Header[] headers, String s) {
-				LogUtil.d("res",s);
-				try {
-					JSONObject object = new JSONObject(s);
-					String code =  object.getString("code");
-					if ("SUCCESS".equalsIgnoreCase(code)){
-						//数据请求成功
-						if (object.getString("status").equals("1")){
-							shopIsoPen = true;
-						}else{
-							shopIsoPen = false;
-							
-						}
-						sp.edit().putBoolean("shopstatus",shopIsoPen).commit();
-					}else {
-						//数据请求失败
-						String msg = object.getString("msg");
-						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-		});
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 	}
+
 }

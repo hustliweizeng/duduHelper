@@ -48,10 +48,20 @@ public class OrderDetailBean {
         private String discount_agent_fee;
         private String discount_shop_fee;
         private String discount_activity_fee;
+        private String ext;
         private String from;
         private String ispay;
         private String status;
         private String thumb;
+
+        public String getExt() {
+            return ext;
+        }
+
+        public void setExt(String ext) {
+            this.ext = ext;
+        }
+
         private String time;
         private String name;
         private String mobile;

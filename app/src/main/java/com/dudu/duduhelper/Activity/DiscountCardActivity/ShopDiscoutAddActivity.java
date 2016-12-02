@@ -1,5 +1,6 @@
 package com.dudu.duduhelper.Activity.DiscountCardActivity;
 
+import com.dudu.duduhelper.Activity.BigBandActivity.ShopProductAddActivity;
 import com.dudu.duduhelper.R;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -25,6 +26,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,11 +47,13 @@ import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.dudu.duduhelper.javabean.DiscountDeatailBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
+import com.kyleduo.switchbutton.SwitchButton;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,6 +123,10 @@ public class ShopDiscoutAddActivity extends BaseActivity
 	private BigBandBuy.DataBean data;
 	private EditText ed_info;
 	private AlertDialog dailog1;
+	private SwitchButton btn_vip;
+	private EditText vip_price;
+	private TextView tv_vip;
+	private boolean isVipPrice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -145,11 +153,31 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		productNameEditText.setText(data.getName());
 		productSoldTextView.setText(data.getAmount());
 		productYuanPriceEditText.setText(data.getPrice());
-		productNowPriceEditText.setText(data.getCurrent_price());
+		productNowPriceEditText.setText(data.getCurrent_price());//现价
 		productKuCunNumEditText.setText(data.getStock());
 		tv_startTime_shop_product.setText(data.getUpshelf());
 		tv_endTime_shop_product.setText(data.getDownshelf());
 		ed_info.setText(Html.fromHtml(data.getExplain()));
+
+		//设置现价和vip价格
+		try {
+			String is_vip_price = data.getIs_vip_price();
+			String vipPrice= data.getVip_price();
+			if ("1".equals(is_vip_price)){//说明有vip价格
+				btn_vip.setCheckedImmediately(true);
+				vip_price.setText(vipPrice);
+				vip_price.setTextColor(getResources().getColor(R.color.text_dark_color));
+				tv_vip.setTextColor(getResources().getColor(R.color.text_dark_color));
+				vip_price.setFocusable(true);
+				vip_price.setFocusableInTouchMode(true);
+			}else {//没有vip价格
+				btn_vip.setCheckedImmediately(false);
+				tv_vip.setTextColor(getResources().getColor(R.color.text_color_light));
+				vip_price.setTextColor(getResources().getColor(R.color.text_color_light));
+			}
+		}catch (Exception e){
+			System.out.print(e);
+		}
 	}
 					
 	//提交修改的信息
@@ -176,7 +204,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品库存",Toast.LENGTH_SHORT).show();
 			return;
 		}
-		/*if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
+		if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
 		{
 			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品上架时间",Toast.LENGTH_SHORT).show();
 			return;
@@ -185,30 +213,50 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		{
 			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品下架时间",Toast.LENGTH_SHORT).show();
 			return;
-		}*/
+		}
 		if(TextUtils.isEmpty(ed_info.getText().toString().trim()))
 		{
 			Toast.makeText(ShopDiscoutAddActivity.this, "请输入商品描述",Toast.LENGTH_SHORT).show();
 			return;
 		}
+		String vipPirce = vip_price.getText().toString().trim();
+		if (isVipPrice){
+			if (TextUtils.isEmpty(vipPirce)){
+				Toast.makeText(context, "请输入会员价格",Toast.LENGTH_SHORT).show();
+				return;
+			}else {
+				String price = productNowPriceEditText.getText().toString().trim();
+				if (Float.parseFloat(price) < Float.parseFloat(vipPirce)){
+					Toast.makeText(context, "会员价格必须小于商品现价",Toast.LENGTH_SHORT).show();
+					return;
+				}
+			}
+		}
+		
+		
 		DiscountDeatailBean.DataBean dataBean = new DiscountDeatailBean.DataBean();
 		//封装数据
+		dataBean.setId(data.getId());
+		dataBean.setAgent_id(data.getAgent_id());
+		dataBean.setShop_id(data.getShop_id());
+		
 		dataBean.setName(productNameEditText.getText().toString().trim());
 		dataBean.setCurrent_price(productNowPriceEditText.getText().toString().trim());
 		dataBean.setPrice(productYuanPriceEditText.getText().toString().trim());
 		dataBean.setStock(productKuCunNumEditText.getText().toString().trim());
 		dataBean.setExplain(ed_info.getText().toString().trim());
 		dataBean.setAmount(productSoldTextView.getText().toString().trim());
-		//dataBean.setDownshelf(data.getDownshelf());
-		//dataBean.setUpshelf(data.getUpshelf());
+		dataBean.setDownshelf(tv_endTime_shop_product.getText().toString().trim());
+		dataBean.setUpshelf(tv_startTime_shop_product.getText().toString().trim());
 		dataBean.setPics(picsPath);
-		dataBean.setShop_id(data.getShop_id());
 		dataBean.setApply_shops(data.getApply_shops());
-
-
-
-		
-		
+		if (isVipPrice){
+			dataBean.setIs_vip_price("1");
+			dataBean.setVip_price(vipPirce);
+		}else {
+			dataBean.setIs_vip_price("0");
+			dataBean.setVip_price("");
+		}
 		ColorDialog.showRoundProcessDialog(context, R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.put("op","save");
@@ -217,9 +265,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 		String panic_data=  new Gson().toJson(dataBean);
 		params.put("coupon_data",panic_data);
 		LogUtil.d("FIX",panic_data);
-		LogUtil.d("FIX",data.getId());
 		HttpUtils.getConnection(context,params, ConstantParamPhone.GET_DISCOUT_DETAIL, "post",new TextHttpResponseHandler(){
-
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 			{
@@ -231,7 +277,6 @@ public class ShopDiscoutAddActivity extends BaseActivity
 			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
 				LogUtil.d("FIX",arg2);
-
 				try {
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
@@ -258,6 +303,33 @@ public class ShopDiscoutAddActivity extends BaseActivity
 
 	private void initView() 
 	{
+
+		/**
+		 * vip价格
+		 */
+		btn_vip = (SwitchButton) findViewById(R.id.btn_vip);
+		vip_price = (EditText) findViewById(R.id.vip_price);
+		tv_vip = (TextView)findViewById(R.id.tv_vip);
+		btn_vip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				isVipPrice = isChecked;
+				
+				if (isChecked){
+					tv_vip.setTextColor(getResources().getColor(R.color.text_dark_color));
+					vip_price.setTextColor(getResources().getColor(R.color.text_dark_color));
+					vip_price.setFocusable(true);
+					vip_price.setFocusableInTouchMode(true);
+				}else {
+					tv_vip.setTextColor(getResources().getColor(R.color.text_color_light));
+					vip_price.setTextColor(getResources().getColor(R.color.text_color_light));
+					vip_price.setFocusable(false);
+					vip_price.setFocusableInTouchMode(false);
+				}
+			}
+		});
+		
+		
 		//弹窗提醒动画
 		textToumingView = (TextView) this.findViewById(R.id.textToumingView);
 		AlphaAnimation animation = new AlphaAnimation((float)1, (float)0);
@@ -352,13 +424,13 @@ public class ShopDiscoutAddActivity extends BaseActivity
 			public void onClick(View v) 
 			{
 				//弹出时间对话框
-			//showDataDialog(tv_startTime_shop_product);
+			showDataDialog(tv_startTime_shop_product);
 			}
 		});
 		ll_endTime_shop_product.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			//showDataDialog(tv_endTime_shop_product);
+			showDataDialog(tv_endTime_shop_product);
 			}
 		});
 		
@@ -412,7 +484,7 @@ public class ShopDiscoutAddActivity extends BaseActivity
 				RequestParams params  =new RequestParams();
 				params.add("id",data.getId());
 
-				HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_STATUS, "post", new TextHttpResponseHandler() {
+				HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_DIS_STATUS, "post", new TextHttpResponseHandler() {
 					@Override
 					public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 						Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();

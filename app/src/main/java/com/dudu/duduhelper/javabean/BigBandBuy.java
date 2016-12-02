@@ -62,7 +62,25 @@ public class BigBandBuy implements Serializable{
         private String updated_at;
         private String deleted_at;
         private List<String> apply_shops;
-        
+        private String  vip_price;
+        private String is_vip_price;
+
+        public String getVip_price() {
+            return vip_price;
+        }
+
+        public void setVip_price(String vip_price) {
+            this.vip_price = vip_price;
+        }
+
+        public String getIs_vip_price() {
+            return is_vip_price;
+        }
+
+        public void setIs_vip_price(String is_vip_price) {
+            this.is_vip_price = is_vip_price;
+        }
+
         //折扣的字段(因为2个页面字段差不多，所以公用一个bean)
         private String category_id;
         private String[] pics;

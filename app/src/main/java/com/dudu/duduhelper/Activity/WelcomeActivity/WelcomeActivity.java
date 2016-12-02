@@ -94,7 +94,6 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 							if ("SUCCESS".equalsIgnoreCase(code)){
 								//请求用户数据
 								requetConnetion();
-
 							}else {
 								//数据请求失败
 								String msg = object.getString("msg");
@@ -337,6 +336,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 								.apply();
 						LogUtil.d("welcome",s);
 						startActivity(new Intent(context,MainActivity.class));
+						finish();
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -344,6 +344,7 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
 						//跳转到登陆页面
 						startActivity(new Intent(context,LoginActivity.class));
+						finish();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

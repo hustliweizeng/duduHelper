@@ -70,11 +70,13 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 	private int count =0;
 	private Button btn_edit;
 	private ImageButton backButton;
+	private boolean isMainShop;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_redbag_list);
+		isMainShop = sp.getBoolean("isMainShop",false);//是否主店铺
 		adapter = new RedBagListAdapter(context);
 		initView();
 		swipe_product_list.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
@@ -161,6 +163,13 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 				}
 			}
 		});
+		if (isMainShop){
+			btn_new_redbag.setVisibility(View.VISIBLE);
+			btn_edit.setVisibility(View.VISIBLE);
+		}else {
+			btn_new_redbag.setVisibility(View.GONE);
+			btn_edit.setVisibility(View.GONE);
+		}
 
 	}
 	//删除指定id

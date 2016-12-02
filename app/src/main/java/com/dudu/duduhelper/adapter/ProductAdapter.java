@@ -29,6 +29,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,6 +58,8 @@ public class ProductAdapter extends BaseAdapter
 	//是否显示复选框
 	public  boolean isShowCheckBox;
 	private AlertDialog dailog1;
+	private String urlL;
+	private String url;
 
 
 	//初始化listview的checkbox
@@ -137,7 +140,6 @@ public class ProductAdapter extends BaseAdapter
     	notifyDataSetChanged();
     }
     
- 
     
 	@Override
 	public int getCount() 
@@ -199,6 +201,7 @@ public class ProductAdapter extends BaseAdapter
 			viewHolder.downButton=(ImageView) convertView.findViewById(R.id.downButton);
 			viewHolder.productGetNum=(TextView) convertView.findViewById(R.id.productGetNum);
 			viewHolder.tv_status = (TextView)convertView.findViewById(R.id.tv_status);
+			viewHolder.vip_price = (TextView) convertView.findViewById(R.id.vip_price);
 			//设置tag复用
 			convertView.setTag(viewHolder);
 			//LogUtil.d("new","new");
@@ -262,12 +265,7 @@ public class ProductAdapter extends BaseAdapter
 					SwitchStatus(position);
 				}
 			});
-
-
 		}
-		
-
-
 		//根据传递过来的布尔值
 		if (isShowCheckBox){
 			//是否显示多选框
@@ -280,10 +278,41 @@ public class ProductAdapter extends BaseAdapter
 		{
 			viewHolder.productRelPriceTextView.setText(list.get(position).getPrice());
 		}
-		//商品价格
-		if(!TextUtils.isEmpty(list.get(position).getCurrent_price()))
-		{
-			viewHolder.productPrice.setText("￥"+list.get(position).getCurrent_price());
+		if (!isDisCount){
+
+			//商品价格和vip价格
+			if(!TextUtils.isEmpty(list.get(position).getRule()))
+			{
+
+				try {
+					JSONArray rule = new JSONArray(list.get(position).getRule());
+					JSONObject time = rule.getJSONObject(0);//只获取第一个规则
+					String price = time.getString("price");
+					viewHolder.productPrice.setText("￥"+price);//现价
+					String vipPrice = time.getString("vip_price");
+					if ("1".equals(list.get(position).getIs_vip_price())){//是否有vip价格
+						viewHolder.vip_price.setVisibility(View.VISIBLE);
+						viewHolder.vip_price.setText("VIP会员价:￥"+vipPrice);//vip价格
+					}else {
+						viewHolder.vip_price.setVisibility(View.GONE);
+					}
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		}else {
+			//Toast.makeText(context,"优惠券vip",Toast.LENGTH_LONG).show();
+			//优惠券页面
+			String discountPrice = list.get(position).getIs_vip_price();
+			String disPrice = list.get(position).getVip_price();
+			LogUtil.d("isvip",discountPrice);
+			if("1".equals(discountPrice)){
+				viewHolder.vip_price.setVisibility(View.VISIBLE);
+				viewHolder.vip_price.setText("VIP会员价:￥"+disPrice);//vip价格
+			}else{
+				viewHolder.vip_price.setVisibility(View.GONE);
+			}
+			viewHolder.productPrice.setText("￥"+list.get(position).getCurrent_price());//现价
 		}
 		//产品名称
 		if(!TextUtils.isEmpty(list.get(position).getName()))
@@ -399,19 +428,27 @@ public class ProductAdapter extends BaseAdapter
 		return convertView;
 	}
 
+	/**
+	 * 切换商品上下架状态
+	 * @param position
+	 */
 	private void SwitchStatus(int position) {
+		if (isDisCount){
+			urlL = ConstantParamPhone.SWITCH_DIS_STATUS;
+		}else {
+			urlL = ConstantParamPhone.SWITCH_STATUS;
+		}
 		RequestParams params  =new RequestParams();
 		String id = list.get(position).getId();
 		params.add("id",id);
-		HttpUtils.getConnection(context, params, ConstantParamPhone.SWITCH_STATUS, "post", new TextHttpResponseHandler() {
+		HttpUtils.getConnection(context, params, urlL, "POST", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
-				//LogUtil.d("res",s);
+				LogUtil.d("res",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
@@ -446,6 +483,7 @@ public class ProductAdapter extends BaseAdapter
 		ImageView downButton;
 		TextView productGetNum;
 		TextView tv_status;
+		TextView vip_price;
 		
 	}
 	

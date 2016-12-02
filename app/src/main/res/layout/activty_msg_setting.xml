@@ -20,6 +20,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_dark_color"
             android:text="语音提示"
             android:textSize="16dp"
             />
@@ -29,7 +30,7 @@
             android:gravity="center_vertical|right"
             android:layout_marginRight="10dp"
             app:kswTintColor="@color/btn_color"
-            app:kswThumbColor="@color/bg_white_color"
+            app:kswFadeBack="false"
             android:layout_height="wrap_content"/>
         
     </LinearLayout>
@@ -47,6 +48,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="系统提示音"
+            android:textColor="@color/text_dark_color"
             android:textSize="16dp"
             />
         <com.kyleduo.switchbutton.SwitchButton
@@ -54,8 +56,8 @@
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
             android:layout_marginRight="10dp"
-            app:kswThumbColor="@color/bg_white_color"
             app:kswTintColor="@color/btn_color"
+            app:kswFadeBack="false"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
@@ -73,6 +75,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="震动提示"
+            android:textColor="@color/text_dark_color"
             android:textSize="16dp"
             />
 
@@ -81,8 +84,8 @@
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
             android:layout_marginRight="10dp"
-            app:kswThumbColor="@color/bg_white_color"
             app:kswTintColor="@color/btn_color"
+            app:kswFadeBack="false"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
@@ -100,18 +103,41 @@
             android:paddingLeft="10dp"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:textColor="@color/text_dark_color"
             android:layout_height="wrap_content"
             android:text="自动打印"
             android:textSize="16dp"
             />
+
         <com.kyleduo.switchbutton.SwitchButton
             android:id="@+id/btn_auto_print"
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
             android:layout_marginRight="10dp"
-            app:kswThumbColor="@color/bg_white_color"
             app:kswTintColor="@color/btn_color"
+            app:kswFadeBack="false"
             android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/list_divide"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/bg_white_color"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        
+        <TextView
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="蓝牙打印机自动打印:仅打印收银台、扫码支付、刷卡支付成功支付的订单或大牌抢购、优惠券核销成功的订单。"
+            android:textSize="14sp"
+            />
+     
 
     </LinearLayout>
 

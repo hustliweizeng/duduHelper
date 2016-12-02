@@ -5,7 +5,7 @@
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.dudu.duduhelper.ShopOrderDetailActivity" >
+    tools:context="com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity" >
 
     <include
         android:id="@+id/head"
@@ -287,32 +287,87 @@
             android:dividerHeight="1dp"
             android:visibility="gone" >
         </ListView>
-
         <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/bg_white_color"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/bg_color"
-            android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:paddingTop="16dp" >
-
-            <TextView
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="订单金额:"
-                android:textColor="@color/text_bg_color"
-                android:textSize="14dp" />
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp" >
 
-            <TextView
-                android:id="@+id/orderFeeTextView"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="订单总数:"
+                    android:textColor="@color/text_bg_color"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/order_Num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_bg_color"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/text_bg_color"
-                android:textSize="14sp" />
+                android:layout_marginTop="1dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="订单金额:"
+                    android:textColor="@color/text_bg_color"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/orderFeeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_bg_color"
+                    android:textSize="16sp" />
+              
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="优惠金额:"
+                    android:textColor="@color/text_bg_color"
+                    android:textSize="16dp" />
+                <TextView
+                    android:id="@+id/order_dis"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@color/text_bg_color"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
-
+            
+       
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -321,33 +376,13 @@
             android:paddingLeft="16dp" >
 
             <TextView
-                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="优惠金额:"
-                android:textColor="@color/text_bg_color"
-                android:textSize="14dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:text="合计:  "
                 android:layout_toLeftOf="@+id/totalPriceTextView"
-                android:text="合计:"
                 android:textColor="@color/text_bg_color"
                 android:textSize="18dp"
                 android:id="@+id/textView2"/>
-
-            <TextView
-                android:id="@+id/orderdiscountTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/textView1"
-                android:layout_alignBottom="@+id/textView1"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/textView1"
-                android:textColor="@color/text_bg_color"
-                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/totalPriceTextView"
@@ -356,11 +391,9 @@
                 android:layout_marginRight="14dp"
                 android:textColor="@color/text_red_color"
                 android:textSize="18sp"
-                android:layout_alignBaseline="@+id/textView2"
-                android:layout_alignBottom="@+id/textView2"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="14dp"/>
+                android:text="sssssssss"
+                />
         </RelativeLayout>
 
         <LinearLayout

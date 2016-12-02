@@ -179,6 +179,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			    break;
 			case R.id.hongbaoBtn:
 				//红包
+				
 				if (isManager){
 					startActivity(new Intent(context,RedBagList.class));
 				}else {

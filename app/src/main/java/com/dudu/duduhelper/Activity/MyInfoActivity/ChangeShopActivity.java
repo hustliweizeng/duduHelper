@@ -53,18 +53,32 @@ public class ChangeShopActivity extends BaseActivity {
 	 * 获取店铺列表信息
 	 */
 	private void initData() {
+		
+		
+		
+		
+		
+		
+		
 		String shopList = sp.getString("shopList", "");
 		LogUtil.d("listres",shopList);
 		ShopCheckListBean shopCheckListBean = new Gson().fromJson(shopList, ShopCheckListBean.class);
 		if (shopCheckListBean!=null && shopCheckListBean.getList()!=null){
 			adapter.addAll(shopCheckListBean.getList());
 		}
+		siwpeRefresh.setRefreshing(false);
 	}
 
 	private void initView() {
 		listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(adapter);
 		siwpeRefresh = (SwipeRefreshLayout) findViewById(R.id.siwpeRefresh);
+		siwpeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				initData();
+			}
+		});
 		backButton = (ImageButton) findViewById(R.id.backButton);
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -129,6 +143,14 @@ public class ChangeShopActivity extends BaseActivity {
 					}
 					if ("0".equals(isshopuser)) {
 						isManager = true;
+					}
+					//判断是否主店铺
+					String mainId = sp.getString("mainId","");//保存主店铺信息
+					String id = loginBean.getShop().getId();
+					if (mainId.equals(id)){
+						sp.edit().putBoolean("isMainShop",true).commit();
+					}else {
+						sp.edit().putBoolean("isMainShop",false).commit();
 					}
 					//1.通过sp保存用户信息
 					SharedPreferences.Editor edit = sp.edit();

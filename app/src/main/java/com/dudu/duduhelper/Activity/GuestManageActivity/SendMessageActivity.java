@@ -47,6 +47,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 	private float activity_price;
 	private TextView act_content;
 	private TextView redbag_content;
+	private boolean isFirst;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -54,7 +55,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 		setContentView(R.layout.activity_sendmessage);
 		initView();
 		initHeadView("选择通知类型",true,false,0);
-		initData();
+		//initData();
 	}
 
 	private void initData() {
@@ -98,6 +99,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 								//红包信息单价
 								redbag_price = Float.parseFloat(message_lists.get(1).getPrice());
 							}
+							initCircleView();//设置数据
 						}
 
 					}else {
@@ -113,13 +115,10 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 			@Override
 			public void onFinish() {
 				super.onFinish();
-				//初始化图片信息
-				initHeadView();
-
+				//isFirst = false;
+				//Toast.makeText(context,"第一次",Toast.LENGTH_SHORT).show();
 			}
 		});
-		
-		
 	}
 
 	@Override
@@ -128,15 +127,15 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 		initData();
 	}
 
-	private void initHeadView() {
+	private void initCircleView() {
 		float total_num = active_num+unactive_num;
-
-		wheelIndicatorView = (WheelIndicatorTongjiView) findViewById(R.id.wheel_indicator_view);
 		wheelIndicatorView.setItemsLineWidth(Util.dip2px(this, 2));
 		//设置使用金额
 		//背景是蓝底，所以未到店的是分子，总数是分母
-		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem(unactive_num/total_num, Color.parseColor("#ff5000"), Util.dip2px(this, 4));//非活跃
-		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem(unactive_num/total_num, Color.parseColor("#2c4660"), Util.dip2px(this, 2));//活跃
+		WheelIndicatorItem bikeActivityIndicatorItem = new WheelIndicatorItem
+				(unactive_num/total_num, Color.parseColor("#ff5000"), Util.dip2px(this, 4));//非活跃
+		WheelIndicatorItem bikeActivityIndicatorItem1 = new WheelIndicatorItem
+				(unactive_num/total_num, Color.parseColor("#2c4660"), Util.dip2px(this, 2));//活跃
 		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem);
 		wheelIndicatorView.addWheelIndicatorItem(bikeActivityIndicatorItem1);
 		wheelIndicatorView.startItemsAnimation();
@@ -151,6 +150,7 @@ public class SendMessageActivity extends BaseActivity implements View.OnClickLis
 		redbage_msg = (RelativeLayout) findViewById(R.id.redbage_msg);
 		act_content = (TextView) findViewById(R.id.act_content);
 		redbag_content = (TextView) findViewById(R.id.redbag_content);
+		wheelIndicatorView = (WheelIndicatorTongjiView) findViewById(R.id.wheel_indicator_view);
 		redbage_msg.setOnClickListener(this);
 		activity_msg.setOnClickListener(this);
 	}

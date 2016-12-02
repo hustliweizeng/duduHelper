@@ -35,7 +35,7 @@ public class MsgSettingActivity extends BaseActivity implements View.OnClickList
 	private void initStatus() {
 		//语言开关
 		isVoiceOpen = sp.getBoolean("isVoiceOpen", false);
-		//提示音
+		//铃声
 		isRemindOpen = sp.getBoolean("isRemindOpen", false);
 		//震动
 		isRingOpen = sp.getBoolean("isRingOpen", false);
@@ -46,16 +46,16 @@ public class MsgSettingActivity extends BaseActivity implements View.OnClickList
 		 * 设置开关的状态
 		 */
 		btn_voice.setCheckedImmediatelyNoEvent(isVoiceOpen);
-		btn_ring.setCheckedImmediatelyNoEvent(isRemindOpen);
-		btn_ding.setCheckedImmediatelyNoEvent(isRingOpen);
+		btn_ring.setCheckedImmediatelyNoEvent(isRemindOpen);//铃声
+		btn_ding.setCheckedImmediatelyNoEvent(isRingOpen);//震动
 		btn_auto_print.setCheckedImmediatelyNoEvent(isAutoPrintOpen);
 
 	}
 
 	private void initView() {
 		btn_voice = (SwitchButton) findViewById(R.id.btn_voice);
-		btn_ring = (SwitchButton) findViewById(R.id.btn_ring);
-		btn_ding = (SwitchButton) findViewById(R.id.btn_ding);
+		btn_ring = (SwitchButton) findViewById(R.id.btn_ring);//铃声
+		btn_ding = (SwitchButton) findViewById(R.id.btn_ding);//震动
 		btn_auto_print = (SwitchButton) findViewById(R.id.btn_auto_print);
 
 		btn_voice.setOnClickListener(this);
@@ -69,14 +69,10 @@ public class MsgSettingActivity extends BaseActivity implements View.OnClickList
 		switch (v.getId()) {
 			case R.id.btn_voice:
 				isVoiceOpen = !isVoiceOpen;
-				isRemindOpen = !isVoiceOpen;
 				sp.edit().putBoolean("isVoiceOpen",isVoiceOpen).commit();
-				sp.edit().putBoolean("isRemindOpen",isRemindOpen).commit();
 				break;
 			case R.id.btn_ring:
 				isRemindOpen = !isRemindOpen;
-				isVoiceOpen = !isRemindOpen;
-				sp.edit().putBoolean("isVoiceOpen",isVoiceOpen).commit();
 				sp.edit().putBoolean("isRemindOpen",isRemindOpen).commit();
 				break;
 			case R.id.btn_ding://震动
@@ -88,7 +84,5 @@ public class MsgSettingActivity extends BaseActivity implements View.OnClickList
 				sp.edit().putBoolean("isAutoPrintOpen",isAutoPrintOpen).commit();
 				break;
 		}
-		btn_voice.setCheckedImmediatelyNoEvent(isVoiceOpen);
-		btn_ring.setCheckedImmediatelyNoEvent(isRemindOpen);
 	}
 }

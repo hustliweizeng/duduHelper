@@ -85,7 +85,6 @@ public class ShopProductDetailActivity extends BaseActivity
 		productinfoName.setText(productinfo.getName());
 		String open_time = productinfo.getRule();
 		//设置开始结束时间
-		
 		try {
 			JSONArray array = new JSONArray(productinfo.getRule());
 			JSONObject time = array.getJSONObject(0);

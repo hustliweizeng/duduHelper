@@ -1,14 +1,15 @@
 package com.dudu.duduhelper.UmengService;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.ThemedSpinnerAdapter;
+import android.text.TextUtils;
 
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.R;
@@ -20,6 +21,8 @@ import com.umeng.message.entity.UMessage;
 
 import org.android.agoo.common.AgooConstants;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * @author
@@ -58,7 +61,8 @@ public class MyPushIntentService extends UmengMessageService {
 				UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
 			}
 			SharedPreferences sp = getSharedPreferences("userconig",Context.MODE_PRIVATE);
-			boolean isVoiceOpen = sp.getBoolean("isVoiceOpen", false);
+			boolean isRemindOpen = sp.getBoolean("isRemindOpen", false);//铃声
+			boolean isRingOpen = sp.getBoolean("isRingOpen", false);//震动
 			/**
 			 * 通知提醒
 			 */
@@ -66,17 +70,27 @@ public class MyPushIntentService extends UmengMessageService {
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
 			mBuilder.setContentTitle(msg.title)//设置通知栏标题  
 					.setContentText(msg.text) 
-			.setContentIntent(getDefalutIntent(Notification.FLAG_ONLY_ALERT_ONCE)) //设置通知栏点击意图  
+					.setAutoCancel(true)//点击后消失
+			.setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL)) //设置通知栏点击意图  
 			.setTicker("测试通知来啦") //通知首次出现在通知栏，带上升动画效果的  
 			.setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间  
 			.setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级  
 			.setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)  
-			.setDefaults(Notification.DEFAULT_VIBRATE)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合  
 			.setSmallIcon(R.drawable.ic_defalut);//设置通知小ICON  
-			
-			if(isVoiceOpen){
-				mBuilder.setDefaults(Notification.DEFAULT_SOUND);//设置默认声音
+			if(isRemindOpen){
+				if(isRingOpen){//震动开启
+					mBuilder.setDefaults(Notification.DEFAULT_ALL);//设置默认声音带震动
+				}else {//震动未开
+					mBuilder.setDefaults(Notification.DEFAULT_SOUND);//设置只有震动
+				}
+			}else {
+				if (isRemindOpen){
+				mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);//开启震动
+				}
 			}
+				
+			
+			
 			mNotificationManager.notify(22,mBuilder.build());//发送通知
 			/**
 			 * 自动跳转到指定页面
@@ -86,6 +100,33 @@ public class MyPushIntentService extends UmengMessageService {
 			intent1.putExtra("isNetOrder",true);
 			intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent1);
+
+
+			/*// 使用完全自定义消息来开启应用服务进程的示例代码
+			// 首先需要设置完全自定义消息处理方式
+			// mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
+			// code to handle to start/stop service for app process
+			JSONObject json = new JSONObject(msg.custom);
+			String topic = json.getString("topic");
+			UmLog.d(TAG, "topic=" + topic);
+*/
+			/*if (topic != null && topic.equals("appName:startService")) {
+				// 在【友盟+】portal上新建自定义消息，自定义消息文本如下
+				//{"topic":"appName:startService"}
+				if (isServiceRunning(context, NotificationService.class.getName()))
+					return;
+				Intent intent3 = new Intent();
+				intent3.setClass(context, NotificationService.class);
+				context.startService(intent1);
+			} else if (topic != null && topic.equals("appName:stopService")) {
+				// 在【友盟+】portal上新建自定义消息，自定义消息文本如下
+				//{"topic":"appName:stopService"}
+				if (!isServiceRunning(context,NotificationService.class.getName()))
+					return;
+				Intent intent4= new Intent();
+				intent4.setClass(context, NotificationService.class);
+				context.stopService(intent1);
+			}*/
 			
 
 		} catch (Exception e) {
@@ -97,8 +138,23 @@ public class MyPushIntentService extends UmengMessageService {
 		Intent intent = new Intent(getBaseContext(), ShopOrderDetailActivity.class);
 		intent.putExtra("id",Long.parseLong(orderId));
 		intent.putExtra("isNetOrder",true);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 		PendingIntent pendingIntent= PendingIntent.getActivity(this, 1,intent, flags);
 		return pendingIntent;
+	}
+	public  boolean isServiceRunning(Context context, String className) {
+		boolean isRunning = false;
+		ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+		List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(Integer.MAX_VALUE);
+		if(serviceList == null || serviceList.isEmpty())
+			return false;
+		for(int i = 0; i < serviceList.size(); i++) {
+			if(serviceList.get(i).service.getClassName().equals(className) && TextUtils.equals(
+					serviceList.get(i).service.getPackageName(), context.getPackageName())) {
+				isRunning = true;
+				break;
+			}
+		}
+		return isRunning;
 	}
 }

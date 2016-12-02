@@ -94,6 +94,8 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 	private boolean isNetNotification;
 	private boolean isTypeAutoPrint;//订单来源是否需要自动打印
 	private boolean isFinishing;
+	private TextView order_Num;
+	private TextView order_dis;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -165,7 +167,11 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		
 		if (isNetNotification){
 			//判断是否开启自动打印
-			startTTS();//获取到数据后开启百度语音服务
+			
+			//判断是否开启语音播报
+			if (sp.getBoolean("isVoiceOpen",false)){
+				startTTS();//获取到数据后开启百度语音服务
+			}
 			if (sp.getBoolean("isAutoPrintOpen",false)){
 				LogUtil.d("auto_print","true");
 				//如果打印过不再打印
@@ -268,10 +274,12 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		orderContrectTextView.setText(orderData.getName());
 		//电话
 		orderPhoneTextView.setText(orderData.getMobile());
+		//订单总数
+		order_Num.setText(orderData.getExt());
 		//订单金额
 		orderFeeTextView.setText(orderData.getTotal_fee());
 		//折扣金额
-		orderdiscountTextView.setText(orderData.getDiscount_shop_fee());
+		order_dis.setText(orderData.getDiscount_shop_fee());
 		//总额
 		totalPriceTextView.setText(orderData.getFee());
 		setTypeAutoPrint();//执行自动打印
@@ -280,8 +288,11 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 
 	private void initView() 
 	{
+		order_Num = (TextView)findViewById(R.id.order_Num);//数量
+		order_dis = (TextView)findViewById(R.id.order_dis);
+		
+		
 		orderFeeTextView=(TextView) this.findViewById(R.id.orderFeeTextView);
-		orderdiscountTextView=(TextView) this.findViewById(R.id.orderdiscountTextView);
 		enterButton=(Button) this.findViewById(R.id.enterButton);
 		noButton=(Button)this.findViewById(R.id.noButton);
 		orderDetailList=(ListView) this.findViewById(R.id.orderDetailList);
@@ -337,9 +348,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 				changeStatus("0");
 			}
 		});
-		
 		//
-		
 		
 	}
 	//核销订单
@@ -481,14 +490,14 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
                 outputStream.flush();  
                 Toast.makeText(ShopOrderDetailActivity.this, "打印成功！", Toast.LENGTH_LONG).show();
 	            enterButton.setClickable(true);
-	            enterButton.setPressed(false);
+	            enterButton.setPressed(true);
             }
             catch (Exception e)
             {    
                 Toast.makeText(ShopOrderDetailActivity.this, "打印失败！", Toast.LENGTH_LONG).show();  
 	            LogUtil.d("erro",e.toString());
 	            enterButton.setClickable(true);
-	            enterButton.setPressed(false);
+	            enterButton.setPressed(true);
             }    
         }
 		else 
@@ -496,7 +505,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
             Toast.makeText(ShopOrderDetailActivity.this, "设备未连接，请重新连接！", Toast.LENGTH_SHORT).show();   
         }
 		enterButton.setClickable(true);
-		enterButton.setPressed(false);
+		enterButton.setPressed(true);
 	}
 	
 	//绑定之后获取连接
@@ -538,12 +547,14 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 	    }
 	    try
     	{
-			outputStream.close();
+		    if (outputStream!=null){
+			    outputStream.close();
+		    }
+		    if (bluetoothSocket!=null)
 			bluetoothSocket.close();
 		} 
     	catch (Exception e) 
     	{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -721,7 +732,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
 		if (authInfo.isSuccess()) {
 			mSpeechSynthesizer.initTts(TtsMode.MIX);//初始化语音合成器，混合模式
-			mSpeechSynthesizer.speak("您有一笔新订单，订单金额是:"+orderData.getFee());
+			mSpeechSynthesizer.speak("您有一笔新订单，订单金额是:"+orderData.getFee()+"元");
 			LogUtil.d("yuyin","sucess");
 		} else {
 			// 授权失败
@@ -755,5 +766,6 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 	public void onSynthesizeStart(String arg0) {
 		// 监听到合成开始，在此添加相关操作
 	}
+	
 	
 }

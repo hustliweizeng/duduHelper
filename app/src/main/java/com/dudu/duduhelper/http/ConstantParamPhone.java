@@ -153,11 +153,13 @@ public class ConstantParamPhone
     public static final String GET_BIG_BAND_DETAIL = "/api/app/panic/panicinfo";//大牌抢购详情，也是大牌抢购编辑的接口
     public static final String DEL_BIG_BAND ="/api/app/panic/delpanic";//删除大牌抢购条目
     public static final String SWITCH_STATUS ="/api/app/panic/checkStatus";//切换商品上下架状态
+    
 
    //优惠券列表
    public static final String GET_DISCOUNT_LIST = "/api/app/coupon/listinfo";//获取优惠券信息列表
    public static final String  GET_DISCOUT_DETAIL = "/api/app/coupon/couponinfo";//优惠券详情/api/app/coupon/couponinfo
    public static final String  DEL_DISECOUNT = "/api/app/coupon/delcoupon";//删除优惠券
+    public static final String SWITCH_DIS_STATUS ="/api/app/coupon/checkCoupon";//切换商品上下架状态
     
     //产品信息描述
     public static final String GET_APP_INFO = "/api/app/tool/geo/boot";//获取产品信息

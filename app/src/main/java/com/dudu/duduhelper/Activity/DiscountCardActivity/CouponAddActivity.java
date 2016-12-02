@@ -108,7 +108,6 @@ public class CouponAddActivity extends BaseActivity
 
 	private void initData() 
 	{
-		// TODO Auto-generated method stub
 		ColorDialog.showRoundProcessDialog(CouponAddActivity.this,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		params.add("token", share.getString("token", ""));

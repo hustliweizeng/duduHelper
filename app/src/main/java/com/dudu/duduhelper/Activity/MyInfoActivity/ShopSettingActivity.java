@@ -131,10 +131,10 @@ public class ShopSettingActivity extends BaseActivity implements OnClickListener
 							//确认退出
 							public void onClick(View v)
 							{
+								requestLogOut();
 								sp.edit().clear().commit();
 								CleanAppCache.cleanApplicationData(context);
 								DuduHelperApplication.getInstance().exit();
-								requestLogOut();
 
 							}
 						});

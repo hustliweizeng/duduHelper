@@ -3,6 +3,7 @@ package com.dudu.duduhelper.Activity.OrderActivity;
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -95,6 +96,8 @@ public class ShopOrderActivity extends BaseActivity
 	private OrderListBean orderData;
 	private String lastId;
 	private int orderId;
+	private int firstVisiblePosition;
+	private int firstVisiblePositionTop;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -108,6 +111,7 @@ public class ShopOrderActivity extends BaseActivity
 		orderallswipeLayout.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
 		orderallswipeLayout.setRefreshing(true);
 		initData();
+		
 	}
 	public void setRefreshing()
 	{
@@ -118,6 +122,29 @@ public class ShopOrderActivity extends BaseActivity
 		orderAdapter.clear();
 		initData();
 	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		saveListViewPositionAndTop();//保存位置
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		// 恢复现在listView的位置，(上一次保存的位置)
+		allOrderListView.setSelectionFromTop(firstVisiblePosition, firstVisiblePositionTop);
+		//Toast.makeText(context, "恢复到指定位置", Toast.LENGTH_SHORT).show();
+	}
+	/**
+	 * 保存当前页签listView的第一个可见的位置和top
+	 */
+	private void saveListViewPositionAndTop() {
+		firstVisiblePosition = allOrderListView.getFirstVisiblePosition();
+		View item = allOrderListView.getChildAt(0);
+		firstVisiblePositionTop = (item == null) ? 0 : item.getTop();
+	}
+
 
 	@Override
 	public void RightButtonClick() {
@@ -460,5 +487,6 @@ public class ShopOrderActivity extends BaseActivity
 		//orderId = data.getIntExtra("id",0);
 		initData();
 	}
+
 
 }

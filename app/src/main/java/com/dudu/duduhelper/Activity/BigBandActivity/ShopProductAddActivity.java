@@ -24,6 +24,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,6 +43,7 @@ import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.BigBandBuy;
 import com.google.gson.Gson;
+import com.kyleduo.switchbutton.SwitchButton;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -125,6 +127,10 @@ public class ShopProductAddActivity extends BaseActivity
 	private ImageView iv_select;
 	private ArrayList<String> idses;
 	private LinearLayout ll_select;
+	private SwitchButton btn_vip;
+	private EditText vip_price;
+	private TextView tv_vip;
+	private boolean isVipChecked;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -158,13 +164,13 @@ public class ShopProductAddActivity extends BaseActivity
 		LogUtil.d("tag",status);
 		if ("0".equals(status)){
 			//正在审核
-			dis.setText("您的商品正在审核，变更信息将会导致商品下架并需运营商重新审核方能上架出售");
+			dis.setText("您的商品正在审核，变更信息将会导致商品下架,并需运营商重新审核方能上架出售!");
 		}
 		if ("1".equals(is_on_sale)){
-			dis.setText("您的商品正在出售，变更信息将会导致商品下架并需运营商重新审核方能上架出售");
+			dis.setText("您的商品正在出售，变更信息将会导致商品下架,并需运营商重新审核方能上架出售!");
 		}
 		if ("0".equals(is_on_sale)){
-			dis.setText("您的商品是下架状态,提交后运营商将进行审核，请耐心等待");
+			dis.setText("您的商品是下架状态,提交后运营商将进行审核，请耐心等待!");
 		}
 		//确定按钮
 		confirm.setOnClickListener(new OnClickListener() {
@@ -189,7 +195,6 @@ public class ShopProductAddActivity extends BaseActivity
 								//数据请求成功
 								dailog1.dismiss();
 								SubmitProduct();
-								
 							}else {
 								//数据请求失败
 								String msg = object.getString("msg");
@@ -223,10 +228,32 @@ public class ShopProductAddActivity extends BaseActivity
 		productNameEditText.setText(data.getName());
 		productSoldTextView.setText(data.getAmount());
 		productYuanPriceEditText.setText(data.getPrice());
-		productNowPriceEditText.setText(data.getCurrent_price());
 		productKuCunNumEditText.setText(data.getStock());
 		ed_explain.setText(Html.fromHtml(data.getExplain()));
 		productDetaliTextView.setText(data.getExplain());
+		//设置现价和vip价格
+		try {
+			JSONArray rule = new JSONArray(data.getRule());
+			JSONObject time = rule.getJSONObject(0);
+			String price = time.getString("price");
+			productNowPriceEditText.setText(price);//现价
+			String vipPrice = time.getString("vip_price");
+			if ("1".equals(data.getIs_vip_price())){//说明有vip价格
+				btn_vip.setChecked(true);
+				vip_price.setText(vipPrice);
+				vip_price.setTextColor(getResources().getColor(R.color.text_dark_color));
+				tv_vip.setTextColor(getResources().getColor(R.color.text_dark_color));
+			}else {//没有vip价格
+				btn_vip.setChecked(false);
+				tv_vip.setTextColor(getResources().getColor(R.color.text_color_light));
+				vip_price.setTextColor(getResources().getColor(R.color.text_color_light));
+			}
+		}catch (Exception e){
+			System.out.print(e);
+		}
+
+
+		
 		//设置配送方式
 		String delivery = data.getDelivery();
 		LogUtil.d("deliver",delivery);
@@ -317,12 +344,37 @@ public class ShopProductAddActivity extends BaseActivity
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品描述",Toast.LENGTH_SHORT).show();
 			return;
 		}
+		if(TextUtils.isEmpty(tv_startTime_shop_product.getText().toString().trim()))
+		{
+			Toast.makeText(ShopProductAddActivity.this, "请输入商品上架时间",Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if(TextUtils.isEmpty(tv_endTime_shop_product.getText().toString().trim()))
+		{
+			Toast.makeText(ShopProductAddActivity.this, "请输入商品下架时间",Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (isVipChecked){
+			String vipPirce = vip_price.getText().toString().trim();
+			if (TextUtils.isEmpty(vipPirce)){
+				Toast.makeText(ShopProductAddActivity.this, "请输入会员价格",Toast.LENGTH_SHORT).show();
+				return;
+			}else {
+				String price = productNowPriceEditText.getText().toString().trim();
+				if (Float.parseFloat(price) < Float.parseFloat(vipPirce)){
+					Toast.makeText(ShopProductAddActivity.this, "会员价格必须小于商品现价",Toast.LENGTH_SHORT).show();
+					return;
+				}
+			}
+		}
+		
+		
 
 		BigBandBuy.DataBean dataBean = new BigBandBuy.DataBean();
 		if (category.equals("discount")){
 
 			dataBean.setName(productNameEditText.getText().toString().trim());
-			dataBean.setCurrent_price(productNowPriceEditText.getText().toString().trim());
+			//dataBean.setCurrent_price(productNowPriceEditText.getText().toString().trim());
 			dataBean.setPrice(productYuanPriceEditText.getText().toString().trim());
 			dataBean.setStock(productKuCunNumEditText.getText().toString().trim());
 			dataBean.setExplain(productDetaliTextView.getText().toString().trim());
@@ -334,19 +386,50 @@ public class ShopProductAddActivity extends BaseActivity
 			dataBean.setShop_id(data.getShop_id());
 			dataBean.setApply_shops(dataBean.getApply_shops());
 		}else {
+			//大牌抢购
 			dataBean.setName(productNameEditText.getText().toString().trim());
-			dataBean.setCurrent_price(productNowPriceEditText.getText().toString().trim());
+			//dataBean.setCurrent_price(productNowPriceEditText.getText().toString().trim());//废弃字段
 			dataBean.setPrice(productYuanPriceEditText.getText().toString().trim());
 			dataBean.setStock(productKuCunNumEditText.getText().toString().trim());
 			dataBean.setExplain(productDetaliTextView.getText().toString().trim());
 			dataBean.setAmount(productSoldTextView.getText().toString().trim());
-			int checkedID = rg_shop_product_add.getCheckedRadioButtonId();
+			int checkedID = rg_shop_product_add.getCheckedRadioButtonId();//送货方式
 			String delivery = (checkedID == R.id.rb1_shop_product_add ?"2":"1");
 			LogUtil.d("des",delivery);
 			dataBean.setDelivery(delivery);
-			dataBean.setRule(data.getRule());
+			dataBean.setRule(data.getRule());//不修改上下架及价格
+			/*
+			*设置上下架及价格
+			 */
+
+			/**
+			 * 修改上下架及价格的功能
+			 */
+			/*String currentPrice = productNowPriceEditText.getText().toString().trim();
+			String startTime = tv_startTime_shop_product.getText().toString().trim();
+			String endTime = tv_endTime_shop_product.getText() .toString().trim();
+			JSONObject item = new JSONObject();
+			try {
+				item.put("begin",startTime);
+				item.put("end",endTime);
+				item.put("price",currentPrice);
+				if (isVipChecked){
+					item.put("vip_price",vip_price.getText().toString().trim());
+					dataBean.setIs_vip_price("1");
+				}else {
+					item.put("vip_price","");
+					dataBean.setIs_vip_price("0");
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			JSONArray array = new JSONArray();
+			array.put(item);
+			LogUtil.d("array",array.toString());
+			dataBean.setRule(array.toString());//设置规则内容*/
 			//设置组图
 			dataBean.setShow_img(picsPath);
+			dataBean.setId(dataBean.getId());
 			//把id信息重新提交
 			dataBean.setShop_id(data.getShop_id());
 			dataBean.setApply_shops(idses);//使用的商店
@@ -354,8 +437,8 @@ public class ShopProductAddActivity extends BaseActivity
 		}
 		
 		RequestParams params = new RequestParams();
+		params.put("id",data.getId());
 		params.put("op","save");
-		params.add("id",data.getId());
 		//把数据封装成bean
 		String panic_data=  new Gson().toJson(dataBean);
 		LogUtil.d("data",panic_data);
@@ -370,14 +453,13 @@ public class ShopProductAddActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
-
+				LogUtil.d("res",arg2);
 				try {
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
 						Toast.makeText(context,"上传成功",Toast.LENGTH_SHORT).show();
-						
 						startActivity(new Intent(context,shopProductListActivity.class));
 						finish();
 					}else {
@@ -394,6 +476,33 @@ public class ShopProductAddActivity extends BaseActivity
 
 	private void initView()
 	{
+		/**
+		 * vip价格
+		 */
+		btn_vip = (SwitchButton) findViewById(R.id.btn_vip);
+		vip_price = (EditText) findViewById(R.id.vip_price);
+		tv_vip = (TextView)findViewById(R.id.tv_vip);
+		btn_vip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				isVipChecked = isChecked;
+				
+				if (isChecked){
+					vip_price.setFocusable(true);
+					tv_vip.setTextColor(getResources().getColor(R.color.text_dark_color));
+					vip_price.setTextColor(getResources().getColor(R.color.text_dark_color));
+					vip_price.setFocusable(true);
+					vip_price.setFocusableInTouchMode(true);
+				}else {
+					vip_price.setFocusable(false);
+					tv_vip.setTextColor(getResources().getColor(R.color.text_color_light));
+					vip_price.setTextColor(getResources().getColor(R.color.text_color_light));
+					vip_price.setFocusable(false);
+					vip_price.setFocusableInTouchMode(false);
+				}
+			}
+		});
+		
 		//点击添加图片
 		shopImageView = (ImageView) this.findViewById(R.id.productImageView);
 		//选择配送方式

@@ -48,7 +48,7 @@ public class ShopGetCashCodeActivity extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		time = new TimeCount(60000,3000);
+		time = new TimeCount(90000,4000);
 		setContentView(R.layout.shop_get_cash_code);
 		initHeadView("收款", true,true, R.drawable.icon_historical);
 		//获取传递过来的二维码和价格

@@ -305,6 +305,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("pay-res",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");
@@ -663,17 +664,17 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
     	super.onDestroy();
     	try
     	{
-			outputStream.close();
-			bluetoothSocket.close();
+		    if (outputStream!=null){
+			    outputStream.close();
+		    }
+		    if (bluetoothSocket!=null){
+			    bluetoothSocket.close();
+		    }
+		    unregisterReceiver(receiver);//注销广播
 		} 
     	catch (Exception e) 
     	{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
     }
-	
-	
-
 }

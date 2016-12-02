@@ -1,11 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_color"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context="com.dudu.helper3.Activity.BigBandActivity.ShopProductAddActivity" >
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:background="@color/bg_color"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                tools:context="com.dudu.duduhelper.Activity.BigBandActivity.ShopProductAddActivity">
 
     <include
         android:id="@id/head"
@@ -15,7 +16,6 @@
         android:id="@+id/mineScrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/saveProductbutton"
         android:layout_below="@id/head"
         android:fillViewport="true" >
 
@@ -61,10 +61,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/line_color_gray" />
+                    android:background="@color/list_divide" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -97,9 +97,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/line_color_gray"
-                    android:visibility="gone" />
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/list_divide" />
                 <LinearLayout
                     android:id="@+id/ll_select"
                     android:layout_width="match_parent"
@@ -130,10 +131,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/line_color_gray" />
+                    android:background="@color/list_divide" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -141,10 +142,9 @@
                     android:gravity="center_vertical" >
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
-                        android:layout_weight="3"
                         android:text="商品原价"
                         android:inputType="number"
                         android:textColor="@color/text_color_dark"
@@ -152,7 +152,7 @@
 
                     <EditText
                         android:id="@+id/productYuanPriceEditText"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="16dp"
                         android:layout_weight="1"
@@ -166,10 +166,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/line_color_gray" />
+                    android:background="@color/list_divide" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -179,17 +179,16 @@
                     android:gravity="center_vertical" >
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
-                        android:layout_weight="3"
                         android:text="商品现价"
                         android:textColor="@color/text_color_dark"
                         android:textSize="16sp" />
 
                     <EditText
                         android:id="@+id/productNowPriceEditText"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="16dp"
                         android:layout_weight="1"
@@ -200,13 +199,79 @@
                         android:textColorHint="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/list_divide" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@color/title_color"
+                    android:gravity="center_vertical" >
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:text="会员通道"
+                        android:textColor="@color/text_color_dark"
+                        android:textSize="16sp" />
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/btn_vip"
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="16dp"
+                        app:kswTintColor="@color/btn_color"
+                        app:kswThumbColor="@color/bg_white_color"
+                        app:kswFadeBack="false"
+                        android:layout_height="wrap_content"/>
+                    
+                </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@color/line_color_gray" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:background="@color/title_color"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_vip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:text="会员价"
+                        android:textColor="@color/text_color_light"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/vip_price"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:hint="请输入您的商品会员价"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="@color/text_color_light"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/list_divide" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -239,10 +304,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/line_color_gray" />
+                    android:background="@color/list_divide" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -268,16 +333,16 @@
                         android:background="@null"
                         android:gravity="right|center_vertical"
                         android:hint="请输入限制购买的数量"
-                        android:textColor="@color/text_color_light"
+                        android:textColorHint="@color/text_color_light"
                         android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/line_color_gray" />
+                    android:background="@color/list_divide" />
 
                 <LinearLayout
                     android:id="@+id/ll_startTime_shop_product"
@@ -309,10 +374,10 @@
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/line_color_gray" />
+                    android:background="@color/list_divide" />
                 <LinearLayout
                     android:id="@+id/ll_endTime_shop_product"
                     android:layout_width="match_parent"
@@ -344,10 +409,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/line_color_gray" />
+                    android:background="@color/list_divide" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -492,6 +557,28 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/productImageView"/>
             </RelativeLayout>
+            <RelativeLayout
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/list_divide"
+                    />
+                <Button
+                    android:id="@+id/saveProductbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/view_selector"
+                    android:text="确认提交"
+                    android:textColor="@color/text_green_color"
+                    android:textSize="16sp" />
+
+
+
+            </RelativeLayout>
 
         </LinearLayout>
     </com.dudu.duduhelper.widget.OverScrollView>
@@ -508,20 +595,8 @@
         android:textColor="@color/text_white_color"
         android:textSize="14dp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_above="@+id/saveProductbutton"
-        android:background="@color/divider_line_color" />
-
-    <Button
-        android:id="@+id/saveProductbutton"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/view_selector"
-        android:text="确认提交"
-        android:textColor="@color/text_green_color"
-        android:textSize="16sp" />
+    
+    
+   
 
 </RelativeLayout>

@@ -126,6 +126,7 @@ public class shopProductListActivity extends BaseActivity
 		//根据不同类型请求不同的参数
 		if("discount".equals(category))
 		{
+			isDisCount = true;
 			//优惠券列表
 			productAdapter=new ProductAdapter(this,isMulChoice,isDisCount,isHongbao);
 			initData(ConstantParamPhone.GET_DISCOUNT_LIST);
@@ -134,6 +135,7 @@ public class shopProductListActivity extends BaseActivity
 		{
 			LogUtil.d("bigband","商品列表");
 			//商品列表
+			isDisCount = false;
 			productAdapter=new ProductAdapter(this,isMulChoice,isDisCount,isHongbao);
 			initData(ConstantParamPhone.GET_BIG_BAND_LIST);
 		}
@@ -152,8 +154,12 @@ public class shopProductListActivity extends BaseActivity
 	//请求不同的接口url
 	private void initData(String url)
 	{
-		loading_text.setText("加载中...");
 		productListView.setAdapter(productAdapter);
+		if (productAdapter!=null &&productAdapter.getCount()>5){
+			loading_text.setText("加载中...");
+		}else {
+			footView.setVisibility(View.GONE);
+		}
 		RequestParams params = new RequestParams();
 		params.put("default",productStatus);
 		params.put("status",upProduct);
@@ -359,7 +365,6 @@ public class shopProductListActivity extends BaseActivity
 					//删除条目
 					AllMethod(groupid,ConstantParamPhone.DEL_BIG_BAND);
 				}
-
 			}
 
 
@@ -375,7 +380,6 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				if(isDisCount)
 				{
 					initData(ConstantParamPhone.GET_DISCOUNT_LIST);
@@ -453,6 +457,10 @@ public class shopProductListActivity extends BaseActivity
 				//当滚动停止的时候
 				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) // productAdapter.getCount()记录的是数据的长度
 				{
+					if(productListView.getCount() <5){//当条目不足5条时候，不显示底部进度条
+						return;
+					}
+						
 					// 判断滚动到底部
 					if (productListView.getLastVisiblePosition() == (productListView.getCount() - 1)) {
 						LogUtil.d("scrool","底部");
@@ -501,7 +509,6 @@ public class shopProductListActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				orderType.setTextColor(getResources().getColor(R.color.text_green_color));
 				orderTypeArror.setImageResource(R.drawable.icon_jiantou_shang);
 				productAction.setTextColor(getResources().getColor(R.color.text_color_gray));
@@ -801,6 +808,7 @@ public class shopProductListActivity extends BaseActivity
 			}
 		}
 	}
+
 
 	/**
 	 * 根据action不同，去请求网络
