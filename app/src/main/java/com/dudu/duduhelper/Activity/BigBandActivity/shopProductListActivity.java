@@ -609,7 +609,7 @@ public class shopProductListActivity extends BaseActivity
 					//删除图片不可见
 					editProductLine.setVisibility(View.GONE);
 					//新建和添加按钮可见
-					addButton.setVisibility(View.VISIBLE);
+					addButton.setVisibility(View.GONE);
 					//当前不是复选状态
 					isMulChoice = false;
 					//设置不可见，不选中

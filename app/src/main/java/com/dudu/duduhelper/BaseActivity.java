@@ -29,22 +29,17 @@ public class BaseActivity extends FragmentActivity
 	public SharedPreferences share;
 	public SharedPreferences sp;
 	public Context context;
-
-	public String FORCE_UPDATE="";
 	public String url ="";
 	public RelativeLayout relayout_mytitle;
 
 	@Override
 	protected void onCreate(Bundle arg0) 
 	{
-		PushAgent.getInstance(context).onAppStart();//统计应用启动数据
-		//CrashReport.testJavaCrash();//测试bugly
 		context = this;
 		//把所有页面加到application
 		DuduHelperApplication.getInstance().addActivity(this);
 		//在所有界面统计app启动次数
 		PushAgent.getInstance(this).onAppStart();
-		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		//每个activity界面设置为沉浸式状态栏，android 4.4以上才支持
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) 
@@ -52,28 +47,13 @@ public class BaseActivity extends FragmentActivity
 			setTranslucentStatus(true);
 		}
 		SystemBarTintManager tintManager = new SystemBarTintManager(this);
-
 		//设置通知栏（状态栏）的颜色
-
 		tintManager.setStatusBarTintEnabled(true);
 		tintManager.setStatusBarTintResource(R.color.status_Bar_color);//通知栏所需颜色
 
 		//每个activity都可以获取到sp中保存的用户信息
-		share = getSharedPreferences("userinfo", MODE_PRIVATE);
+		share = getSharedPreferences("userinfo", MODE_PRIVATE);//已经没用了
 		sp = getSharedPreferences("userconig",Context.MODE_PRIVATE);
-
-		//umeng_token = getSharedPreferences("umengtoken",MODE_PRIVATE).getString("token","");
-		DuduHelperApplication.getInstance().addActivity(this);
-		/*MobclickAgent.updateOnlineConfig(this);//获取强制更新在线参数
-		FORCE_UPDATE=MobclickAgent.getConfigParams(this, "force_update" );
-		MobclickAgent.setOnlineConfigureListener(new UmengOnlineConfigureListener(){
-		  @Override
-		  public void onDataReceived(JSONObject data)
-		  {
-			  JSONObject haha=data;
-			  System.out.println(haha);
-		  }
-		});*/
 		
 	}
 	
@@ -113,7 +93,6 @@ public class BaseActivity extends FragmentActivity
 	@SuppressLint("ResourceAsColor") 
 	public void initHeadView(String title, boolean LeftButtonVisable,boolean RightButtonVisable, int Imageid) 
 	{
-		// TODO Auto-generated method stub
 		relayout_mytitle= (RelativeLayout) this.findViewById(R.id.relayout_mytitle);
 		headtitle = (TextView) this.findViewById(R.id.title);
 		headtitle.setText(title);
@@ -127,7 +106,6 @@ public class BaseActivity extends FragmentActivity
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					LeftButtonClick();
 				}
 			});
@@ -145,7 +123,6 @@ public class BaseActivity extends FragmentActivity
 				@Override
 				public void onClick(View v) 
 				{
-					// TODO Auto-generated method stub
 					RightButtonClick();
 				}
 

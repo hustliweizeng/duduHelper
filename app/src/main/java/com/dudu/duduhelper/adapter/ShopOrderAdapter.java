@@ -32,8 +32,10 @@ public class ShopOrderAdapter extends BaseAdapter
     }
     public void addAll(List<OrderListBean.ListBean> list)
     {
-    	this.list.addAll(this.list.size(), list);
-    	notifyDataSetChanged();
+	    if (this.list!= list){
+		    this.list.addAll(this.list.size(), list);
+		    notifyDataSetChanged();
+	    }
     }
 	public  List<OrderListBean.ListBean> getInfo(){
 	     return list;

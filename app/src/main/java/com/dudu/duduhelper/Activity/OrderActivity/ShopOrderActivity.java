@@ -111,7 +111,6 @@ public class ShopOrderActivity extends BaseActivity
 		orderallswipeLayout.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
 		orderallswipeLayout.setRefreshing(true);
 		initData();
-		
 	}
 	public void setRefreshing()
 	{
@@ -324,7 +323,7 @@ public class ShopOrderActivity extends BaseActivity
 				//传递当前条目的数据过去
 				intent.putExtra("id", orderAdapter.getItemId(position));
 				LogUtil.d("POS",orderAdapter.getItemId(position)+"");
-				startActivityForResult(intent, 1);
+				startActivity(intent);
 			}
 		});
 		//listview滚动监听,当滚动到最后时候请求新的数据
@@ -487,6 +486,4 @@ public class ShopOrderActivity extends BaseActivity
 		//orderId = data.getIntExtra("id",0);
 		initData();
 	}
-
-
 }

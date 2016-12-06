@@ -2,6 +2,7 @@ package com.dudu.duduhelper.Activity.RedBagActivity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,27 +15,35 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.Utils.ViewUtils;
+import com.dudu.duduhelper.adapter.ShopListSelectAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
+import com.dudu.duduhelper.javabean.ShopListBean;
 import com.dudu.duduhelper.widget.SystemBarTintManager;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -52,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import com.dudu.duduhelper.R;
@@ -97,13 +107,16 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 	private String imagepath;
 	private String uploadPicPath;
 	private SharedPreferences sp;
-
+	private RelativeLayout ll_apply_shop;
+	private ShopListBean ShopListData;
+	private ShopListSelectAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		init();
 		setContentView(R.layout.activity_edit_redbag2);
+		adapter = new ShopListSelectAdapter(this, R.layout.item_circle_multi_select);
 		sp = getSharedPreferences("userconig", Context.MODE_PRIVATE);
 		initView();
 		initview();
@@ -276,11 +289,33 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 	}
 
 	private void initView() {
+		ll_apply_shop = (RelativeLayout) findViewById(R.id.ll_apply_shop);
+		ll_apply_shop.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getShopListData();
+			}
+		});
 		backButton = (ImageButton) findViewById(R.id.backButton);
 		relayout_mytitle = (LinearLayout) findViewById(R.id.relayout_mytitle);
 		ed_total = (EditText) findViewById(R.id.ed_total);
 		ed_low = (EditText) findViewById(R.id.ed_low);
 		ed_high = (EditText) findViewById(R.id.ed_high);
+		ed_high.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				float total = Float.parseFloat(ed_total.getText().toString().trim());
+				float num = Float.parseFloat(ed_num.getText().toString().trim());
+				float low = Float.parseFloat(ed_low.getText().toString().trim());
+				if (total!=0 && num !=0 &&low!=0){
+					//之前没填过内容时
+					if (TextUtils.isEmpty(ed_high.getText().toString().trim())){
+						float high = total - (num - 1) * low+ 0.1f;
+						ed_high.setText(high+"");
+					}
+				}
+			}
+		});
 		ed_num = (EditText) findViewById(R.id.ed_num);
 		iv_add_edit_redbag2 = (ImageView) findViewById(R.id.iv_add_edit_redbag2);
 		iv_plus = (ImageView) findViewById(R.id.iv_plus);
@@ -306,6 +341,99 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		backButton.setOnClickListener(this);
 		iv_add_edit_redbag2.setOnClickListener(this);
 		btn_create_redbag2_submit.setOnClickListener(this);
+	}
+
+	//获取店铺列表数据
+	private void getShopListData()
+	{
+		HttpUtils.getConnection(this,null, ConstantParamPhone.GET_SHOP_LIST, "GET",new TextHttpResponseHandler()
+		{
+			@Override
+			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
+			{
+				Toast.makeText(EditRedbag2Activity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
+			}
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, String arg2)
+			{
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						ShopListData = new Gson().fromJson(arg2, ShopListBean.class);
+						//防止多次加入数据，先清空原有数据
+						adapter.clear();
+						adapter.addAll(ShopListData.getData());
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(EditRedbag2Activity.this,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				showShopListSelctor(ShopListData.getData(),"适用门店");
+			}
+		});
+	}
+	List<String> checkedIds = new ArrayList<>();
+	/**
+	 * 选择红包适用门店
+	 * @param category
+	 * @param title
+	 */
+	private void showShopListSelctor(final List<ShopListBean.DataBean> category, final String title) {
+
+		adapter.addAll(category);
+		/**
+		 * 每次把选中的条目传递给适配器
+		 */
+		if (checkedIds!=null &&checkedIds.size()>0){
+			for (String id :checkedIds){
+				adapter.setcheckedId(adapter.getItemPos(id)+"");
+				LogUtil.d("set",id);
+				LogUtil.d("set_pos",adapter.getItemPos(id)+"");
+			}
+		}
+		final AlertDialog dailog = new AlertDialog.Builder(this).create();
+		dailog.show();
+		//获取window之前必须先show
+		Window window = dailog.getWindow();
+		window.setContentView(R.layout.alertdailog_multi_choose);
+		TextView tv_title_alertdailog = (TextView) window.findViewById(R.id.tv_title_alertdailog);
+		ListView lv_alertdailog = (ListView) window.findViewById(R.id.lv_alertdailog);
+		ImageView iv_canle_alertdailog = (ImageView) window.findViewById(R.id.iv_canle_alertdailog);
+
+		tv_title_alertdailog.setText(title);
+		lv_alertdailog.setAdapter(adapter);
+
+		LogUtil.d("adapter", adapter.getCount()+"");
+		//通过接口回调，确认选择的条目，并展示出来
+		lv_alertdailog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				String itemId = adapter.getItemId(position)+"";
+				if (checkedIds.contains(itemId)){
+					checkedIds.remove(itemId);
+				}else {
+					checkedIds.add(itemId);
+				}
+				adapter.setcheckedId(position+"");//设置位置
+			}
+
+		});
+		iv_canle_alertdailog.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dailog.dismiss();
+			}
+		});
+
 	}
 
 	private void submit() {
@@ -353,7 +481,11 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		params.put("total",total);
 		params.put("lower_money",low);
 		params.put("upper_money",high);
-		params.put("life",ed_life);
+		params.put("life",ed_life.getText().toString().trim());
+		if (checkedIds!=null &&checkedIds.size()>0){
+			params.put("apply_shops",checkedIds);
+			LogUtil.d("apply_shops",checkedIds.toString());
+		}
 		if(uploadPicPath!=null ){
 			params.put("logo",uploadPicPath);
 		}else {

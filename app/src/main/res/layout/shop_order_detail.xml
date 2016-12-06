@@ -392,7 +392,6 @@
                 android:textColor="@color/text_red_color"
                 android:textSize="18sp"
                 android:layout_alignParentRight="true"
-                android:text="sssssssss"
                 />
         </RelativeLayout>
 
@@ -402,7 +401,7 @@
             android:orientation="vertical"
             android:background="@color/bg_color" >
             <Button
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:id="@+id/btn_print"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -411,6 +410,7 @@
                 android:textSize="18dp"
                 android:text="打 印"
                 android:visibility="gone"
+                android:layout_marginBottom="30dp"
                 android:textColor="@color/bg_white_color"
                 android:background="@drawable/btn_bg"
                 />

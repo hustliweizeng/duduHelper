@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.javabean.ShopListBean;
 
@@ -21,10 +22,12 @@ import com.dudu.duduhelper.R;
 
 public class ShopListSelectAdapter extends  BaseAdapter {
 	private Context context;
-	private TextView textView;
 	private  int layout;
 	private List<ShopListBean.DataBean> list = new ArrayList<>();
-	private List<String> checkedList = new ArrayList<>();
+	private List<String> checkedList = new ArrayList<>();//已经选中的位置集合
+	private List<String> checkedIds  = new ArrayList<>();//已经选中的位置集合
+	private boolean isFromId;//是否根据id去判断是否选中条目
+
 	public ShopListSelectAdapter(Context context, int layout)
 	{
 		this.context = context;
@@ -53,6 +56,22 @@ public class ShopListSelectAdapter extends  BaseAdapter {
 		return Long.parseLong(list.get(position).getId());
 	}
 
+	/**
+	 * 返回id在集合中的位置
+	 * @param id
+	 * @return
+	 */
+	public int getItemPos(String id){
+		for (ShopListBean.DataBean item:list){
+			if (item.getId().equals(id)){
+				return list.indexOf(id);
+			}else {
+				return -1;
+			}
+		}
+		return  -1;
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
@@ -67,10 +86,26 @@ public class ShopListSelectAdapter extends  BaseAdapter {
 		/**
 		 * 判断复选框
 		 */
-		if (checkedList.contains(position+"")){
-			iv_check.setImageResource(R.drawable.icon_xuanze_sel);
+		if(isFromId){
+			String id = list.get(position).getId();
+			//通过id判断复选框
+			if (checkedIds.contains(id)){
+				iv_check.setImageResource(R.drawable.icon_xuanze_sel);
+				LogUtil.d("init","ok");
+			}else {
+				iv_check.setImageResource(R.drawable.icon_xuanze);
+				LogUtil.d("init","fail");
+			}
+			
 		}else {
-			iv_check.setImageResource(R.drawable.icon_xuanze);
+			//通过位置判断复选框
+			if (checkedList.contains(position+"")){
+				iv_check.setImageResource(R.drawable.icon_xuanze_sel);
+				LogUtil.d("init","ok");
+			}else {
+				iv_check.setImageResource(R.drawable.icon_xuanze);
+				LogUtil.d("init","fail");
+			}
 		}
 		
 		return convertView;
@@ -80,12 +115,23 @@ public class ShopListSelectAdapter extends  BaseAdapter {
 		notifyDataSetChanged();
 	}
 
+	/**
+	 * 设置选中的位置
+	 * @param position
+	 */
 	public void setcheckedId(String position) {
 		if (checkedList.contains(position)){
 			checkedList.remove(position);
 		}else {
 			checkedList.add(position);
 		}
+		notifyDataSetChanged();
+	}
+
+	public void addCheckedIds(List<ShopListBean.DataBean> list ,List<String> checkedIds,boolean isFromId) {
+		addAll(list);
+		this.checkedIds = checkedIds;
+		this.isFromId = isFromId;
 		notifyDataSetChanged();
 	}
 }

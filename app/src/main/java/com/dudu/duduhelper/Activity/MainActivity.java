@@ -1,11 +1,15 @@
 package com.dudu.duduhelper.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.MyInfoActivity.MsgSettingActivity;
+import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.application.DuduHelperApplication;
@@ -26,7 +31,11 @@ import com.dudu.duduhelper.fragment.ShopMineFragment;
 import com.dudu.duduhelper.fragment.ShopeMainFragment;
 
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.logging.Handler;
+
 import com.dudu.duduhelper.R;
+
 public class MainActivity extends BaseActivity 
 {
 
@@ -53,18 +62,15 @@ public class MainActivity extends BaseActivity
 	private TextView mine_text;
 	private Button editButton;
 	private LinkedList<Fragment> fragments =  new LinkedList<>();;
-	//private PushAgent mPushAgent;
+	public static boolean isLogin = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		isLogin = true;
 		Log.d("hello","hello");
-
 		setContentView(R.layout.activity_main);
 		initHeadView(sp.getString("shopName",""), false,false, 0);
-		
-		//统计app启动次数
-		//mPushAgent.onAppStart();
 		initView();
 		if(savedInstanceState!= null)
         {
@@ -72,6 +78,41 @@ public class MainActivity extends BaseActivity
             savedInstanceState.remove(FRAGMENTS_TAG);
         }
 	}
+/*	android.os.Handler handler = new android.os.Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if (msg.obj!=null){
+				*//**
+				 * 打开订单详情
+				 *//*
+				String orderId = (String) msg.obj;
+				Intent intent1 = new Intent(context,ShopOrderDetailActivity.class);
+				intent1.putExtra("id",Long.parseLong(orderId));
+				intent1.putExtra("isNetOrder",true);
+				intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent1);
+			}
+		}
+	};*/
+
+	/**
+	 * 每次加载都查看是否有未播放的订单消息
+	 */
+	/*@Override
+	public void onResume() {
+		super.onResume();
+		Set<String> pushOrdsers = sp.getStringSet("pushOrdsers", null);
+		if (pushOrdsers!=null){
+			for (String order: pushOrdsers ){
+				Message message = Message.obtain();
+				message.obj = order;
+				handler.sendMessageDelayed(message,5000);//每隔5秒发送一个
+				pushOrdsers.remove(order);//每发送完一个，移除一条订单
+			}
+		}
+	}*/
+
 	long firtTime = 0;
 	boolean isFirst = true;
 	//返回按钮监听
@@ -191,7 +232,7 @@ public class MainActivity extends BaseActivity
 				mine_text.setTextColor(mine_text.getResources().getColor(R.color.head_color));
 				ft = fm.beginTransaction();
 				//主页
-				ft.replace(R.id.FrameLayoutPager, createFragment(1)).commit();
+				ft.replace(R.id.FrameLayoutPager, createFragment(1)).commitAllowingStateLoss();
 				break;
 			//进入消息列表
 			case R.id.messagelin:
@@ -204,7 +245,7 @@ public class MainActivity extends BaseActivity
 				mine_icon.setImageResource(R.drawable.icon_wode);
 				mine_text.setTextColor(mine_text.getResources().getColor(R.color.head_color));
 				ft = fm.beginTransaction();
-				ft.replace(R.id.FrameLayoutPager, createFragment(2)).commit();
+				ft.replace(R.id.FrameLayoutPager, createFragment(2)).commitAllowingStateLoss();
 				break;
 			//进入个人中心
 			case R.id.shopelin:
@@ -222,7 +263,7 @@ public class MainActivity extends BaseActivity
 				mine_icon.setImageResource(R.drawable.icon_wode_sel);
 				mine_text.setTextColor(mine_text.getResources().getColor(R.color.text_color));
 				ft = fm.beginTransaction();
-				ft.replace(R.id.FrameLayoutPager, createFragment(3)).commit();
+				ft.replace(R.id.FrameLayoutPager, createFragment(3)).commitAllowingStateLoss();
 				break;
 			}
 		}
@@ -237,4 +278,5 @@ public class MainActivity extends BaseActivity
 		startActivity(intent);
 	}
 
+	
 }

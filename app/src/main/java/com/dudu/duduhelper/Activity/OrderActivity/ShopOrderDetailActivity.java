@@ -104,12 +104,22 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		initialEnv();//第一次的时候需要创建本地语音包
 		setContentView(R.layout.shop_order_detail);
 		initHeadView("订单详情",true, false,0);
-		id = getIntent().getLongExtra("id",0)+"";
-		isNetNotification = getIntent().getBooleanExtra("isNetOrder",false);
 		orderDetailAdapter=new OrderDetailAdapter(this);
 		initView();
+		
+	}
+
+	/**
+	 * 加载数据
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+		isNetNotification = getIntent().getBooleanExtra("isNetOrder",false);
+		id = getIntent().getLongExtra("id",0)+"";
 		initData();
 	}
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
@@ -275,7 +285,12 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		//电话
 		orderPhoneTextView.setText(orderData.getMobile());
 		//订单总数
-		order_Num.setText(orderData.getExt());
+		try {
+			JSONObject ext = new JSONObject(orderData.getExt());
+			order_Num.setText(ext.getString("num"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		//订单金额
 		orderFeeTextView.setText(orderData.getTotal_fee());
 		//折扣金额
@@ -314,81 +329,10 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			}
 		});
 		
-		//核销按钮
-		enterButton.setOnClickListener(new OnClickListener() 
-		{
-			@Override
-			public void onClick(View v) 
-			{
-				MyDialog.showDialog(ShopOrderDetailActivity.this, "  确认要核销订单号为"+orderNumTextView.getText().toString()+"的订单吗？",true, true, "取消", "确认核销", new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) 
-					{
-						MyDialog.cancel();
-					}
-				}, new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) 
-					{
-						changeStatus("3");
-					}
-				});
-			}
-			
-		});
-		//取消按钮
-		noButton.setOnClickListener(new OnClickListener() 
-		{
-			
-			@Override
-			public void onClick(View v) 
-			{
-				changeStatus("0");
-			}
-		});
-		//
+		
 		
 	}
-	//核销订单
-	private void changeStatus(String status) 
-	{
-		RequestParams params = new RequestParams();
-		params.put("id",orderData.getId());
-		params.put("status",status);
-        HttpUtils.getConnection(context,params,ConstantParamPhone.CHANGE_ORDER_STATUS, "post",new TextHttpResponseHandler()
-		{
-			@Override
-			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3) 
-			{
-				Toast.makeText(ShopOrderDetailActivity.this, "网络不给力呀", Toast.LENGTH_SHORT).show();
-			}
-			@Override
-			public void onSuccess(int arg0, Header[] arg1, String arg2) 
-			{
-				ResponsBean responsBean=new Gson().fromJson(arg2,ResponsBean.class);
-				if(!responsBean.getStatus().equals("1"))
-				{
-					Toast.makeText(ShopOrderDetailActivity.this, "出错啦！", Toast.LENGTH_SHORT).show();
-				}
-				else
-				{
-					Toast.makeText(ShopOrderDetailActivity.this, "修改成功啦", Toast.LENGTH_SHORT).show();
-					Intent intent=new Intent();  
-	                setResult(RESULT_OK, intent);  
-	                finish();
-				}
-			}
-			@Override
-			public void onFinish() 
-			{
-				Intent intent=new Intent();  
-                setResult(RESULT_OK, intent);  
-                finish();
-			}
-		});
-	}
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
@@ -580,7 +524,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			startActivity(intent);
 			//开始搜索
 			bluetoothAdapter.startDiscovery();
-			Toast.makeText(context,"请手动打印小票，",Toast.LENGTH_SHORT).show();
+			Toast.makeText(context,"打开蓝牙后，请再次点击打印，",Toast.LENGTH_LONG).show();
 		}
 		//蓝牙已开启
 		else
@@ -593,7 +537,6 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 				//根据名称获取蓝牙地址,已绑定的设备是个列表,需要循环遍历设备打印
 				for (BluetoothDevice item :bluetoothAdapter.getBondedDevices()){
 					if (item.getBondState() ==BluetoothDevice.BOND_BONDED  ){
-						//判断当前设备是否可用
 						//尝试链接看是否可用
 						try {
 							bluetoothSocket = item.createRfcommSocketToServiceRecord(uuid);
@@ -607,10 +550,16 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 						device = item;
 						isConnection = true;
 						LogUtil.d("useable",device.getName()+"yes");
-						break;//跳出循环
+						sendPrint();//打印
+						return;
 					}
 				}
-				sendPrint();//打印
+				//循环完毕没找到就结束当前方法，跳转到打印机列表界面
+				Toast.makeText(context,"没有适配的打印机",Toast.LENGTH_LONG).show();
+				Intent intent=new Intent(ShopOrderDetailActivity.this,ShopSearchBlueToothActivity.class);
+				intent.putExtra("source","orderDetail");
+				startActivityForResult(intent,2);
+				return;
 			}
 			else
 			{

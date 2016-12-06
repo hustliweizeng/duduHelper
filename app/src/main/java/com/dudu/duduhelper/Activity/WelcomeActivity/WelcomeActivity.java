@@ -28,7 +28,6 @@ import com.dudu.duduhelper.javabean.InfoBean;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.umeng.message.PushAgent;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -51,11 +50,8 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
     private ImageView[] points;  
     // 记录当前选中位置  
     private int currentIndex;  
-    private ImageView loadImage;
-    private PushAgent mPushAgent;
-    private String device_token;
-    private String methord="";
-	private boolean shopIsoPen;
+	
+	
 
 	@Override
 	/**
@@ -67,8 +63,6 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
-	
-		
 		if(!sp.getBoolean("firstrun", true))
 		{
 			//如果登陆保存过用户数据,直接请问网络

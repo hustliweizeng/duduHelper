@@ -38,6 +38,9 @@ public class DuduHelperApplication extends Application
 	public void onCreate() 
 	{
 		super.onCreate();
+		SharedPreferences sp = getSharedPreferences("userconig", Context.MODE_PRIVATE);
+		sp.edit().putStringSet("pushOrdsers",null).commit();//每次清空上次订单存储的信息
+
 		/**
 		 * 注册推送服务
 		 */
@@ -63,13 +66,14 @@ public class DuduHelperApplication extends Application
 		//客户端打开声音和震动
 		mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SERVER);
 		mPushAgent.setNotificaitonOnForeground(true);//应用在前台也显示通知
-		SharedPreferences sp = getSharedPreferences("userconig",Context.MODE_PRIVATE);
+		
 		if(sp.getBoolean("isRemindOpen",false)){
 			mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//开启通知声音
 		}
 		if(sp.getBoolean("isRingOpen",false)){
 			mPushAgent.setNotificationPlayVibrate(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//开启震动
 		}
+		
 		
 		/**
 		 * buggly自动更新功能

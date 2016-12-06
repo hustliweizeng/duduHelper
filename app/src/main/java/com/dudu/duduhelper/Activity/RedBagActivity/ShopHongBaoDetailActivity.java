@@ -72,9 +72,9 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 	private void initView() 
 	{
 		options = new DisplayImageOptions.Builder()
-		.showImageOnLoading(R.drawable.icon_head)
-		.showImageForEmptyUri(R.drawable.icon_head)
-		.showImageOnFail(R.drawable.icon_head)
+		.showImageOnLoading(R.drawable.ic_defalut)
+		.showImageForEmptyUri(R.drawable.ic_defalut)
+		.showImageOnFail(R.drawable.ic_defalut)
 		.cacheInMemory(true).considerExifParams(true)
 		.bitmapConfig(Bitmap.Config.RGB_565)
 		.displayer(new FadeInBitmapDisplayer(100)).build();
@@ -103,8 +103,6 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 				LogUtil.d("edit","edtred");
 				intent.putExtra("data",data);
 				startActivityForResult(intent, 1);
-				//结束当前页面
-				finish();
 			}
 		});
 		if (isMainShop){
@@ -135,7 +133,6 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 						hongbaoBean= data.getData();
 						if (hongbaoBean == null)
 							return;
-
 						//设置数据
 						hongbaoName.setText(hongbaoBean.getTitle());
 						hongbaoStartTimeTextView.setText(hongbaoBean.getTime_start()+" \n"+hongbaoBean.getTime_end());

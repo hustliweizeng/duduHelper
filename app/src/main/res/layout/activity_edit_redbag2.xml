@@ -102,14 +102,42 @@
 
                 </RelativeLayout>
 
-                <ImageView
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="16dp"
-                    android:background="@color/text_hint_color" />
+                    android:background="@color/list_divide" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/bg_white_color">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16sp"
+                        android:text="发送数量"
+                        android:textColor="@color/text_dark_color"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/ed_num"
+                        android:inputType="numberDecimal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="16dp"
+                        android:background="@null"
+                        android:gravity="right"
+                        android:hint="请输入红包数量"
+                        android:textColor="@color/text_dark_color"
+                        android:textColorHint="@color/text_hint_color"
+                        android:textSize="14sp" />
+                </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -192,9 +220,18 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="16dp"
-                android:background="@color/text_hint_color" />
+                android:background="@color/list_divide" />
 
+           
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="16dp"
+                android:background="@color/list_divide" />
             <RelativeLayout
+                android:id="@+id/ll_apply_shop"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/bg_white_color">
@@ -204,24 +241,18 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16sp"
-                    android:text="发送数量"
+                    android:text="适用门店"
                     android:textColor="@color/text_dark_color"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/ed_num"
-                    android:inputType="numberDecimal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="16dp"
-                    android:background="@null"
-                    android:gravity="right"
-                    android:hint="请输入红包数量"
-                    android:textColor="@color/text_dark_color"
-                    android:textColorHint="@color/text_hint_color"
-                    android:textSize="14sp" />
+               <ImageView
+                   android:layout_alignParentRight="true"
+                   android:layout_marginRight="16dp"
+                   android:layout_width="20dp"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/icon_arrow"
+                   
+                   />
             </RelativeLayout>
 
             <RelativeLayout
@@ -421,7 +452,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="红包有效期"
+                        android:text="红包有效期(天)"
                         android:textSize="16dp"
                         android:layout_marginLeft="16dp"
                         android:textColor="@color/text_dark_color"

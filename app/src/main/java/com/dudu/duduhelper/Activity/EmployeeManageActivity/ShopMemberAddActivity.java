@@ -87,8 +87,6 @@ public class ShopMemberAddActivity extends BaseActivity
 				}else {
 					Toast.makeText(context,"没有请求到店铺数据",Toast.LENGTH_SHORT).show();
 				}
-
-
 			}
 
 		});
@@ -149,12 +147,17 @@ public class ShopMemberAddActivity extends BaseActivity
 								for ( ShopUserDetaiBean.DataBean.ShopsBean item : dataBean.getShops()){
 									shopIds.add(item.getId());
 								}
+								checkedIds = shopIds;//设置已选中id
 							}
 						}
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
-						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						if(msg.contains("已经存在")){
+							Toast.makeText(context,"该账号已存在",Toast.LENGTH_LONG).show();
+						}else {
+							Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -163,7 +166,6 @@ public class ShopMemberAddActivity extends BaseActivity
 			@Override
 			public void onFinish() 
 			{
-				// TODO Auto-generated method stub
 				ColorDialog.dissmissProcessDialog();
 			}
 		});
@@ -171,7 +173,6 @@ public class ShopMemberAddActivity extends BaseActivity
 	//修改数据
 	private void upDateData() 
 	{
-		// TODO Auto-generated method stub
 		if(TextUtils.isEmpty(membername.getText().toString()))
 		{
 			Toast.makeText(ShopMemberAddActivity.this, "请输入用户姓名", Toast.LENGTH_SHORT).show();
@@ -274,12 +275,13 @@ public class ShopMemberAddActivity extends BaseActivity
 	}
 	List<String> checkedIds = new ArrayList<>();
 	List<String> checkedNames = new ArrayList<>();
-				//显示行业选择框
+	//显示可选店铺
 	private void showCategorySelctor(final List<ShopListBean.DataBean> category, final String title) {
-		adapter.addAll(category);
-		/*if (shopIds!=null &&checkedIds.size()>0){//已经选择的列表
-			
-		}*/
+		if (shopIds!=null &&shopIds.size()>0){
+			adapter.addCheckedIds(category,shopIds,true);//把所有店铺列表，已选中列表传递过去
+		}{
+			adapter.addAll(category);
+		}
 		final AlertDialog dailog = new AlertDialog.Builder(context).create();
 		dailog.show();
 		//获取window之前必须先show

@@ -87,7 +87,11 @@ public class BankListAdapter extends BaseAdapter
 			if(!TextUtils.isEmpty(data.getCard_number()))
 			{
 				//只显示末尾4个
-				viewHolder.bankCardNum.setText(data.getCard_number().substring(data.getCard_number().length()-4));
+				if (data.getCard_number().length()>4){
+					viewHolder.bankCardNum.setText(data.getCard_number().substring(data.getCard_number().length()-4));
+				}else {
+					viewHolder.bankCardNum.setText("****");
+				}
 			}
 			//设置姓名
 			if(!TextUtils.isEmpty(list.get(position).getName()))

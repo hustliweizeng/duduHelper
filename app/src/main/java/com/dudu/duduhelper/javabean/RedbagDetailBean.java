@@ -58,6 +58,25 @@ public class RedbagDetailBean implements Serializable {
 		private String used_money;
 		private List<String> range;
 		private List<LimitBean> limit;
+		private String rules;
+
+		public String getRules() {
+			return rules;
+		}
+
+		public void setRules(String rules) {
+			this.rules = rules;
+		}
+
+		public List<Shopbean> getApply_shops() {
+			return apply_shops;
+		}
+
+		public void setApply_shops(List<Shopbean> apply_shops) {
+			this.apply_shops = apply_shops;
+		}
+
+		private List<Shopbean> apply_shops;
 
 		public String getId() {
 			return id;
@@ -213,6 +232,62 @@ public class RedbagDetailBean implements Serializable {
 
 			public void setUsable(String usable) {
 				this.usable = usable;
+			}
+		}
+		public  static  class  Shopbean implements  Serializable{
+			private String  id;
+			private String  title;
+			private String  lat;
+			private String  lng;
+			private String  address;
+			private String  tel;
+
+			public String getId() {
+				return id;
+			}
+
+			public void setId(String id) {
+				this.id = id;
+			}
+
+			public String getTitle() {
+				return title;
+			}
+
+			public void setTitle(String title) {
+				this.title = title;
+			}
+
+			public String getLat() {
+				return lat;
+			}
+
+			public void setLat(String lat) {
+				this.lat = lat;
+			}
+
+			public String getLng() {
+				return lng;
+			}
+
+			public void setLng(String lng) {
+				this.lng = lng;
+			}
+
+			public String getAddress() {
+				return address;
+			}
+
+			public void setAddress(String address) {
+				this.address = address;
+			}
+
+			public String getTel() {
+				return tel;
+			}
+
+			public void setTel(String tel) {
+				this.tel = tel;
 			}
 		}
 	}

@@ -63,7 +63,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_search_blue_tooth);
 		initHeadView("打印机", true, false, 0);
-		time = new TimeCount(10000, 1000);//构造CountDownTimer对象
+		time = new TimeCount(20000, 1000);//构造CountDownTimer对象
 		deviceAdapter=new DeviceAdapter(this);
 		initFilter();
 		initView();
@@ -238,7 +238,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 				if(!bluetoothAdapter.isEnabled())//蓝牙是否可用
 				{
 					Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE); //打开蓝牙    
-					intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3000);     
+					intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30000);     
 					startActivity(intent);
 				}
 				//开始搜索
@@ -322,7 +322,7 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 					//开始动画
 					startAnima();//指针循环
 					startcircularAnima();//无限循环
-					time.start();//开始计时10秒
+					time.start();//开始计时20秒
 					break;
 				case BluetoothDevice.ACTION_FOUND:
 					//Toast.makeText(ShopSearchBlueToothActivity.this,"发现设备", Toast.LENGTH_SHORT).show();

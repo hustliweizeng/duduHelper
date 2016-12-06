@@ -201,7 +201,11 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 			Toast.makeText(this, "信息填写不完整！", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		
+		//
+		/*if (!Util.isChinaPhoneLegal(phoneNumText.getText().toString().trim())){
+			Toast.makeText(context,"手机号码输入错误",Toast.LENGTH_LONG).show();
+			return;
+		}*/
 		RequestParams params = new RequestParams();
 		params.add("name",ed_title_shop.getText().toString());
 		params.add("contact",phoneNumText.getText().toString());

@@ -12,10 +12,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.MainActivity;
+import com.dudu.duduhelper.Activity.WelcomeActivity.CheckShopActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginActivity;
 import com.dudu.duduhelper.Activity.WelcomeActivity.LoginBindPhoneActivity;
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.CheckShopAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
@@ -23,9 +25,13 @@ import com.dudu.duduhelper.javabean.LoginBean;
 import com.dudu.duduhelper.javabean.ShopCheckListBean;
 import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
+import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.dudu.duduhelper.R;
 /**
  * @author
@@ -53,20 +59,53 @@ public class ChangeShopActivity extends BaseActivity {
 	 * 获取店铺列表信息
 	 */
 	private void initData() {
+
+		RequestParams params = new RequestParams();
+		String umeng_token = sp.getString("umeng_token", "");
+		params.add("umeng_token",umeng_token);
+		params.add("username",sp.getString("loginname",""));
+		params.add("password",sp.getString("password",""));
+
+		String url = ConstantParamPhone.USER_LOGIN;//调用切换门店信息
+		HttpUtils.getConnection(context, params,url,"POST",new TextHttpResponseHandler()
+		{
+			@Override
+			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
+			{
+				arg3.printStackTrace();
+				Toast.makeText(context, arg2, Toast.LENGTH_LONG).show();
+			}
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, String arg2)
+			{
+				ColorDialog.dissmissProcessDialog();
+				LogUtil.d("ss",arg2);
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						ShopCheckListBean data = new Gson().fromJson(arg2, ShopCheckListBean.class);
+						if (data!=null && data.getList()!=null){
+							adapter.addAll(data.getList());
+						}
+						siwpeRefresh.setRefreshing(false);
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+		});
 		
 		
 		
 		
-		
-		
-		
-		String shopList = sp.getString("shopList", "");
-		LogUtil.d("listres",shopList);
-		ShopCheckListBean shopCheckListBean = new Gson().fromJson(shopList, ShopCheckListBean.class);
-		if (shopCheckListBean!=null && shopCheckListBean.getList()!=null){
-			adapter.addAll(shopCheckListBean.getList());
-		}
-		siwpeRefresh.setRefreshing(false);
+	
 	}
 
 	private void initView() {

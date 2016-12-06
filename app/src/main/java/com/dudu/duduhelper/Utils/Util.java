@@ -53,13 +53,29 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class Util 
 {
 	public static String cityName ;  //城市名    
 	public static  Location citylocation;
     private static Geocoder geocoder;   //此对象能通过经纬度来获取相应的城市等信息
-    //比较时间大小
+	/**
+	 * 大陆手机号码11位数，匹配格式：前三位固定格式+后8位任意数 
+	 * 此方法中前三位格式有： 
+	 * 13+任意数 
+	 * 15+除4的任意数 
+	 * 18+除1和4的任意数 
+	 * 17+除9的任意数 
+	 * 147 
+	 */
+	public static boolean isChinaPhoneLegal(String str) throws PatternSyntaxException {
+		String regExp = "^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$";
+		Pattern p = Pattern.compile(regExp);
+		Matcher m = p.matcher(str);
+		return m.matches();
+	}
+	//比较时间大小
 	public static boolean compareDate(String DATE1, String DATE2) 
 	{
 	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");

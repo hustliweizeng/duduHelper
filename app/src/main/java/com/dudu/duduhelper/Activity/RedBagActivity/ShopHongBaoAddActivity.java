@@ -11,18 +11,19 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.http.Header;
-import org.fireking.app.imagelib.entity.ImageBean;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.dudu.duduhelper.BaseActivity;
 import com.dudu.duduhelper.Utils.LogUtil;
-import com.dudu.duduhelper.adapter.SendShaiShaiAdapter;
+import com.dudu.duduhelper.adapter.ShopListSelectAdapter;
 import com.dudu.duduhelper.application.DuduHelperApplication;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.RedbagDetailBean;
+import com.dudu.duduhelper.javabean.ShopListBean;
 import com.dudu.duduhelper.widget.OverScrollView;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -38,9 +39,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -52,11 +55,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import com.dudu.duduhelper.R;
 public class ShopHongBaoAddActivity extends BaseActivity {
-	private SendShaiShaiAdapter sendShaiShaiAdapter;
-	private String id;
-	private String category;
 
-	private ListView hongbaoAddList;
 	private EditText hongbaoNameEditText;
 	private EditText hongbaoPrice;
 	private EditText hongbaonum;
@@ -75,32 +74,33 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 
 	private Button saveProductbutton;
 	private ImageView productImageView;
-	private LinearLayout referchHead;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	// 用来拼接日期和时间，最终用来显示的
 	private StringBuilder datastr = new StringBuilder("");
 	private int flag = 0;
 	private int flag1 = 0;
-	private boolean isAdd = false;
-	private List<ImageBean> imagesList = new ArrayList<ImageBean>();
 	private TextView textToumingView;
 	private LinearLayout ll_view;
 	private int position = 0;
 	private EditText ed_rules;
+	private LinearLayout ll_apply_shop;
+	private ShopListBean ShopListData;
+	private RedbagDetailBean bean;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_activity_hong_bao_add);
+		adapter = new ShopListSelectAdapter(context, R.layout.item_circle_multi_select);
 		initHeadView("修改商品", true, false, 0);
 		DuduHelperApplication.getInstance().addActivity(this);
 		initView();
 		initData();
-		
 	}
 
 	private void initView() 
 	{
+		ll_apply_shop = (LinearLayout) findViewById(R.id.ll_apply_shop);
 		textToumingView = (TextView) this.findViewById(R.id.textToumingView);
 		productImageView = (ImageView) this.findViewById(R.id.productImageView);
 		saveProductbutton = (Button) this.findViewById(R.id.saveProductbutton);
@@ -134,7 +134,6 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 			@Override
 			public void onAnimationEnd(Animation animation) 
 			{
-				// TODO Auto-generated method stub
 				textToumingView.setVisibility(View.GONE);
 			}
 		});
@@ -158,7 +157,6 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		hongbaoendTimeLin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				// 弹出时间对话框
 				showDataDialog(hongbaoEndTimeTextView);
 			}
@@ -168,14 +166,101 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 					SubmitProduct();
+			}
+		});
+		ll_apply_shop.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getShopListData();//获取店铺列表信息
+			}
+		});
+	}
+
+	//获取店铺列表数据
+	private void getShopListData()
+	{
+		HttpUtils.getConnection(context,null, ConstantParamPhone.GET_SHOP_LIST, "GET",new TextHttpResponseHandler()
+		{
+			@Override
+			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
+			{
+				Toast.makeText(context, "网络不给力呀", Toast.LENGTH_SHORT).show();
+			}
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, String arg2)
+			{
+				try {
+					JSONObject object = new JSONObject(arg2);
+					String code =  object.getString("code");
+					if ("SUCCESS".equalsIgnoreCase(code)){
+						//数据请求成功
+						ShopListData = new Gson().fromJson(arg2, ShopListBean.class);
+						//防止多次加入数据，先清空原有数据
+						adapter.clear();
+						adapter.addAll(ShopListData.getData());
+					}else {
+						//数据请求失败
+						String msg = object.getString("msg");
+						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				showShopListSelctor(ShopListData.getData(),"适用门店");
+			}
+		});
+	}
+	private ShopListSelectAdapter adapter;
+	List<String> checkedIds = new ArrayList<>();
+
+	/**
+	 * 选择红包适用门店
+	 * @param category
+	 * @param title
+	 */
+	private void showShopListSelctor(final List<ShopListBean.DataBean> category, final String title) {
+		//每次进入传递已选中的列表
+		adapter.addCheckedIds(category,checkedIds,true);
+		final AlertDialog dailog = new AlertDialog.Builder(context).create();
+		dailog.show();
+		//获取window之前必须先show
+		Window window = dailog.getWindow();
+		window.setContentView(R.layout.alertdailog_multi_choose);
+		TextView tv_title_alertdailog = (TextView) window.findViewById(R.id.tv_title_alertdailog);
+		ListView lv_alertdailog = (ListView) window.findViewById(R.id.lv_alertdailog);
+		ImageView iv_canle_alertdailog = (ImageView) window.findViewById(R.id.iv_canle_alertdailog);
+
+		tv_title_alertdailog.setText(title);
+		lv_alertdailog.setAdapter(adapter);
+
+		LogUtil.d("adapter", adapter.getCount()+"");
+		//通过接口回调，确认选择的条目，并展示出来
+		lv_alertdailog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				String itemId = adapter.getItemId(position)+"";
+				if (checkedIds.contains(itemId)){
+					checkedIds.remove(itemId);
+				}else {
+					checkedIds.add(itemId);
+				}
+				adapter.setcheckedId(position+"");//设置位置
+			}
+
+		});
+		iv_canle_alertdailog.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dailog.dismiss();
 			}
 		});
 
 	}
-
-	
 
 	// 选择日期,调用系统主题
 	@SuppressLint("InlinedApi")
@@ -202,7 +287,6 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 									+ dayOfMonth + " ");
 							showTimePickerDialog(textView);
 						}
-						// textView.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
 					}
 				}, mycalendar.get(Calendar.YEAR),
 				mycalendar.get(Calendar.MONTH),
@@ -234,11 +318,25 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 	}
 
 	private void initData() {
-		RedbagDetailBean bean  = (RedbagDetailBean) getIntent().getSerializableExtra("data");
-		if (bean==null){
-			Toast.makeText(context,"没有要显示的数据",Toast.LENGTH_SHORT).show();
+		//通过详情页面获取传递的数据
+		bean = (RedbagDetailBean) getIntent().getSerializableExtra("data");
+		if (bean ==null){
+			Toast.makeText(context,"没有要获取到数据",Toast.LENGTH_SHORT).show();
 			LogUtil.d("ok","获取到数据");
 			return;
+		}
+		/**
+		 * 设置已选中的条目
+		 */
+		//初始化获取已经设置的适用门店信息
+		List<RedbagDetailBean.DataBean.Shopbean> apply_shops = bean.getData().getApply_shops();
+		if (apply_shops!=null &&apply_shops.size()>0){
+			for (RedbagDetailBean.DataBean.Shopbean item :apply_shops){
+				if (!checkedIds.contains(item.getId())){
+					checkedIds.add(item.getId());//把已知数据放到集合中
+					LogUtil.d("init_add",item.getId());
+				}
+			}
 		}
 		hongbaoBean = bean.getData();
 		hongbaoNameEditText.setText(hongbaoBean.getTitle());
@@ -249,6 +347,7 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		hongbaoStartTimeTextView.setText((hongbaoBean.getTime_start()));
 		hongbaoEndTimeTextView.setText(hongbaoBean.getTime_end());
 		hongbaodaynumEditText.setText(hongbaoBean.getLife());
+		ed_rules.setText(hongbaoBean.getRules());
 		//获取限制条件
 		List<RedbagDetailBean.DataBean.LimitBean> limits = hongbaoBean.getLimit();
 		if (limits!=null &&limits.size()>0){
@@ -256,8 +355,8 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 			createConditon(limitBean.getPrice(),limitBean.getUsable());
 		}
 		//设置图片
-		if (hongbaoBean.getImage()!=null){
-			ImageLoader.getInstance().displayImage(hongbaoBean.getImage(),productImageView);
+		if (hongbaoBean.getLogo()!=null){
+			ImageLoader.getInstance().displayImage(hongbaoBean.getLogo(),productImageView);
 		}
 		
 	}
@@ -322,6 +421,10 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		params.put("range[]","1");
 		params.put("logo",sp.getString("shopLogo",""));
 		params.put("image","232");
+		if (checkedIds!=null &&checkedIds.size()>0){//设置选中的店铺
+			params.put("apply_shops",checkedIds);
+			LogUtil.d("apply_shops",checkedIds.toString());
+		}
 		//在condition中维护了一组集合条件
 		Set<Map.Entry<Integer, LinearLayout>> items = conditions.entrySet();
 		//转换为迭代器

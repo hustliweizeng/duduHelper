@@ -10,7 +10,9 @@ import android.content.SharedPreferences;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import com.dudu.duduhelper.Activity.MainActivity;
 import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.R;
 import com.dudu.duduhelper.Utils.LogUtil;
@@ -22,7 +24,10 @@ import com.umeng.message.entity.UMessage;
 import org.android.agoo.common.AgooConstants;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author
@@ -33,10 +38,14 @@ import java.util.List;
 public class MyPushIntentService extends UmengMessageService {
 	private static final String TAG = MyPushIntentService.class.getName();
 	private String orderId;
+	Set<String> ids = new HashSet<>();
+	private SharedPreferences sp;
+
 
 	@Override
-	public void onMessage(Context context, Intent intent) {
+	public void onMessage(final  Context context, Intent intent) {
 		try {
+			sp = getSharedPreferences("userconig", Context.MODE_PRIVATE);
 			LogUtil.d("diy service","ok");
 			//可以通过MESSAGE_BODY取得消息体
 			String message = intent.getStringExtra(AgooConstants.MESSAGE_BODY);
@@ -60,7 +69,6 @@ public class MyPushIntentService extends UmengMessageService {
 				//完全自定义消息的忽略统计
 				UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
 			}
-			SharedPreferences sp = getSharedPreferences("userconig",Context.MODE_PRIVATE);
 			boolean isRemindOpen = sp.getBoolean("isRemindOpen", false);//铃声
 			boolean isRingOpen = sp.getBoolean("isRingOpen", false);//震动
 			/**
@@ -88,46 +96,27 @@ public class MyPushIntentService extends UmengMessageService {
 				mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);//开启震动
 				}
 			}
-				
-			
-			
 			mNotificationManager.notify(22,mBuilder.build());//发送通知
+
 			/**
-			 * 自动跳转到指定页面
+			 * 当登陆成功以后自动跳转到指定页面（订单页面），登陆不成功的时候不跳转
 			 */
+			
+		if (MainActivity.isLogin){
+			//Toast.makeText(context,"已登陆",Toast.LENGTH_SHORT).show();
 			Intent intent1 = new Intent(context,ShopOrderDetailActivity.class);
 			intent1.putExtra("id",Long.parseLong(orderId));
 			intent1.putExtra("isNetOrder",true);
 			intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent1);
-
-
-			/*// 使用完全自定义消息来开启应用服务进程的示例代码
-			// 首先需要设置完全自定义消息处理方式
-			// mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
-			// code to handle to start/stop service for app process
-			JSONObject json = new JSONObject(msg.custom);
-			String topic = json.getString("topic");
-			UmLog.d(TAG, "topic=" + topic);
-*/
-			/*if (topic != null && topic.equals("appName:startService")) {
-				// 在【友盟+】portal上新建自定义消息，自定义消息文本如下
-				//{"topic":"appName:startService"}
-				if (isServiceRunning(context, NotificationService.class.getName()))
-					return;
-				Intent intent3 = new Intent();
-				intent3.setClass(context, NotificationService.class);
-				context.startService(intent1);
-			} else if (topic != null && topic.equals("appName:stopService")) {
-				// 在【友盟+】portal上新建自定义消息，自定义消息文本如下
-				//{"topic":"appName:stopService"}
-				if (!isServiceRunning(context,NotificationService.class.getName()))
-					return;
-				Intent intent4= new Intent();
-				intent4.setClass(context, NotificationService.class);
-				context.stopService(intent1);
-			}*/
+		}else {
+			Toast.makeText(context,"未登录获取不到订单",Toast.LENGTH_SHORT).show();
+			if (!ids.contains(orderId)){
+				ids.add(orderId);
+				sp.edit().putStringSet("pushOrdsers",ids).commit();
+			}
 			
+		}
 
 		} catch (Exception e) {
 			UmLog.e(TAG, e.getMessage());
@@ -142,19 +131,5 @@ public class MyPushIntentService extends UmengMessageService {
 		PendingIntent pendingIntent= PendingIntent.getActivity(this, 1,intent, flags);
 		return pendingIntent;
 	}
-	public  boolean isServiceRunning(Context context, String className) {
-		boolean isRunning = false;
-		ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-		List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(Integer.MAX_VALUE);
-		if(serviceList == null || serviceList.isEmpty())
-			return false;
-		for(int i = 0; i < serviceList.size(); i++) {
-			if(serviceList.get(i).service.getClassName().equals(className) && TextUtils.equals(
-					serviceList.get(i).service.getPackageName(), context.getPackageName())) {
-				isRunning = true;
-				break;
-			}
-		}
-		return isRunning;
-	}
+
 }
