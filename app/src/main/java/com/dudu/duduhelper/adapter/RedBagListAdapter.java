@@ -51,6 +51,7 @@ public class RedBagListAdapter extends BaseAdapter {
 				delList.put(i,false);
 			}
 			LogUtil.d("","data="+list.size());
+			notifyDataSetChanged();
 		}
 	}
 	public void setIsDel(){

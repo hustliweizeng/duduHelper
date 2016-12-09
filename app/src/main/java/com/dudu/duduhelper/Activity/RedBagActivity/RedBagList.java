@@ -250,6 +250,8 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 	@Override
 	public void onResume() {
 		super.onResume();
+		swipe_product_list.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新设置
+		swipe_product_list.setRefreshing(true);
 		//重新请求数据
 		requestRedbagStatus();
 	}
@@ -281,7 +283,6 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 							//每次刷新数据之前清空数据
 							adapter.clear();
 							adapter.AddAll(list.getData());
-							adapter.notifyDataSetChanged();
 							swipe_product_list.setRefreshing(false);
 						}
 

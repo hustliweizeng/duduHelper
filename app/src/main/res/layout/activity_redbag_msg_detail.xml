@@ -34,7 +34,6 @@
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5.0"
                 android:textColor="@color/text_color_red"
                 android:textSize="22dp"
                 />
@@ -71,7 +70,6 @@
                 android:id="@+id/tv_limit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint=" 支付满25元以上可使用"
                 android:textColor="@color/text_dark_color"
                 android:textSize="16dp"
                 android:gravity="right"
@@ -99,7 +97,6 @@
                 android:id="@+id/tv_expireTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint=" 15天内使用"
                 android:textColor="@color/text_dark_color"
                 android:textSize="16dp"
                 android:gravity="right"
@@ -108,6 +105,7 @@
 
 
         </LinearLayout>
+
         <LinearLayout
             android:padding="16dp"
             android:layout_width="match_parent"
@@ -127,7 +125,6 @@
                 android:id="@+id/tv_promotePrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint=" 124.00"
                 android:textColor="@color/text_dark_color"
                 android:textSize="16dp"
                 android:background="@drawable/edit_null"
@@ -136,8 +133,8 @@
 
 
         </LinearLayout>
-        
-        
+
+
     </LinearLayout>
     
     <LinearLayout

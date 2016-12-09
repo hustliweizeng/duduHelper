@@ -22,7 +22,7 @@ import com.dudu.duduhelper.R;
 
 public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 	Context context;
-	List<RedbagMsgListBean.ListBean> list = new ArrayList<>();
+	public  List<RedbagMsgListBean.ListBean> list = new ArrayList<>();
 
 
 	public RedbagMsgListAdapter(Context context) {
@@ -39,7 +39,7 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 	public void addAll(List<RedbagMsgListBean.ListBean> list) {
 		if (list!=null && list.size()>0){
 			this.list.addAll(list);
-			LogUtil.d("ok","条目数:"+list.size());
+			LogUtil.d("ok","总条目数:"+this.list.size());
 			notifyDataSetChanged();
 		}
 	}
@@ -122,6 +122,7 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 				@Override
 				public void onClick(View v) {
 					if (mListener != null) {
+						LogUtil.d("item_click","all="+list.size()+",current = "+getLayoutPosition());
 						mListener.onItemClick(itemView, getLayoutPosition());
 					}
 				}
@@ -129,15 +130,15 @@ public class RedbagMsgListAdapter extends RecyclerView.Adapter {
 		}
 	}
 
-	GuestListCheckAdapter.OnItemClickListner mListener;
+	OnItemClickListner mListener;
 
 	//为adapter编写条目点击事件
 	public interface OnItemClickListner {
-		public void onItemClick(View view, int position);
+		 void onItemClick(View view, int position);
 	}
 
 	//回调方法
-	public void setOnItemClickListner(GuestListCheckAdapter.OnItemClickListner listner) {
+	public void setOnItemClickListner(OnItemClickListner listner) {
 		mListener = listner;
 	}
 

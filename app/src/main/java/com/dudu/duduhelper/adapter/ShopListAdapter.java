@@ -20,13 +20,11 @@ public class ShopListAdapter extends BaseAdapter
     List<GetHongBaoHistDataBean> list=new ArrayList<GetHongBaoHistDataBean>();
     public ShopListAdapter(Context context)
 	{
-		// TODO Auto-generated constructor stub
 		this.context=context;
 	}
 	@Override
 	public int getCount() 
 	{
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 	public void clear()
@@ -43,14 +41,12 @@ public class ShopListAdapter extends BaseAdapter
 	@Override
 	public GetHongBaoHistDataBean getItem(int arg0) 
 	{
-		// TODO Auto-generated method stub
 		return list.get(arg0);
 	}
 
 	@Override
 	public long getItemId(int arg0) 
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

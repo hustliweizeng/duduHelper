@@ -45,6 +45,9 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 	private RedbagMsgListBean redbagMsgListBean;
 	private boolean isBottom;
 	private int lastVisibleItemPosition;
+	private LinearLayoutManager linearLayoutManager;
+	private int top;
+	private int currentPosition;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -55,14 +58,36 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 		initView();
 		refresh_msg.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
 		refresh_msg.setRefreshing(true);
+		initData(1);
 	}
 	@Override
 	public void onResume() {
 		super.onResume();
-		adapter.clear();
+		/*adapter.clear();
 		initData(1);
 		page =1;
-		LogUtil.d("resume","resume");
+		LogUtil.d("resume","resume");*/
+		linearLayoutManager.scrollToPositionWithOffset(currentPosition,top);
+		
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		saveListViewPositionAndTop();
+	}
+
+	/**
+	 * 保存当前页签listView的第一个可见的位置和top
+	 */
+	private void saveListViewPositionAndTop() {
+		currentPosition = linearLayoutManager.findFirstVisibleItemPosition();
+		View view = recycleview_msg.getChildAt(currentPosition);
+		if (view != null) {//第一次为空
+			top = view.getTop();
+		}else {
+			top = 0;
+		}
 	}
 
 	private void initData(int pageNum) {
@@ -133,13 +158,14 @@ public class CreateRedbagmsgActivity extends BaseActivity {
 				startActivity(new Intent(context,NewRedbagMsgActivity.class));
 			}
 		});
-		recycleview_msg.setLayoutManager(new LinearLayoutManager(this));
+		linearLayoutManager = new LinearLayoutManager(this);
+		recycleview_msg.setLayoutManager(linearLayoutManager);
 		recycleview_msg.setAdapter(adapter);
-		adapter.setOnItemClickListner(new GuestListCheckAdapter.OnItemClickListner() {
+		adapter.setOnItemClickListner(new RedbagMsgListAdapter.OnItemClickListner() {
 			@Override
 			public void onItemClick(View view, int position) {
 				Intent intent = new Intent(context, RedbagMsgDetail.class);
-				intent.putExtra("data",redbagMsgListBean.getList().get(position));
+				intent.putExtra("data",adapter.list.get(position));//把当前点中条目的数据发送给详情
 				startActivity(intent);
 			}
 		});

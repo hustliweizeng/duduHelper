@@ -1,19 +1,18 @@
 package com.dudu.duduhelper.Activity.ShopManageActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.BaseActivity;
-import com.dudu.duduhelper.Utils.Util;
-import com.dudu.duduhelper.adapter.ShopAdapterAdapter;
+import com.dudu.duduhelper.Utils.LogUtil;
+import com.dudu.duduhelper.adapter.MyCommonNavigatorAdapter;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.ShopListBean;
@@ -24,13 +23,33 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.dudu.duduhelper.R;
+
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.UIUtil;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ClipPagerTitleView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ShopListManagerActivity extends BaseActivity 
 {
-	private ListView lv_shop_list;
-	private SwipeRefreshLayout refresh_shop_list;
 	//判断数据是否加载完成
-    private ShopAdapterAdapter adapter;
+    private MyCommonNavigatorAdapter adapter;
 	private ShopListBean data;
+
+
+	private static final String[] CHANNELS = new String[]{"营业中", "审核中", "停业中"};
+	private List<String> mDataList = new ArrayList<>(Arrays.asList(CHANNELS));//导航
+
+	private ViewPager mViewPager;
+	private MagicIndicator mMagicIndicator;
+	private CommonNavigator mCommonNavigator;
 
 
 	@Override
@@ -39,9 +58,6 @@ public class ShopListManagerActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_list_manager);
 		initHeadView("门店管理", true, true, R.drawable.icon_tianjia);
-		initView();
-		refresh_shop_list.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
-		refresh_shop_list.setRefreshing(true);
 		initData();
 	}
 	
@@ -56,39 +72,50 @@ public class ShopListManagerActivity extends BaseActivity
 	@SuppressLint("ResourceAsColor") 
 	private void initView() 
 	{
-		//listview设置
-		adapter=new ShopAdapterAdapter(this);
-		lv_shop_list=(ListView) this.findViewById(R.id.lv_shop_list);
-		lv_shop_list.setAdapter(adapter);
-		//设置下拉更新，上啦加载
-		refresh_shop_list = (SwipeRefreshLayout)this.findViewById(R.id.refresh_shop_list);
-		refresh_shop_list.setColorSchemeResources(R.color.text_color);
-		refresh_shop_list.setSize(SwipeRefreshLayout.DEFAULT);
-		refresh_shop_list.setProgressBackgroundColor(R.color.bg_color);
-		refresh_shop_list.setOnRefreshListener(new OnRefreshListener() 
-		{
-			
-			@Override
-			public void onRefresh() 
-			{
-				//下拉刷新的时候更新数据
-				adapter.clear();
-				initData();
-			}
-		});
 		
-		//条目点击监听
-		lv_shop_list.setOnItemClickListener(new OnItemClickListener() 
-		{
+		adapter=new MyCommonNavigatorAdapter(this,data.getData());
+		//viewpager轮播
+		mViewPager = (ViewPager) findViewById(R.id.view_pager);
+		mViewPager.setAdapter(adapter);//联动
+		//指示条
+		mMagicIndicator = (MagicIndicator) findViewById(R.id.magic_indicator);
+		mMagicIndicator.setBackgroundColor(Color.parseColor("#ffffff"));
+		//导航条，就是下划线
+		mCommonNavigator = new CommonNavigator(this);
+		mCommonNavigator.setSkimOver(true);
+		mCommonNavigator.setAdjustMode(true);
+		mCommonNavigator.setAdapter(new CommonNavigatorAdapter() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
-			{
-				Intent intent = new Intent(context, ShopStatusActivity.class);
-				intent.putExtra("detail",data.getData().get(position));//把条目详情传递到下一页
-				startActivity(intent);//进入详情页面
+			public int getCount() {
+				return mDataList.size();
+			}
+
+			@Override
+			public IPagerTitleView getTitleView(Context context, final int index) {
+				ClipPagerTitleView clipPagerTitleView = new ClipPagerTitleView(context);
+				clipPagerTitleView.setText(mDataList.get(index));
+				clipPagerTitleView.setTextColor(Color.parseColor("#000000"));//文本颜色黑色
+				clipPagerTitleView.setClipColor(Color.parseColor("#3dd6bc"));//下划线颜色绿色
+				clipPagerTitleView.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mViewPager.setCurrentItem(index);
+					}
+				});
+				return clipPagerTitleView;
+			}
+
+			@Override
+			public IPagerIndicator getIndicator(Context context) {
+				return null;
 			}
 		});
+		mMagicIndicator.setNavigator(mCommonNavigator);
+		LinearLayout titleContainer = mCommonNavigator.getTitleContainer(); // must after setNavigator
+		titleContainer.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+		titleContainer.setDividerPadding(UIUtil.dip2px(this, 25));
+		ViewPagerHelper.bind(mMagicIndicator, mViewPager);//绑定关联
 	}
 	
 	//获取数据
@@ -104,6 +131,7 @@ public class ShopListManagerActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2) 
 			{
+				LogUtil.d("res",arg2);
 				try {
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
@@ -111,8 +139,6 @@ public class ShopListManagerActivity extends BaseActivity
 						//数据请求成功
 						data = new Gson().fromJson(arg2, ShopListBean.class);
 						//防止多次加入数据，先清空原有数据
-						adapter.clear();
-						adapter.addAll(data.getData());
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -122,10 +148,17 @@ public class ShopListManagerActivity extends BaseActivity
 					e.printStackTrace();
 				}
 			}
+
 			@Override
-			public void onFinish() 
-			{
-				refresh_shop_list.setRefreshing(false);
+			public void onFinish() {
+				super.onFinish();
+				if (data!=null &&data.getData().size()>0){
+					
+					LogUtil.d("data",data.getData().size()+"");
+					initView();//显示页面
+				}else {
+					Toast.makeText(context,"数据加载失败",Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 	}
@@ -133,6 +166,6 @@ public class ShopListManagerActivity extends BaseActivity
 	@Override
 	public void onResume() {
 		super.onResume();
-		initData();
+		//initData();
 	}
 }

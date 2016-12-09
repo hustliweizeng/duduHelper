@@ -141,7 +141,7 @@ public class ShopOrderActivity extends BaseActivity
 	private void saveListViewPositionAndTop() {
 		firstVisiblePosition = allOrderListView.getFirstVisiblePosition();
 		View item = allOrderListView.getChildAt(0);
-		firstVisiblePositionTop = (item == null) ? 0 : item.getTop();
+		firstVisiblePositionTop = (item == null) ? 0 : item.getTop();//top位置
 	}
 
 

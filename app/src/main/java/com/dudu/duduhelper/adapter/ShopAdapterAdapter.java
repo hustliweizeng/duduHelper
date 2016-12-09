@@ -11,22 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.dudu.duduhelper.R;
 public class ShopAdapterAdapter extends BaseAdapter 
 {
 	private Context context;
     private ViewHolder viewHolder;
-    List<ShopListBean.DataBean> list=new ArrayList<>();
-    public ShopAdapterAdapter(Context context)
+    public  List<ShopListBean.DataBean> list=new ArrayList<>();
+	private boolean isDetail;
+
+	public ShopAdapterAdapter(Context context)
 	{
-		// TODO Auto-generated constructor stub
 		this.context=context;
 	}
 	@Override
 	public int getCount() 
 	{
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 	public void clear()
@@ -36,7 +37,7 @@ public class ShopAdapterAdapter extends BaseAdapter
     }
     public void addAll(List<ShopListBean.DataBean> list)
     {
-	    if (list!=null){
+	    if (list!=null && list!= this.list){
 		    this.list.addAll(this.list.size(), list);
 		    notifyDataSetChanged();
 	    }
@@ -45,21 +46,18 @@ public class ShopAdapterAdapter extends BaseAdapter
 	@Override
 	public ShopListBean.DataBean getItem(int arg0) 
 	{
-		// TODO Auto-generated method stub
 		return list.get(arg0);
 	}
 
 	@Override
 	public long getItemId(int arg0) 
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
-		// TODO Auto-generated method stub
 		if(convertView == null)
 		{
 			viewHolder = new ViewHolder();
@@ -68,6 +66,8 @@ public class ShopAdapterAdapter extends BaseAdapter
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
 			viewHolder.totalTrade  = (TextView) convertView.findViewById(R.id.total_trade);
 			viewHolder.month_trade  = (TextView) convertView.findViewById(R.id.month_trade);
+			viewHolder.mon_date = (LinearLayout) convertView.findViewById(R.id.mon_date);
+			viewHolder.his_date = (LinearLayout) convertView.findViewById(R.id.his_date);
 			convertView.setTag(viewHolder);
 		}
 		else
@@ -88,13 +88,31 @@ public class ShopAdapterAdapter extends BaseAdapter
 				ImageLoader.getInstance().displayImage(dataBean.getImages().get(0),viewHolder.shopimage);
 			}
 		}
+		
+		if (isDetail){
+			viewHolder.mon_date.setVisibility(View.GONE);
+			viewHolder.his_date.setVisibility(View.GONE);
+		}else {
+			viewHolder.mon_date.setVisibility(View.VISIBLE);
+			viewHolder.his_date.setVisibility(View.VISIBLE);
+		}
+		
+		
 		return convertView;
 	}
+
+	public void addAll(List<ShopListBean.DataBean> displaylist, boolean isDetail) {
+		addAll(displaylist);
+		this.isDetail = isDetail;
+	}
+
 	private class ViewHolder
 	{
 		private ImageView shopimage;
 		private TextView name;
 		private TextView totalTrade;
 		public TextView month_trade;
+		public LinearLayout mon_date;
+		public LinearLayout his_date;
 	}
 }

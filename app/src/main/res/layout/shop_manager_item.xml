@@ -42,6 +42,7 @@
                 android:textColor="@color/text_color_dark"
                 android:textSize="18sp" />
             <LinearLayout
+                android:id="@+id/his_date"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -64,6 +65,7 @@
                 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/mon_date"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
