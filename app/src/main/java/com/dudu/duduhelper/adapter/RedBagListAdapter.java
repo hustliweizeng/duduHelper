@@ -125,7 +125,7 @@ public class RedBagListAdapter extends BaseAdapter {
 			holder.iv_logo.setImageResource(R.drawable.ic_rb_def);
 		}
 
-		holder.tv_sold.setText("已领:"+ data.getUsed_num());
+		holder.tv_sold.setText("已领:"+ data.getSend_num());
 		holder.tv_stock.setText("红包:"+ data.getNum());
 		holder.tv_name.setText(data.getTitle());
 		holder.tv_price.setText("￥"+data.getTotal());

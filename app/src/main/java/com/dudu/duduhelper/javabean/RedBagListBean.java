@@ -49,7 +49,15 @@ public class RedBagListBean implements  Serializable{
 		private String logo;
 		private String time_start;
 		private String time_end;
-		
+		private String send_num;
+
+		public String getSend_num() {
+			return send_num;
+		}
+
+		public void setSend_num(String send_num) {
+			this.send_num = send_num;
+		}
 
 		public String getId() {
 			return id;

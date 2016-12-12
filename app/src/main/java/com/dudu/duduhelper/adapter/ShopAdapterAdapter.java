@@ -88,13 +88,15 @@ public class ShopAdapterAdapter extends BaseAdapter
 				ImageLoader.getInstance().displayImage(dataBean.getImages().get(0),viewHolder.shopimage);
 			}
 		}
-		
+		/**
+		 * 是否显示数据详情
+		 */
 		if (isDetail){
-			viewHolder.mon_date.setVisibility(View.GONE);
-			viewHolder.his_date.setVisibility(View.GONE);
-		}else {
 			viewHolder.mon_date.setVisibility(View.VISIBLE);
 			viewHolder.his_date.setVisibility(View.VISIBLE);
+		}else {
+			viewHolder.mon_date.setVisibility(View.GONE);
+			viewHolder.his_date.setVisibility(View.GONE);
 		}
 		
 		

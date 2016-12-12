@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ClipPagerTitleView;
 
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class ShopListManagerActivity extends BaseActivity
 		initHeadView("门店管理", true, true, R.drawable.icon_tianjia);
 		initData();
 	}
-	
+
 	@Override
 	public void RightButtonClick() 
 	{
@@ -72,12 +74,27 @@ public class ShopListManagerActivity extends BaseActivity
 	@SuppressLint("ResourceAsColor") 
 	private void initView() 
 	{
-		
 		adapter=new MyCommonNavigatorAdapter(this,data.getData());
 		//viewpager轮播
 		mViewPager = (ViewPager) findViewById(R.id.view_pager);
 		mViewPager.setAdapter(adapter);//联动
 		//指示条
+		mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+				
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				adapter.setCurrentPage(position);
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+
+			}
+		});
 		mMagicIndicator = (MagicIndicator) findViewById(R.id.magic_indicator);
 		mMagicIndicator.setBackgroundColor(Color.parseColor("#ffffff"));
 		//导航条，就是下划线
@@ -107,8 +124,19 @@ public class ShopListManagerActivity extends BaseActivity
 			}
 
 			@Override
+			/**
+			 * 设置下划线
+			 */
 			public IPagerIndicator getIndicator(Context context) {
-				return null;
+				LinePagerIndicator indicator = new LinePagerIndicator(context);
+				float navigatorHeight = UIUtil.dip2px(context, 3);
+				float borderWidth = UIUtil.dip2px(context, 1);
+				float lineHeight = navigatorHeight - 2 * borderWidth;
+				indicator.setLineHeight(lineHeight);
+				indicator.setRoundRadius(lineHeight / 2);
+				indicator.setYOffset(borderWidth);
+				indicator.setColors(Color.parseColor("#3dd6bc"));
+				return indicator;
 			}
 		});
 		mMagicIndicator.setNavigator(mCommonNavigator);

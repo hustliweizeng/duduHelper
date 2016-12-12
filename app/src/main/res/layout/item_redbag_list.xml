@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_toRightOf="@id/iv_logo"
-            android:text="开口松子218gx2袋原味坚"
             android:singleLine="true"
             android:lines="1"
             android:textColor="@color/text_dark_color"
@@ -48,12 +47,11 @@
 
         <TextView
             android:id="@+id/tv_stock"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_name"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/iv_logo"
-            android:text="库存：300"
             android:textColor="@color/text_color_light"
             android:textSize="14dp" />
 
@@ -65,7 +63,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/tv_stock"
-            android:text="已售：300"
             android:textColor="@color/text_color_light"
             android:textSize="14dp" />
 
@@ -76,7 +73,6 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="14dp"
             android:layout_toRightOf="@id/iv_logo"
-            android:text="￥42.9"
             android:textColor="@color/text_color"
             android:textSize="18sp" />
         <TextView

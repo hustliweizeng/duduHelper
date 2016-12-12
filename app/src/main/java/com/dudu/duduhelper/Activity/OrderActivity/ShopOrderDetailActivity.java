@@ -28,24 +28,19 @@ import com.dudu.duduhelper.Utils.LogUtil;
 import com.dudu.duduhelper.Utils.Util;
 import com.dudu.duduhelper.adapter.OrderDetailAdapter;
 import com.dudu.duduhelper.bean.OrderGoods;
-import com.dudu.duduhelper.bean.ResponsBean;
 import com.dudu.duduhelper.http.ConstantParamPhone;
 import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.OrderDetailBean;
 import com.dudu.duduhelper.javabean.OrderStatusBean;
 import com.dudu.duduhelper.javabean.SelectorBean;
-import com.dudu.duduhelper.widget.ColorDialog;
-import com.dudu.duduhelper.widget.MyDialog;
 import com.google.gson.Gson;
 import com.gprinter.command.EscCommand;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import android.app.Notification;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -53,7 +48,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -132,7 +126,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			return;
 		}
 		LogUtil.d("incomeID",id);
-		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		//ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_ORDER_DETAIL+id, "GET", new TextHttpResponseHandler() {
 			@Override
@@ -160,7 +154,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			public void onFinish() {
 				super.onFinish();
 				fillData();
-				ColorDialog.dissmissProcessDialog();
+				//ColorDialog.dissmissProcessDialog();
 				
 			}
 		});

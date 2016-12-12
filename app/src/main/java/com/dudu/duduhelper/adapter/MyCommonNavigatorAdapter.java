@@ -2,9 +2,7 @@ package com.dudu.duduhelper.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,13 +25,14 @@ import java.util.List;
 public class MyCommonNavigatorAdapter extends PagerAdapter {
 	private List<ShopListBean.DataBean> mDataList;//全部门店信息
 	private Context context;
-	private  List<ShopListBean.DataBean> displaylist ;//当前显示的商店列表
+	private  List<ShopListBean.DataBean> displaylist = new ArrayList<>() ;//当前显示的商店列表
 	private  List<ShopListBean.DataBean> openList = new ArrayList<>();//开业列表
 	private  List<ShopListBean.DataBean> checkList = new ArrayList<>();;//审核列表
 	private  List<ShopListBean.DataBean> stopList = new ArrayList<>();;
 	private ListView listView;
 	private ShopAdapterAdapter adapter;
 	private boolean isDetail;
+	private int currentPos;
 
 	public MyCommonNavigatorAdapter(Context context, List<ShopListBean.DataBean> dataList) {
 		mDataList = dataList;
@@ -70,18 +69,17 @@ public class MyCommonNavigatorAdapter extends PagerAdapter {
 
 	@Override
 	/**
-	 * 显示viewpager的内容,根据导航页的位置，显示不同的页面内容
+	 * 显示viewpager的内容,根据导航页的位置，显示不同的页面内容,会预加载！
 	 */
-	public Object instantiateItem(ViewGroup container, int pageNum) {
-		
+	public Object instantiateItem(ViewGroup container, final int pageNum) {
+		LogUtil.d("init_page","pos="+pageNum);
 		/**
 		 * 如果把初始化放到构造方法处会报错误，alerady has child..
 		 */
-		LogUtil.d("page","page = "+pageNum);
 		adapter = new ShopAdapterAdapter(context);
 		listView = new ListView(context);
 		listView.setDivider(null);//分割线为空
-		isDetail = false;
+		isDetail = false;//是否显示详情数据
 		switch (pageNum){
 			case 0:
 				displaylist = openList;
@@ -103,9 +101,19 @@ public class MyCommonNavigatorAdapter extends PagerAdapter {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(context, ShopStatusActivity.class);
-				LogUtil.d("si22ze",displaylist.size()+"=="+adapter.list.size());
-				LogUtil.d("listdata","data = "+adapter.list.toString());
-				intent.putExtra("isdetail",adapter.list.get(position));
+				/**
+				 * 因为预加载的原因，所以displaylist的数据并不一定是当前页的列表，所以在传递数据之前
+				 * 要做判断
+				 */
+				if (currentPos == 0){
+					displaylist = openList;
+				}else if (currentPos ==1){
+					displaylist = checkList;
+				}else {
+					displaylist = stopList;
+				}
+				LogUtil.d("currentPos","currentPos="+currentPos);
+				intent.putExtra("detail",displaylist.get(position));
 				intent.putExtra("isDetail",isDetail);
 				context.startActivity(intent);
 			}
@@ -117,6 +125,7 @@ public class MyCommonNavigatorAdapter extends PagerAdapter {
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
+		LogUtil.d("remove_page","pos="+position);
 		container.removeView((View) object);
 	}
 
@@ -158,5 +167,9 @@ public class MyCommonNavigatorAdapter extends PagerAdapter {
 				break;
 		}
 		return name;
+	}
+
+	public void setCurrentPage(int position) {
+		this.currentPos = position;
 	}
 }

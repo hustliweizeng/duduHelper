@@ -809,8 +809,6 @@ public class ShopProductAddActivity extends BaseActivity
 					e.printStackTrace();
 				}
 			}
-
-
 		});
 
 	}
