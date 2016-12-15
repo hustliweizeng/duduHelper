@@ -108,6 +108,7 @@ public class MyPushIntentService extends UmengMessageService {
 			intent1.putExtra("id",Long.parseLong(orderId));
 			intent1.putExtra("isNetOrder",true);
 			intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			LogUtil.d("swith",orderId);
 			startActivity(intent1);
 		}else {
 			Toast.makeText(context,"未登录获取不到订单",Toast.LENGTH_SHORT).show();
@@ -126,6 +127,7 @@ public class MyPushIntentService extends UmengMessageService {
 	public PendingIntent getDefalutIntent(int flags){
 		Intent intent = new Intent(getBaseContext(), ShopOrderDetailActivity.class);
 		intent.putExtra("id",Long.parseLong(orderId));
+		LogUtil.d("message",orderId);
 		intent.putExtra("isNetOrder",true);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 		PendingIntent pendingIntent= PendingIntent.getActivity(this, 1,intent, flags);

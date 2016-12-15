@@ -3,6 +3,7 @@ package com.dudu.duduhelper.adapter;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -36,7 +37,7 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 		if (list!=null){
 			LogUtil.d("moredata",list.size()+"");
 			this.list.addAll(list);
-			notifyDataSetChanged();
+			notifyDataSetChanged();//刷新页面
 		}
 	}
 	@Override
@@ -51,7 +52,14 @@ public class GuestManageAdapter extends RecyclerView.Adapter {
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 		final  MyViewHolder myholder = (MyViewHolder) holder;
 		GuestListBean.GuestDetails data = list.get(position);
-		ImageLoader.getInstance().displayImage(data.getAvatar(),myholder.iv_photo);
+		/**
+		 * 判断当前图片是否刷新
+		 */
+		if (!data.getAvatar().equals(myholder.iv_photo)){
+			//第一次运行tag肯定为null，所以会执行zheli 
+			myholder.iv_photo.setTag(data.getAvatar());
+			ImageLoader.getInstance().displayImage(data.getAvatar(),myholder.iv_photo);
+		}
 		myholder.tv_consume_price.setText(data.getTotal_consumption());
 		myholder.tv_consume_conut.setText(data.getTotal_num());
 		myholder.tv_date.setText(data.getLast_consumption_time());

@@ -20,6 +20,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -92,6 +93,13 @@ public class ShopMemberAddActivity extends BaseActivity
 		});
 		membername=(EditText) this.findViewById(R.id.membername);
 		membercount=(EditText) this.findViewById(R.id.membercount);
+		if(memberDataBean!=null){
+			membercount.setFocusable(false);
+			membercount.setEnabled(false);
+		}else {
+			membercount.setFocusable(true);
+			membercount.setEnabled(true);
+		}
 		memberpassword=(EditText) this.findViewById(R.id.memberpassword);
 		editMemberbutton=(Button) this.findViewById(R.id.editMemberbutton);
 		editMemberbutton.setOnClickListener(new OnClickListener() 
@@ -207,7 +215,10 @@ public class ShopMemberAddActivity extends BaseActivity
 			params.add("shop_id",checkedIds.toString());
 			LogUtil.d("id_new",checkedIds.toString());
 		}
-		params.add("plaintextPassword",memberpassword.getText().toString().trim());
+		//当密码修改过时才上传
+		if (!"******".equals(memberpassword.getText().toString().trim())){
+			params.add("plaintextPassword",memberpassword.getText().toString().trim());//密码
+		}
 		params.add("nickname",membername.getText().toString().trim());//账号
         HttpUtils.getConnection(context,params,url, "post",new TextHttpResponseHandler(){
 
@@ -223,7 +234,7 @@ public class ShopMemberAddActivity extends BaseActivity
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");
 					if ("SUCCESS".equalsIgnoreCase(code)){
-						Toast.makeText(context,"修改成功",Toast.LENGTH_SHORT).show();
+						Toast.makeText(context,"提交成功",Toast.LENGTH_SHORT).show();
 						finish();
 						//数据请求成功
 					}else {

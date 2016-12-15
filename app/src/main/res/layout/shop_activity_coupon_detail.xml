@@ -52,7 +52,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:text="sdsds"
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:layout_marginRight="16dp"
@@ -64,7 +63,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="22222222222222222222222222222222222222222222"
                         android:textSize="14dp" />
                 </LinearLayout>
             </LinearLayout>
@@ -310,44 +308,16 @@
         </LinearLayout>
     </com.dudu.duduhelper.widget.OverScrollView>
 
-    <LinearLayout
-        android:id="@+id/foot"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal" >
-
         <Button
             android:id="@+id/editCouponButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@drawable/shop_keyboard_hexiao_text_select"
             android:text="修改编辑"
             android:textColor="@color/text_white_color"
             android:textSize="16dp" />
 
-        <!--
-        <Button
-            android:id="@+id/editCouponButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/btn_white_bg"
-            android:text="修改配置"
-            android:textColor="@color/text_color"
-            android:textSize="16dp" />
-
-        <Button
-            android:id="@+id/historyCouponButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/btn_white_bg"
-            android:text="领取记录"
-            android:textColor="@color/text_color"
-            android:textSize="16dp" />
-        -->
-    </LinearLayout>
 
 </RelativeLayout>

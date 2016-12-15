@@ -104,6 +104,7 @@
                 android:layout_height="50dp"
                 android:background="@null"
                 android:gravity="right"
+                android:inputType="textPassword"
                 android:textColorHint="@color/text_hint_color"
                 android:hint="请输入店员账号密码"
                 android:textSize="14dp" />

@@ -331,7 +331,7 @@ public class shopProductListActivity extends BaseActivity
 		//重写父类button,点击弹出checkbox
 		//设置右边的按钮
 		editButton=(Button) this.findViewById(R.id.selectTextClickButton);
-		editButton.setText("批量");
+		editButton.setText("编辑");
 		//editButton.setPadding(28, 30, 26, 28);
 		if("hongbao".equals(category))
 		{
@@ -339,6 +339,13 @@ public class shopProductListActivity extends BaseActivity
 		}
 		else
 		{
+			editButton.setVisibility(View.VISIBLE);
+		}
+		boolean isManager = sp.getBoolean("isManager", false);
+		boolean isMainShop = sp.getBoolean("isMainShop", false);
+		if(!isManager ||!isMainShop){//如果不是店主也不是主店铺
+			editButton.setVisibility(View.GONE);
+		}else {
 			editButton.setVisibility(View.VISIBLE);
 		}
 
@@ -399,10 +406,8 @@ public class shopProductListActivity extends BaseActivity
 		});
 
 		productListView=(ListView) this.findViewById(R.id.productListView);
-
 		orderType=(TextView) this.findViewById(R.id.orderType);
 		orderTypeArror=(ImageView) this.findViewById(R.id.orderTypeArror);
-
 		productTypeArror=(ImageView) this.findViewById(R.id.productTypeArror);
 		selectLine=(LinearLayout) this.findViewById(R.id.selectLine);
 		productRel=(RelativeLayout) this.findViewById(R.id.productRel);
@@ -412,7 +417,6 @@ public class shopProductListActivity extends BaseActivity
 		productListView.addFooterView(footView,null,false);
 		productListView.setOnItemClickListener(new OnItemClickListener()
 		{
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id)
 			{
@@ -602,7 +606,7 @@ public class shopProductListActivity extends BaseActivity
 				}
 				else//如果正在编辑点击取消
 				{
-					editButton.setText("批量");
+					editButton.setText("编辑");
 					//不显示复选框
 					isShowChekckBox = false;
 					productAdapter.isShowCheckBox = isShowChekckBox;
@@ -626,7 +630,7 @@ public class shopProductListActivity extends BaseActivity
 		// TODO Auto-generated method stub
 		LayoutInflater layoutInflater = (LayoutInflater)shopProductListActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.activity_product_window_select, null);
-		popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);
+		popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.WRAP_CONTENT);
 		popupWindow.setFocusable(true);
 		popupWindow.setOutsideTouchable(true);
 		//设置半透明
@@ -856,7 +860,7 @@ public class shopProductListActivity extends BaseActivity
 						Toast.makeText(shopProductListActivity.this, "删除成功啦", Toast.LENGTH_SHORT).show();
 						isAllChoice = false;
 						productAllCheckImg.setImageResource(R.drawable.icon_xuanze);
-						editButton.setText("批量");
+						editButton.setText("编辑");
 						//不显示复选框
 						isShowChekckBox = false;
 						productAdapter.isShowCheckBox = isShowChekckBox;

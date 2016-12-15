@@ -28,6 +28,17 @@
             android:textSize="18sp"
             android:textColor="@color/bg_white_color"
             />
+        <TextView
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确定"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="18sp"
+            android:textColor="@color/bg_white_color"
+            />
 
        
 

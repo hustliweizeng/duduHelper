@@ -302,6 +302,18 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 							isManager = true;
 							LogUtil.d("manager","true");
 						}
+
+						//判断是否主店铺权限
+						String mainId = sp.getString("mainId","");//保存主店铺信息
+						String id = infoBean.getShop().getId();
+						LogUtil.d("mainid ",mainId);
+						LogUtil.d("id ",id);
+						if (mainId.equals(id)){
+							sp.edit().putBoolean("isMainShop",true).commit();
+						}else {
+							sp.edit().putBoolean("isMainShop",false).commit();
+						}
+						
 						//保存用户信息
 						//1.通过sp保存用户信息
 						SharedPreferences.Editor edit = sp.edit();

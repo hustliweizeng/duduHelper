@@ -137,6 +137,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 	{
 		SharedPreferences sp = getContext().getSharedPreferences("userconig", Context.MODE_PRIVATE);
 		boolean isManager = sp.getBoolean("isManager", false);
+		boolean isMainShop = sp.getBoolean("isMainShop",false);
 		intent = new Intent();
 		switch (v.getId())
 		{
@@ -179,9 +180,13 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			    break;
 			case R.id.hongbaoBtn:
 				//红包
-				
 				if (isManager){
-					startActivity(new Intent(context,RedBagList.class));
+					if (isMainShop){
+						startActivity(new Intent(context,RedBagList.class));
+					}else {
+						Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
+						return;
+					}
 				}else {
 					Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
 					return;
@@ -202,7 +207,12 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			case R.id.memberBtn:
 				//员工管理
 				if (isManager){
-					intent =new Intent(context,ShopMemberListActivity.class);
+					if (isMainShop){
+						intent =new Intent(context,ShopMemberListActivity.class);
+					}else {
+						Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
+						return;
+					}
 				}else {
 					Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
 					return;
@@ -224,12 +234,13 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			case R.id.guest_manager:
 				//客户管理
 				if (shopIsoPen){//模块是否开启
-					if(isManager){//员工权限
+					/*if(isManager){//员工权限
 						intent = new  Intent(context, GuestMangageActivity.class);
 					}else {
 						Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
 						return;
-					}
+					}*/
+					intent = new  Intent(context, GuestMangageActivity.class);
 				}else {
 					if (!TextUtils.isEmpty(msg)){
 						Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dudu.duduhelper.Activity.MainActivity;
@@ -45,6 +46,7 @@ public class ChangeShopActivity extends BaseActivity {
 	private CheckShopAdapter adapter;
 	private ImageButton backButton;
 	private boolean shopIsoPen;
+	private TextView btn_confirm;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -102,15 +104,24 @@ public class ChangeShopActivity extends BaseActivity {
 
 		});
 		
-		
-		
-		
-	
 	}
 
 	private void initView() {
 		listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(adapter);
+		//确定按钮
+		btn_confirm = (TextView) findViewById(R.id.btn_confirm);
+		btn_confirm.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {//返回的时候确认选择
+				String checkedId = adapter.getCheckedId();
+				if (!TextUtils.isEmpty(checkedId)){//非空判断
+					switchShop(checkedId);
+				}else {
+					finish();//空的时候结束当前页面
+				}
+			}
+		});
 		siwpeRefresh = (SwipeRefreshLayout) findViewById(R.id.siwpeRefresh);
 		siwpeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
@@ -121,13 +132,8 @@ public class ChangeShopActivity extends BaseActivity {
 		backButton = (ImageButton) findViewById(R.id.backButton);
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {//返回的时候确认选择
-				String checkedId = adapter.getCheckedId();
-				if (!TextUtils.isEmpty(checkedId)){//非空判断
-					switchShop(checkedId);
-				}else {
-					finish();//空的时候结束当前页面
-				}
+			public void onClick(View v) {
+				finish();
 			}
 		});
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -183,14 +189,19 @@ public class ChangeShopActivity extends BaseActivity {
 					if ("0".equals(isshopuser)) {
 						isManager = true;
 					}
-					//判断是否主店铺
+
+					//判断是否主店铺权限
 					String mainId = sp.getString("mainId","");//保存主店铺信息
 					String id = loginBean.getShop().getId();
+					LogUtil.d("mainid ",mainId);
+					LogUtil.d("id ",id);
 					if (mainId.equals(id)){
 						sp.edit().putBoolean("isMainShop",true).commit();
 					}else {
 						sp.edit().putBoolean("isMainShop",false).commit();
 					}
+
+
 					//1.通过sp保存用户信息
 					SharedPreferences.Editor edit = sp.edit();
 					edit.putString("username", loginBean.getUser().getName())
@@ -226,7 +237,6 @@ public class ChangeShopActivity extends BaseActivity {
 					finish();
 					Toast.makeText(context,"用户名或者密码不正确",Toast.LENGTH_LONG).show();
 				}
-
 			}
 			@Override
 			public void onFinish()

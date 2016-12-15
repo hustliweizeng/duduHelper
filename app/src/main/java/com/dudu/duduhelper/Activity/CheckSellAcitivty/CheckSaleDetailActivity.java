@@ -51,6 +51,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 	private String vertifyCode;
 	private CheckTicketBean info;
 	private LinearLayout ll_all;
+	private long expiredTime;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -166,6 +167,15 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 				ll_content_check_sale.setVisibility(View.GONE);
 				LogUtil.d("no","hide");
 				break;
+			case OUT_TIME:
+				tv_check_status_check_sale.setText("该券码已过期");
+				tv_check_status_check_sale.setTextColor(getResources().getColor(R.color.erro_status));
+				iv_check_status_check_sale.setImageResource(R.drawable.icon_fail);
+				btn_subimit.setText("重新输入");
+				btn_subimit.setTextColor(getResources().getColor(R.color.erro_status));
+				ll_content_check_sale.setVisibility(View.GONE);
+				break;
+				
 		}
 		//确定状态后，显示页面
 		ll_all.setVisibility(View.VISIBLE);
@@ -179,35 +189,46 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 	public static final int CHECK_SUCCESS = 2;//成功核销
 	public static final int CHECKED = 3;//已经核销过了
 	public static final int NOT_EXIST = 4;//不存在
-
+	public static final int OUT_TIME = 5;//过期
 	private void certifyTicket(CheckTicketBean data) {
-		long expiredTime = 0;
+		expiredTime = 0;
 		if (data.getExpired_time()!=null){
-			expiredTime= Long.parseLong(data.getExpired_time());
+			expiredTime = Long.parseLong(data.getExpired_time());
 		}
 		String usedTime = data.getUsed_time();
 		//判断是否过期
-		if (expiredTime !=0){
-			if (System.currentTimeMillis() > expiredTime*1000){//
-				Toast.makeText(context,"该券码已过期",Toast.LENGTH_SHORT).show();
-			}
-		}
+		
 		//判断是否用过
 		if(usedTime!=null){
+			//已使用
 			if (!"0".equals(usedTime)){
 				Toast.makeText(context,"券码已经使用过了",Toast.LENGTH_SHORT).show();
 				ticketStatus =3;
 			}else {
-				ticketStatus = 1;//可以使用
+				//未使用
+				//过期了
+				if (expiredTime !=0){
+					if (System.currentTimeMillis() > expiredTime*1000){//
+						ticketStatus = 5;
+						Toast.makeText(context,"该券码已过期",Toast.LENGTH_SHORT).show();
+						//未过期
+					}else {
+						ticketStatus = 1;
+					}
+				//永久使用
+				}else {
+					ticketStatus = 1;//可以使用,数据为null说明没用过
+				}
 			}
 		}else {
-			ticketStatus = 1;//可以使用,数据为null说明没用过
+			ticketStatus = 1;//可以使用
 		}
 
 		//根据页面状态显示不同页面
 		fillPage(ticketStatus);
 		
 	}
+
 
 	private void initView() {
 		backButton = (ImageButton) findViewById(R.id.backButton);
@@ -272,6 +293,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 						break;
 					//这三种情况都进入到核销页面
 					case CHECK_SUCCESS:
+					case OUT_TIME:	
 					case CHECKED:
 					case NOT_EXIST:
 						Intent intent = new Intent(context, MipcaActivityCapture.class);

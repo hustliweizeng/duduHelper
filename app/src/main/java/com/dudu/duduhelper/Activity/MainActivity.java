@@ -196,7 +196,6 @@ public class MainActivity extends BaseActivity
 				if (!fragments.contains(mineFragment)){
 					mineFragment = new ShopMineFragment();
 					fragments.add(mineFragment);
-
 				}
 					return fragments.get(fragments.indexOf(mineFragment));
 			case 4:
@@ -254,7 +253,7 @@ public class MainActivity extends BaseActivity
 				if (isManager){
 					initHeadView("个人中心", false, true, R.drawable.icon_settings);
 				}else {
-					initHeadView("个人中心", false, false, 0);
+					initHeadView("个人中心", false, true, R.drawable.icon_settings);
 				}
 				order_icon.setImageResource(R.drawable.icon_shouye);
 				order_text.setTextColor(order_text.getResources().getColor(R.color.head_color));

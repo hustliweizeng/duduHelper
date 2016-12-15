@@ -34,7 +34,7 @@
                     android:id="@+id/orderType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="全部来源"
+                    android:text="订单类型"
                     android:textColor="@color/text_color_gray"
                     android:textSize="14dp" />
 
@@ -73,7 +73,7 @@
                     android:id="@+id/productAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="全部订单"
+                    android:text="支付状态"
                     android:textColor="@color/text_color_gray"
                     android:textSize="14dp" />
 
@@ -112,7 +112,7 @@
                     android:id="@+id/statusAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="全部状态"
+                    android:text="订单状态"
                     android:textColor="@color/text_color_gray"
                     android:textSize="14dp" />
 

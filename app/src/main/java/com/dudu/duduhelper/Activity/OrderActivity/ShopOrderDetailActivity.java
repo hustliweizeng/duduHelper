@@ -33,6 +33,7 @@ import com.dudu.duduhelper.http.HttpUtils;
 import com.dudu.duduhelper.javabean.OrderDetailBean;
 import com.dudu.duduhelper.javabean.OrderStatusBean;
 import com.dudu.duduhelper.javabean.SelectorBean;
+import com.dudu.duduhelper.widget.ColorDialog;
 import com.google.gson.Gson;
 import com.gprinter.command.EscCommand;
 import com.loopj.android.http.RequestParams;
@@ -126,12 +127,14 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			return;
 		}
 		LogUtil.d("incomeID",id);
-		//ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
+		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		RequestParams params = new RequestParams();
 		HttpUtils.getConnection(context, params, ConstantParamPhone.GET_ORDER_DETAIL+id, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络错误，稍后再试",Toast.LENGTH_SHORT).show();
+				throwable.printStackTrace();
+				ColorDialog.dissmissProcessDialog();
 			}
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
@@ -154,7 +157,7 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			public void onFinish() {
 				super.onFinish();
 				fillData();
-				//ColorDialog.dissmissProcessDialog();
+				ColorDialog.dissmissProcessDialog();
 				
 			}
 		});

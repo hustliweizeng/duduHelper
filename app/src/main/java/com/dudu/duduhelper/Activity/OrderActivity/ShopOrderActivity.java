@@ -84,11 +84,11 @@ public class ShopOrderActivity extends BaseActivity
     public ProductAdapter productAdapter;
     private String status="";
 	//筛选需要的参数
-    private int source= -100;
-	private int isNew= 0;
+    private int source= -100;//默认全部
+	private int isNew= -1;//全部
 	private int statuss = -100;
 
-    private String isnew="0";
+    private String isnew="-1";
 	//筛选的集合
 	private List<SelectorBean> list;
 	//第一次加载的数据条目
@@ -150,30 +150,50 @@ public class ShopOrderActivity extends BaseActivity
 		super.RightButtonClick();
 		startActivityForResult(new Intent(context,SearchActivity.class),100);
 	}
-
+	boolean isFirst = true;
 	//第一次请求时，请求所有数据
 	private void initData()
 	{
 		loading_progressBar.setVisibility(View.VISIBLE);
 		loading_text.setText("加载中...");
+		if (isFirst){
+			footView.setVisibility(View.GONE);
+		}else {
+			footView.setVisibility(View.VISIBLE);
+		}
+		isFirst = false;
 		RequestParams params = new RequestParams();
 		//每次请求10个条目
 		params.add("limit",pageLimit+"");
-		//第一次运行时为空,想上滑动才需要这个参数
+		//第一次运行时为空,向上滑动才需要这个参数
 		if(lastId != null && reftype ==2 ){
 			params.add("lastid", lastId);
 		}
-		//订单筛选需要3个条件
+		/**
+		 * 订单筛选
+		 */
+		//订单筛选需要3个条件==右边
 		if (statuss != -100 ){
 			if (statuss!=0)
 			params.add("status",statuss+"");
+		}else {
+			params.add("status","");
 		}
-		//初始值不参与请求
+		
+		//初始值不参与请求==左边
 		if (source !=-100){
 			if(source!=0)
 			params.add("moduleid",source+"");
+		}else {
+			params.add("moduleid","");
 		}
-		//params.add("ispay", isNew+"");
+		
+		//是否支付
+		if (isNew ==-1){//全选
+			params.add("ispay", "");
+		}else {
+			params.add("ispay", isNew+"");
+		}
 		//根据订单id查找
 		if (orderId !=0){
 			//清空之前的搜索项
@@ -384,12 +404,12 @@ public class ShopOrderActivity extends BaseActivity
 		final OrderStatusBean selector = new OrderStatusBean();
 		LayoutInflater layoutInflater = (LayoutInflater)ShopOrderActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.activity_product_window_select, null);
-        popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.MATCH_PARENT);
+        popupWindow = new PopupWindow(view, LayoutParams.MATCH_PARENT,  LayoutParams.WRAP_CONTENT);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         // 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.showAsDropDown(selectLine);
+        popupWindow.showAsDropDown(selectLine);//设置下来位置
         ImageView closeImageButton = (ImageView) view.findViewById(R.id.closeImageButton);
         closeImageButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -410,7 +430,7 @@ public class ShopOrderActivity extends BaseActivity
 			orderSelectorAdapter.addAll(list,orderType.getText().toString());
 	        productSelectList.setAdapter(orderSelectorAdapter);
         }
-		//订单类型
+		//支付状态
         if(action.equals("isNew"))
         {
 			orderSelectorAdapter =new OrderSelectorAdapter(ShopOrderActivity.this);

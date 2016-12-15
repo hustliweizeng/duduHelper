@@ -202,10 +202,10 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 			return;
 		}
 		//
-		/*if (!Util.isChinaPhoneLegal(phoneNumText.getText().toString().trim())){
+		if (!Util.isMobile(phoneNumText.getText().toString().trim())){
 			Toast.makeText(context,"手机号码输入错误",Toast.LENGTH_LONG).show();
 			return;
-		}*/
+		}
 		RequestParams params = new RequestParams();
 		params.add("name",ed_title_shop.getText().toString());
 		params.add("contact",phoneNumText.getText().toString());

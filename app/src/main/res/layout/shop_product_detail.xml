@@ -242,22 +242,16 @@
         </LinearLayout>
     </com.dudu.duduhelper.widget.OverScrollView>
 
-    <LinearLayout
-        android:id="@+id/foot"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/editCouponButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@drawable/shop_keyboard_hexiao_text_select"
             android:text="修改编辑"
             android:textColor="@color/text_white_color"
             android:textSize="16dp" />
-    </LinearLayout>
 
 </RelativeLayout>

@@ -83,6 +83,14 @@ public class ShopCouponDetailActivity extends BaseActivity
 
 
 		editCouponButton = (Button) this.findViewById(R.id.editCouponButton);
+
+		boolean isManager = sp.getBoolean("isManager", false);
+		boolean isMainShop = sp.getBoolean("isMainShop", false);
+		if(!isManager || !isMainShop){
+			editCouponButton.setVisibility(View.GONE);
+		}else {
+			editCouponButton.setVisibility(View.VISIBLE);
+		}
 		editCouponButton.setOnClickListener(new OnClickListener() {
 
 			@Override

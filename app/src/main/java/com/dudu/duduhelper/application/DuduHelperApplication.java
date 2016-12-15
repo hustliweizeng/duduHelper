@@ -1,14 +1,10 @@
 package com.dudu.duduhelper.application;
-import com.dudu.duduhelper.Activity.OrderActivity.ShopOrderDetailActivity;
 import com.dudu.duduhelper.R;
 import android.app.Activity;
 import android.app.Application;
-import android.app.Notification;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.widget.Toast;
 
 import com.dudu.duduhelper.UmengService.MyPushIntentService;
 import com.dudu.duduhelper.Utils.LogUtil;
@@ -17,22 +13,18 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.tencent.bugly.Bugly;
-import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
-import com.umeng.message.UmengMessageHandler;
-import com.umeng.message.UmengNotificationClickHandler;
-import com.umeng.message.entity.UMessage;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class DuduHelperApplication extends Application 
 {
-	private List<Activity> mList = new LinkedList<Activity>();
+	private List<Activity> mList = new LinkedList<>();
 	private static DuduHelperApplication instance;
 	@Override
 	public void onCreate() 
@@ -45,7 +37,7 @@ public class DuduHelperApplication extends Application
 		 * 注册推送服务
 		 */
 		PushAgent mPushAgent = PushAgent.getInstance(this);
-		mPushAgent.setDebugMode(true);//关闭debug模式
+		mPushAgent.setDebugMode(true);
 		//注册推送服务，每次调用register方法都会回调该接口
 		mPushAgent.register(new IUmengRegisterCallback() {
 			@Override
@@ -60,7 +52,7 @@ public class DuduHelperApplication extends Application
 			public void onFailure(String s, String s1) {
 			}
 		});
-		mPushAgent.setDisplayNotificationNumber(3);
+		mPushAgent.setDisplayNotificationNumber(3);//设置通知的条目数
 		//自定义处理消息,可以实现对推送消息的自定义行为
 		mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
 		//客户端打开声音和震动
@@ -73,7 +65,6 @@ public class DuduHelperApplication extends Application
 		if(sp.getBoolean("isRingOpen",false)){
 			mPushAgent.setNotificationPlayVibrate(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//开启震动
 		}
-		
 		
 		/**
 		 * buggly自动更新功能
@@ -107,7 +98,7 @@ public class DuduHelperApplication extends Application
 				.showImageOnFail(R.drawable.ic_defalut)
 				.considerExifParams(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)//图片显示模式
-				.displayer(new FadeInBitmapDisplayer(500))//渐进显示动画
+				.displayer(new SimpleBitmapDisplayer())//渐进显示动画,这样会造成图片闪烁！！！！
 				//图片缩放设置
 				.build();
 		//默认配置

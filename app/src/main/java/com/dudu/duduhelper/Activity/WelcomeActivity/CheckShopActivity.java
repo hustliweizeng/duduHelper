@@ -98,7 +98,7 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 					if ("SUCCESS".equalsIgnoreCase(code)){
 						//数据请求成功
 						InfoBean infoBean = new Gson().fromJson(s, InfoBean.class);
-						
+						//判断是否是店铺
 						String isshopuser = infoBean.getUser().getIsshopuser();
 						boolean isManager = false;
 						if ("1".equals(isshopuser)){
@@ -109,7 +109,7 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 							isManager = true;
 							LogUtil.d("manager","true");
 						}
-						//判断是否主店铺
+						//判断是否主店铺权限
 						String mainId = sp.getString("mainId","");//保存主店铺信息
 						String id = infoBean.getShop().getId();
 						LogUtil.d("mainid ",mainId);

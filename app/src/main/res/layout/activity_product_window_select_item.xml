@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="40dp"
     android:background="#fff"
     android:fitsSystemWindows="true"
     android:orientation="vertical" >
@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/selectTypeTextView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@drawable/view_selector"
         android:gravity="center"
         android:text="加载中"

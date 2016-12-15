@@ -214,7 +214,7 @@
                                 android:layout_below="@+id/getCashMoneyTextView"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="6dp"
-                                android:text="可提现金额"
+                                android:text="可提现"
                                 android:textColor="@color/text_color_light"
                                 android:textSize="14dp" />
 
@@ -250,7 +250,7 @@
                                 android:layout_below="@+id/tv_uncheckPrice"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="6dp"
-                                android:text="未核销金额"
+                                android:text="未核销"
                                 android:textColor="@color/text_color_light"
                                 android:textSize="14dp" />
 
@@ -282,7 +282,7 @@
                                 android:layout_below="@id/tv_frozen_num_mine"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="6dp"
-                                android:text="冻结金额"
+                                android:text="提现中"
                                 android:textColor="@color/text_color_light"
                                 android:textSize="14dp" />
                         </RelativeLayout>

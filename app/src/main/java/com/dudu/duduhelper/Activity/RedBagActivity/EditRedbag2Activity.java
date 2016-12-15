@@ -15,9 +15,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -304,6 +302,10 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		ed_high.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
+				if (TextUtils.isEmpty(ed_total.getText().toString().trim()) || TextUtils.isEmpty(ed_num.getText().toString().trim())||
+						TextUtils.isEmpty(ed_low.getText().toString().trim())){
+					return;
+				}
 				float total = Float.parseFloat(ed_total.getText().toString().trim());
 				float num = Float.parseFloat(ed_num.getText().toString().trim());
 				float low = Float.parseFloat(ed_low.getText().toString().trim());
@@ -346,7 +348,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 	//获取店铺列表数据
 	private void getShopListData()
 	{
-		HttpUtils.getConnection(this,null, ConstantParamPhone.GET_SHOP_LIST, "GET",new TextHttpResponseHandler()
+		HttpUtils.getConnection(this,null, ConstantParamPhone.GET_SHOPABLE, "GET",new TextHttpResponseHandler()
 		{
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
@@ -465,7 +467,16 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		if (Float.parseFloat(low) > Float.parseFloat(high)){
 			Toast.makeText(this,"最大金额不能小于最小金额",Toast.LENGTH_SHORT).show();
 		}
-
+		if (TextUtils.isEmpty(ed_life.getText().toString().trim())){
+			Toast.makeText(this,"有效天数不能为空",Toast.LENGTH_SHORT).show();
+			return;
+		}else {
+			int day = Integer.parseInt(ed_life.getText().toString().trim());
+			if (day <= 0){
+				Toast.makeText(this,"有效天数不能小于0",Toast.LENGTH_SHORT).show();
+				return;
+			}
+		}
 		title = getIntent().getStringExtra("title");
 		startTime = getIntent().getStringExtra("starTime");
 		endTime = getIntent().getStringExtra("endTime");

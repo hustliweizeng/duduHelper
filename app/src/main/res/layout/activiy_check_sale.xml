@@ -53,7 +53,7 @@
                         android:textColor="@color/text_remind"
                         android:textSize="16dp"
                         android:layout_marginBottom="20dp"
-                        android:text="券码核销成功"/>
+                        />
 
 
                 </LinearLayout>

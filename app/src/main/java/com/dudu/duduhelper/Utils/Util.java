@@ -69,11 +69,14 @@ public class Util
 	 * 17+除9的任意数 
 	 * 147 
 	 */
-	public static boolean isChinaPhoneLegal(String str) throws PatternSyntaxException {
-		String regExp = "^((1[3-8][0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$";
-		Pattern p = Pattern.compile(regExp);
-		Matcher m = p.matcher(str);
-		return m.matches();
+	public static boolean isMobile(final String str) {
+		Pattern p = null;
+		Matcher m = null;
+		boolean b = false;
+		p = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$"); // 验证手机号  
+		m = p.matcher(str);
+		b = m.matches();
+		return b;
 	}
 	//比较时间大小
 	public static boolean compareDate(String DATE1, String DATE2) 

@@ -3,6 +3,7 @@ package com.dudu.duduhelper.adapter;
 import com.dudu.duduhelper.R;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.text.TextUtils;
@@ -216,57 +217,63 @@ public class ProductAdapter extends BaseAdapter
 		 *	设置每个条目的数据和事件
 		 */
 		//设置上下架按钮的监听事件
-		if ("0".equals(list.get(position).getStatus())){
-			//审核中不能点击
-			viewHolder.downButton.setEnabled(false);
-			viewHolder.downButton.setFocusable(false);
-		}else if ("1".equals(list.get(position).getStatus())){
-		//审核通过状态，只有上下架状态
-			viewHolder.downButton.setEnabled(true);
-			//上下架切换按钮
-			viewHolder.downButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					//Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
-					LogUtil.d("is_on_sale",list.get(position).getIs_on_sale());
-					if ("1".equals(list.get(position).getIs_on_sale())){
-						//如果是已上架状态直接切换为下架状态
-						LogUtil.d("up","上架");
-						list.get(position).setIs_on_sale("0");//设置数据源为下架
-						SwitchStatus(position);
-					}else{
-						/**
-                         * 刚开始写的不是else一直不能正常点击我擦啊！
-						 */
-						LogUtil.d("down","下架");
-						list.get(position).setIs_on_sale("1");//设置数据源为上架
+		SharedPreferences sp = context.getSharedPreferences("userconig",Context.MODE_PRIVATE);
+		boolean isManager = sp.getBoolean("isManager", false);
+		if (isManager){
+			if ("0".equals(list.get(position).getStatus())){
+				//审核中不能点击
+				viewHolder.downButton.setEnabled(false);
+				viewHolder.downButton.setFocusable(false);
+			}else if ("1".equals(list.get(position).getStatus())){
+				//审核通过状态，只有上下架状态
+				viewHolder.downButton.setEnabled(true);
+				//上下架切换按钮
+				viewHolder.downButton.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						//Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
+						LogUtil.d("is_on_sale",list.get(position).getIs_on_sale());
+						if ("1".equals(list.get(position).getIs_on_sale())){
+							//如果是已上架状态直接切换为下架状态
+							LogUtil.d("up","上架");
+							list.get(position).setIs_on_sale("0");//设置数据源为下架
+							SwitchStatus(position);
+						}else{
+							/**
+							 * 刚开始写的不是else一直不能正常点击我擦啊！
+							 */
+							LogUtil.d("down","下架");
+							list.get(position).setIs_on_sale("1");//设置数据源为上架
+							SwitchStatus(position);
+						}
+						notifyDataSetChanged();
+					}
+				});
+			}else {
+				viewHolder.downButton.setEnabled(true);
+				viewHolder.downButton.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						//Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
+
+						//审核不通过，点击重新审核,新的界面
+						dailog1 = new AlertDialog.Builder(context).create();
+						dailog1.show();
+						//获取window之前必须先show
+						Window window = dailog1.getWindow();
+						window.setContentView(R.layout.alertdailog_subimt);
+						//不需要按钮的状态
+
+						list.get(position).setStatus("0");//设置数据源为正在审核
+						notifyDataSetChanged();
 						SwitchStatus(position);
 					}
-					notifyDataSetChanged();
-				}
-			});
-		}else {
-			viewHolder.downButton.setEnabled(true);
-			viewHolder.downButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					//Toast.makeText(context,"pos="+position,Toast.LENGTH_SHORT).show();
-
-					//审核不通过，点击重新审核,新的界面
-					dailog1 = new AlertDialog.Builder(context).create();
-					dailog1.show();
-					//获取window之前必须先show
-					Window window = dailog1.getWindow();
-					window.setContentView(R.layout.alertdailog_subimt);
-					//不需要按钮的状态
-
-					list.get(position).setStatus("0");//设置数据源为正在审核
-					notifyDataSetChanged();
-					SwitchStatus(position);
-				}
-			});
+				});
+			}
 		}
-		//根据传递过来的布尔值
+		
+		
+		//是否显示多选
 		if (isShowCheckBox){
 			//是否显示多选框
 			viewHolder.productCheckImg.setVisibility(View.VISIBLE);

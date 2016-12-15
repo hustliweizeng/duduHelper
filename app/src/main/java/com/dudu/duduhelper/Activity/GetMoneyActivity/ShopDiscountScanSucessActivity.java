@@ -88,6 +88,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 		setContentView(R.layout.shop_discount_scan_sucess);
 		initHeadView("扫码收款", true, false, 0);
 		time = new TimeCount(60000, 3000);//构造CountDownTimer对象
+		bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 		initFilter();
 		initView();
 		initViewData();
@@ -427,8 +428,6 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 			@Override
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
-				// TODO Auto-generated method stub
 				bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 				if(bluetoothAdapter==null)
 				{
@@ -505,10 +504,10 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 		@Override
 		public void onReceive(Context context, Intent intent) 
 		{
-			// TODO Auto-generated method stub
 			String action = intent.getAction(); 
 			if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action))
 			{
+				bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 				if (bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON)
 				{
 					Toast.makeText(ShopDiscountScanSucessActivity.this,"打开成功", Toast.LENGTH_SHORT).show();

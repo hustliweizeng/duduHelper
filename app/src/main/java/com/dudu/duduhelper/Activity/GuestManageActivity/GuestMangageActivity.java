@@ -44,6 +44,8 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 	private GuestManageAdapter adapter;
 	private int lastVisibleItem;
 	private int maxPage;
+	private LinearLayoutManager linearLayoutManager;
+	private int lastPos;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -51,6 +53,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		setContentView(R.layout.activity_guest_manager);
 		initHeadView("客户管理",true,false,0);
 		adapter = new GuestManageAdapter(context);
+		linearLayoutManager = new LinearLayoutManager(this);
 		initView();
 		
 		refreshLayout.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
@@ -60,6 +63,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 	@Override
 	public void onResume() {
 		super.onResume();
+		//先清空数据
 		adapter.clear();
 		initData(1);
 		page =1;
@@ -69,8 +73,8 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 	 * 请求列表信息
 	 */
 	private void initData(int pageNum) {
-		user_list.setLayoutManager(new LinearLayoutManager(this));
-		user_list.setAdapter(adapter);
+		lastPos = user_list.getChildCount()-1;//记录最后一个条目的位置
+		LogUtil.d("lastPos","lastPos= "+lastPos);
 		RequestParams params = new RequestParams();
 		params.put("page",pageNum);
 		params.put("size",num);
@@ -108,6 +112,9 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 			public void onFinish() {
 				super.onFinish();
 				refreshLayout.setRefreshing(false);
+				//让列表滚到之前位置
+//				linearLayoutManager.scrollToPositionWithOffset(lastPos,0);
+//				linearLayoutManager.setStackFromEnd(true);
 			}
 		});
 		
@@ -134,7 +141,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 		/**
 		 * 下拉加载更多
 		 */
-		user_list.setOnScrollListener(new RecyclerView.OnScrollListener() {
+		user_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 				super.onScrollStateChanged(recyclerView, newState);
@@ -142,7 +149,7 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 					if (page <maxPage){
 						page++;
 						initData(page);
-						user_list.scrollToPosition(0);
+						//user_list.scrollToPosition(user_list.getChildCount()-1);
 						LogUtil.d("load",page+"");
 					}
 				}
@@ -155,6 +162,8 @@ public class GuestMangageActivity extends BaseActivity implements View.OnClickLi
 				LogUtil.d("pos",lastVisibleItem+"");
 			}
 		});
+		user_list.setLayoutManager(linearLayoutManager);
+		user_list.setAdapter(adapter);
 		
 	}
 	@Override
