@@ -58,7 +58,7 @@ public class OrderStatusBean {
         status9.id = -2;
         status9.name = "已退款";
         SelectorBeanStatus status10 = new SelectorBeanStatus();
-        status10.id = -3;
+        status10.id = 0;
         status10.name = "已取消";
         List<SelectorBean> list = new ArrayList<>();
        list.add(status0);

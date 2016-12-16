@@ -72,6 +72,7 @@ public class CheckSaleDetailActivity extends BaseActivity implements View.OnClic
 			}
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
+				LogUtil.d("res",s);
 				try {
 					JSONObject object = new JSONObject(s);
 					String code =  object.getString("code");

@@ -79,7 +79,7 @@ public class MyPushIntentService extends UmengMessageService {
 			mBuilder.setContentTitle(msg.title)//设置通知栏标题  
 					.setContentText(msg.text) 
 					.setAutoCancel(true)//点击后消失
-			.setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL)) //设置通知栏点击意图  
+			.setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL)) //设置通知栏点击意图 ,可以打开详情页
 			.setTicker("测试通知来啦") //通知首次出现在通知栏，带上升动画效果的  
 			.setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间  
 			.setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级  

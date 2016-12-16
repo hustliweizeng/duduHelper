@@ -100,6 +100,15 @@ public class MyCommonNavigatorAdapter extends PagerAdapter {
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				boolean isMainShop = context.getSharedPreferences("userconig",Context.MODE_PRIVATE).getBoolean("isMainShop",false);
+				boolean isManager = context.getSharedPreferences("userconig",Context.MODE_PRIVATE).getBoolean("isManager", false);
+				if (!isManager){
+					return;
+				}
+				if (!isMainShop){
+					return;
+				}
+				
 				Intent intent = new Intent(context, ShopStatusActivity.class);
 				/**
 				 * 因为预加载的原因，所以displaylist的数据并不一定是当前页的列表，所以在传递数据之前

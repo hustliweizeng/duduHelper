@@ -83,7 +83,7 @@ public class ConstantParamPhone
 	 * 新接口地址
      */
     //public static final String USER_LOGIN = "/user/login";
-    public static final String BASE_URL = "http://www.dolife.me";//"http://dev.dolife.me";
+    public static final String BASE_URL = "http://dev.dolife.me";//"http://dev.dolife.me";
     public static final String SUCCESS = "SUCCESS";
     public static final String FAIL = "FAIL";
     public static final String SWITCH_SHOP = "/api/app/user/store/";

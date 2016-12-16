@@ -85,10 +85,9 @@ public class ShopOrderActivity extends BaseActivity
     private String status="";
 	//筛选需要的参数
     private int source= -100;//默认全部
-	private int isNew= -1;//全部
-	private int statuss = -100;
+	private int isNew= -100;//全部
+	private int statuss = -100;//全部状态
 
-    private String isnew="-1";
 	//筛选的集合
 	private List<SelectorBean> list;
 	//第一次加载的数据条目
@@ -174,7 +173,6 @@ public class ShopOrderActivity extends BaseActivity
 		 */
 		//订单筛选需要3个条件==右边
 		if (statuss != -100 ){
-			if (statuss!=0)
 			params.add("status",statuss+"");
 		}else {
 			params.add("status","");
@@ -182,14 +180,13 @@ public class ShopOrderActivity extends BaseActivity
 		
 		//初始值不参与请求==左边
 		if (source !=-100){
-			if(source!=0)
 			params.add("moduleid",source+"");
 		}else {
 			params.add("moduleid","");
 		}
 		
 		//是否支付
-		if (isNew ==-1){//全选
+		if (isNew ==-100){//全选
 			params.add("ispay", "");
 		}else {
 			params.add("ispay", isNew+"");
@@ -200,6 +197,8 @@ public class ShopOrderActivity extends BaseActivity
 			params = new RequestParams();
 			params.add("id",orderId+"");
 		}
+		LogUtil.d("requesyStatus","source="+source+",isNew=+"+isNew+",status="+statuss);
+				
 
 		HttpUtils.getConnection(context,params, ConstantParamPhone.GET_ORDER_LIST, "GET",new TextHttpResponseHandler()
 		{
@@ -215,6 +214,7 @@ public class ShopOrderActivity extends BaseActivity
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, String arg2)
 			{
+				LogUtil.d("res",arg2);
 				try {
 					JSONObject object = new JSONObject(arg2);
 					String code =  object.getString("code");

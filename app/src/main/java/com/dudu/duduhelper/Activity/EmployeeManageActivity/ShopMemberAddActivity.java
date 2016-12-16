@@ -47,6 +47,7 @@ public class ShopMemberAddActivity extends BaseActivity
 	private String url;
 	private ShopListSelectAdapter adapter;
 	private ShopListBean data;
+	private ImageView iv_cancle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -75,6 +76,7 @@ public class ShopMemberAddActivity extends BaseActivity
 
 	private void initView() 
 	{
+		
 		adapter = new ShopListSelectAdapter(context, R.layout.item_circle_multi_select);
 		memberShopTextView = (TextView) this.findViewById(R.id.memberShopTextView);
 		memberShopTextView.setOnClickListener(new OnClickListener() 
@@ -298,9 +300,10 @@ public class ShopMemberAddActivity extends BaseActivity
 		//获取window之前必须先show
 		Window window = dailog.getWindow();
 		window.setContentView(R.layout.alertdailog_multi_choose);
+		iv_cancle = (ImageView) window.findViewById(R.id.iv_cancle);
 		TextView tv_title_alertdailog = (TextView) window.findViewById(R.id.tv_title_alertdailog);
 		ListView lv_alertdailog = (ListView) window.findViewById(R.id.lv_alertdailog);
-		ImageView iv_canle_alertdailog = (ImageView) window.findViewById(R.id.iv_canle_alertdailog);
+		Button iv_canle_alertdailog = (Button) window.findViewById(R.id.iv_canle_alertdailog);
 
 		tv_title_alertdailog.setText(title);
 		lv_alertdailog.setAdapter(adapter);
@@ -336,7 +339,12 @@ public class ShopMemberAddActivity extends BaseActivity
 				dailog.dismiss();
 			}
 		});
-
+		iv_cancle.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dailog.dismiss();
+			}
+		});
 	}
 	
 }

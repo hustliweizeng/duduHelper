@@ -101,12 +101,14 @@ public class ShopProductDetailActivity extends BaseActivity
 		editproductinfoButton=(Button) this.findViewById(R.id.editCouponButton);
 		boolean isManager = sp.getBoolean("isManager", false);
 		boolean isMainShop = sp.getBoolean("isMainShop", false);
-		if (isManager ||isMainShop){
-			Toast.makeText(context,"可见",Toast.LENGTH_LONG).show();
-			editproductinfoButton.setVisibility(View.VISIBLE);
+		if (isManager){
+			if (isMainShop){
+				editproductinfoButton.setVisibility(View.VISIBLE);
+			}else {
+				editproductinfoButton.setVisibility(View.GONE);
+			}
 		}else {
 			editproductinfoButton.setVisibility(View.GONE);
-			Toast.makeText(context,"隐藏",Toast.LENGTH_LONG).show();
 		}
 		editproductinfoButton.setOnClickListener(new OnClickListener()
 		{

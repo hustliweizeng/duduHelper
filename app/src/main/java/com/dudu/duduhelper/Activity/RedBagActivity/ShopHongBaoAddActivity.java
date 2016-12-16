@@ -86,6 +86,7 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 	private LinearLayout ll_apply_shop;
 	private ShopListBean ShopListData;
 	private RedbagDetailBean bean;
+	private ImageView iv_cancle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 
 	private void initView() 
 	{
+		
 		ll_apply_shop = (LinearLayout) findViewById(R.id.ll_apply_shop);
 		textToumingView = (TextView) this.findViewById(R.id.textToumingView);
 		productImageView = (ImageView) this.findViewById(R.id.productImageView);
@@ -120,7 +122,7 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		ed_rules = (EditText) findViewById(R.id.ed_rules);
 		ll_view = (LinearLayout) findViewById(R.id.ll_view);
 		AlphaAnimation animation = new AlphaAnimation((float) 1, (float) 0);
-		animation.setDuration(4000); // 设置持续时间2秒
+		animation.setDuration(8000); // 设置持续时间2秒
 		animation.setAnimationListener(new AnimationListener() 
 		{
 			@Override
@@ -233,8 +235,8 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 		window.setContentView(R.layout.alertdailog_multi_choose);
 		TextView tv_title_alertdailog = (TextView) window.findViewById(R.id.tv_title_alertdailog);
 		ListView lv_alertdailog = (ListView) window.findViewById(R.id.lv_alertdailog);
-		ImageView iv_canle_alertdailog = (ImageView) window.findViewById(R.id.iv_canle_alertdailog);
-
+		Button iv_canle_alertdailog = (Button) window.findViewById(R.id.iv_canle_alertdailog);
+		iv_cancle = (ImageView) window.findViewById(R.id.iv_cancle);
 		tv_title_alertdailog.setText(title);
 		lv_alertdailog.setAdapter(adapter);
 
@@ -259,7 +261,12 @@ public class ShopHongBaoAddActivity extends BaseActivity {
 				dailog.dismiss();
 			}
 		});
-
+		iv_cancle.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dailog.dismiss();
+			}
+		});
 	}
 
 	// 选择日期,调用系统主题

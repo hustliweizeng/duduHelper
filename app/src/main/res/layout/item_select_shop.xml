@@ -71,7 +71,6 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="16dp"
-                        android:text="领取人:2222222222222222222222222222222 "
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:textColor="@color/text_color_light"

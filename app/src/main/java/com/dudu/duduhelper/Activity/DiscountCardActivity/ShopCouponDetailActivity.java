@@ -86,10 +86,14 @@ public class ShopCouponDetailActivity extends BaseActivity
 
 		boolean isManager = sp.getBoolean("isManager", false);
 		boolean isMainShop = sp.getBoolean("isMainShop", false);
-		if(!isManager || !isMainShop){
+		if(!isManager ){
 			editCouponButton.setVisibility(View.GONE);
 		}else {
-			editCouponButton.setVisibility(View.VISIBLE);
+			if (isMainShop){
+				editCouponButton.setVisibility(View.VISIBLE);
+			}else {
+				editCouponButton.setVisibility(View.GONE);
+			}
 		}
 		editCouponButton.setOnClickListener(new OnClickListener() {
 

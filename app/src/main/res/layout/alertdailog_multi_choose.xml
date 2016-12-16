@@ -12,15 +12,31 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
+        android:paddingBottom="25dp"
         android:background="@drawable/bg_alertdailog">
-        <TextView
-            android:id="@+id/tv_title_alertdailog"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="分类选择"
-            android:textSize="16dp"
-            android:textColor="@color/text_black_color"
-            android:gravity="center"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_title_alertdailog"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_height="50dp"
+                android:text="分类选择"
+                android:textSize="16dp"
+                android:textColor="@color/text_black_color"
+                android:gravity="center"/>
+            <ImageView
+                android:id="@+id/iv_cancle"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_cancle"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+        
+       
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -35,17 +51,22 @@
             android:footerDividersEnabled="false"
             android:layout_height="350dp"></ListView>
 
-
-
+        
 
     </LinearLayout>
-    <ImageView
+    <Button
         android:id="@+id/iv_canle_alertdailog"
-        android:layout_marginTop="20dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确认"
+        android:textSize="16sp"
+        android:layout_marginTop="-25dp"
         android:layout_below="@id/ll"
+        android:background="@drawable/circle_dailog"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/icon_cancle"/>
+        android:textColor="@color/bg_white_color"
+        />
+  
+   
 
 </RelativeLayout>

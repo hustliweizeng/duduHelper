@@ -219,7 +219,8 @@ public class ProductAdapter extends BaseAdapter
 		//设置上下架按钮的监听事件
 		SharedPreferences sp = context.getSharedPreferences("userconig",Context.MODE_PRIVATE);
 		boolean isManager = sp.getBoolean("isManager", false);
-		if (isManager){
+		boolean isMainShop = sp.getBoolean("isMainShop", false);//
+		if (isManager && isMainShop){//当是店铺并且是主店时才可以有点击事件
 			if ("0".equals(list.get(position).getStatus())){
 				//审核中不能点击
 				viewHolder.downButton.setEnabled(false);
@@ -270,6 +271,8 @@ public class ProductAdapter extends BaseAdapter
 					}
 				});
 			}
+		}else {
+			//Toast.makeText(context,"您没有管理权限",Toast.LENGTH_LONG).show();
 		}
 		
 		

@@ -343,10 +343,15 @@ public class shopProductListActivity extends BaseActivity
 		}
 		boolean isManager = sp.getBoolean("isManager", false);
 		boolean isMainShop = sp.getBoolean("isMainShop", false);
-		if(!isManager ||!isMainShop){//如果不是店主也不是主店铺
+		if(!isManager ){//如果不是店主也不是主店铺
+			
 			editButton.setVisibility(View.GONE);
 		}else {
-			editButton.setVisibility(View.VISIBLE);
+			if (isMainShop){
+				editButton.setVisibility(View.VISIBLE);
+			}else {
+				editButton.setVisibility(View.GONE);
+			}
 		}
 
 

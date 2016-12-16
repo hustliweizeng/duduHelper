@@ -57,7 +57,7 @@ public class DuduHelperApplication extends Application
 		mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
 		//客户端打开声音和震动
 		mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SERVER);
-		mPushAgent.setNotificaitonOnForeground(true);//应用在前台也显示通知
+		mPushAgent.setNotificaitonOnForeground(false);//应用在前台也显示通知
 		
 		if(sp.getBoolean("isRemindOpen",false)){
 			mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);//开启通知声音

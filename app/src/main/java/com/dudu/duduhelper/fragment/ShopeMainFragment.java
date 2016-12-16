@@ -180,7 +180,10 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 			    break;
 			case R.id.hongbaoBtn:
 				//红包
-				if (isManager){
+				startActivity(new Intent(context,RedBagList.class));
+				return;
+				
+				/*if (isManager){
 					if (isMainShop){
 						startActivity(new Intent(context,RedBagList.class));
 					}else {
@@ -191,7 +194,7 @@ public class ShopeMainFragment extends Fragment implements OnClickListener
 					Toast.makeText(context,"您没有管理权限",Toast.LENGTH_SHORT).show();
 					return;
 				}
-			    return;
+			    return;*/
 			case R.id.wuzheBtn:
 				//五折验证
 				if (isWuzheOpen){

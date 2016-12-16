@@ -59,7 +59,23 @@ public class ShopListManagerActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.shop_list_manager);
-		initHeadView("门店管理", true, true, R.drawable.icon_tianjia);
+		/**
+		 * 权限设置
+		 */
+		boolean isMainShop = sp.getBoolean("isMainShop",false);
+		boolean isManager = sp.getBoolean("isManager", false);
+		if (isManager){
+
+			if (isMainShop){
+				initHeadView("门店管理", true, true, R.drawable.icon_tianjia);
+			}else {
+				initHeadView("门店管理", true, false, R.drawable.icon_tianjia);
+			}
+		}else {
+			initHeadView("门店管理", true, false, R.drawable.icon_tianjia);
+		}
+
+		
 		initData();
 	}
 

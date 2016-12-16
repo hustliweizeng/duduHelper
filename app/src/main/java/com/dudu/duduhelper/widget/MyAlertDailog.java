@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,7 +19,8 @@ public class MyAlertDailog {
     public static AlertDialog dailog = null;
     private static  TextView tv_title_alertdailog;
     private static ListView lv_alertdailog;
-    private static ImageView iv_canle_alertdailog;
+    private static Button iv_canle_alertdailog;
+    private static ImageView iv_cancle;
 
     /**
      * @param title
@@ -32,7 +34,8 @@ public class MyAlertDailog {
         window.setContentView(R.layout.alertdailog_choose);
         tv_title_alertdailog = (TextView) window.findViewById(R.id.tv_title_alertdailog);
         lv_alertdailog = (ListView) window.findViewById(R.id.lv_alertdailog);
-        iv_canle_alertdailog = (ImageView) window.findViewById(R.id.iv_canle_alertdailog);
+        iv_canle_alertdailog = (Button) window.findViewById(R.id.iv_canle_alertdailog);
+        iv_cancle = (ImageView) window.findViewById(R.id.iv_cancle);
 
         tv_title_alertdailog.setText(title);
         lv_alertdailog.setAdapter(adapter);
@@ -51,6 +54,12 @@ public class MyAlertDailog {
             @Override
             public void onClick(View view) {
                 //关闭当前对话框
+                dailog.cancel();
+            }
+        });
+        iv_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dailog.cancel();
             }
         });

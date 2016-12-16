@@ -105,16 +105,27 @@ public class ShopHongBaoDetailActivity extends BaseActivity
 				startActivityForResult(intent, 1);
 			}
 		});
-		if (isMainShop){
-			editHongbaoBtn.setVisibility(View.VISIBLE);
+		boolean isManager = sp.getBoolean("isManager", false);
+		boolean isMainShop = sp.getBoolean("isMainShop",false);
+		LogUtil.d("isManager",isManager+"");
+		LogUtil.d("isMainShop",isMainShop+"");
+		if (isManager ){//满足任何一个即可
+			//再判断是不是分店
+			if (isMainShop){
+				editHongbaoBtn.setVisibility(View.VISIBLE);
+			}else {
+				editHongbaoBtn.setVisibility(View.GONE);
+			}
 		}else {
 			editHongbaoBtn.setVisibility(View.GONE);
 		}
+		
 	}
 	
 	private void initData() 
 	{
 		String id = getIntent().getStringExtra("id");
+		LogUtil.d("incomeId","id="+id);
 		HttpUtils.getConnection(context, null, ConstantParamPhone.GET_REDBAG_DETAIL + id, "get", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {

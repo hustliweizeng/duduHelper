@@ -119,7 +119,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="17dp"
-                        android:text="优惠价"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/text_remind"
                         />
@@ -141,7 +140,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="17dp"
-                        android:text="抵用券"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/text_remind"
                         />
@@ -163,7 +161,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="17dp"
-                        android:text="抵用券"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/text_remind"
                         />
@@ -185,7 +182,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="17dp"
-                        android:text="抵用券"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/text_remind"
                         />
@@ -207,7 +203,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="17dp"
-                        android:text="抵用券"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/text_remind"
                         />
@@ -229,7 +224,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="17dp"
-                        android:text="抵用券"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/text_remind"
                         />
@@ -251,7 +245,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="17dp"
-                        android:text="抵用券"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/text_remind"
                         />
@@ -273,7 +266,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="17dp"
-                        android:text="抵用券"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/text_remind"
                         />

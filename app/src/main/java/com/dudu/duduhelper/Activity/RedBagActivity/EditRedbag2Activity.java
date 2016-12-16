@@ -108,6 +108,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 	private RelativeLayout ll_apply_shop;
 	private ShopListBean ShopListData;
 	private ShopListSelectAdapter adapter;
+	private ImageView iv_cancle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,8 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		sp = getSharedPreferences("userconig", Context.MODE_PRIVATE);
 		initView();
 		initview();
+		getShopListData();//请求店铺数据
+
 	}
 
 	private void initview() {
@@ -291,9 +294,10 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		ll_apply_shop.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getShopListData();
+				showShopListSelctor(ShopListData.getData(),"适用门店");
 			}
 		});
+		
 		backButton = (ImageButton) findViewById(R.id.backButton);
 		relayout_mytitle = (LinearLayout) findViewById(R.id.relayout_mytitle);
 		ed_total = (EditText) findViewById(R.id.ed_total);
@@ -379,7 +383,6 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 			@Override
 			public void onFinish() {
 				super.onFinish();
-				showShopListSelctor(ShopListData.getData(),"适用门店");
 			}
 		});
 	}
@@ -407,9 +410,10 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 		//获取window之前必须先show
 		Window window = dailog.getWindow();
 		window.setContentView(R.layout.alertdailog_multi_choose);
+		iv_cancle = (ImageView)window.findViewById(R.id.iv_cancle);
 		TextView tv_title_alertdailog = (TextView) window.findViewById(R.id.tv_title_alertdailog);
 		ListView lv_alertdailog = (ListView) window.findViewById(R.id.lv_alertdailog);
-		ImageView iv_canle_alertdailog = (ImageView) window.findViewById(R.id.iv_canle_alertdailog);
+		Button iv_canle_alertdailog = (Button) window.findViewById(R.id.iv_canle_alertdailog);
 
 		tv_title_alertdailog.setText(title);
 		lv_alertdailog.setAdapter(adapter);
@@ -430,6 +434,12 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 
 		});
 		iv_canle_alertdailog.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dailog.dismiss();
+			}
+		});
+		iv_cancle.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dailog.dismiss();

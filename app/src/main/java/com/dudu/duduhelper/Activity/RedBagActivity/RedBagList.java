@@ -171,6 +171,24 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 			btn_edit.setVisibility(View.GONE);
 		}
 
+		boolean isManager = sp.getBoolean("isManager", false);
+		boolean isMainShop = sp.getBoolean("isMainShop",false);
+		LogUtil.d("isManager",isManager+"");
+		LogUtil.d("isMainShop",isMainShop+"");
+		if (isManager ){//满足任何一个即可
+			//再判断是不是分店
+			if (isMainShop){
+				btn_new_redbag.setVisibility(View.VISIBLE);
+				btn_edit.setVisibility(View.VISIBLE);
+			}else {
+				btn_new_redbag.setVisibility(View.GONE);
+				btn_edit.setVisibility(View.GONE);
+			}
+		}else {
+			btn_new_redbag.setVisibility(View.GONE);
+			btn_edit.setVisibility(View.GONE);
+		}
+
 	}
 	//删除指定id
 	private void delItem(String id) {
@@ -335,7 +353,7 @@ public class RedBagList extends BaseActivity implements View.OnClickListener {
 	public  void showPopwindow(final String side){
 
 		View view = View.inflate(context,R.layout.activity_product_window_select, null);
-		final PopupWindow popupWindow = new PopupWindow(view, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+		final PopupWindow popupWindow = new PopupWindow(view, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
 		popupWindow.setFocusable(true);
 		popupWindow.setOutsideTouchable(true);
 		popupWindow.setBackgroundDrawable(new BitmapDrawable());

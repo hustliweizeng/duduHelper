@@ -50,6 +50,13 @@ public class ShopMemberListActivity extends BaseActivity {
         initData();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        memberListswipeLayout.setProgressViewOffset(false, 0, Util.dip2px(context, 24));//第一次启动时刷新
+        memberListswipeLayout.setRefreshing(true);
+    }
+
     @SuppressLint("ResourceAsColor")
     @SuppressWarnings("deprecation")
     private void initView() {
