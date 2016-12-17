@@ -31,7 +31,7 @@ public class MyAlertDailog {
         dailog.show();
         //获取window之前必须先show
         Window window = dailog.getWindow();
-        window.setContentView(R.layout.alertdailog_choose);
+        window.setContentView(R.layout.alertdailog_multi_choose);
         tv_title_alertdailog = (TextView) window.findViewById(R.id.tv_title_alertdailog);
         lv_alertdailog = (ListView) window.findViewById(R.id.lv_alertdailog);
         iv_canle_alertdailog = (Button) window.findViewById(R.id.iv_canle_alertdailog);

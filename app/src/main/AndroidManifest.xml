@@ -205,10 +205,6 @@
             android:label="@string/title_activity_rebind_phone_stepone" >
         </activity>
         <activity
-            android:name="com.dudu.duduhelper.Activity.MyInfoActivity.GetCashActivity"
-            android:label="@string/title_activity_get_cash" >
-        </activity>
-        <activity
             android:name="com.dudu.duduhelper.Activity.MyInfoActivity.GetCashHistoryListActivity"
             android:label="@string/title_activity_get_cash_history_list" >
         </activity>
@@ -248,8 +244,6 @@
         <activity
             android:name="com.dudu.duduhelper.Activity.MyInfoActivity.ShopUserBankInfoActivity"
             android:label="@string/title_activity_user_bank_info" >
-        </activity>
-        <activity android:name="com.dudu.duduhelper.Activity.MyInfoActivity.UserBankInfoConfirmActivity" >
         </activity>
         <activity
             android:name="com.dudu.duduhelper.Activity.MyInfoActivity.UserBankSelectActivity"

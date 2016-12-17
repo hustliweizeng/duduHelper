@@ -115,9 +115,17 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		initData();
 	}
 
+	/**
+	 * singleTask模式重新进入时调用的方法,注释掉的方法获取的id不正确，因为拿的意图不对
+	 * @param intent
+	 */
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
+	/*	isNetNotification = getIntent().getBooleanExtra("isNetOrder",false);
+		id = getIntent().getLongExtra("id",0)+"";
+		LogUtil.d("newSinge",id);*/
+		LogUtil.d("newSinge",intent.getStringExtra("id").toString());
 		setIntent(intent);
 	}
 
@@ -643,8 +651,9 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 					e.printStackTrace();
 				}
 			}
+			LogUtil.d("copydata","success");
 		}
-		LogUtil.d("copydata","success");
+		
 	}
 	
 	// 初始化语音合成客户端并启动

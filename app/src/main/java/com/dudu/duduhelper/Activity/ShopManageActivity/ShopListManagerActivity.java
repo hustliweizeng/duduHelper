@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class ShopListManagerActivity extends BaseActivity
 	private CommonNavigator mCommonNavigator;
 
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -74,9 +76,9 @@ public class ShopListManagerActivity extends BaseActivity
 		}else {
 			initHeadView("门店管理", true, false, R.drawable.icon_tianjia);
 		}
-
-		
 		initData();
+		
+		
 	}
 
 	@Override
@@ -197,7 +199,6 @@ public class ShopListManagerActivity extends BaseActivity
 			public void onFinish() {
 				super.onFinish();
 				if (data!=null &&data.getData().size()>0){
-					
 					LogUtil.d("data",data.getData().size()+"");
 					initView();//显示页面
 				}else {

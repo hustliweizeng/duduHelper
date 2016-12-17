@@ -541,7 +541,7 @@ public class ShopProductAddActivity extends BaseActivity
 		//弹窗提醒动画
 		textToumingView = (TextView) this.findViewById(R.id.textToumingView);
 		AlphaAnimation animation = new AlphaAnimation((float)1, (float)0);
-		animation.setDuration(4000); //设置持续时间2秒  
+		animation.setDuration(8000); //设置持续时间2秒  
 		animation.setAnimationListener(new AnimationListener()
 		{
 

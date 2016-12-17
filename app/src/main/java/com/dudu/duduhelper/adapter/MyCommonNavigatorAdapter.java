@@ -46,11 +46,12 @@ public class MyCommonNavigatorAdapter extends PagerAdapter {
 					openList.add(item);
 				}
 			}else if (item.getStatus().equals("2")||item.getStatus().equals("02")||item.getStatus().equals("12")){
+				if (!stopList.contains(item))
+					stopList.add(item);
+			}else if(item.getStatus().equals("0")||item.getStatus().equals("00")||item.getStatus().equals("10")){
 				if (!checkList.contains(item)){
 					checkList.add(item);
 				}
-			}else {
-				stopList.add(item);
 			}
 		}
 		
