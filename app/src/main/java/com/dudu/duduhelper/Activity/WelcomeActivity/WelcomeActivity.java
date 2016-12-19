@@ -271,7 +271,8 @@ public class WelcomeActivity extends BaseActivity implements OnClickListener,OnP
 		String shopid = sp.getString("shopid", "");
 		//请求网络连接之前，设置保存cookie，
 		url = ConstantParamPhone.CHECK_SHOP;
-		HttpUtils.getConnection(context, null, url+shopid, "get", new TextHttpResponseHandler() {
+		String umeng_token = sp.getString("umeng_token", "");
+		HttpUtils.getConnection(context, null, url+shopid+"?umeng_token="+umeng_token, "get", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络故障，请重试",Toast.LENGTH_LONG).show();

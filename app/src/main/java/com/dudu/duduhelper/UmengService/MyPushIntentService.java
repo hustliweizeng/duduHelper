@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.text.TextUtils;
@@ -41,6 +42,7 @@ public class MyPushIntentService extends UmengMessageService {
 	private String orderId;
 	Set<String> ids = new HashSet<>();
 	private SharedPreferences sp;
+	private int id;
 
 
 	@Override
@@ -76,7 +78,7 @@ public class MyPushIntentService extends UmengMessageService {
 			/**
 			 * 通知提醒
 			 */
-			int id = new Random(System.nanoTime()).nextInt();
+			id = new Random(System.nanoTime()).nextInt();
 			NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 			mNotificationManager.cancelAll();//通知之前取消其他的
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
@@ -84,8 +86,7 @@ public class MyPushIntentService extends UmengMessageService {
 					.setContentTitle(msg.title)//设置通知栏标题  
 					.setContentText(msg.text) 
 					.setAutoCancel(true)//点击后消失
-					//.setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL)) //设置通知栏点击意图 ,可以打开详情页
-					.setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL))
+					.setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL)) //设置通知栏点击意图 ,可以打开详情页
 					.setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间  
 					.setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级  
 					.setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)  
@@ -110,9 +111,8 @@ public class MyPushIntentService extends UmengMessageService {
 			 */
 			
 		if (MainActivity.isLogin){
-			//Toast.makeText(context,"已登陆",Toast.LENGTH_SHORT).show();
 			Intent intent1 = new Intent(context,ShopOrderDetailActivity.class);
-			intent1.putExtra("id",Long.parseLong(orderId));
+			intent1.putExtra("id",orderId);
 			intent1.putExtra("isNetOrder",true);
 			intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			LogUtil.d("swith",orderId);
@@ -132,18 +132,23 @@ public class MyPushIntentService extends UmengMessageService {
 	}
 
 	/**
-	 * 这种方式打开订单详情不走oncreate方法走onnewIntent方法
+	 * 这种方式打开订单详情走oncreate方法走onnewIntent方法(当新建时)
+	 * 认真查看singleTask的生命周期方法
 	 * @param flags
 	 * @return
 	 */
 	public PendingIntent getDefalutIntent(int flags){
-		
-		Intent intent2 = new Intent(getBaseContext(), ShopOrderDetailActivity.class);
-		intent2.putExtra("id",Long.parseLong(orderId));
-		LogUtil.d("send_message",orderId);
+		Intent intent2 = new Intent(this, ShopOrderDetailActivity.class);
+		intent2.putExtra("id",orderId);
 		intent2.putExtra("isNetOrder",true);
-		intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-		PendingIntent pendingIntent= PendingIntent.getActivity(getApplicationContext(), 1,intent2, flags);
+		sp.edit().putString("msgID",orderId).commit();
+		//从service启动设置第一个，更新pendinginten数据用第二个
+		intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| PendingIntent.FLAG_UPDATE_CURRENT);
+		/**
+		 * 重中之重！！！！！！！！！！！！！
+		 * notification设置的标记和pendingintent要一致，否则传递的数据永远不对
+		 */
+		PendingIntent pendingIntent= PendingIntent.getActivity(this, id,intent2, flags);
 		return pendingIntent;
 	}
 

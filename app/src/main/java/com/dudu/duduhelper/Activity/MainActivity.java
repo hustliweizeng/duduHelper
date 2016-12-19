@@ -96,6 +96,13 @@ public class MainActivity extends BaseActivity
 		}
 	};*/
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		String id = getIntent().getLongExtra("id",0)+"";
+		LogUtil.d("onResume","id="+id);
+	}
+
 	/**
 	 * 每次加载都查看是否有未播放的订单消息
 	 */

@@ -341,8 +341,7 @@ public class ShopOrderActivity extends BaseActivity
 			{
 				Intent intent=new Intent(context, ShopOrderDetailActivity.class);
 				//传递当前条目的数据过去
-				intent.putExtra("id", orderAdapter.getItemId(position));
-				LogUtil.d("POS",orderAdapter.getItemId(position)+"");
+				intent.putExtra("id", orderAdapter.getItemId(position)+"");
 				startActivity(intent);
 			}
 		});

@@ -82,7 +82,8 @@ public class CheckShopActivity extends BaseActivity implements View.OnClickListe
 	private void checkShop(final String id)
 	{
 		//请求网络连接之前，设置保存cookie，
-		HttpUtils.getConnection(context, null, ConstantParamPhone.CHECK_SHOP+id, "GET", new TextHttpResponseHandler() {
+		String umeng_token = sp.getString("umeng_token", "");
+		HttpUtils.getConnection(context, null, ConstantParamPhone.CHECK_SHOP+id+"?umeng_token="+umeng_token, "GET", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				throwable.printStackTrace();

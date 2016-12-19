@@ -35,7 +35,7 @@ public class ColorDialog
 	        mDialog.setOnKeyListener(keyListener);
 	        mDialog.show();
 	        mDialog.setContentView(layout);
-	        mDialog.setCancelable(false);
+	        mDialog.setCancelable(true);//按返回键可以x消失
 	    }
       public static void dissmissProcessDialog()
       {

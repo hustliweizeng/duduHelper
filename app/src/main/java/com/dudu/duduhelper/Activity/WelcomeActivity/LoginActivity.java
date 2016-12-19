@@ -237,6 +237,7 @@ public class LoginActivity extends BaseActivity
 					public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)
 					{
 						arg3.printStackTrace();
+						ColorDialog.dissmissProcessDialog();
 						Toast.makeText(LoginActivity.this, arg2, Toast.LENGTH_LONG).show();
 					}
 					@Override

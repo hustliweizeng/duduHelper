@@ -291,6 +291,13 @@ public class ShopSearchBlueToothActivity extends BaseActivity
 			}
 		});
 	}
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Intent intent = new Intent(this,ShopOrderDetailActivity.class);
+		intent.putExtra("'device","");
+		setResult(2,intent);
+	}
 	private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private void initFilter() 
 	{

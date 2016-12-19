@@ -156,7 +156,8 @@ public class ChangeShopActivity extends BaseActivity {
 		}
 		ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 		String url = ConstantParamPhone.SWITCH_SHOP;//调用切换门店信息
-		HttpUtils.getConnection(context, null,url+checkedId,"get",new TextHttpResponseHandler()
+		String umeng_token = sp.getString("umeng_token", "");
+		HttpUtils.getConnection(context, null,url+checkedId+"?umeng_token="+umeng_token,"get",new TextHttpResponseHandler()
 		{
 			@Override
 			public void onFailure(int arg0, Header[] arg1, String arg2,Throwable arg3)

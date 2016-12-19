@@ -32,12 +32,11 @@ public class DuduHelperApplication extends Application
 		super.onCreate();
 		SharedPreferences sp = getSharedPreferences("userconig", Context.MODE_PRIVATE);
 		sp.edit().putStringSet("pushOrdsers",null).commit();//每次清空上次订单存储的信息
-
 		/**
 		 * 注册推送服务
 		 */
 		PushAgent mPushAgent = PushAgent.getInstance(this);
-		mPushAgent.setDebugMode(true);
+		mPushAgent.setDebugMode(false);
 		//注册推送服务，每次调用register方法都会回调该接口
 		mPushAgent.register(new IUmengRegisterCallback() {
 			@Override

@@ -211,10 +211,11 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 		params.add("contact",phoneNumText.getText().toString());
 		params.add("address",ed_location_shop.getText().toString());
 		params.add("description",ed_discription.getText().toString());
-		params.add("category",category_id+"");
 		params.add("area",circle_id+"");
 		if(TextUtils.isEmpty(uploadPicPath)){
-			uploadPicPath = detaiData.getData().getLogo();//什么都没改的时候
+			if (detaiData.getData()!=null){
+				uploadPicPath = detaiData.getData().getLogo();//什么都没改的时候重置uploadpic的值
+			}
 		}
 		params.add("logo",uploadPicPath);
 		//上传的图片转为数组
@@ -383,8 +384,6 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 				//设置选中的行业id
 				category_id = Integer.parseInt(category.get(poistion).getId());
 				LogUtil.d("shangquan", "category_id=" + category_id);
-
-
 			}
 		});
 
