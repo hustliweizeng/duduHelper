@@ -197,7 +197,7 @@ public class ShopOrderActivity extends BaseActivity
 			params = new RequestParams();
 			params.add("id",orderId+"");
 		}
-		LogUtil.d("requesyStatus","source="+source+",isNew=+"+isNew+",status="+statuss);
+		LogUtil.d("requesyStatus","moduleid="+source+",ispay=+"+isNew+",status="+statuss);
 				
 
 		HttpUtils.getConnection(context,params, ConstantParamPhone.GET_ORDER_LIST, "GET",new TextHttpResponseHandler()

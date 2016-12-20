@@ -53,6 +53,15 @@ public class ShopListBean implements Serializable{
 		private String user_num;
 		private List<String> images;
 		private String status;
+		private String logo;
+
+		public String getLogo() {
+			return logo;
+		}
+
+		public void setLogo(String logo) {
+			this.logo = logo;
+		}
 
 		public String getStatus() {
 			return status;

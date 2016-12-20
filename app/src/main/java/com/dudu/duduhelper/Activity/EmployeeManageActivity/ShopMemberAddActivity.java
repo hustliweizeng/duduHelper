@@ -163,11 +163,8 @@ public class ShopMemberAddActivity extends BaseActivity
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
-						if(msg.contains("已经存在")){
-							Toast.makeText(context,"该账号已存在",Toast.LENGTH_LONG).show();
-						}else {
-							Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-						}
+						LogUtil.d("msg",msg.toString());
+						Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -242,7 +239,12 @@ public class ShopMemberAddActivity extends BaseActivity
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
-						Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						LogUtil.d("msg",msg);
+						if(msg.equals("名称 已经存在。")){
+							Toast.makeText(context,"该账号已存在",Toast.LENGTH_LONG).show();
+						}else {
+							Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

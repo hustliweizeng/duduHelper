@@ -302,6 +302,7 @@ public class ShopDiscountScanSucessActivity extends BaseActivity
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
+				ColorDialog.showRoundProcessDialog(context,R.layout.loading_process_dialog_color);
 			}
 
 			@Override

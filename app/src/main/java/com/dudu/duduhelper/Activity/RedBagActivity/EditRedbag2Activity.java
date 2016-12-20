@@ -380,10 +380,7 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 					e.printStackTrace();
 				}
 			}
-			@Override
-			public void onFinish() {
-				super.onFinish();
-			}
+			
 		});
 	}
 	List<String> checkedIds = new ArrayList<>();
@@ -486,6 +483,10 @@ public class EditRedbag2Activity extends Activity implements View.OnClickListene
 				Toast.makeText(this,"有效天数不能小于0",Toast.LENGTH_SHORT).show();
 				return;
 			}
+		}
+		if (TextUtils.isEmpty(ed_rule.getText().toString().trim())){
+			Toast.makeText(this,"活动规则不能为空",Toast.LENGTH_SHORT).show();
+			return;
 		}
 		title = getIntent().getStringExtra("title");
 		startTime = getIntent().getStringExtra("starTime");

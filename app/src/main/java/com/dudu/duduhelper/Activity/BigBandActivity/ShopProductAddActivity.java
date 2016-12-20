@@ -131,6 +131,7 @@ public class ShopProductAddActivity extends BaseActivity
 	private EditText vip_price;
 	private TextView tv_vip;
 	private boolean isVipChecked;
+	private boolean isEditNull;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -305,14 +306,9 @@ public class ShopProductAddActivity extends BaseActivity
 		}
 	}
 
-
-
-
 	//提交修改的信息
 	private void SubmitProduct()
 	{
-		
-
 		if(TextUtils.isEmpty(productNameEditText.getText().toString().trim()))
 		{
 			Toast.makeText(ShopProductAddActivity.this, "请输入商品名称",Toast.LENGTH_SHORT).show();
@@ -367,8 +363,11 @@ public class ShopProductAddActivity extends BaseActivity
 				}
 			}
 		}
-		
-		
+		//相册不能传空值
+		if (picsPath == null ){
+			Toast.makeText(context,"相册不能为空",Toast.LENGTH_LONG).show();
+			return;
+		}
 
 		BigBandBuy.DataBean dataBean = new BigBandBuy.DataBean();
 		if (category.equals("discount")){
@@ -381,7 +380,7 @@ public class ShopProductAddActivity extends BaseActivity
 			dataBean.setPics(picsPath);
 			dataBean.setAmount(productSoldTextView.getText().toString().trim());
 			dataBean.setRule(data.getRule());
-			dataBean.setShow_img(picsPath);
+			dataBean.setShow_img(picsPath);//要提交的相册数组
 			//把id信息重新提交
 			dataBean.setShop_id(data.getShop_id());
 			dataBean.setApply_shops(dataBean.getApply_shops());
@@ -686,15 +685,34 @@ public class ShopProductAddActivity extends BaseActivity
 			if (requestCode == 1 )
 			{
 				uplodImgs = (ArrayList<String>) data.getSerializableExtra("pics");
-				picsPath = new String[uplodImgs.size()];
 				//后台上传本地的图片
-				for(String s:uplodImgs){
-					if (!s.startsWith("http")){
-						//这边是子线程上传，所以不会立即完成
-						uploadImg(context, s);
-						subThreadCount = 0;
-						subThreadCount++;
+				//做非空判断
+				
+				if (uplodImgs!=null &&uplodImgs.size()>0){
+					LogUtil.d("pics",uplodImgs.size()+"");
+					picsPath = new String[uplodImgs.size()];
+					for(String s:uplodImgs){
+						if (!s.startsWith("http")){
+							//这边是子线程上传，所以不会立即完成
+							uploadImg(context, s);
+							subThreadCount = 0;
+							subThreadCount++;
+						}
 					}
+					//说明在只是编辑页面中删除了图片，但是相册不是空
+					if (subThreadCount ==0){
+						ImageLoader.getInstance().displayImage(uplodImgs.get(0),productImageView);//显示默认图片
+						tv_photo_num_shop_product.setText("相册有"+uplodImgs.size()+"张图片");
+						
+					}
+				}else {
+					//设置相册为空
+					LogUtil.d("pics","0");
+					productImageView.setImageResource(R.drawable.ic_defalut);
+					tv_photo_num_shop_product.setText("相册有0张图片");
+					picsPath= null; //把要上传的数组设为null
+					imgs = null;//本地要传到相册浏览页的图片也是空了
+					isEditNull = true;
 				}
 			}
 			if (requestCode == 2 ){
@@ -795,7 +813,7 @@ public class ShopProductAddActivity extends BaseActivity
 						uplodImgs.remove(imageUri);
 						subThreadCount--;
 						//说明上传完毕
-						if (subThreadCount ==0){
+						if (subThreadCount ==0){    
 							handler.sendEmptyMessage(0);
 						}
 						LogUtil.d("pic_success",s);

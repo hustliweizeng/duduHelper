@@ -431,6 +431,12 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
             Toast.makeText(context,"内容填写不完整",Toast.LENGTH_LONG).show();
             return;
         }
+        
+        if (picsPath==null){
+            Toast.makeText(context,"请上传图片后提交",Toast.LENGTH_LONG).show();
+            return;
+        }
+        
         //修改哪个上传哪个
         RequestParams params = new RequestParams();
         params.put("name",title);
@@ -512,36 +518,46 @@ public class ShopInfoEditActivity extends BaseActivity implements View.OnClickLi
                    if (data!=null ){
                        int localpic = 0;//记录本地图片的数量
                        uplodImgs = data.getStringArrayListExtra("pics");
-                       LogUtil.d("list",uplodImgs.size()+"");
-                       picsPath = new String[uplodImgs.size()];
-                       //后台上传本地的图片,当有本地图片时，才会更新数据，这个有bug
-                       for(int i= 0;i<uplodImgs.size();i++){
-                           if (!uplodImgs.get(i).startsWith("http")){
-                               //这边是子线程上传，所以不会立即完成
-                               uploadImg(context, uplodImgs.get(i));
-                               subThreadCount++;
-                               localpic++;
+                       if (uplodImgs!=null &&uplodImgs.size()>0){
+                           LogUtil.d("list",uplodImgs.size()+"");
+                           picsPath = new String[uplodImgs.size()];
+                           //后台上传本地的图片,当有本地图片时，才会更新数据，这个有bug
+                           for(int i= 0;i<uplodImgs.size();i++){
+                               if (!uplodImgs.get(i).startsWith("http")){
+                                   //这边是子线程上传，所以不会立即完成
+                                   uploadImg(context, uplodImgs.get(i));
+                                   subThreadCount++;
+                                   localpic++;
+                               }
                            }
+                           //当扫描到最后一项时，如果都是网络数据，那么直接更新ui
+                           if (localpic == 0){
+                               //更新ui
+                               //把上传的url放入到数组中
+                               for (int i= 0;i<uplodImgs.size();i++){
+                                   picsPath[i] = uplodImgs.get(i);
+                               }
+                               //修改数据源
+                               pics= imgs =picsPath;
+                               if (picsPath !=null &&picsPath.length>0){
+                                   imageLoader.displayImage(picsPath[0],iv_img_shop_info);
+                                   tv_imgNum_shop_info.setText("相册有"+picsPath.length+"张图片");
+                               }else {
+                                   iv_img_shop_info.setImageResource(R.drawable.ic_defalut);//设置成默认图片
+                                   tv_imgNum_shop_info.setText("相册有"+0+"张图片");//设置成0张
+                               }
+                               ColorDialog.dissmissProcessDialog();
+                               //Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
+                           }
+                           
+                           
+                       }else {
+                           iv_img_shop_info.setImageResource(R.drawable.ic_defalut);//设置成默认图片
+                           tv_imgNum_shop_info.setText("相册有"+0+"张图片");//设置成0张
+                           pics= imgs =picsPath = null;//把所有数据设置为空
                        }
-                       //当扫描到最后一项时，如果都是网络数据，那么直接更新ui
-                       if (localpic == 0){
-                           //更新ui
-                           //把上传的url放入到数组中
-                           for (int i= 0;i<uplodImgs.size();i++){
-                               picsPath[i] = uplodImgs.get(i);
-                           }
-                           //修改数据源
-                           pics= imgs =picsPath;
-                           if (picsPath !=null &&picsPath.length>0){
-                               imageLoader.displayImage(picsPath[0],iv_img_shop_info);
-                               tv_imgNum_shop_info.setText("相册有"+picsPath.length+"张图片");
-                           }else {
-                               iv_img_shop_info.setImageResource(R.drawable.ic_defalut);//设置成默认图片
-                               tv_imgNum_shop_info.setText("相册有"+0+"张图片");//设置成0张
-                           }
-                           ColorDialog.dissmissProcessDialog();
-                           //Toast.makeText(context,"上传完毕",Toast.LENGTH_SHORT).show();
-                       }
+                      
+                      
                    }
                    break;
            } 

@@ -88,7 +88,6 @@ public class ShopImageViewBrower extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				shopImageAdapter.setCheckVisableOffOn();
 				if(editButton.getText().equals("编辑"))
 				{
@@ -102,7 +101,6 @@ public class ShopImageViewBrower extends BaseActivity
 					delectLinearView.setVisibility(View.GONE);
 					selectLinearView.setVisibility(View.GONE);
 				}
-
 			}
 		});
 		//获取传递过来的图片集合
@@ -169,7 +167,6 @@ public class ShopImageViewBrower extends BaseActivity
 	}
 
 	private void initHead() {
-		
 		if (sourceType == 1){
 			initHeadView("商品相册", true, false, 0);
 		}else if(sourceType == 2){
@@ -184,7 +181,6 @@ public class ShopImageViewBrower extends BaseActivity
 			initHeadView("红包相册",true,false,0);
 		}
 	}
-
 	@Override
 	//点击相册后返回数据的处理
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -287,7 +283,6 @@ public class ShopImageViewBrower extends BaseActivity
 		if (sourceType == 6){
 			intent = new Intent(context,ShopAddActivity.class);
 			LogUtil.d("uplodImgs1",uplodImgs.size()+"");
-
 		}
 		if (sourceType ==1){
 			//大牌抢购添加
@@ -304,14 +299,13 @@ public class ShopImageViewBrower extends BaseActivity
 		//传递数据
 		//返回数据之前做非空判断
 		if (uplodImgs !=null ){
+			//可以没有数据，但不能为null
 			intent.putExtra("pics", (Serializable) uplodImgs);
 			setResult(RESULT_OK,intent);//成功
 		}else {
 			setResult(RESULT_CANCELED,intent);//取消
 		}
-		
 		super.onBackPressed();
-
 	}
 
 

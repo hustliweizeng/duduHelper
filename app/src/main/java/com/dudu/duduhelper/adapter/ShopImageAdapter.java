@@ -16,6 +16,7 @@ import com.dudu.duduhelper.widget.SmoothCheckBox.OnCheckedChangeListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import com.dudu.duduhelper.R;
 public class ShopImageAdapter extends BaseAdapter
@@ -25,8 +26,8 @@ public class ShopImageAdapter extends BaseAdapter
     //默认不显示
     private boolean isVisable=false;
     private OnSelectImageClickListener onSelectImageClickListener;
-	//数据源集合
-    private ArrayList<String> imageList = new ArrayList<String >();
+	//数据源集合,包含所有网址的集合
+    private ArrayList<String> imageList = new ArrayList< >();
 	//获取UIL实例
     protected ImageLoader imageLoader = ImageLoader.getInstance();
 	//保存要删除的条目位置
@@ -71,11 +72,15 @@ public class ShopImageAdapter extends BaseAdapter
 	}
 	public void delectSelectImageList()
 	{
+		/**
+		 * 遍历选中的要删除的条目，按照降序重新排列以后再删除
+		 */
+		Collections.reverse(listDelect);//降序排列后不会报错
 		for (Integer postion : listDelect) 
 		{
-			LogUtil.d("DEL","adapter删除前"+imageList.size());
+		LogUtil.d("DEL","item="+postion);
+			//删除指定位置的条目，每次删除以后，位置会发生变化，但是删除集合中存的位置是无序的
 			imageList.remove((int) postion);
-			LogUtil.d("DEL","adapter删除后"+imageList.size());
 		}
 		//清空复选框集合
 		listDelect.clear();
@@ -111,15 +116,19 @@ public class ShopImageAdapter extends BaseAdapter
 			{
 				if(isChecked)
 				{
-					//获取被选中的位置
-					listDelect.add(Integer.valueOf(position));
-					LogUtil.d("checkbox+",position+"");
+					if (!listDelect.contains(Integer.valueOf(position))){
+						//获取被选中的位置
+						listDelect.add(Integer.valueOf(position));
+						LogUtil.d("checkbox+",position+"");
+					}
 				}
 				else
 				{
-					//移除当前条目
-					listDelect.remove(Integer.valueOf(position));
-					LogUtil.d("checkbox",position+"");
+					if (listDelect.contains(Integer.valueOf(position))){
+						//移除当前条目
+						listDelect.remove(Integer.valueOf(position));
+						LogUtil.d("checkbox-",position+"");
+					}
 
 				}
 			}
@@ -152,12 +161,8 @@ public class ShopImageAdapter extends BaseAdapter
 				}else {
 					//如果是本地图片，直接加载
 					LogUtil.d("adapter",path);
-//					File coverFile = new File(path);
-//					Uri tempUri = Uri.fromFile(coverFile);
-					//通过bitmap设置不了
 					imagephoto.setImageBitmap(BitmapFactory.decodeFile(path));
 					//通过uri设置图片
-					//imagephoto.setImageURI(tempUri);
 				}
 			}
 

@@ -90,6 +90,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 	private Uri urilocal;
 	private String imagepath;
 	private ShopDetailBean detaiData;
+	private boolean isPicNull;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +118,6 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 						public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 							Toast.makeText(context, "网络异常，稍后再试", Toast.LENGTH_LONG).show();
 						}
-
 						@Override
 						public void onSuccess(int i, Header[] headers, String s) {
 							try {
@@ -151,7 +151,6 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 
 										}
 									}
-
 								} else {
 									//数据请求失败
 									String msg = object.getString("msg");
@@ -194,6 +193,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 	//上传门店信息
 	private void submit() {
 		String shop = ed_title_shop.getText().toString().trim();
+		//做所有文本信息的非空判断
 		if (TextUtils.isEmpty(shop) ||TextUtils.isEmpty(ed_title_shop.getText().toString().trim())
 		||TextUtils.isEmpty(tv_class_shop.getText().toString().trim())||TextUtils.isEmpty(tv_circle_shop.getText().toString().trim()) 
 		||TextUtils.isEmpty(phoneNumText.getText().toString().trim())||TextUtils.isEmpty(ed_discription.getText().toString().trim())
@@ -201,31 +201,47 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 			Toast.makeText(this, "信息填写不完整！", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		//
+		/*//手机号码的正则判断
 		if (!Util.isMobile(phoneNumText.getText().toString().trim())){
 			Toast.makeText(context,"手机号码输入错误",Toast.LENGTH_LONG).show();
 			return;
-		}
+		}*/
 		RequestParams params = new RequestParams();
 		params.add("name",ed_title_shop.getText().toString());
 		params.add("contact",phoneNumText.getText().toString());
 		params.add("address",ed_location_shop.getText().toString());
 		params.add("description",ed_discription.getText().toString());
 		params.add("area",circle_id+"");
+		params.add("category",category_id+"");
+		//logo为空时
 		if(TextUtils.isEmpty(uploadPicPath)){
-			if (detaiData.getData()!=null){
+			//是编辑页面
+			if (detaiData!=null &&detaiData.getData()!=null){
 				uploadPicPath = detaiData.getData().getLogo();//什么都没改的时候重置uploadpic的值
+			}else {
+				//不是编辑页面 推出上传
+				Toast.makeText(context,"请选择logo后提交！",Toast.LENGTH_LONG).show();
+				return;
 			}
 		}
 		params.add("logo",uploadPicPath);
 		//上传的图片转为数组
-		//说明没有修改图片,直接用获取到的数据
-		if (uplodImgs ==null){
+		//上传相册集合为空
+		if (uplodImgs==null ||uplodImgs.size()==0){
+			//修改页面
 			if (webImgs!=null &&webImgs.size()>0){
-				uplodImgs = webImgs;//从网络获取图片
+				if (isPicNull){
+					//说明是编辑但是已经把相册清空了
+					Toast.makeText(context,"请选择相册图片",Toast.LENGTH_SHORT).show();
+					return;
+				}else {
+					//没有处理相册，没进入相册
+					uplodImgs = webImgs;//获取请求的相册数据
+				}
 			}else {
-				//说明没选择图片
-				Toast.makeText(context,"请选择图片",Toast.LENGTH_SHORT).show();
+				//新增页面
+				Toast.makeText(context,"请选择相册图片",Toast.LENGTH_SHORT).show();
+				return;
 			}
 		}
 		String[] tempImgs  =new String[uplodImgs.size()];
@@ -235,7 +251,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 			i++;
 		}
 		String url = null;
-		params.put("images",uplodImgs);
+		params.put("images",tempImgs);
 		if (shopId !=null){
 			url = ConstantParamPhone.EDIT_SHOP_DETAIL + shopId;
 			LogUtil.d("EDIT",url);
@@ -243,13 +259,12 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 			url = ConstantParamPhone.ADD_SHOP;
 			LogUtil.d("new",url);
 		}
-		
+		LogUtil.d("data","category="+category_id+",area="+circle_id);
 		HttpUtils.getConnection(context, params, url, "post", new TextHttpResponseHandler() {
 			@Override
 			public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 				Toast.makeText(context,"网络异常，稍后再试",Toast.LENGTH_LONG).show();
 			}
-
 			@Override
 			public void onSuccess(int i, Header[] headers, String s) {
 				try {
@@ -259,7 +274,6 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 						//数据请求成功
 						Toast.makeText(context,"上传成功",Toast.LENGTH_LONG).show();
 						finish();
-
 					}else {
 						//数据请求失败
 						String msg = object.getString("msg");
@@ -289,7 +303,7 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 				Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT
 				intent.addCategory(Intent.CATEGORY_OPENABLE);
 				intent.setType("image/jpeg");
-				startActivityForResult(intent,  1);
+				startActivityForResult(intent,1);
 				break;
 			case R.id.backButton:
 				finish();
@@ -383,25 +397,25 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 				tv_class_shop.setText(category.get(poistion).getName());
 				//设置选中的行业id
 				category_id = Integer.parseInt(category.get(poistion).getId());
-				LogUtil.d("shangquan", "category_id=" + category_id);
+				LogUtil.d("hangye", "category_id=" + category_id);
 			}
 		});
 
 	}
 
 	//显示商圈选择框
-	private void showCircleSelctor(final List<ShopCricleBean.DataBean> category, final String title) {
+	private void showCircleSelctor(final List<ShopCricleBean.DataBean> circle, final String title) {
 		ShopCircleAdapter adapter = new ShopCircleAdapter(context, R.layout.item_circle_select);
-		adapter.addAll(category);
+		adapter.addAll(circle);
 		MyAlertDailog.show(context, title, adapter);
 		//通过接口回调，确认选择的条目，并展示出来
 		MyAlertDailog.setOnItemClickListentner(new MyAlertDailog.OnItemClickListentner() {
 			@Override
 			public void Onclick(int poistion) {
 				//设置选中的行业
-				tv_circle_shop.setText(category.get(poistion).getName());
+				tv_circle_shop.setText(circle.get(poistion).getName());
 				//设置选中的行业id
-				circle_id = Integer.parseInt(category.get(poistion).getId());
+				circle_id = Integer.parseInt(circle.get(poistion).getId());
 				LogUtil.d("shangquan", "circle_id=" + circle_id);
 			}
 		});
@@ -416,22 +430,33 @@ public class ShopAddActivity extends BaseActivity implements View.OnClickListene
 					//获取店家环境相册
 					uplodImgs = (ArrayList<String>) data.getSerializableExtra("pics");
 					//后台上传本地的图片
-					for (String s : uplodImgs) {
-						if (!s.startsWith("http")) {
-							//这边是子线程上传，所以不会立即完成
-							uploadImg(context, s);
-							subThreadCount++;
+					if (uplodImgs!=null &&uplodImgs.size()>0){
+						LogUtil.d("pics","size");
+						for (String s : uplodImgs) {
+							if (!s.startsWith("http")) {
+								//这边是子线程上传，所以不会立即完成
+								uploadImg(context, s);
+								subThreadCount++;
+							}
 						}
-					}
-					if (subThreadCount == 0){//说明都是网络图片
-						//刷新数据
-						webImgs = uplodImgs;
-						if (uplodImgs!=null&&uplodImgs.size()>0){//做非空判断
-							imageLoader.displayImage(uplodImgs.get(0), shopImageView);
-							tv_img_num.setText("相册有" + uplodImgs.size() + "张图片");
-							Toast.makeText(context, "修改完成", Toast.LENGTH_SHORT).show();
+						if (subThreadCount == 0){//说明都是网络图片
+							//刷新数据
+							webImgs = uplodImgs;
+							if (uplodImgs!=null&&uplodImgs.size()>0){//做非空判断
+								imageLoader.displayImage(uplodImgs.get(0), shopImageView);
+								tv_img_num.setText("相册有" + uplodImgs.size() + "张图片");
+								Toast.makeText(context, "修改完成", Toast.LENGTH_SHORT).show();
+							}
 						}
+					}else {
+						LogUtil.d("pics","0");
+						//说明把图片删除了，或者没有图片
+						shopImageView.setImageResource(R.drawable.ic_defalut);
+						tv_img_num.setText("相册有0张图片");
+						webImgs = null;
+						isPicNull = true;
 					}
+				
 					break;
 				case 1:
 					//logo选择页面

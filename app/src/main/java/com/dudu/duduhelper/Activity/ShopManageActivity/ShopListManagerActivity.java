@@ -67,7 +67,6 @@ public class ShopListManagerActivity extends BaseActivity
 		boolean isMainShop = sp.getBoolean("isMainShop",false);
 		boolean isManager = sp.getBoolean("isManager", false);
 		if (isManager){
-
 			if (isMainShop){
 				initHeadView("门店管理", true, true, R.drawable.icon_tianjia);
 			}else {
@@ -77,8 +76,6 @@ public class ShopListManagerActivity extends BaseActivity
 			initHeadView("门店管理", true, false, R.drawable.icon_tianjia);
 		}
 		initData();
-		
-		
 	}
 
 	@Override
@@ -100,9 +97,7 @@ public class ShopListManagerActivity extends BaseActivity
 		mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-				
 			}
-
 			@Override
 			public void onPageSelected(int position) {
 				adapter.setCurrentPage(position);
@@ -211,6 +206,6 @@ public class ShopListManagerActivity extends BaseActivity
 	@Override
 	public void onResume() {
 		super.onResume();
-		//initData();
+		initData();
 	}
 }

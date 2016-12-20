@@ -267,6 +267,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="联系地址"
+                android:id="@+id/dizhi"
                 android:textColor="@color/text_color_dark"
                 android:textSize="16dp" />
 
@@ -274,8 +275,11 @@
                 android:id="@+id/address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:text="未填写"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/dizhi"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/text_middledark_color"
                 android:textSize="14sp" />
         </RelativeLayout>

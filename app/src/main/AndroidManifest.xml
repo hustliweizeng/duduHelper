@@ -265,6 +265,7 @@
 
         <activity
             android:name="com.dudu.duduhelper.Activity.WelcomeActivity.WelcomeActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

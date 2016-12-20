@@ -222,7 +222,7 @@
         android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="退出登陆"
+        android:text="退出登录"
         android:background="@drawable/btn_white_bg"
         android:textColor="@color/text_dark_color"
         android:textSize="16sp" />

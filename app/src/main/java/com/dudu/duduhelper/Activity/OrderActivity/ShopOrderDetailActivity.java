@@ -126,6 +126,9 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 		LogUtil.d("id","id="+intent.getStringExtra("id"));
 	}
 
+	/**
+	 * 请求网络数据，订单详情
+	 */
 	private void initData() 
 	{
 		if (TextUtils.isEmpty(id)){
@@ -161,8 +164,8 @@ public class ShopOrderDetailActivity extends BaseActivity implements SpeechSynth
 			@Override
 			public void onFinish() {
 				super.onFinish();
-				fillData();
 				ColorDialog.dissmissProcessDialog();
+				fillData();
 				
 			}
 		});
